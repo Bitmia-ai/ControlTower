@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 60,
   "started_at": "2026-04-25T00:15:00Z",
-  "phase": "BUILD",
+  "phase": "TRIAGE",
   "phase_status": "pending",
   "backlog_item": "BL-026",
   "backlog_title": "Completed backlog items should have a collapsible LLM summary",
@@ -25,13 +25,28 @@
     }
   },
   "git_state": {
-    "last_commit": "test: add Playwright E2E spec asserting BL-024 aria-labels",
+    "last_commit": "test: Playwright E2E for collapsible summary section (BL-026 task 4)",
     "branch": "master",
-    "last_good_deploy_tag": "last-good-deploy-iter59",
-    "notes": "BL-024 DONE: aria-labels added across all interactive controls; 430/430 tests pass; Steer dialog + Controls card PASS; tagged last-good-deploy-iter59"
+    "last_good_deploy_tag": "last-good-deploy-iter60",
+    "notes": "BL-026 DONE: collapsible Summary section on backlog detail + inline snippet in Recently Shipped card; 453/453 tests pass; Playwright VERIFY PASS (BL-048 + BL-024 Summary sections confirmed); tagged last-good-deploy-iter60"
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 60,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "BL-026 DONE: collapsible green Summary section on backlog detail (expanded by default for done items) + one-line snippet in Recently Shipped card; 453/453 tests pass; Playwright VERIFY PASS — home loads, BL-048 and BL-024 detail pages show SUMMARY section with full text; tagged last-good-deploy-iter60",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T01:05:00Z"
+    },
     {
       "iteration": 59,
       "phases": [
@@ -102,7 +117,7 @@
         "DEPLOY",
         "VERIFY"
       ],
-      "outcome": "BL-046 DONE: per-task cost auto-recorded as delta (end-minus-start); useTaskTransitionTracker hook detects transitions; item_cost_starts[BL-046]=73.41 written on first page load; cost-start idempotency guard (AD-7) working \u2014 returns skipped:true on second POST; Record now backward compat intact (BL-041 shows Not recorded + Record now button); 396/396 tests pass; Playwright visual PASS",
+      "outcome": "BL-046 DONE: per-task cost auto-recorded as delta (end-minus-start); useTaskTransitionTracker hook detects transitions; item_cost_starts[BL-046]=73.41 written on first page load; cost-start idempotency guard (AD-7) working — returns skipped:true on second POST; Record now backward compat intact (BL-041 shows Not recorded + Record now button); 396/396 tests pass; Playwright visual PASS",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T00:10:00Z"
     },
@@ -147,7 +162,7 @@
         "DEPLOY",
         "VERIFY"
       ],
-      "outcome": "BL-043 DONE: Force Stop moved to split-button dropdown on Stop button; standalone button row removed; 359/359 tests pass; Playwright visual PASS \u2014 chevron, dropdown, Force Stop menu item, confirmation text all verified; no standalone row present",
+      "outcome": "BL-043 DONE: Force Stop moved to split-button dropdown on Stop button; standalone button row removed; 359/359 tests pass; Playwright visual PASS — chevron, dropdown, Force Stop menu item, confirmation text all verified; no standalone row present",
       "next": "TRIAGE",
       "timestamp": "2026-04-24T22:00:00Z"
     },
@@ -213,7 +228,7 @@
         "DEPLOY",
         "VERIFY"
       ],
-      "outcome": "BL-027 DEPLOY pass (NODE_ENV=production fix), VERIFY healthy \u2014 327/327 tests, visual pass light+dark mode, tagged last-good-deploy-iter47",
+      "outcome": "BL-027 DEPLOY pass (NODE_ENV=production fix), VERIFY healthy — 327/327 tests, visual pass light+dark mode, tagged last-good-deploy-iter47",
       "next": "TRIAGE",
       "timestamp": "2026-04-24T13:37:49Z"
     },
@@ -222,7 +237,7 @@
       "phases": [
         "TRIAGE"
       ],
-      "outcome": "env healthy; no new tester reports; no CEO directives; Q-004 stale (work shipped with default); routing to PLAN BL-027 (cost per completed item in backlog list/detail \u2014 P1 follow-up to BL-020)",
+      "outcome": "env healthy; no new tester reports; no CEO directives; Q-004 stale (work shipped with default); routing to PLAN BL-027 (cost per completed item in backlog list/detail — P1 follow-up to BL-020)",
       "next": "PLAN BL-027",
       "timestamp": "2026-04-24T13:05:00Z"
     },
@@ -250,7 +265,7 @@
         "DEPLOY",
         "VERIFY"
       ],
-      "outcome": "BL-034/035/036 shipped: Stop & Pause buttons write graceful STOP/PAUSE directives to steering.md with Stopping\u2026/Pausing\u2026 UI feedback; 310/310 tests; API verified; tagged last-good-deploy-iter44",
+      "outcome": "BL-034/035/036 shipped: Stop & Pause buttons write graceful STOP/PAUSE directives to steering.md with Stopping…/Pausing… UI feedback; 310/310 tests; API verified; tagged last-good-deploy-iter44",
       "next": "TRIAGE next item",
       "timestamp": "2026-04-24T12:32:00Z"
     }
@@ -273,8 +288,8 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 59,
-    "last_deploy_iteration": 59,
+    "last_verify_iteration": 60,
+    "last_deploy_iteration": 60,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -291,6 +306,7 @@
     "BL-046": 73.40777850000002,
     "BL-048": 81.36289680000004,
     "BL-044": 84.79576530000003,
-    "BL-024": 88.12103009999997
+    "BL-024": 88.12103009999997,
+    "BL-026": 98.03656575000008
   }
 }

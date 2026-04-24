@@ -388,7 +388,9 @@
 ### BL-026: Completed backlog items should have a collapsible LLM summary
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 60)
+- **Summary:** Backlog detail pages now display a collapsible green-accented Summary section expanded by default for done items, and the Recently Shipped card shows a one-line truncated snippet beneath each item title. The Summary field is parsed from the existing backlog.md format with no schema changes required.
 - **Details:**
   - When a backlog item is marked done, generate a short summary of what was done, blockers encountered, and deliverables
   - Show this as a collapsible section on the backlog detail page and in the Recently Shipped card
