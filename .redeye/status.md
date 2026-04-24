@@ -1,30 +1,35 @@
-# RedEye Status — Iteration 57
+# RedEye Status — Iteration 58
 
-**Last updated:** 2026-04-24 (iteration 57 VERIFY done)
-**Iteration:** 57
-**Phase:** TRIAGE (pending)
-**Feature:** BL-048 — Live Tab User Boxes: Collapsible and Collapsed by Default
+**Last updated:** 2026-04-24 (iteration 58 TRIAGE)
+**Iteration:** 58
+**Phase:** PLAN (pending)
+**Feature:** BL-044 — Improve "+Backlog" button text/design on project main screen
 
-## VERIFY Result
+## TRIAGE Result
 
-- Health: HEALTHY
-- Verify command: no command configured (pass by default)
-- Visual check: PASS — home page renders 3 project cards correctly; Live tab renders correctly with "No active session" empty-state in both dark and light mode; no layout regressions; Collapse All / Expand All buttons confirmed present in page.tsx (rendered conditionally when transcript is available); useEffect sync in useOpenState confirmed in transcript-viewer.tsx
-- User tester: 0 bugs reported this cycle (tester respawn-pending), no feedback score
-- Critical bugs: 0
+- BL-048 status corrected: "merged" -> "done" (completed iter 57)
+- Tester reports: none (tester status: respawn-pending, 0 bugs this cycle)
+- Inbox: no new answered questions or credentials
+- Steering: no STOP/PAUSE directives
+- Schedules: no overdue tasks
+- Environment: HIGH confidence, healthy, 419/419 tests, last deploy/verify PASS (iter 57)
 
-## Code Verification
+## Backlog Candidates Evaluated
 
-- `components/transcript-viewer.tsx` — `useOpenState` contains the BL-048 `useEffect` (lines 47-51): `if (forceOpen !== null) { setOpen(forceOpen); }` syncs local card state when global toggle fires
-- `app/project/[id]/live/page.tsx` — "Expand all" (line 256) and "Collapse all" (line 267) buttons present, wired to `forceExpanded` state, passed to `TranscriptViewer`
-- `forceExpanded` 3-state toggle (null/true/false) with toggle-back-to-null on second click — confirmed in place
+| ID | Priority | Decision |
+|----|----------|----------|
+| BL-044 | P1 CEO | SELECTED — small UI, no external deps, actionable now |
+| BL-047 | P1 CEO | Deferred — needs logo asset or CEO clarification |
+| BL-045 | P1 CEO | Deferred — large scope, designer subagent, better after BL-044 |
+| BL-026 | P1 | Deferred — two-repo coordination needed |
+| BL-023 | P2 | Deferred — lower priority |
+| BL-024 | P2 | Deferred — lower priority |
 
-## DEPLOY Result
+## Routing
 
-- Dev server: RUNNING (HTTP 200 at http://localhost:3200)
-- Build: PASS — clean, no prerender failures (Turbopack, ~2s compile)
-- Unit tests: 419/419 passed (43 test files)
-- Git tag: `last-good-deploy-iter57` created
+**Next phase: PLAN BL-044**
+
+Rationale: BL-044 is the highest-priority fully self-contained CEO request. The "+Backlog" button label and design can be improved in one iteration using the designer and frontend skills, with no external asset dependencies. BL-047 (logo) needs a design asset; BL-045 (project screen redesign) is larger and benefits from doing the button polish first.
 
 ## Health: HEALTHY
 
@@ -33,4 +38,3 @@
 **Last deploy:** SUCCESS (iteration 57, last-good-deploy-iter57)
 **Last verify:** PASS (iteration 57)
 **Unit tests:** 419/419 pass
-**Next:** TRIAGE — pick next backlog item

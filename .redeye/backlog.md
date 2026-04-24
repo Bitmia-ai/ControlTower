@@ -5,7 +5,8 @@
 ### BL-048: In the live tab, User boxes need to be collapsible and collapsed by default
 - **Type:** feature
 - **Priority:** P1
-- **Status:** merged
+- **Status:** done
+- **Completed:** 2026-04-24 (iter 57)
 - **Summary:** User message boxes in the Live tab transcript are now collapsible and collapsed by default, reducing visual noise. A sticky Collapse All / Expand All toolbar was added to let users toggle all boxes at once without losing their scroll position.
 
 ### BL-047: Update dashboard logo

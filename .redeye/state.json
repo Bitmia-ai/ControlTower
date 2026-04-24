@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "iteration": 57,
+  "iteration": 58,
   "started_at": "2026-04-24T12:55:00Z",
-  "phase": "TRIAGE",
+  "phase": "PLAN",
   "phase_status": "pending",
-  "backlog_item": "BL-048",
-  "backlog_title": "In the live tab, User boxes need to be collapsible and collapsed by default",
-  "spec_file": "docs/specs/BL-048-live-tab-collapsible-user-boxes.md",
+  "backlog_item": "BL-044",
+  "backlog_title": "In the main screen for a project, i dont like the text +Backlog in the button. can we improve the button? use the designer and frontend skills",
+  "spec_file": "docs/specs/BL-044-backlog-button-redesign.md",
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -258,6 +258,7 @@
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
-    "BL-048": 81.36289680000004
+    "BL-048": 81.36289680000004,
+    "BL-044": 84.79576530000003
   }
 }
