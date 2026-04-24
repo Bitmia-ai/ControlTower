@@ -235,3 +235,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean, 409/409 tests, tagged last-good-deploy-iter56)
 - **Visual check:** PASS — home page renders 3 project cards; Live tab renders correctly with empty-state "No active session" message; violet+border-l-red CSS compiled into bundle confirmed via JS evaluation; dark mode toggle cycles correctly (System -> Light -> Dark); screenshots: verify-iter56-home.png, verify-iter56-live-tab.png, verify-iter56-dark-mode-2.png
 - **Documenter:** running in background (iter 45)
+
+## Iteration 57 — 2026-04-24T23:55:00Z
+- **Built:** BL-048 Live Tab User Boxes: Collapsible and Collapsed by Default — useEffect in useOpenState syncs local card state with forceExpanded; Collapse All / Expand All are sticky after returning to per-card mode
+- **Review findings:** 0C 0M 0m — clean (1 review cycle)
+- **Tests:** 10 new lifecycle tests added (ToolResultCard, ToolUseCard, ThinkingCard forceExpanded null→false→null and null→true→null transitions), 419 total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (tester respawn-pending)
+- **Deployed:** SUCCESS (production build clean, 419/419 tests, tagged last-good-deploy-iter57)
+- **Visual check:** PASS — home page renders 3 project cards correctly (dark mode); Live tab empty-state renders correctly in both dark and light mode; useEffect BL-048 fix confirmed in transcript-viewer.tsx; Collapse All / Expand All buttons confirmed in live page.tsx; no layout regressions; screenshots: verify-iter57-home.png, verify-iter57-live.png, verify-iter57-light-mode.png
+- **Documenter:** running in background (iter 45)

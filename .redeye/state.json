@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 57,
   "started_at": "2026-04-24T12:55:00Z",
-  "phase": "DEPLOY",
+  "phase": "TRIAGE",
   "phase_status": "pending",
   "backlog_item": "BL-048",
   "backlog_title": "In the live tab, User boxes need to be collapsible and collapsed by default",
@@ -27,11 +27,26 @@
   "git_state": {
     "last_commit": "fix: make Collapse All / Expand All sticky in Live tab transcript (BL-048)",
     "branch": "master",
-    "last_good_deploy_tag": "last-good-deploy-iter56",
-    "notes": "BL-040 DONE: Live tab now shows ThinkingCard (violet, collapsible) for assistant/thinking events and AssistantTextCard (red left-border, Claude label) for assistant/text events; plain user messages suppressed; 409/409 tests pass; visual PASS light+dark mode"
+    "last_good_deploy_tag": "last-good-deploy-iter57",
+    "notes": "BL-048 DONE: useEffect added to useOpenState syncs local card open state when forceExpanded changes; Collapse All / Expand All are now sticky — cards retain the forced state when global toggle returns to null; ToolResultCard collapsed by default confirmed; 419/419 tests pass; visual PASS light+dark mode"
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 57,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "BL-048 DONE: Live tab user boxes (ToolResultCard) collapsible and collapsed by default; useEffect in useOpenState makes Collapse All / Expand All sticky; 419/419 tests pass; visual PASS light+dark mode; tagged last-good-deploy-iter57",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-24T23:55:00Z"
+    },
     {
       "iteration": 56,
       "phases": [
@@ -228,7 +243,7 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 56,
+    "last_verify_iteration": 57,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
