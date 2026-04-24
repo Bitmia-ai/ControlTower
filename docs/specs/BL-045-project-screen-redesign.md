@@ -334,7 +334,7 @@ After T1-T3 are applied, run the full test suite. If any existing tests referenc
 **Acceptance criteria:**
 - `npx vitest run` passes with no failures.
 - No test references a removed className or border variable.
-**Status:** pending
+**Status:** done
 
 ---
 
