@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, PlusCircle } from "lucide-react";
 
 interface ControlsCardProps {
   running: boolean;
@@ -238,9 +238,11 @@ export function ControlsCard({
           </button>
           <button
             onClick={onAddBacklog}
-            className="flex-1 px-3 py-2 text-sm font-medium bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded-md border border-gray-200 dark:border-zinc-700 transition"
+            aria-label="Add item to backlog"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md border border-indigo-200 dark:border-indigo-800 transition"
           >
-            + Backlog
+            <PlusCircle size={14} />
+            Add to Backlog
           </button>
         </div>
 
