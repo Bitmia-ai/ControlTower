@@ -127,7 +127,7 @@ on-empty behavior while keeping the polling live. No change to `useCallback` dep
   - Interval is cleared when `visibilitychange` fires with `document.hidden === true`.
   - `fetchProjects` is called immediately when tab becomes visible again.
   - Cleanup removes both the interval and the event listener on unmount.
-- **Status:** pending
+- **Status:** done
 
 ### T2 — Unit tests for visibility polling behaviour
 - **Size:** S
@@ -143,7 +143,7 @@ on-empty behavior while keeping the polling live. No change to `useCallback` dep
   - Test: hiding tab clears interval — advancing clock 20 s does NOT trigger additional fetches.
   - Test: showing tab triggers immediate fetch and resumes interval.
   - All existing tests continue to pass (`npx vitest run` green).
-- **Status:** pending
+- **Status:** done
 
 ### T3 — Smoke verify with Playwright
 - **Size:** S

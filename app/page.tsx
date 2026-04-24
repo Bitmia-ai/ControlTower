@@ -7,6 +7,8 @@ import { AddProjectDialog } from "@/components/add-project-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 
+const POLL_INTERVAL_MS = 10_000;
+
 export default function Home() {
   const [projects, setProjects] = useState<ProjectWithStatus[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,9 +33,43 @@ export default function Home() {
   }, [projects.length]);
 
   useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    const startPolling = () => {
+      if (intervalId) return; // already running
+      intervalId = setInterval(fetchProjects, POLL_INTERVAL_MS);
+    };
+
+    const stopPolling = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        stopPolling();
+      } else {
+        fetchProjects(); // immediate refresh on tab focus
+        startPolling();
+      }
+    };
+
+    // Initial fetch on mount
     fetchProjects();
-    const interval = setInterval(fetchProjects, 10_000);
-    return () => clearInterval(interval);
+
+    // Start polling if the tab is currently visible
+    if (document.visibilityState !== "hidden") {
+      startPolling();
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      stopPolling();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [fetchProjects]);
 
   async function handleToggle(index: number) {
