@@ -134,9 +134,15 @@ describe("TranscriptViewer non-tool events", () => {
     expect(screen.getByText("Claude explains something important")).toBeTruthy();
   });
 
-  it("renders plain user messages (no tool_result subtype) in fallback card", () => {
+  it("suppresses plain user messages (no tool_result subtype) — BL-040 T3", () => {
+    // The harness-injected initial user prompt should not pollute the Live tab.
+    // Only user/tool_result events render via ToolResultCard.
     const events: ClaudeStreamEvent[] = [{ type: "user", content: "plain user msg" }];
-    render(<TranscriptViewer events={events} />);
-    expect(screen.getByText("plain user msg")).toBeTruthy();
+    const { container } = render(<TranscriptViewer events={events} />);
+    expect(screen.queryByText("plain user msg")).toBeNull();
+    // The flex container exists but has no event children
+    const flex = container.querySelector(".flex.flex-col.gap-3");
+    expect(flex).toBeTruthy();
+    expect(flex!.children.length).toBe(0);
   });
 });
