@@ -1,34 +1,37 @@
-# TRIAGE Status — Iteration 60
+# TRIAGE Status — Iteration 62
 
-**Date:** 2026-04-24
-**Iteration:** 59 → 60
-**Health:** HIGH confidence, env healthy, 430/430 tests pass
+**Date:** 2026-04-25
+**Phase:** TRIAGE -> PLAN
+**Health:** HIGH confidence, 453/453 tests, last-good-deploy-iter61
 
-## What Was Found
+## Triage Findings
 
-- Tester reports: none (template only — no new bugs)
-- Steering directives: none
-- Inbox: no new CEO answers
-- Schedules: none defined
-- No active claims in .active-claims.json
+### Tester Reports
+None. tester-reports.md is empty (header only).
 
-## Backlog Summary
+### Schedules
+None configured.
 
-**CEO Requests (pending):**
-- BL-047: Update dashboard logo — BLOCKED (needs CEO asset)
-- BL-045: Improve main project screen design — needs designer subagent
+### CEO / Inbox
+- Q-006 (BL-047 logo) remains open — CEO has not answered. Default is option (c) styled text logo after 7 days; not yet expired.
+- No new answered questions in inbox.
 
-**Planned (available):**
-- BL-026: Collapsible LLM summary for completed items (P1)
-- BL-023: Home page auto-refresh polling (P2)
+### Backlog Status
+- BL-047 (Update dashboard logo): pending, blocked on Q-006 — not actionable yet.
+- BL-023 (Home page auto-refresh polling, P2): planned — fully actionable.
+- No other open items.
 
-## Decision
+### Background Agents
+- User Tester: respawn-pending (deploy happened iter 61). Will note for next BUILD/DEPLOY cycle.
+- Documenter: last heartbeat iter 45 — no new documenter commits in recent log.
 
-Routing to PLAN → BL-026 (P1)
+### Documenter Audit
+Last 5 commits are all BL-045 feature/test commits. No documenter commits to audit.
 
-BL-026 is the highest-priority unblocked item. The Control Tower side is self-contained:
-parse and display the existing Summary field from backlog.md in the backlog
-detail page and Recently Shipped card. Many items already have this field populated.
-BL-023 (P2) deferred. BL-045/BL-047 remain blocked.
+## Selected Item
+**BL-023** — Add auto-refresh polling to home page project cards (P2)
 
-## Next Phase: PLAN (BL-026)
+**Rationale:** Only two remaining planned items. BL-047 is blocked on CEO answer (Q-006 still open, within 7-day default window). BL-023 is fully actionable: add 10-second polling to the home page matching the mission control pattern, pause polling when browser tab is hidden.
+
+## Next Phase
+PLAN (BL-023)
