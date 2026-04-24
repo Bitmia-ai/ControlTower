@@ -169,7 +169,7 @@ changelog entries are `ChangelogEntry` objects which have no summary.
 - Full test suite passes
 - Summary section renders in browser for a real done item
 
-**Status:** pending
+**Status:** done
 **Dependencies:** T1, T2, T3
 
 ---
