@@ -30,7 +30,9 @@
 ### BL-044: In the main screen for a project, i dont like the text +Backlog in the button. can we improve the button? use the designer and frontend skills
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 58)
+- **Summary:** Replaced the minimal "+Backlog" label with an "Add to Backlog" button featuring a PlusCircle icon and indigo accent styling, making the action clearer and visually distinct in both light and dark mode. A unit test was added to verify the button's accessible name and click handler.
 
 ### BL-043: force stop redeye should be part of a dropdown of the stop button. not a bigger button. the stop button has a dropdown with force stop
 - **Type:** feature
@@ -360,7 +362,8 @@
 ### BL-024: Add aria-labels to all interactive buttons and controls
 - **Type:** ux
 - **Priority:** P2
-- **Status:** planned
+- **Status:** in-progress
+- **Spec:** docs/specs/BL-024-aria-labels.md
 - **Source:** CTO (iteration 37, HARDEN phase)
 - **Details:**
   - 14+ interactive buttons across the app have no aria-label, making them inaccessible to screen readers

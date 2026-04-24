@@ -1,40 +1,27 @@
-# RedEye Status — Iteration 58
+# RedEye Status — Iteration 59
 
-**Last updated:** 2026-04-24 (iteration 58 TRIAGE)
-**Iteration:** 58
-**Phase:** PLAN (pending)
-**Feature:** BL-044 — Improve "+Backlog" button text/design on project main screen
+**Phase:** BUILD (PLAN complete)
+**Updated:** 2026-04-25T00:20:00Z
+**Item:** BL-024 — Add aria-labels to all interactive buttons and controls
+**Spec:** docs/specs/BL-024-aria-labels.md
 
-## TRIAGE Result
+## Triage Findings
 
-- BL-048 status corrected: "merged" -> "done" (completed iter 57)
-- Tester reports: none (tester status: respawn-pending, 0 bugs this cycle)
-- Inbox: no new answered questions or credentials
-- Steering: no STOP/PAUSE directives
-- Schedules: no overdue tasks
-- Environment: HIGH confidence, healthy, 419/419 tests, last deploy/verify PASS (iter 57)
+No `pending-triage` items in `## Discovered`. BL-024 confirmed as selected item.
 
-## Backlog Candidates Evaluated
+## Planning Summary
 
-| ID | Priority | Decision |
-|----|----------|----------|
-| BL-044 | P1 CEO | SELECTED — small UI, no external deps, actionable now |
-| BL-047 | P1 CEO | Deferred — needs logo asset or CEO clarification |
-| BL-045 | P1 CEO | Deferred — large scope, designer subagent, better after BL-044 |
-| BL-026 | P1 | Deferred — two-repo coordination needed |
-| BL-023 | P2 | Deferred — lower priority |
-| BL-024 | P2 | Deferred — lower priority |
+17 elements across 5 files need accessibility fixes:
+- 3 collapsible toggle buttons in transcript-viewer.tsx — missing aria-label/aria-expanded
+- 1 icon-only Trash2 button in project-card.tsx — title only, no aria-label
+- 3 form controls in add-backlog-dialog.tsx — unlinked/missing labels
+- 1 textarea in steer-dialog.tsx — no label
+- 1 textarea in answer-modal.tsx — no label
+- 2 inputs in add-project-dialog.tsx — labels not linked via htmlFor/id
+- 6 inputs/buttons in onboarding-wizard.tsx — unlinked labels + ambiguous Edit buttons
 
-## Routing
+Sub-tasks: T1 (S) apply fixes, T2 (S) unit tests. No questions posted.
 
-**Next phase: PLAN BL-044**
+## Next
 
-Rationale: BL-044 is the highest-priority fully self-contained CEO request. The "+Backlog" button label and design can be improved in one iteration using the designer and frontend skills, with no external asset dependencies. BL-047 (logo) needs a design asset; BL-045 (project screen redesign) is larger and benefits from doing the button polish first.
-
-## Health: HEALTHY
-
-**Confidence:** HIGH
-**Env status:** healthy
-**Last deploy:** SUCCESS (iteration 57, last-good-deploy-iter57)
-**Last verify:** PASS (iteration 57)
-**Unit tests:** 419/419 pass
+BUILD — implement T1 then T2
