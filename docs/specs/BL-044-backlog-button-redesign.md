@@ -112,7 +112,7 @@ it("renders Add to Backlog button with correct accessible label", () => {
 | ID | Description | Size | Depends On | Agent Type | Test Strategy | AC | Status |
 |----|-------------|------|------------|------------|---------------|-----|--------|
 | T1 | Update button in `controls-card.tsx`: label → "Add to Backlog", add `PlusCircle` icon, apply indigo accent classes, add `aria-label` | S | — | Dev (generic) | Render visually via Playwright screenshot; unit test added in T2 | Button reads "Add to Backlog", has icon, has indigo styling, has aria-label, clicks still open dialog | done |
-| T2 | Add unit test in `controls-card.test.tsx` asserting new accessible name and click handler | S | T1 | Dev (generic) | `npx vitest run` passes with new test case | Test queries `{ name: /Add item to backlog/i }`, asserts click fires `onAddBacklog` | in-progress |
+| T2 | Add unit test in `controls-card.test.tsx` asserting new accessible name and click handler | S | T1 | Dev (generic) | `npx vitest run` passes with new test case | Test queries `{ name: /Add item to backlog/i }`, asserts click fires `onAddBacklog` | done |
 
 ---
 

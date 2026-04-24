@@ -180,6 +180,21 @@ describe("ControlsCard", () => {
     expect(onStop).toHaveBeenCalledTimes(1);
   });
 
+  it("renders Add to Backlog button with correct accessible label and fires click handler", async () => {
+    const onAddBacklog = vi.fn();
+    render(<ControlsCard running={false} onAddBacklog={onAddBacklog} />);
+
+    const btn = screen.getByRole("button", { name: /Add item to backlog/i });
+    expect(btn).toBeTruthy();
+    expect(btn.textContent).toContain("Add to Backlog");
+
+    await act(async () => {
+      fireEvent.click(btn);
+    });
+
+    expect(onAddBacklog).toHaveBeenCalledTimes(1);
+  });
+
   it("caption auto-hides after 5s", async () => {
     const onStop = vi.fn();
     render(<ControlsCard running={true} onStop={onStop} />);
