@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 57,
   "started_at": "2026-04-24T12:55:00Z",
-  "phase": "PLAN",
+  "phase": "BUILD",
   "phase_status": "pending",
   "backlog_item": "BL-048",
   "backlog_title": "In the live tab, User boxes need to be collapsible and collapsed by default",
