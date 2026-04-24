@@ -139,7 +139,7 @@ Decision: **suppress plain `user` messages** (non-tool-result). These are the in
   - Expand/collapse works on click
   - "Expand all" / "Collapse all" global buttons control ThinkingCard state
   - Dark mode styling correct
-- **Status:** pending
+- **Status:** done
 
 ### T2: AssistantTextCard — add Claude label and left-border accent
 - **Size:** S
@@ -156,7 +156,7 @@ Decision: **suppress plain `user` messages** (non-tool-result). These are the in
   - Red left border and "Claude" label visible on all inter-round text messages
   - Content fully visible (not truncated, not collapsible)
   - Dark mode correct
-- **Status:** pending
+- **Status:** done
 
 ### T3: Suppress plain user messages
 - **Size:** S
@@ -168,7 +168,7 @@ Decision: **suppress plain `user` messages** (non-tool-result). These are the in
 - **Acceptance criteria:**
   - User prompt messages (no subtype) do not appear in the transcript
   - `user/tool_result` events are unaffected
-- **Status:** pending
+- **Status:** done
 
 ### T4: Unit tests
 - **Size:** S
@@ -189,7 +189,7 @@ Decision: **suppress plain `user` messages** (non-tool-result). These are the in
 - **Acceptance criteria:**
   - All 8 new cases pass
   - `npx vitest run` green (full suite)
-- **Status:** pending
+- **Status:** done
 
 ### T5: E2E verification with Playwright
 - **Size:** S

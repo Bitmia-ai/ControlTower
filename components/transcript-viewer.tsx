@@ -113,6 +113,55 @@ function ToolResultCard({
   );
 }
 
+function ThinkingCard({
+  event,
+  forceOpen,
+}: {
+  event: ClaudeStreamEvent;
+  forceOpen: boolean | null;
+}) {
+  const { open, toggle } = useOpenState(forceOpen);
+  const preview = firstNonEmptyLine(event.content);
+  return (
+    <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800 rounded-lg overflow-hidden">
+      <button
+        onClick={toggle}
+        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-violet-100 dark:hover:bg-violet-900/30 transition"
+      >
+        <span className="text-xs text-violet-400 dark:text-violet-500">{open ? "▼" : "▶"}</span>
+        <span className="text-xs font-medium text-violet-700 dark:text-violet-300">
+          Thinking…
+        </span>
+        {preview && (
+          <span className="text-xs text-violet-600/70 dark:text-violet-400/70 truncate ml-2 italic">
+            {preview}
+          </span>
+        )}
+      </button>
+      {open && event.content && (
+        <div className="px-4 pb-3 border-t border-violet-200 dark:border-violet-800">
+          <p className="text-sm text-violet-800 dark:text-violet-200 whitespace-pre-wrap mt-2 leading-relaxed">
+            {event.content}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AssistantTextCard({ event }: { event: ClaudeStreamEvent }) {
+  return (
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-red-500 rounded-lg px-4 py-3">
+      <p className="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Claude</p>
+      {event.content && (
+        <p className="text-sm text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">
+          {event.content}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function ResultCard({ event }: { event: ClaudeStreamEvent }) {
   return (
     <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3">
@@ -187,23 +236,10 @@ export function TranscriptViewer({
           }
 
           if (event.subtype === "thinking") {
-            return (
-              <p key={i} className="text-sm italic text-gray-400 dark:text-zinc-500 px-1">
-                {event.content}
-              </p>
-            );
+            return <ThinkingCard key={i} event={event} forceOpen={forceExpanded} />;
           }
 
-          return (
-            <div
-              key={i}
-              className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg px-4 py-3"
-            >
-              <p className="text-sm text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">
-                {event.content}
-              </p>
-            </div>
-          );
+          return <AssistantTextCard key={i} event={event} />;
         }
 
         if (event.type === "user" && event.subtype === "tool_result") {
@@ -215,6 +251,12 @@ export function TranscriptViewer({
               forceOpen={forceExpanded}
             />
           );
+        }
+
+        // Suppress plain user messages (the harness-injected initial prompt).
+        // Only user/tool_result events render (handled above).
+        if (event.type === "user") {
+          return null;
         }
 
         return (
