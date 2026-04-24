@@ -9,22 +9,19 @@
 - **Default (7 days):** If no answer in 7 days, hold in TRIAGE waiting state. No work will be started without CEO direction.
 - **Status:** open
 
-### Q-006: BL-047 — What logo do you want on the dashboard?
-- **From:** CTO (TRIAGE iter 61)
-- **Context:** BL-047 asks to update the dashboard logo. The only image assets in `public/` are the default Next.js SVGs (`file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg`) and `app/favicon.ico`. There is no custom logo file in the repo.
-- **Options:**
-  - (a) Provide an image file (PNG/SVG) to use as the logo — share via inbox or drop into `public/`
-  - (b) Describe the logo (text, icon, style) and we will generate/design it in code (SVG or styled text)
-  - (c) Use a simple text logo: "RedEye" or "Control Tower" styled with the existing red accent color
-- **Default (7 days):** Proceed with option (c) — styled text logo "Control Tower" in red accent, replacing the default Next.js favicon. Will use this default if no answer by next TRIAGE.
-- **Status:** answered — BL-047 shipped using option (c); question resolved
-
-
 ## Credentials Needed
 
 _(No credential requests yet.)_
 
 ## Answered / Provided
+
+### Q-006: BL-047 — What logo do you want on the dashboard?
+- **From:** CTO (TRIAGE iter 61)
+- **Context:** BL-047 asks to update the dashboard logo. The only image assets in `public/` are the default Next.js SVGs and `app/favicon.ico`. No custom logo file existed.
+- **Options:** (a) provide image file, (b) describe logo for code generation, (c) styled text "Control Tower" in red accent
+- **Default:** Proceed with option (c) — styled text logo "Control Tower" in red accent.
+- **Answer:** Proceeded with default (option c) — no CEO response received before default deadline.
+- **Incorporated:** 2026-04-24 (iter 67) — Matches default. BL-047 shipped using option (c): split-weight "CONTROL / TOWER" text mark in red-600/red-500. Question resolved.
 
 ### Q-004: Should Stop / Pause be graceful-only, or also offer a Force Stop (hard kill) button?
 - **From:** VP Engineering (BL-034/035/036 plan, iter 44)
