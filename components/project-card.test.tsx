@@ -49,6 +49,19 @@ describe("ProjectCard backlog-empty label", () => {
   });
 });
 
+describe("ProjectCard delete button aria-label (BL-024)", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
+  it("Trash2 delete button has aria-label including the project name", () => {
+    render(<ProjectCard project={baseProject} index={0} onToggle={vi.fn()} />);
+    // Resolves only if the icon-only button has accessible name "Remove haze"
+    const btn = screen.getByRole("button", { name: "Remove haze" });
+    expect(btn).toBeTruthy();
+  });
+});
+
 describe("ProjectCard Stop feedback", () => {
   beforeEach(() => {
     vi.useFakeTimers();

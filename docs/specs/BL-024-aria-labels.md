@@ -125,7 +125,7 @@ Generic "Remove project" is ambiguous when multiple cards appear. `aria-label={\
 - `npx vitest run` remains fully green (420+ total)
 - No test uses raw `aria-label` string selectors that would survive a missing label (use `getByLabelText` or `getByRole(..., { name: ... })`)
 
-**Status:** pending
+**Status:** done
 
 ---
 

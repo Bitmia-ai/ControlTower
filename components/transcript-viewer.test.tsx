@@ -187,6 +187,58 @@ describe("TranscriptViewer — session boundary separator", () => {
   });
 });
 
+describe("TranscriptViewer — aria-labels on toggles (BL-024)", () => {
+  it("ToolUseCard exposes dynamic aria-label and aria-expanded that toggle on click", () => {
+    const event: ClaudeStreamEvent = {
+      type: "assistant",
+      subtype: "tool_use",
+      tool_name: "Bash",
+      tool_input: { command: "ls" },
+    };
+    const { container } = render(<TranscriptViewer events={[event]} />);
+    // Collapsed by default — aria-label says "Expand"
+    const collapsed = screen.getByRole("button", { name: "Expand tool call" });
+    expect(collapsed.getAttribute("aria-expanded")).toBe("false");
+
+    fireEvent.click(collapsed);
+    // After expand, aria-label flips to "Collapse"
+    const expanded = screen.getByRole("button", { name: "Collapse tool call" });
+    expect(expanded.getAttribute("aria-expanded")).toBe("true");
+    // Sanity — same DOM element
+    expect(expanded).toBe(container.querySelector("button"));
+  });
+
+  it("ToolResultCard exposes dynamic aria-label that includes the tool name", () => {
+    const events: ClaudeStreamEvent[] = [
+      { type: "assistant", subtype: "tool_use", tool_name: "Read", tool_input: {} },
+      { type: "user", subtype: "tool_result", content: "file contents" },
+    ];
+    render(<TranscriptViewer events={events} />);
+    // Two collapse buttons — find the result one specifically
+    const resultBtn = screen.getByRole("button", { name: "Expand Read result" });
+    expect(resultBtn.getAttribute("aria-expanded")).toBe("false");
+
+    fireEvent.click(resultBtn);
+    const expanded = screen.getByRole("button", { name: "Collapse Read result" });
+    expect(expanded.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("ThinkingCard exposes dynamic aria-label and aria-expanded", () => {
+    const event: ClaudeStreamEvent = {
+      type: "assistant",
+      subtype: "thinking",
+      content: "Reasoning step.",
+    };
+    render(<TranscriptViewer events={[event]} />);
+    const collapsed = screen.getByRole("button", { name: "Expand thinking" });
+    expect(collapsed.getAttribute("aria-expanded")).toBe("false");
+
+    fireEvent.click(collapsed);
+    const expanded = screen.getByRole("button", { name: "Collapse thinking" });
+    expect(expanded.getAttribute("aria-expanded")).toBe("true");
+  });
+});
+
 describe("findPrecedingToolName", () => {
   it("returns the nearest preceding assistant/tool_use tool name", () => {
     const events: ClaudeStreamEvent[] = [
