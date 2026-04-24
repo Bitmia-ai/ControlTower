@@ -1,3 +1,10 @@
 {
-  "claims": {}
+  "claims": {
+    "BL-045": {
+      "instance": "main",
+      "iteration": 61,
+      "claimed_at": "2026-04-25T01:10:00Z",
+      "title": "Improve main project screen design using designer subagent and frontend skill"
+    }
+  }
 }
