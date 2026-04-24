@@ -1,0 +1,144 @@
+<h2>Control Tower — Architecture Overview (v2)</h2>
+<p class="subtitle">Multi-project orchestration. Each project gets its own independent sessions.</p>
+
+<div class="mockup">
+  <div class="mockup-header">System Architecture</div>
+  <div class="mockup-body" style="font-size: 13px; font-family: monospace; line-height: 1.8; color: #ccc;">
+
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="display: inline-block; background: #1a1a2e; border: 2px solid #DC2626; border-radius: 12px; padding: 16px 32px;">
+        <div style="color: #DC2626; font-weight: bold; font-size: 16px;">Control Tower</div>
+        <div style="color: #888; font-size: 12px;">Next.js 15 · localhost:3100 · Stateless</div>
+        <div style="color: #666; font-size: 11px; margin-top: 4px;">Reads: .redeye/ files · Writes: via Claude (Sonnet)</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #555; margin: 8px 0;">▼ spawns &amp; monitors per project ▼</div>
+
+    <!-- Project 1 -->
+    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; margin: 12px 0; background: #0d1117;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></div>
+        <span style="color: #fff; font-weight: bold;">haze</span>
+        <span style="color: #888; font-size: 11px;">~/haze</span>
+        <span style="color: #22c55e; font-size: 11px; margin-left: auto;">RUNNING</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center;">
+          <div style="color: #DC2626; font-size: 12px; font-weight: bold;">CTO</div>
+          <div style="color: #666; font-size: 10px;">opus · PID 4821</div>
+          <div style="color: #444; font-size: 10px;">→ session-cto.jsonl</div>
+        </div>
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center;">
+          <div style="color: #3b82f6; font-size: 12px; font-weight: bold;">UX Tester</div>
+          <div style="color: #666; font-size: 10px;">sonnet · PID 4835</div>
+          <div style="color: #444; font-size: 10px;">→ session-tester.jsonl</div>
+        </div>
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center;">
+          <div style="color: #22c55e; font-size: 12px; font-weight: bold;">Documenter</div>
+          <div style="color: #666; font-size: 10px;">sonnet · PID 4842</div>
+          <div style="color: #444; font-size: 10px;">→ session-docs.jsonl</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; margin: 12px 0; background: #0d1117;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></div>
+        <span style="color: #fff; font-weight: bold;">ziggy-v1</span>
+        <span style="color: #888; font-size: 11px;">~/unnamed_project</span>
+        <span style="color: #22c55e; font-size: 11px; margin-left: auto;">RUNNING</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center;">
+          <div style="color: #DC2626; font-size: 12px; font-weight: bold;">CTO</div>
+          <div style="color: #666; font-size: 10px;">opus · PID 5100</div>
+        </div>
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center;">
+          <div style="color: #3b82f6; font-size: 12px; font-weight: bold;">UX Tester</div>
+          <div style="color: #666; font-size: 10px;">sonnet · PID 5114</div>
+        </div>
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center;">
+          <div style="color: #22c55e; font-size: 12px; font-weight: bold;">Documenter</div>
+          <div style="color: #666; font-size: 10px;">sonnet · PID 5121</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; margin: 12px 0; background: #0d1117;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #888;"></div>
+        <span style="color: #fff; font-weight: bold;">control-tower</span>
+        <span style="color: #888; font-size: 11px;">~/control-tower</span>
+        <span style="color: #888; font-size: 11px; margin-left: auto;">STOPPED</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center; opacity: 0.4;">
+          <div style="color: #DC2626; font-size: 12px;">CTO</div>
+          <div style="color: #666; font-size: 10px;">not running</div>
+        </div>
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center; opacity: 0.4;">
+          <div style="color: #3b82f6; font-size: 12px;">UX Tester</div>
+          <div style="color: #666; font-size: 10px;">not running</div>
+        </div>
+        <div style="background: #1a1a2e; border-radius: 6px; padding: 8px 12px; flex: 1; text-align: center; opacity: 0.4;">
+          <div style="color: #22c55e; font-size: 12px;">Documenter</div>
+          <div style="color: #666; font-size: 10px;">not running</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top: 1px solid #333; margin-top: 16px; padding-top: 12px;">
+      <div style="color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 8px;">Data Flow</div>
+      <div style="display: flex; gap: 16px; font-size: 12px;">
+        <div style="flex: 1;">
+          <div style="color: #22c55e;">Reads (direct file access)</div>
+          <div style="color: #666;">.redeye/*.md · .redeye/state.json</div>
+          <div style="color: #666;">.redeye/session-*.jsonl</div>
+          <div style="color: #666;">~/.redeye/config.json</div>
+        </div>
+        <div style="flex: 1;">
+          <div style="color: #f59e0b;">Writes (via Claude Sonnet)</div>
+          <div style="color: #666;">/redeye:backlog → .redeye/backlog.md</div>
+          <div style="color: #666;">/redeye:steer → .redeye/steering.md</div>
+          <div style="color: #666;">/redeye:status → .redeye/inbox.md</div>
+        </div>
+        <div style="flex: 1;">
+          <div style="color: #DC2626;">Session management</div>
+          <div style="color: #666;">child_process.spawn(claude)</div>
+          <div style="color: #666;">PID tracking in memory</div>
+          <div style="color: #666;">SSE stream to browser</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top: 1px solid #333; margin-top: 12px; padding-top: 12px;">
+      <div style="color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 8px;">Future: Cloud Architecture</div>
+      <div style="color: #666; font-size: 12px;">
+        Control Tower (cloud) ← WebSocket → Local Bridge (your machine) → spawns Claude → reads .redeye/
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 20px;">
+  <h3>Does this look right?</h3>
+  <div class="options">
+    <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+      <div class="letter">✓</div>
+      <div class="content">
+        <h3>Approve — move to design spec</h3>
+        <p>Architecture is right, write the full spec</p>
+      </div>
+    </div>
+    <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+      <div class="letter">✎</div>
+      <div class="content">
+        <h3>Revise — needs changes</h3>
+        <p>Tell me what to adjust in the terminal</p>
+      </div>
+    </div>
+  </div>
+</div>

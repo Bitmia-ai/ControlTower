@@ -1,0 +1,126 @@
+<h2>Control Tower — Architecture Overview</h2>
+<p class="subtitle">Review this architecture before we proceed to the full design spec</p>
+
+<div class="mockup">
+  <div class="mockup-header">System Architecture</div>
+  <div class="mockup-body" style="font-size: 13px; font-family: monospace; line-height: 2; color: #ccc;">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="display: inline-block; background: #1a1a2e; border: 2px solid #DC2626; border-radius: 12px; padding: 16px 32px;">
+        <div style="color: #DC2626; font-weight: bold; font-size: 16px;">Control Tower</div>
+        <div style="color: #888; font-size: 12px;">Next.js 15 · localhost:3100</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #555; margin: 8px 0;">▼ spawns &amp; monitors ▼</div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; margin: 16px 0;">
+      <div style="background: #1a1a2e; border: 1px solid #444; border-radius: 8px; padding: 12px 16px; text-align: center; flex: 0 0 200px;">
+        <div style="color: #DC2626; font-weight: bold;">CTO Loop</div>
+        <div style="color: #888; font-size: 11px;">claude --print --stream-json</div>
+        <div style="color: #888; font-size: 11px;">--model opus --plugin-dir ~/redeye</div>
+        <div style="color: #666; font-size: 11px; margin-top: 4px;">→ .redeye/session-cto.jsonl</div>
+      </div>
+      <div style="background: #1a1a2e; border: 1px solid #444; border-radius: 8px; padding: 12px 16px; text-align: center; flex: 0 0 200px;">
+        <div style="color: #3b82f6; font-weight: bold;">UX Tester</div>
+        <div style="color: #888; font-size: 11px;">claude --print --stream-json</div>
+        <div style="color: #888; font-size: 11px;">--model sonnet</div>
+        <div style="color: #666; font-size: 11px; margin-top: 4px;">→ .redeye/session-tester.jsonl</div>
+      </div>
+      <div style="background: #1a1a2e; border: 1px solid #444; border-radius: 8px; padding: 12px 16px; text-align: center; flex: 0 0 200px;">
+        <div style="color: #22c55e; font-weight: bold;">Documenter</div>
+        <div style="color: #888; font-size: 11px;">claude --print --stream-json</div>
+        <div style="color: #888; font-size: 11px;">--model sonnet</div>
+        <div style="color: #666; font-size: 11px; margin-top: 4px;">→ .redeye/session-docs.jsonl</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #555; margin: 8px 0;">▼ reads ▼</div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; margin: 16px 0;">
+      <div style="background: #0d1117; border: 1px solid #333; border-radius: 8px; padding: 12px 16px; text-align: center;">
+        <div style="color: #f0f0f0; font-weight: bold;">.redeye/</div>
+        <div style="color: #888; font-size: 11px; text-align: left; margin-top: 6px;">
+          config.md · backlog.md<br>
+          inbox.md · steering.md<br>
+          status.md · changelog.md<br>
+          feedback.md · state.json
+        </div>
+      </div>
+      <div style="background: #0d1117; border: 1px solid #333; border-radius: 8px; padding: 12px 16px; text-align: center;">
+        <div style="color: #f0f0f0; font-weight: bold;">~/.redeye/</div>
+        <div style="color: #888; font-size: 11px; text-align: left; margin-top: 6px;">
+          config.json<br>
+          (project list)
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #555; margin: 16px 0;">▼ writes (via Claude + Sonnet) ▼</div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; margin: 16px 0;">
+      <div style="background: #1a1a2e; border: 1px dashed #666; border-radius: 8px; padding: 10px 16px; text-align: center; flex: 0 0 160px;">
+        <div style="color: #f59e0b; font-size: 12px;">Add to backlog</div>
+        <div style="color: #666; font-size: 11px;">/redeye:backlog</div>
+      </div>
+      <div style="background: #1a1a2e; border: 1px dashed #666; border-radius: 8px; padding: 10px 16px; text-align: center; flex: 0 0 160px;">
+        <div style="color: #f59e0b; font-size: 12px;">Steer</div>
+        <div style="color: #666; font-size: 11px;">/redeye:steer</div>
+      </div>
+      <div style="background: #1a1a2e; border: 1px dashed #666; border-radius: 8px; padding: 10px 16px; text-align: center; flex: 0 0 160px;">
+        <div style="color: #f59e0b; font-size: 12px;">Answer question</div>
+        <div style="color: #666; font-size: 11px;">/redeye:status</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 24px;">
+  <h3>Key Decisions</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px;">
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">Card grid layout</span> <span style="color: #888;">— mission control per project</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">Structured JSON streaming</span> <span style="color: #888;">— claude --print --stream-json</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">Writes via Claude (Sonnet)</span> <span style="color: #888;">— backlog, steer, inbox answers</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">Fully stateless</span> <span style="color: #888;">— no database, reads .redeye/ files</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">Detached processes + .jsonl</span> <span style="color: #888;">— cloud-ready architecture</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">No iterations in UI</span> <span style="color: #888;">— show what, not how</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">Answer modal with context</span> <span style="color: #888;">— suggested answers from RedEye</span>
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px;">
+      <span style="color: #DC2626;">✓</span> <span style="color: #fff;">One instance per project</span> <span style="color: #888;">— simple, no multi-instance</span>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 24px;">
+  <h3>Pages</h3>
+  <div style="font-size: 13px; color: #ccc; line-height: 1.8;">
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px; margin-bottom: 6px;">
+      <span style="color: #DC2626; font-weight: bold;">/</span> — Global mission control. Card per project: name, current task, health, pending questions count.
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px; margin-bottom: 6px;">
+      <span style="color: #DC2626; font-weight: bold;">/project/:id</span> — Project mission control. Card grid: working on, health, questions, up next, recently shipped, steering, controls.
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px; margin-bottom: 6px;">
+      <span style="color: #DC2626; font-weight: bold;">/project/:id/backlog</span> — Full backlog view. Add items, reorder, change priority.
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px; margin-bottom: 6px;">
+      <span style="color: #DC2626; font-weight: bold;">/project/:id/history</span> — Full changelog + activity log.
+    </div>
+    <div style="background: #1a1a2e; padding: 10px 14px; border-radius: 6px; margin-bottom: 6px;">
+      <span style="color: #DC2626; font-weight: bold;">/project/:id/live</span> — Live transcript stream (debugging/progress view).
+    </div>
+  </div>
+</div>

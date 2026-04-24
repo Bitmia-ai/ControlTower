@@ -1,0 +1,115 @@
+"use client";
+
+import { BacklogId } from "@/components/backlog-id";
+import { PHASE_LABELS, PHASE_COLORS } from "@/lib/redeye-types";
+import type { RedEyeState } from "@/lib/redeye-types";
+
+const DEFAULT_COLORS = { bg: "bg-gray-100 dark:bg-zinc-800", text: "text-gray-700 dark:text-zinc-300", shimmer: "from-gray-100 via-gray-200 to-gray-100 dark:from-zinc-800 dark:via-zinc-700 dark:to-zinc-800" };
+
+interface WorkingOnCardProps {
+  state: RedEyeState | null;
+  running: boolean;
+  projectId?: number;
+  upNextCount?: number;
+}
+
+function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
+  const label = PHASE_LABELS[phase] ?? phase;
+  const colors = PHASE_COLORS[phase] ?? DEFAULT_COLORS;
+  const animate = running && colors.shimmer;
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold ${colors.text} ${
+        animate
+          ? `bg-linear-to-r ${colors.shimmer} phase-badge-shimmer`
+          : colors.bg
+      }`}
+    >
+      {running && <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70 animate-pulse" />}
+      {label}
+    </span>
+  );
+}
+
+export function WorkingOnCard({ state, running, projectId, upNextCount }: WorkingOnCardProps) {
+  const hasTask = state?.backlog_title;
+  const isBacklogEmpty = !running && state?.phase === "HARDEN" && (upNextCount ?? 0) === 0;
+
+  return (
+    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 ${running ? "border-l-green-500" : "border-l-red-600"} rounded-lg p-5`}>
+      <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3">
+        Working On
+      </p>
+
+      {!running && !hasTask ? (
+        isBacklogEmpty ? (
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-amber-500" />
+              <span className="text-amber-600 dark:text-amber-400 text-sm font-medium">
+                RedEye stopped — backlog empty.
+              </span>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-zinc-500 ml-4">
+              Add tasks to resume.
+            </p>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-gray-400 dark:bg-zinc-600" />
+            <span className="text-gray-500 dark:text-zinc-500 text-sm">RedEye is idle</span>
+          </div>
+        )
+      ) : running && !hasTask && state?.phase ? (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-gray-700 dark:text-zinc-300 text-sm font-medium">
+              {state.phase === "HARDEN" ? "Improving the codebase — finding tech debt, tests, docs" :
+               state.phase === "STABILIZE" ? "Stabilizing — fixing broken environment" :
+               state.phase === "TRIAGE" ? "Triaging — picking the next task" :
+               state.phase === "INCORPORATE" ? "Incorporating your feedback" :
+               state.phase === "SCHEDULES" ? "Running scheduled tasks" :
+               "Starting up — analyzing project..."}
+            </span>
+          </div>
+          <PhaseBadge phase={state.phase} running={running} />
+        </div>
+      ) : running && !hasTask ? (
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-gray-600 dark:text-zinc-400 text-sm">Starting up — analyzing project...</span>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <div className="flex items-start gap-2">
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-green-500" />
+            <p className="text-sm font-medium text-gray-900 dark:text-zinc-100 leading-snug">
+              {projectId !== undefined && state?.backlog_item ? (
+                <BacklogId
+                  id={state.backlog_item}
+                  projectId={projectId}
+                  className="text-gray-500 dark:text-zinc-500"
+                />
+              ) : (
+                <span className="text-gray-500 dark:text-zinc-500 font-mono">{state?.backlog_item}</span>
+              )}
+              {state?.backlog_item && " · "}
+              {state!.backlog_title}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            {state?.phase && <PhaseBadge phase={state.phase} running={running} />}
+            {(state as unknown as Record<string, unknown>)?.worktree_branch ? (
+              <span className="text-xs text-gray-400 dark:text-zinc-500 font-mono">
+                {String((state as unknown as Record<string, unknown>).worktree_branch)}
+              </span>
+            ) : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

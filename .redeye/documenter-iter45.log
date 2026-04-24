@@ -1,0 +1,11 @@
+[documenter iter 45] starting at 2026-04-24T14:50:33+02:00
+ .redeye/state.json                    |   6 +-
+ .redeye/status.md                     |  29 ++++----
+ app/project/[id]/live/page.tsx        |  55 +++++++++++++-
+ docs/specs/BL-032-autoscroll.md       |  14 +++-
+ lib/scroll-utils.integration.test.tsx | 131 ++++++++++++++++++++++++++++++++++
+ lib/scroll-utils.test.ts              |  33 +++++++++
+ lib/scroll-utils.ts                   |  17 +++++
+ 7 files changed, 261 insertions(+), 24 deletions(-)
+---
+Documenter: no CLAUDE.md update needed — BL-032 is a localized UX bugfix in an existing page (app/project/[id]/live/page.tsx) plus a new pure helper (lib/scroll-utils.ts). The root CLAUDE.md already documents /project/[id]/live and lib/ helpers at the correct level of granularity; adding scroll-utils.ts by name would be noise. Backlog counters in CLAUDE.md (BL-032 status) will be refreshed after DEPLOY completes iter 45.

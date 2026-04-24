@@ -1,0 +1,8 @@
+{"type":"server-started","port":51609,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:51609","screen_dir":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/content","state_dir":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/state"}
+{"type":"screen-added","file":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/content/project-layout.html"}
+{"type":"screen-added","file":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/content/waiting.html"}
+{"type":"screen-added","file":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/content/architecture.html"}
+{"type":"screen-added","file":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/content/architecture-v2.html"}
+{"source":"user-event","type":"click","text":"✓\n      \n        Approve — move to design spec\n        Architecture is right, write the full spec","choice":"approve","id":null,"timestamp":1776972046184}
+{"type":"screen-added","file":"/Users/casa/control-tower/.superpowers/brainstorm/61355-1776969637/content/waiting-2.html"}
+{"type":"server-stopped","reason":"idle timeout"}

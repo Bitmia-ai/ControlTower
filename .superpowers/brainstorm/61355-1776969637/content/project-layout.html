@@ -1,0 +1,122 @@
+<h2>Project Mission Control — Layout</h2>
+<p class="subtitle">Single-page dashboard for one project. What do you see when you click into "haze"?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Top-heavy status</h3>
+      <div class="mockup" style="margin-top: 12px;">
+        <div class="mockup-header">haze — Project Mission Control</div>
+        <div class="mockup-body" style="font-size: 13px; line-height: 1.6;">
+          <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+            <div style="flex: 1; background: #1a1a2e; border-radius: 8px; padding: 12px; border-left: 3px solid #DC2626;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Now</div>
+              <div style="color: #fff; font-weight: bold; font-size: 15px;">Building: ASCII art for weather conditions</div>
+              <div style="color: #888; font-size: 12px;">Iteration 5 · BUILD phase · 12 min ago</div>
+            </div>
+            <div style="flex: 0 0 120px; background: #1a1a2e; border-radius: 8px; padding: 12px; text-align: center;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Health</div>
+              <div style="color: #22c55e; font-size: 24px; font-weight: bold;">●</div>
+              <div style="color: #888; font-size: 12px;">27 tests pass</div>
+            </div>
+            <div style="flex: 0 0 120px; background: #1a1a2e; border-radius: 8px; padding: 12px; text-align: center;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Shipped</div>
+              <div style="color: #fff; font-size: 24px; font-weight: bold;">3</div>
+              <div style="color: #888; font-size: 12px;">items done</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px;">
+            <div style="flex: 1;">
+              <div style="background: #DC2626; color: #fff; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 18px;">❓</span>
+                <div>
+                  <div style="font-weight: bold;">1 question needs your answer</div>
+                  <div style="font-size: 12px; opacity: 0.8;">"Should the CTA link to /signup or open a modal?" — 2h ago</div>
+                </div>
+              </div>
+
+              <div style="color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 8px;">Up Next</div>
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 10px 14px; margin-bottom: 6px;">
+                <span style="color: #888;">BL-004</span> <span style="color: #fff;">3-day forecast with sparkline graphs</span>
+              </div>
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 10px 14px; margin-bottom: 6px;">
+                <span style="color: #888;">BL-005</span> <span style="color: #fff;">--json flag for piping output</span>
+              </div>
+
+              <div style="color: #888; font-size: 11px; text-transform: uppercase; margin-top: 16px; margin-bottom: 8px;">Recently Shipped</div>
+              <div style="color: #22c55e; padding: 4px 0;">✓ Core CLI with city parsing + colored output</div>
+              <div style="color: #22c55e; padding: 4px 0;">✓ ASCII art for weather conditions</div>
+              <div style="color: #22c55e; padding: 4px 0;">✓ Error handling + input validation</div>
+            </div>
+
+            <div style="flex: 0 0 280px;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 8px;">Steering</div>
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; color: #ccc; font-size: 13px;">
+                "Use chalk for colors. No external weather libraries. Make output fit 80 columns."
+              </div>
+              <div style="color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 8px;">Controls</div>
+              <div style="display: flex; gap: 8px;">
+                <button style="background: #DC2626; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Stop</button>
+                <button style="background: #333; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Pause</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top: 8px; color: #888;">Questions prominent at top. Status + now working on as hero. Up next and recently shipped below. Steering and controls in sidebar.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Card grid</h3>
+      <div class="mockup" style="margin-top: 12px;">
+        <div class="mockup-header">haze — Project Mission Control</div>
+        <div class="mockup-body" style="font-size: 13px; line-height: 1.6;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="background: #1a1a2e; border-radius: 8px; padding: 14px; border-left: 3px solid #DC2626;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Working On</div>
+              <div style="color: #fff; font-weight: bold; margin-top: 4px;">ASCII art for weather conditions</div>
+              <div style="color: #888; font-size: 12px;">BUILD · Iteration 5 · 12m</div>
+            </div>
+            <div style="background: #1a1a2e; border-radius: 8px; padding: 14px; border-left: 3px solid #22c55e;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Health</div>
+              <div style="color: #22c55e; font-weight: bold; margin-top: 4px;">Healthy — 27 tests pass</div>
+              <div style="color: #888; font-size: 12px;">Build clean · 3 items shipped</div>
+            </div>
+            <div style="background: #2a1215; border: 1px solid #DC2626; border-radius: 8px; padding: 14px; grid-column: span 2;">
+              <div style="color: #DC2626; font-size: 11px; text-transform: uppercase; font-weight: bold;">❓ 1 Question Pending</div>
+              <div style="color: #fff; margin-top: 4px;">"Should the CTA link to /signup or open a modal?"</div>
+              <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <button style="background: #DC2626; color: white; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; cursor: pointer;">Answer</button>
+                <span style="color: #888; font-size: 12px; padding-top: 6px;">Asked 2h ago</span>
+              </div>
+            </div>
+            <div style="background: #1a1a2e; border-radius: 8px; padding: 14px;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Up Next</div>
+              <div style="color: #fff; margin-top: 4px; font-size: 13px;">BL-004 · Sparkline forecast graphs</div>
+              <div style="color: #ccc; margin-top: 2px; font-size: 13px;">BL-005 · --json flag for piping</div>
+              <div style="color: #888; margin-top: 2px; font-size: 13px;">BL-006 · --units metric/imperial</div>
+            </div>
+            <div style="background: #1a1a2e; border-radius: 8px; padding: 14px;">
+              <div style="color: #888; font-size: 11px; text-transform: uppercase;">Recently Shipped</div>
+              <div style="color: #22c55e; margin-top: 4px; font-size: 13px;">✓ Core CLI + colored output</div>
+              <div style="color: #22c55e; margin-top: 2px; font-size: 13px;">✓ ASCII art for weather</div>
+              <div style="color: #22c55e; margin-top: 2px; font-size: 13px;">✓ Error handling</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end;">
+            <button style="background: #DC2626; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">Stop</button>
+            <button style="background: #333; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">Pause</button>
+            <button style="background: #333; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">Steer</button>
+            <button style="background: #333; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">+ Backlog</button>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top: 8px; color: #888;">Everything as equal-weight cards in a grid. Question card spans full width with inline answer button. Controls at the bottom.</p>
+    </div>
+  </div>
+</div>
