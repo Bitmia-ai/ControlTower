@@ -118,7 +118,7 @@ new icon asset (e.g. a red square or monogram). If needed, file a follow-up back
   - Build passes clean with no missing-file errors
   - No grep hits for `next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg` in
     `app/` or `components/`
-- **Status:** pending
+- **Status:** done
 
 ### T3 — Unit tests for logo mark
 - **File:** `app/layout.test.tsx` (new)
@@ -133,7 +133,7 @@ new icon asset (e.g. a red square or monogram). If needed, file a follow-up back
 - **Acceptance criteria:**
   - All new tests pass under `npx vitest run`
   - No existing tests broken
-- **Status:** pending
+- **Status:** done
 
 ---
 
