@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "iteration": 62,
-  "started_at": "2026-04-25T01:20:00Z",
-  "phase": "BUILD",
-  "phase_status": "pending",
-  "backlog_item": "BL-023",
-  "backlog_title": "Add auto-refresh polling to home page project cards",
-  "spec_file": "docs/specs/BL-023-home-polling.md",
+  "iteration": 63,
+  "started_at": "2026-04-25T01:30:00Z",
+  "phase": "TRIAGE",
+  "phase_status": "complete",
+  "backlog_item": "BL-047",
+  "backlog_title": "Update dashboard logo",
+  "spec_file": "docs/specs/BL-047-dashboard-logo.md",
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -25,24 +25,49 @@
     }
   },
   "git_state": {
-    "last_commit": "test: verify all 453 tests pass after BL-045 redesign (BL-045 task 4)",
+    "last_commit": "feat: visibility-aware polling on home page (BL-023 task 1+2)",
     "branch": "master",
-    "last_good_deploy_tag": "last-good-deploy-iter61",
-    "notes": "BL-045 DONE: 3-column project grid with Controls in row 1 alongside WorkingOn card; decorative borders removed; active task title at text-base; running pill badge inline under project name; 453/453 tests pass; Playwright VERIFY PASS light+dark mode; tagged last-good-deploy-iter61"
+    "last_good_deploy_tag": "last-good-deploy-iter62",
+    "notes": "BL-023 DONE: visibility-aware 10s polling on home page; starts on mount, pauses on tab-hide, resumes with immediate fetch on tab-show; cleanup removes interval+listener; 457/457 tests pass; Playwright VERIFY PASS — 3 cards load, phase badges visible, polling confirmed; tagged last-good-deploy-iter62"
   },
   "blocked_items": [],
   "iteration_log": [
     {
+      "iteration": 63,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "env healthy; no new tester reports; no new CEO directives; Q-006 open but proceeding with default (option c — styled text logo 'Control Tower' in red accent); routing to PLAN BL-047",
+      "next": "PLAN BL-047",
+      "timestamp": "2026-04-25T01:30:00Z"
+    },
+    {
       "iteration": 62,
-      "phases": ["TRIAGE"],
-      "outcome": "TRIAGE: no tester reports, no schedules, no new CEO answers; BL-047 blocked on Q-006 (logo asset pending); routing to PLAN BL-023 (home page auto-refresh polling, P2)",
-      "next": "PLAN BL-023",
-      "timestamp": "2026-04-25T01:20:00Z"
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "BL-023 DONE: visibility-aware 10s polling on home page; starts on mount, pauses on tab-hide, resumes with immediate fetch on tab-show; cleanup removes interval+listener; 457/457 tests pass; Playwright VERIFY PASS — 3 cards load, phase badges visible, polling confirmed; tagged last-good-deploy-iter62",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T01:25:00Z"
     },
     {
       "iteration": 61,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "MERGE", "DEPLOY", "VERIFY"],
-      "outcome": "BL-045 DONE: 3-column project grid with Controls promoted to row 1 alongside WorkingOn card; decorative borders removed; active task title at text-base; running pill badge inline under project name; 453/453 tests pass; Playwright VERIFY PASS — layout confirmed light+dark mode; tagged last-good-deploy-iter61",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "BL-045 DONE: 3-column project grid with Controls promoted to row 1 alongside WorkingOn card; decorative borders removed; active task title at text-base; running pill badge inline under project name; 453/453 tests pass; Playwright VERIFY PASS \u2014 layout confirmed light+dark mode; tagged last-good-deploy-iter61",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T01:15:00Z"
     },
@@ -302,8 +327,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 61,
-    "last_deploy_iteration": 61,
+    "last_verify_iteration": 62,
+    "last_deploy_iteration": 62,
+    "current_iteration": 63,
     "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
