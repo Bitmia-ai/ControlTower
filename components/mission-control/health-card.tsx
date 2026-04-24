@@ -11,9 +11,8 @@ function deriveHealth(state: RedEyeState | null): {
   label: string;
   reason: string;
   color: string;
-  border: string;
 } {
-  if (!state) return { label: "No data", reason: "", color: "text-gray-500 dark:text-zinc-500", border: "border-l-gray-400 dark:border-l-zinc-600" };
+  if (!state) return { label: "No data", reason: "", color: "text-gray-500 dark:text-zinc-500" };
 
   const confidence = state.health?.confidence ?? "LOW";
   const env = state.health?.env_status ?? "unknown";
@@ -26,21 +25,21 @@ function deriveHealth(state: RedEyeState | null): {
   if ((state.health?.questions_awaiting_ceo ?? 0) > 0) reasons.push(`${state.health.questions_awaiting_ceo} question(s) awaiting answer`);
 
   if (env === "unhealthy" || confidence === "LOW") {
-    return { label: "Unhealthy", reason: reasons.join(" · "), color: "text-red-600 dark:text-red-400", border: "border-l-red-600" };
+    return { label: "Unhealthy", reason: reasons.join(" · "), color: "text-red-600 dark:text-red-400" };
   }
   if (confidence === "MEDIUM") {
-    return { label: "Degraded", reason: reasons.join(" · "), color: "text-amber-600 dark:text-amber-400", border: "border-l-amber-500" };
+    return { label: "Degraded", reason: reasons.join(" · "), color: "text-amber-600 dark:text-amber-400" };
   }
-  return { label: "Healthy", reason: "", color: "text-green-600 dark:text-green-400", border: "border-l-green-500" };
+  return { label: "Healthy", reason: "", color: "text-green-600 dark:text-green-400" };
 }
 
 export function HealthCard({ state, recentlyShippedCount }: HealthCardProps) {
-  const { label, reason, color, border } = deriveHealth(state);
+  const { label, reason, color } = deriveHealth(state);
   const questionsWaiting = state?.health?.questions_awaiting_ceo ?? 0;
   const blockedItems = state?.health?.blocked_items_count ?? 0;
 
   return (
-    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 ${border} rounded-lg p-5`}>
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-5">
       <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3">Health</p>
 
       <div className="space-y-3">

@@ -27,7 +27,7 @@ export function ShippedCard({ items, changelog = [], projectId }: ShippedCardPro
   const shippedItems = hasChangelog ? changelog.slice(0, 5) : items.slice(0, 5);
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 border-l-green-600 rounded-lg p-5">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-5">
       <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3">
         Recently Shipped
       </p>

@@ -21,7 +21,7 @@ export function UpNextCard({ items, projectId }: UpNextCardProps) {
   const upNext = items.slice(0, 3);
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 border-l-gray-400 dark:border-l-zinc-600 rounded-lg p-5">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-5">
       <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3">
         Up Next
       </p>

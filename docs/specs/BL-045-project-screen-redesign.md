@@ -218,7 +218,7 @@ New JSX order:
 - Health and Cost are adjacent on row 4.
 - All cards are still rendered (no functionality removed).
 - `npx vitest run` passes.
-**Status:** pending
+**Status:** done
 
 ---
 
@@ -264,7 +264,7 @@ After:   <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:b
 - QuestionsCard still has red `border-l-4` when questions pending.
 - ControlsCard still has amber `border-l-4` when stalled.
 - `npx vitest run` passes.
-**Status:** pending
+**Status:** done
 
 ---
 

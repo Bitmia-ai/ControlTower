@@ -112,11 +112,10 @@ export default function ProjectPage({
   const pendingQuestions = (detail?.pendingQuestions ?? []).filter(
     (q) => !q.answered
   );
-  const hasPendingQuestions = pendingQuestions.length > 0;
   const firstQuestion: InboxQuestion | null = pendingQuestions[0] ?? null;
 
   return (
-    <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
+    <main className="px-4 sm:px-6 pb-12 max-w-6xl mx-auto">
       {loading && !detail ? (
         <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">
           Loading project…
@@ -133,43 +132,62 @@ export default function ProjectPage({
           />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <WorkingOnCard state={detail?.state ?? null} running={running} projectId={projectId} upNextCount={detail?.upNext?.length ?? 0} />
-          <HealthCard
-            state={detail?.state ?? null}
-            recentlyShippedCount={detail?.recentlyShipped?.length ?? 0}
-          />
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="md:col-span-2">
-            <CostCard projectId={projectId} running={running} />
+            <WorkingOnCard state={detail?.state ?? null} running={running} projectId={projectId} upNextCount={detail?.upNext?.length ?? 0} />
           </div>
 
-          <div className={hasPendingQuestions ? "md:col-span-2" : ""}>
+          <div className="md:col-span-1">
+            <ControlsCard
+              running={running}
+              stalled={stalled}
+              onStart={() => handleAction("start")}
+              onStop={() => handleAction("stop")}
+              onPause={() => handleAction("pause")}
+              onSteer={() => setSteerOpen(true)}
+              onAddBacklog={() => setBacklogOpen(true)}
+              onRestart={handleRestart}
+              onForceStop={handleForceStop}
+            />
+          </div>
+
+          <div className="md:col-span-3">
             <QuestionsCard
               questions={detail?.pendingQuestions ?? []}
               onAnswer={() => setAnswerOpen(true)}
             />
           </div>
 
-          <UpNextCard items={detail?.upNext ?? []} projectId={projectId} />
+          <p className="md:col-span-3 hidden md:block text-xs uppercase tracking-widest font-medium text-gray-400 dark:text-zinc-600 mt-2">
+            Backlog
+          </p>
 
-          <ShippedCard
-            items={detail?.recentlyShipped ?? []}
-            changelog={detail?.recentChangelog ?? []}
-            projectId={projectId}
-          />
+          <div className="md:col-span-2">
+            <ShippedCard
+              items={detail?.recentlyShipped ?? []}
+              changelog={detail?.recentChangelog ?? []}
+              projectId={projectId}
+            />
+          </div>
 
-          <ControlsCard
-            running={running}
-            stalled={stalled}
-            onStart={() => handleAction("start")}
-            onStop={() => handleAction("stop")}
-            onPause={() => handleAction("pause")}
-            onSteer={() => setSteerOpen(true)}
-            onAddBacklog={() => setBacklogOpen(true)}
-            onRestart={handleRestart}
-            onForceStop={handleForceStop}
-          />
+          <div className="md:col-span-1">
+            <UpNextCard items={detail?.upNext ?? []} projectId={projectId} />
+          </div>
+
+          <p className="md:col-span-3 hidden md:block text-xs uppercase tracking-widest font-medium text-gray-400 dark:text-zinc-600 mt-2">
+            Telemetry
+          </p>
+
+          <div className="md:col-span-2">
+            <CostCard projectId={projectId} running={running} />
+          </div>
+
+          <div className="md:col-span-1">
+            <HealthCard
+              state={detail?.state ?? null}
+              recentlyShippedCount={detail?.recentlyShipped?.length ?? 0}
+            />
+          </div>
         </div>
       )}
 
