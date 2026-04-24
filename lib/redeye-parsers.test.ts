@@ -130,6 +130,44 @@ describe("parseBacklog", () => {
     expect(items).toHaveLength(1);
     expect(items[0].section).toBe("wontdo");
   });
+
+  // ---- Summary field (BL-026) ----
+
+  it("parses Summary field on a done item", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### BL-048: Live tab collapsibles\n- **Type:** feature\n- **Status:** done\n- **Summary:** User message boxes are now collapsible by default to reduce noise.\n`;
+    const items = parseBacklog(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].summary).toBe(
+      "User message boxes are now collapsible by default to reduce noise."
+    );
+  });
+
+  it("leaves summary undefined when field is missing", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### BL-001: No summary\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseBacklog(content);
+    expect(items[0].summary).toBeUndefined();
+  });
+
+  it("preserves multi-word summary text verbatim", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### BL-040: Thinking events\n- **Status:** done\n- **Summary:** Added violet ThinkingCard with 80-char preview and red AssistantTextCard.\n`;
+    const items = parseBacklog(content);
+    expect(items[0].summary).toBe(
+      "Added violet ThinkingCard with 80-char preview and red AssistantTextCard."
+    );
+  });
+
+  it("does not affect existing fields when Summary is present", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### BL-044: Add to Backlog button\n- **Type:** feature\n- **Priority:** P2\n- **Status:** done\n- **Summary:** Redesigned with PlusCircle icon and indigo accent.\n- **Spec:** docs/specs/BL-044.md\n`;
+    const items = parseBacklog(content);
+    expect(items[0]).toMatchObject({
+      id: "BL-044",
+      type: "feature",
+      priority: "P2",
+      status: "done",
+      summary: "Redesigned with PlusCircle icon and indigo accent.",
+      spec: "docs/specs/BL-044.md",
+    });
+  });
 });
 
 // ---------------------------------------------------------------------------

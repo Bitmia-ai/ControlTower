@@ -99,6 +99,7 @@ export function parseBacklog(content: string): BacklogItem[] {
         section,
         details,
         spec: pickField(body, "Spec"),
+        summary: pickField(body, "Summary"),
       });
     }
   }

@@ -73,7 +73,7 @@ The `BacklogItem` interface in `lib/redeye-types.ts` has no `summary` field.
 - `summary` is `undefined` for items that lack it
 - All existing 430 tests still pass
 
-**Status:** pending
+**Status:** done
 **Dependencies:** none
 
 ---
@@ -117,7 +117,7 @@ interface SummarySectionProps {
 - Chevron rotates on toggle
 - Section absent when item has no summary
 
-**Status:** pending
+**Status:** done
 **Dependencies:** T1 (parser must populate `summary`)
 
 ---

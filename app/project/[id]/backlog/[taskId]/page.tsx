@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import type { BacklogItem } from "@/lib/redeye-types";
 import { BacklogId } from "@/components/backlog-id";
 import { FetchError } from "@/components/fetch-error";
+import { BacklogSummarySection } from "@/components/backlog-summary-section";
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-zinc-300",
@@ -330,6 +331,13 @@ export default function BacklogItemPage({
                 </div>
               )}
             </dl>
+
+            {item.summary && (
+              <BacklogSummarySection
+                summary={item.summary}
+                defaultOpen={item.status === "done"}
+              />
+            )}
 
             {item.details && (
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-zinc-800">

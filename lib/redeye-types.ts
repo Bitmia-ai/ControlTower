@@ -96,6 +96,8 @@ export interface BacklogItem {
   spec?: string;
   /** Estimated cost in USD for this item. Set at completion time via cost-snapshot API. */
   cost_usd?: number;
+  /** Single-line LLM-authored summary of what shipped. Written by CTO at VERIFY time. */
+  summary?: string;
 }
 
 export interface InboxQuestion {
