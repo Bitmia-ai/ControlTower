@@ -12,9 +12,11 @@
 ### BL-047: Update dashboard logo
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 63)
 - **Spec:** docs/specs/BL-047-logo.md
 - **Planning:** Split-weight "Control Tower" text mark (CONTROL small / TOWER large, both red-600/red-500) replacing flat single-span in app/layout.tsx; linked to /. 3 sub-tasks (all S): T1 implement mark, T2 remove unused public SVGs, T3 unit tests. No image assets needed.
+- **Summary:** Replaced the flat single-line header text with a split-weight two-span logo mark — "CONTROL" in small bold tracking-widest and "TOWER" in large black weight, both in red-600/red-500 with dark mode variant, wrapped in a Link to /. Five unused default Next.js scaffold SVGs were removed from public/. Five unit tests and three Playwright E2E tests confirm the link, text content, and navigation behaviour.
 
 ### BL-046: Per task cost (est) not autoamtically recorded at the end of each task. it should be the value at the end of the task minus the value at the begining
 - **Type:** feature
