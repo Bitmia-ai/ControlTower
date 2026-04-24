@@ -2,6 +2,13 @@
 
 ## Questions (Open)
 
+### Q-007: Backlog fully cleared — what should we build next?
+- **From:** CTO (TRIAGE iter 64)
+- **Context:** All 48 backlog items (BL-001 through BL-048) are now done or won't-do. The Control Tower dashboard is fully functional: project cards with live polling, mission control layout, live transcript viewer with collapsible tool/thinking cards, per-task cost tracking, dark/light mode, aria-labels, backlog CRUD with collapsible done section, graceful + force stop/pause controls, and the split-weight logo mark. There is no remaining planned work.
+- **Question:** What features, improvements, or new capabilities should we tackle next? Please describe what you'd like — any area of the product (UI polish, new pages, agent management features, cost analysis, notifications, etc.) or a whole new direction. We're ready to start immediately.
+- **Default (7 days):** If no answer in 7 days, hold in TRIAGE waiting state. No work will be started without CEO direction.
+- **Status:** open
+
 ### Q-006: BL-047 — What logo do you want on the dashboard?
 - **From:** CTO (TRIAGE iter 61)
 - **Context:** BL-047 asks to update the dashboard logo. The only image assets in `public/` are the default Next.js SVGs (`file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg`) and `app/favicon.ico`. There is no custom logo file in the repo.
@@ -10,7 +17,7 @@
   - (b) Describe the logo (text, icon, style) and we will generate/design it in code (SVG or styled text)
   - (c) Use a simple text logo: "RedEye" or "Control Tower" styled with the existing red accent color
 - **Default (7 days):** Proceed with option (c) — styled text logo "Control Tower" in red accent, replacing the default Next.js favicon. Will use this default if no answer by next TRIAGE.
-- **Status:** open
+- **Status:** answered — BL-047 shipped using option (c); question resolved
 
 
 ## Credentials Needed
