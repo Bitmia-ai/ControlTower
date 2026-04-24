@@ -12,7 +12,9 @@
 ### BL-047: Update dashboard logo
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** planned
+- **Spec:** docs/specs/BL-047-logo.md
+- **Planning:** Split-weight "Control Tower" text mark (CONTROL small / TOWER large, both red-600/red-500) replacing flat single-span in app/layout.tsx; linked to /. 3 sub-tasks (all S): T1 implement mark, T2 remove unused public SVGs, T3 unit tests. No image assets needed.
 
 ### BL-046: Per task cost (est) not autoamtically recorded at the end of each task. it should be the value at the end of the task minus the value at the begining
 - **Type:** feature
@@ -354,8 +356,10 @@
 ### BL-023: Add auto-refresh polling to home page project cards
 - **Type:** feature
 - **Priority:** P2
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 62)
 - **Source:** HARDEN (iteration 37)
+- **Summary:** Added visibility-aware 10-second polling to the home page. Polling starts on mount when the tab is visible, pauses immediately on `visibilitychange` to hidden, and resumes with an instant fetch on re-show. Cleanup removes both the interval and the event listener on unmount. Four vitest tests cover mount, hide, re-show, and unmount scenarios.
 - **Details:**
   - Home page only shows project status on initial load — no polling
   - Add a 10-second polling interval (matching mission control pattern) so project cards update phase/task in real-time
