@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ClaudeStreamEvent } from "@/lib/redeye-types";
 
 /**
@@ -40,6 +40,15 @@ function firstNonEmptyLine(content: string | undefined, max = 80): string {
  */
 function useOpenState(forceOpen: boolean | null) {
   const [open, setOpen] = useState(false);
+  // Sync local state whenever the parent overrides via forceOpen. This makes
+  // "Collapse All" / "Expand All" sticky: when the parent later returns to
+  // `null` (per-card mode), each card retains the most recent forced value
+  // instead of snapping back to whatever the user had toggled before.
+  useEffect(() => {
+    if (forceOpen !== null) {
+      setOpen(forceOpen);
+    }
+  }, [forceOpen]);
   const effectiveOpen = forceOpen === null ? open : forceOpen;
   return { open: effectiveOpen, toggle: () => setOpen((v) => !v) };
 }

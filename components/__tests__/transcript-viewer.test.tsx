@@ -127,6 +127,163 @@ describe("TranscriptViewer forceExpanded prop", () => {
   });
 });
 
+describe("useOpenState lifecycle (BL-048)", () => {
+  function thinking(content: string): ClaudeStreamEvent {
+    return { type: "assistant", subtype: "thinking", content };
+  }
+
+  it("ToolResultCard: initial render with forceExpanded=null is collapsed", () => {
+    const events = [
+      toolUse("Bash", {}),
+      toolResult("preview\nLIFECYCLE_BODY_INIT_R"),
+    ];
+    const { container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    expect(container.querySelector("pre")).toBeNull();
+    expect(screen.queryByText(/LIFECYCLE_BODY_INIT_R/)).toBeNull();
+  });
+
+  it("ToolResultCard: manually opened, then forceExpanded=false collapses, then null keeps it collapsed", () => {
+    const events = [
+      toolUse("Bash", {}),
+      toolResult("preview\nLIFECYCLE_BODY_R1"),
+    ];
+    const { rerender, container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    // Open manually — the tool_result header is the second button.
+    const headers = screen.getAllByRole("button");
+    fireEvent.click(headers[1]);
+    expect(screen.getByText(/LIFECYCLE_BODY_R1/)).toBeTruthy();
+
+    // Collapse All
+    rerender(<TranscriptViewer events={events} forceExpanded={false} />);
+    expect(screen.queryByText(/LIFECYCLE_BODY_R1/)).toBeNull();
+
+    // Return to per-card mode — must stay collapsed
+    rerender(<TranscriptViewer events={events} forceExpanded={null} />);
+    expect(container.querySelector("pre")).toBeNull();
+    expect(screen.queryByText(/LIFECYCLE_BODY_R1/)).toBeNull();
+  });
+
+  it("ToolResultCard: closed, then forceExpanded=true opens, then null keeps it open", () => {
+    const events = [
+      toolUse("Bash", {}),
+      toolResult("preview\nLIFECYCLE_BODY_R2"),
+    ];
+    const { rerender } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    expect(screen.queryByText(/LIFECYCLE_BODY_R2/)).toBeNull();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={true} />);
+    expect(screen.getByText(/LIFECYCLE_BODY_R2/)).toBeTruthy();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={null} />);
+    expect(screen.getByText(/LIFECYCLE_BODY_R2/)).toBeTruthy();
+  });
+
+  it("ToolUseCard: initial render with forceExpanded=null is collapsed", () => {
+    const events = [toolUse("Bash", { command: "LIFECYCLE_TU_INIT" })];
+    const { container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    expect(container.querySelector("pre")).toBeNull();
+    expect(screen.queryByText(/LIFECYCLE_TU_INIT/)).toBeNull();
+  });
+
+  it("ToolUseCard: manually opened, then forceExpanded=false then null stays collapsed", () => {
+    const events = [toolUse("Bash", { command: "LIFECYCLE_TU_BODY1" })];
+    const { rerender, container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    const headers = screen.getAllByRole("button");
+    fireEvent.click(headers[0]);
+    expect(screen.getByText(/LIFECYCLE_TU_BODY1/)).toBeTruthy();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={false} />);
+    expect(screen.queryByText(/LIFECYCLE_TU_BODY1/)).toBeNull();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={null} />);
+    expect(container.querySelector("pre")).toBeNull();
+    expect(screen.queryByText(/LIFECYCLE_TU_BODY1/)).toBeNull();
+  });
+
+  it("ToolUseCard: closed, then forceExpanded=true then null stays open", () => {
+    const events = [toolUse("Bash", { command: "LIFECYCLE_TU_BODY2" })];
+    const { rerender } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    expect(screen.queryByText(/LIFECYCLE_TU_BODY2/)).toBeNull();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={true} />);
+    expect(screen.getByText(/LIFECYCLE_TU_BODY2/)).toBeTruthy();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={null} />);
+    expect(screen.getByText(/LIFECYCLE_TU_BODY2/)).toBeTruthy();
+  });
+
+  it("ThinkingCard: initial render with forceExpanded=null is collapsed", () => {
+    const events = [thinking("first preview\nLIFECYCLE_TH_INIT_BODY")];
+    const { container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    // The body uses <p whitespace-pre-wrap>, not <pre>
+    expect(container.querySelectorAll("p.whitespace-pre-wrap").length).toBe(0);
+    // The body-only line should not be present
+    const bodyMatches = screen.queryAllByText(/LIFECYCLE_TH_INIT_BODY/);
+    // The preview span shows truncated first line, so body-only line must be absent
+    expect(bodyMatches.length).toBe(0);
+  });
+
+  it("ThinkingCard: manually opened, then forceExpanded=false then null stays collapsed", () => {
+    const events = [thinking("preview line\nLIFECYCLE_TH_BODY1")];
+    const { rerender, container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    fireEvent.click(screen.getAllByRole("button")[0]);
+    expect(screen.getByText(/LIFECYCLE_TH_BODY1/)).toBeTruthy();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={false} />);
+    expect(screen.queryByText(/LIFECYCLE_TH_BODY1/)).toBeNull();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={null} />);
+    expect(container.querySelectorAll("p.whitespace-pre-wrap").length).toBe(0);
+    expect(screen.queryByText(/LIFECYCLE_TH_BODY1/)).toBeNull();
+  });
+
+  it("ThinkingCard: closed, then forceExpanded=true then null stays open", () => {
+    const events = [thinking("preview\nLIFECYCLE_TH_BODY2")];
+    const { rerender } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    expect(screen.queryByText(/LIFECYCLE_TH_BODY2/)).toBeNull();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={true} />);
+    expect(screen.getByText(/LIFECYCLE_TH_BODY2/)).toBeTruthy();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={null} />);
+    expect(screen.getByText(/LIFECYCLE_TH_BODY2/)).toBeTruthy();
+  });
+
+  it("Expand all then Collapse All collapses an opened card immediately", () => {
+    const events = [
+      toolUse("Bash", {}),
+      toolResult("preview\nLIFECYCLE_BODY_COLLAPSE_ALL"),
+    ];
+    const { rerender, container } = render(
+      <TranscriptViewer events={events} forceExpanded={null} />
+    );
+    fireEvent.click(screen.getAllByRole("button")[1]);
+    expect(screen.getByText(/LIFECYCLE_BODY_COLLAPSE_ALL/)).toBeTruthy();
+
+    rerender(<TranscriptViewer events={events} forceExpanded={false} />);
+    expect(container.querySelector("pre")).toBeNull();
+    expect(screen.queryByText(/LIFECYCLE_BODY_COLLAPSE_ALL/)).toBeNull();
+  });
+});
+
 describe("TranscriptViewer non-tool events", () => {
   it("renders assistant text in full", () => {
     const events = [assistantText("Claude explains something important")];

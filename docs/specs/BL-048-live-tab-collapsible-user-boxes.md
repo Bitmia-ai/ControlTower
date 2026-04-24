@@ -134,7 +134,7 @@ New tests should be added to `components/__tests__/transcript-viewer.test.tsx` t
   - After "Collapse All" (`forceExpanded=false`) followed by returning to `null`, previously-opened cards stay collapsed.
   - After "Expand All" (`forceExpanded=true`) followed by returning to `null`, all cards remain open (the user opened them intentionally via Expand All).
   - On fresh page load, all `ToolResultCard` instances are collapsed (unchanged behavior).
-- **Status:** pending
+- **Status:** done
 
 ### T2: Unit tests for collapse/expand lifecycle
 - **Size:** S
@@ -153,7 +153,7 @@ New tests should be added to `components/__tests__/transcript-viewer.test.tsx` t
 - **Acceptance criteria:**
   - All 7 new test cases pass.
   - Full suite (`npx vitest run`) remains green.
-- **Status:** pending
+- **Status:** done
 
 ## Files Touched
 
