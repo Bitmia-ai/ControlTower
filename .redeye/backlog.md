@@ -25,7 +25,9 @@
 ### BL-045: can we use the designer sub agent and frontend skill to improve the design of the main project screen?
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 61)
+- **Summary:** Redesigned the mission control project page to a 3-column grid with Controls promoted into the first row alongside the wide WorkingOn card, removing decorative borders and section dividers for a cleaner layout. The active task title is now displayed at text-base size with a compact running pill badge shown inline beneath the project name in the header.
 
 ### BL-044: In the main screen for a project, i dont like the text +Backlog in the button. can we improve the button? use the designer and frontend skills
 - **Type:** feature
