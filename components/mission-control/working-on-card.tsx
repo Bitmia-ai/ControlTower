@@ -85,7 +85,7 @@ export function WorkingOnCard({ state, running, projectId, upNextCount }: Workin
         <div className="space-y-3">
           <div className="flex items-start gap-2">
             <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-green-500" />
-            <p className="text-sm font-medium text-gray-900 dark:text-zinc-100 leading-snug">
+            <p className="text-base font-medium text-gray-900 dark:text-zinc-100 leading-snug">
               {projectId !== undefined && state?.backlog_item ? (
                 <BacklogId
                   id={state.backlog_item}

@@ -57,25 +57,28 @@ export default function ProjectLayout({
             <span>All projects</span>
           </Link>
 
-          <div className="flex items-start justify-between mt-2">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100">
-                {projectName}
-              </h1>
-              {project?.path && (
-                <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-mono truncate max-w-lg">
-                  {project.path}
-                </p>
-              )}
-            </div>
-
-            <div className="flex items-center gap-1.5 mt-1">
+          <div className="mt-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100">
+              {projectName}
+            </h1>
+            {project?.path && (
+              <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-mono truncate max-w-lg">
+                {project.path}
+              </p>
+            )}
+            <div className="flex items-center gap-2 mt-2">
               <span
-                className={`h-2 w-2 rounded-full ${
-                  running ? "bg-green-500" : "bg-gray-400 dark:bg-zinc-600"
+                className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${
+                  running
+                    ? "bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400"
+                    : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-500"
                 }`}
-              />
-              <span className="text-xs text-gray-500 dark:text-zinc-500">
+              >
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    running ? "bg-green-500 animate-pulse" : "bg-gray-400 dark:bg-zinc-600"
+                  }`}
+                />
                 {running ? "Running" : "Stopped"}
               </span>
             </div>

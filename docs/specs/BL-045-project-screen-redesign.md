@@ -316,7 +316,7 @@ This keeps the status co-located with the project name and frees the top-right c
 - No right-aligned status div in the layout header.
 - Both light and dark mode look correct.
 - `npx vitest run` passes.
-**Status:** pending
+**Status:** done
 
 ---
 
