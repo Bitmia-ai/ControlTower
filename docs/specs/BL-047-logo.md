@@ -101,7 +101,7 @@ new icon asset (e.g. a red square or monogram). If needed, file a follow-up back
   - Both in `text-red-600 dark:text-red-500`
   - Clicking the mark from any page navigates to `/`
   - Light and dark mode both look correct (Playwright screenshot)
-- **Status:** pending
+- **Status:** done
 
 ### T2 — Remove or note unused default Next.js SVGs in public/
 - **Files:** `public/next.svg`, `public/vercel.svg`, `public/file.svg`, `public/globe.svg`,
