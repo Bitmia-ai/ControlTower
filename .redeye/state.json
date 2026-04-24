@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "iteration": 66,
-  "started_at": "2026-04-25T02:05:00Z",
-  "phase": "TRIAGE",
-  "phase_status": "waiting_for_ceo",
+  "iteration": 67,
+  "started_at": "2026-04-24T23:33:59Z",
+  "phase": "INCORPORATE",
+  "phase_status": "in-progress",
   "backlog_item": null,
   "backlog_title": null,
   "spec_file": null,
@@ -33,6 +33,13 @@
   "blocked_items": [],
   "iteration_log": [
     {
+      "iteration": 67,
+      "phases": ["TRIAGE", "INCORPORATE"],
+      "outcome": "TRIAGE: detected 2 ceo_answers_pending (Q-006 resolved, Q-007 open). Advancing to INCORPORATE.",
+      "next": "INCORPORATE",
+      "timestamp": "2026-04-24T23:33:59Z"
+    },
+    {
       "iteration": 66,
       "phases": ["TRIAGE"],
       "outcome": "Triage confirmed: no tester reports, no new CEO answers, no overdue schedules, no planned backlog items. Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
@@ -59,27 +66,6 @@
       "outcome": "BL-047 DONE: split-weight Control Tower logo mark (CONTROL small/TOWER large, red-600/red-500 dark variant) in root layout; 5 unused scaffold SVGs removed from public/; 462/462 tests pass; Playwright VERIFY PASS — logo visible in header light mode, CONTROL+TOWER spans confirmed, logo click navigates to /; tagged last-good-deploy-iter63",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T01:30:00Z"
-    },
-    {
-      "iteration": 62,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","MERGE","DEPLOY","VERIFY"],
-      "outcome": "BL-023 DONE: visibility-aware 10s polling on home page; starts on mount, pauses on tab-hide, resumes with immediate fetch on tab-show; cleanup removes interval+listener; 457/457 tests pass; Playwright VERIFY PASS — 3 cards load, phase badges visible, polling confirmed; tagged last-good-deploy-iter62",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T01:25:00Z"
-    },
-    {
-      "iteration": 61,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","MERGE","DEPLOY","VERIFY"],
-      "outcome": "BL-045 DONE: 3-column project grid with Controls promoted to row 1 alongside WorkingOn card; decorative borders removed; active task title at text-base; running pill badge inline under project name; 453/453 tests pass; Playwright VERIFY PASS — layout confirmed light+dark mode; tagged last-good-deploy-iter61",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T01:15:00Z"
-    },
-    {
-      "iteration": 60,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","MERGE","DEPLOY","VERIFY"],
-      "outcome": "BL-026 DONE: collapsible green Summary section on backlog detail (expanded by default for done items) + one-line snippet in Recently Shipped card; 453/453 tests pass; Playwright VERIFY PASS — home loads, BL-048 and BL-024 detail pages show SUMMARY section with full text; tagged last-good-deploy-iter60",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T01:05:00Z"
     }
   ],
   "counters": {
@@ -102,7 +88,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 63,
     "last_deploy_iteration": 63,
-    "current_iteration": 65,
+    "current_iteration": 67,
     "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
