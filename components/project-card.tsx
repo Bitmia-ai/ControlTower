@@ -74,6 +74,7 @@ export function ProjectCard({ project, index, onToggle, onDelete }: ProjectCardP
             />
             <button
               onClick={(e) => { e.stopPropagation(); setConfirmDelete((v) => !v); }}
+              aria-label={`Remove ${project.name}`}
               title="Remove project"
               className="text-gray-400 dark:text-zinc-600 hover:text-red-500 dark:hover:text-red-400 transition p-0.5"
             >

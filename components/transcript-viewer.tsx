@@ -65,6 +65,8 @@ function ToolUseCard({
     <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden">
       <button
         onClick={toggle}
+        aria-label={open ? "Collapse tool call" : "Expand tool call"}
+        aria-expanded={open}
         className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-700 transition"
       >
         <span className="text-xs text-gray-400 dark:text-zinc-500">{open ? "▼" : "▶"}</span>
@@ -100,6 +102,8 @@ function ToolResultCard({
     <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden">
       <button
         onClick={toggle}
+        aria-label={open ? `Collapse ${label} result` : `Expand ${label} result`}
+        aria-expanded={open}
         className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-700 transition"
       >
         <span className="text-xs text-gray-400 dark:text-zinc-500">{open ? "▼" : "▶"}</span>
@@ -135,6 +139,8 @@ function ThinkingCard({
     <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800 rounded-lg overflow-hidden">
       <button
         onClick={toggle}
+        aria-label={open ? "Collapse thinking" : "Expand thinking"}
+        aria-expanded={open}
         className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-violet-100 dark:hover:bg-violet-900/30 transition"
       >
         <span className="text-xs text-violet-400 dark:text-violet-500">{open ? "▼" : "▶"}</span>

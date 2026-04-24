@@ -71,10 +71,12 @@ export function AddBacklogDialog({
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Quick-add text field */}
             <input
+              id="backlog-title"
               type="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="What needs to be done?"
+              aria-label="Task title"
               required
               autoFocus
               className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition"
@@ -92,17 +94,23 @@ export function AddBacklogDialog({
             {showDetails && (
               <div className="flex flex-col gap-3">
                 <textarea
+                  id="backlog-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Optional description…"
+                  aria-label="Task description"
                   rows={3}
                   className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition resize-none"
                 />
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
+                  <label
+                    htmlFor="backlog-priority"
+                    className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
+                  >
                     Priority
                   </label>
                   <select
+                    id="backlog-priority"
                     value={priority}
                     onChange={(e) =>
                       setPriority(e.target.value as "P0" | "P1" | "P2")

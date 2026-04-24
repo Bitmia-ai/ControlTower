@@ -172,12 +172,13 @@ export function OnboardingWizard({
           {step === "vision" && (
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-zinc-100 mb-1">
-                What are you building?
+                <label htmlFor="wizard-vision">What are you building?</label>
               </h2>
               <p className="text-sm text-gray-500 dark:text-zinc-500 mb-5">
                 Describe your project&apos;s purpose, goals, and what success looks like.
               </p>
               <textarea
+                id="wizard-vision"
                 value={vision}
                 onChange={(e) => setVision(e.target.value)}
                 placeholder="A beautiful terminal weather CLI that fetches real-time forecasts and displays them with ASCII art. Users should be able to check weather for any city with a single command..."
@@ -204,6 +205,7 @@ export function OnboardingWizard({
                   onChange={(e) => setTaskInput(e.target.value)}
                   onKeyDown={handleTaskKeyDown}
                   placeholder="e.g. Set up project scaffolding with TypeScript"
+                  aria-label="New task"
                   autoFocus
                   className="flex-1 bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-red-600 transition"
                 />
@@ -257,10 +259,14 @@ export function OnboardingWizard({
               </p>
               <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
+                  <label
+                    htmlFor="wizard-deploy"
+                    className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
+                  >
                     Deploy command
                   </label>
                   <input
+                    id="wizard-deploy"
                     type="text"
                     value={deployCommand}
                     onChange={(e) => setDeployCommand(e.target.value)}
@@ -271,10 +277,14 @@ export function OnboardingWizard({
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
+                  <label
+                    htmlFor="wizard-test"
+                    className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
+                  >
                     Test command
                   </label>
                   <input
+                    id="wizard-test"
                     type="text"
                     value={testCommand}
                     onChange={(e) => setTestCommand(e.target.value)}
@@ -284,10 +294,14 @@ export function OnboardingWizard({
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
+                  <label
+                    htmlFor="wizard-url"
+                    className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
+                  >
                     App URL
                   </label>
                   <input
+                    id="wizard-url"
                     type="text"
                     value={appUrl}
                     onChange={(e) => setAppUrl(e.target.value)}
@@ -322,6 +336,7 @@ export function OnboardingWizard({
                     <span className="text-xs font-medium text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Vision</span>
                     <button
                       onClick={() => setStep("vision")}
+                      aria-label="Edit vision"
                       className="text-xs text-red-500 hover:text-red-400 transition"
                     >
                       Edit
@@ -342,6 +357,7 @@ export function OnboardingWizard({
                     </span>
                     <button
                       onClick={() => setStep("tasks")}
+                      aria-label="Edit initial tasks"
                       className="text-xs text-red-500 hover:text-red-400 transition"
                     >
                       Edit
@@ -367,6 +383,7 @@ export function OnboardingWizard({
                     <span className="text-xs font-medium text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Commands</span>
                     <button
                       onClick={() => setStep("commands")}
+                      aria-label="Edit commands"
                       className="text-xs text-red-500 hover:text-red-400 transition"
                     >
                       Edit

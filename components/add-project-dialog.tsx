@@ -68,10 +68,14 @@ export function AddProjectDialog({ open, onOpenChange, onAdded }: AddProjectDial
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
+              <label
+                htmlFor="project-name"
+                className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
+              >
                 Name
               </label>
               <input
+                id="project-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -82,10 +86,14 @@ export function AddProjectDialog({ open, onOpenChange, onAdded }: AddProjectDial
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
+              <label
+                htmlFor="project-path"
+                className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
+              >
                 Path
               </label>
               <input
+                id="project-path"
                 type="text"
                 value={path}
                 onChange={(e) => setPath(e.target.value)}

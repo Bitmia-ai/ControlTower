@@ -97,7 +97,7 @@ Generic "Remove project" is ambiguous when multiple cards appear. `aria-label={\
 - No new TS or lint errors
 - `npx vitest run` passes (420+ tests green)
 
-**Status:** pending
+**Status:** done
 
 ---
 

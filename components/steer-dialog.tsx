@@ -63,6 +63,7 @@ export function SteerDialog({
               value={directive}
               onChange={(e) => setDirective(e.target.value)}
               placeholder="e.g. Focus on fixing the auth bug before anything else…"
+              aria-label="Steering directive"
               rows={4}
               autoFocus
               className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition resize-none"
