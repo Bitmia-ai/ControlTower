@@ -100,6 +100,66 @@ describe("ShippedCard — cost badge rendering", () => {
   });
 });
 
+describe("ShippedCard — summary snippet (BL-026)", () => {
+  it("renders a short summary verbatim beneath the title", () => {
+    const item = makeItem({
+      id: "BL-100",
+      title: "Short summary item",
+      summary: "All tests pass; visual verified.",
+    });
+    render(<ShippedCard items={[item]} />);
+    const snippet = screen.getByTestId("shipped-summary-BL-100");
+    expect(snippet.textContent).toBe("All tests pass; visual verified.");
+    expect(snippet.textContent).not.toMatch(/…$/);
+  });
+
+  it("truncates a long summary to ≤80 chars with ellipsis", () => {
+    const longText =
+      "User message boxes in the Live tab transcript are now collapsible and collapsed by default, reducing visual noise considerably across long sessions.";
+    const item = makeItem({
+      id: "BL-101",
+      title: "Long summary item",
+      summary: longText,
+    });
+    render(<ShippedCard items={[item]} />);
+    const snippet = screen.getByTestId("shipped-summary-BL-101");
+    expect(snippet.textContent).toMatch(/…$/);
+    // Snippet body without ellipsis should be ≤80 chars
+    expect((snippet.textContent ?? "").length).toBeLessThanOrEqual(81);
+    // Truncation must drop the second sentence
+    expect(snippet.textContent).not.toContain("considerably");
+  });
+
+  it("does not render a snippet when item has no summary", () => {
+    const item = makeItem({ id: "BL-102", summary: undefined });
+    render(<ShippedCard items={[item]} />);
+    expect(screen.queryByTestId("shipped-summary-BL-102")).toBeNull();
+  });
+
+  it("renders snippets for multiple items independently", () => {
+    const items: BacklogItem[] = [
+      makeItem({ id: "BL-103", title: "First", summary: "First summary text." }),
+      makeItem({ id: "BL-104", title: "Second", summary: undefined }),
+      makeItem({ id: "BL-105", title: "Third", summary: "Third summary text." }),
+    ];
+    render(<ShippedCard items={items} />);
+    expect(screen.getByTestId("shipped-summary-BL-103")).toBeTruthy();
+    expect(screen.queryByTestId("shipped-summary-BL-104")).toBeNull();
+    expect(screen.getByTestId("shipped-summary-BL-105")).toBeTruthy();
+  });
+
+  it("does not render summary snippets in the changelog branch", () => {
+    const entries = [
+      { title: "Shipped feature", details: "**Built:** BL-106", date: "2026-04-24" },
+    ];
+    const items: BacklogItem[] = [
+      makeItem({ id: "BL-106", summary: "Should be ignored under changelog mode." }),
+    ];
+    render(<ShippedCard items={items} changelog={entries} />);
+    expect(screen.queryByTestId("shipped-summary-BL-106")).toBeNull();
+  });
+});
+
 describe("ShippedCard — changelog path is unaffected", () => {
   it("renders changelog entries when changelog prop provided", () => {
     const entries = [

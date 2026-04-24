@@ -9,6 +9,19 @@ interface ShippedCardProps {
   projectId?: number;
 }
 
+const SUMMARY_SNIPPET_CHARS = 80;
+
+/**
+ * Truncate a summary to a single-line snippet (≤80 chars + "…") for inline
+ * display in the dense Recently Shipped card. The detail page surfaces the
+ * full collapsible text.
+ */
+function truncateSummary(text: string): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= SUMMARY_SNIPPET_CHARS) return trimmed;
+  return trimmed.slice(0, SUMMARY_SNIPPET_CHARS).trimEnd() + "…";
+}
+
 export function ShippedCard({ items, changelog = [], projectId }: ShippedCardProps) {
   const hasChangelog = changelog.length > 0;
   const shippedItems = hasChangelog ? changelog.slice(0, 5) : items.slice(0, 5);
@@ -48,22 +61,34 @@ export function ShippedCard({ items, changelog = [], projectId }: ShippedCardPro
                 );
               })
             : (shippedItems as BacklogItem[]).map((item) => (
-                <li key={item.id} className="flex items-center gap-2">
+                <li key={item.id} className="flex items-start gap-2">
                   <span className="mt-0.5 text-green-500 text-sm shrink-0">✓</span>
-                  <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug flex-1 min-w-0">
-                    {projectId !== undefined ? (
-                      <BacklogId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
-                    ) : (
-                      <span className="text-gray-500 dark:text-zinc-500 font-mono">{item.id}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug flex-1 min-w-0">
+                        {projectId !== undefined ? (
+                          <BacklogId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
+                        ) : (
+                          <span className="text-gray-500 dark:text-zinc-500 font-mono">{item.id}</span>
+                        )}
+                        {" · "}
+                        {item.title}
+                      </p>
+                      {item.cost_usd !== undefined && item.cost_usd > 0 && (
+                        <span className="text-xs text-gray-400 dark:text-zinc-500 font-mono shrink-0 ml-auto">
+                          ${item.cost_usd.toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                    {item.summary && (
+                      <p
+                        data-testid={`shipped-summary-${item.id}`}
+                        className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5 leading-snug"
+                      >
+                        {truncateSummary(item.summary)}
+                      </p>
                     )}
-                    {" · "}
-                    {item.title}
-                  </p>
-                  {item.cost_usd !== undefined && item.cost_usd > 0 && (
-                    <span className="text-xs text-gray-400 dark:text-zinc-500 font-mono shrink-0 ml-auto">
-                      ${item.cost_usd.toFixed(2)}
-                    </span>
-                  )}
+                  </div>
                 </li>
               ))}
         </ul>

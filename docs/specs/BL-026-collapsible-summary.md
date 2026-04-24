@@ -148,7 +148,7 @@ changelog entries are `ChangelogEntry` objects which have no summary.
 - Items without summary are unchanged
 - Changelog branch (hasChangelog path) unaffected
 
-**Status:** pending
+**Status:** done
 **Dependencies:** T1
 
 ---
