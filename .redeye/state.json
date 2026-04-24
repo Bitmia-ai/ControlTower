@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "iteration": 56,
+  "iteration": 57,
   "started_at": "2026-04-24T12:55:00Z",
-  "phase": "TRIAGE",
+  "phase": "PLAN",
   "phase_status": "pending",
-  "backlog_item": "BL-040",
-  "backlog_title": "Live tab: show Claude inter-round status messages and thoughts, not just tool uses",
-  "spec_file": "docs/specs/BL-040-live-tab-messages.md",
+  "backlog_item": "BL-048",
+  "backlog_title": "In the live tab, User boxes need to be collapsible and collapsed by default",
+  "spec_file": "docs/specs/BL-048-live-tab-collapsible-user-boxes.md",
   "phase_progress": {},
-  "review_cycles": 1,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -238,10 +238,11 @@
     "BL-038": 44.71138350000003,
     "BL-037": 60.530642850000035,
     "BL-043": 62.436974400000025,
-    "BL-041": 73.50490740000002
+    "BL-041": 73.50490740000002,
+    "BL-040": 81.36289680000004
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
-    "BL-040": 0
+    "BL-048": 81.36289680000004
   }
 }
