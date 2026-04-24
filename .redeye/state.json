@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 57,
   "started_at": "2026-04-24T12:55:00Z",
-  "phase": "BUILD",
+  "phase": "DEPLOY",
   "phase_status": "pending",
   "backlog_item": "BL-048",
   "backlog_title": "In the live tab, User boxes need to be collapsible and collapsed by default",
@@ -25,7 +25,7 @@
     }
   },
   "git_state": {
-    "last_commit": "feat: unit tests for ThinkingCard, AssistantTextCard, user suppression (BL-040 task 4)",
+    "last_commit": "fix: make Collapse All / Expand All sticky in Live tab transcript (BL-048)",
     "branch": "master",
     "last_good_deploy_tag": "last-good-deploy-iter56",
     "notes": "BL-040 DONE: Live tab now shows ThinkingCard (violet, collapsible) for assistant/thinking events and AssistantTextCard (red left-border, Claude label) for assistant/text events; plain user messages suppressed; 409/409 tests pass; visual PASS light+dark mode"
