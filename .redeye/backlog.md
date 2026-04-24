@@ -362,7 +362,8 @@
 ### BL-024: Add aria-labels to all interactive buttons and controls
 - **Type:** ux
 - **Priority:** P2
-- **Status:** in-progress
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 59)
 - **Spec:** docs/specs/BL-024-aria-labels.md
 - **Source:** CTO (iteration 37, HARDEN phase)
 - **Details:**
@@ -370,6 +371,7 @@
   - Priority targets: icon-only buttons in mission control cards, dialog action buttons, and expandable toggles in transcript viewer
   - Fix: add descriptive aria-label to all icon-only buttons and ambiguous interactive elements; verify dialog inputs have associated <label> or aria-label
   - Run Playwright accessibility scan after fix to catch remaining issues
+- **Summary:** Added aria-labels and linked labels to all interactive buttons and form controls across the dashboard, covering icon-only buttons in mission control cards, dialog fields, and transcript viewer toggles. A dedicated unit test suite and a Playwright E2E spec were added to assert accessible names on key controls.
 
 ### BL-025: Wrap unguarded API route handlers in try-catch for safe error responses
 - **Type:** tech-debt

@@ -1,27 +1,34 @@
-# RedEye Status — Iteration 59
+# TRIAGE Status — Iteration 60
 
-**Phase:** BUILD (PLAN complete)
-**Updated:** 2026-04-25T00:20:00Z
-**Item:** BL-024 — Add aria-labels to all interactive buttons and controls
-**Spec:** docs/specs/BL-024-aria-labels.md
+**Date:** 2026-04-24
+**Iteration:** 59 → 60
+**Health:** HIGH confidence, env healthy, 430/430 tests pass
 
-## Triage Findings
+## What Was Found
 
-No `pending-triage` items in `## Discovered`. BL-024 confirmed as selected item.
+- Tester reports: none (template only — no new bugs)
+- Steering directives: none
+- Inbox: no new CEO answers
+- Schedules: none defined
+- No active claims in .active-claims.json
 
-## Planning Summary
+## Backlog Summary
 
-17 elements across 5 files need accessibility fixes:
-- 3 collapsible toggle buttons in transcript-viewer.tsx — missing aria-label/aria-expanded
-- 1 icon-only Trash2 button in project-card.tsx — title only, no aria-label
-- 3 form controls in add-backlog-dialog.tsx — unlinked/missing labels
-- 1 textarea in steer-dialog.tsx — no label
-- 1 textarea in answer-modal.tsx — no label
-- 2 inputs in add-project-dialog.tsx — labels not linked via htmlFor/id
-- 6 inputs/buttons in onboarding-wizard.tsx — unlinked labels + ambiguous Edit buttons
+**CEO Requests (pending):**
+- BL-047: Update dashboard logo — BLOCKED (needs CEO asset)
+- BL-045: Improve main project screen design — needs designer subagent
 
-Sub-tasks: T1 (S) apply fixes, T2 (S) unit tests. No questions posted.
+**Planned (available):**
+- BL-026: Collapsible LLM summary for completed items (P1)
+- BL-023: Home page auto-refresh polling (P2)
 
-## Next
+## Decision
 
-BUILD — implement T1 then T2
+Routing to PLAN → BL-026 (P1)
+
+BL-026 is the highest-priority unblocked item. The Control Tower side is self-contained:
+parse and display the existing Summary field from backlog.md in the backlog
+detail page and Recently Shipped card. Many items already have this field populated.
+BL-023 (P2) deferred. BL-045/BL-047 remain blocked.
+
+## Next Phase: PLAN (BL-026)
