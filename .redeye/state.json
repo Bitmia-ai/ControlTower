@@ -3,12 +3,12 @@
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "TRIAGE",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-058",
-  "backlog_title": "Schedules UI needs to be operative",
-  "spec_file": "docs/specs/BL-058-schedules-operative.md",
+  "backlog_item": "BL-061",
+  "backlog_title": "Remove keyboard shortcuts from navigation buttons",
+  "spec_file": "docs/specs/BL-061-remove-kbd-badges.md",
   "phase_progress": {
     "incorporate_complete": true,
     "triage_complete": true,
@@ -26,15 +26,16 @@
     ],
     "build_notes": "T1: global-error.tsx fixed (use client + no imports). ClientProviders created (custom ThemeProvider, ToastProvider, header). lib/theme-context.tsx custom ESM ThemeProvider. postinstall script patches Next.js 16.2.4 utils.js to skip _global-error prerender. not-found.tsx force-dynamic. T2-T6: already implemented in prior run. 662/662 tests pass. npm run build passes.",
     "review_fixes_needed": [
-      "Major: Nested button inside button in ScheduleRow (schedule-list.tsx) \u2014 restructure so RunButton is sibling of expand button not child",
-      "Major: next_sched_id counter stale at 1 after SCHED-1 created \u2014 now corrected to 2"
+      "Major: Nested button inside button in ScheduleRow (schedule-list.tsx) — restructure so RunButton is sibling of expand button not child",
+      "Major: next_sched_id counter stale at 1 after SCHED-1 created — now corrected to 2"
     ],
     "deploy_complete": true,
     "deploy_notes": "Production build clean (Turbopack). 662/662 unit tests pass. No E2E CLI configured. Tagged last-good-deploy-iter90-bl058.",
     "verify_complete": true,
-    "verify_notes": "662/662 tests pass. Tags exist (last-good-deploy-iter90-bl058, last-good-deploy-iter90). schedules/run route present. SCHED-1 in schedules.md. 0 tester bugs. PASS."
+    "verify_notes": "662/662 tests pass. Tags exist (last-good-deploy-iter90-bl058). schedules/run route present. SCHED-1 in schedules.md. 0 tester bugs. VISUAL VERIFY: SCHED-1 renders at /project/1/schedules with Overdue badge; Run now button is sibling of expand button (not nested); POST /api/projects/1/schedules/run returns 200 {data:{queued:true,scheduleId:SCHED-1}}; 0 app JS errors. Screenshot: .playwright-mcp/page-2026-04-25T10-18-58-995Z.png. PASS.",
+    "triage_notes": "BL-058 done. Env healthy. 4 P1 items pending (BL-061, BL-062, BL-063, BL-064). Selected BL-061 (oldest P1): remove kbd shortcut badges from nav buttons."
   },
-  "review_cycles": 2,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -51,7 +52,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete DEPLOY BL-058 \u2014 build clean, 662/662 tests pass (iteration 90)",
+    "last_commit": "redeye: complete DEPLOY BL-058 — build clean, 662/662 tests pass (iteration 90)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter90-bl058",
     "merge_status": "clean",
@@ -62,10 +63,11 @@
     {
       "iteration": 91,
       "phases": [
-        "VERIFY"
+        "VERIFY",
+        "TRIAGE"
       ],
-      "outcome": "VERIFY PASS: 662/662 tests pass. schedules/run API route present. SCHED-1 in schedules.md. 0 tester bugs. Tags last-good-deploy-iter90-bl058 confirmed.",
-      "next": "TRIAGE -> PLAN BL-061",
+      "outcome": "VERIFY PASS: 662/662 tests pass. schedules/run API route present. SCHED-1 in schedules.md. 0 tester bugs. Tags last-good-deploy-iter90-bl058 confirmed. TRIAGE: BL-058 confirmed done, BL-061 selected (remove kbd badges).",
+      "next": "PLAN BL-061",
       "timestamp": "2026-04-25T10:19:41Z"
     },
     {
@@ -78,7 +80,7 @@
         "REVIEW",
         "DEPLOY"
       ],
-      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m \u2014 nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m \u2014 both Majors confirmed fixed. PASS \u2014 cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
+      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m — nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m — both Majors confirmed fixed. PASS — cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
       "next": "VERIFY",
       "timestamp": "2026-04-25T14:00:00Z"
     },
@@ -87,7 +89,7 @@
       "phases": [
         "TRIAGE"
       ],
-      "outcome": "TRIAGE: All BL-001\u2013057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
+      "outcome": "TRIAGE: All BL-001–057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T11:10:00Z"
     },
@@ -103,7 +105,7 @@
         "VERIFY",
         "MERGE"
       ],
-      "outcome": "BL-057 (mobile-responsive layout) full cycle complete. INCORPORATE: Q-009 answered, BL-057 added. TRIAGE: env healthy, BL-057 selected. PLAN: spec written (8 sub-tasks). BUILD: T1-T8 complete, Tailwind responsive classes across 12 files, 2 new test files (responsive.test.tsx, mobile-responsive.spec.ts), 651/651 tests pass. REVIEW: 1 cycle, PASS. DEPLOY: build clean. VERIFY: PASS \u2014 no horizontal scroll at 375px, all pages render correctly, 0 JS errors, 0 tester bugs, tagged last-good-deploy-iter88. MERGE: 1 code commit merged cleanly to main (SHA 18a74a1), 14 files changed (259 insertions), BL-057 marked done.",
+      "outcome": "BL-057 (mobile-responsive layout) full cycle complete. INCORPORATE: Q-009 answered, BL-057 added. TRIAGE: env healthy, BL-057 selected. PLAN: spec written (8 sub-tasks). BUILD: T1-T8 complete, Tailwind responsive classes across 12 files, 2 new test files (responsive.test.tsx, mobile-responsive.spec.ts), 651/651 tests pass. REVIEW: 1 cycle, PASS. DEPLOY: build clean. VERIFY: PASS — no horizontal scroll at 375px, all pages render correctly, 0 JS errors, 0 tester bugs, tagged last-good-deploy-iter88. MERGE: 1 code commit merged cleanly to main (SHA 18a74a1), 14 files changed (259 insertions), BL-057 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T11:05:00Z"
     },
@@ -112,7 +114,7 @@
       "phases": [
         "TRIAGE"
       ],
-      "outcome": "TRIAGE: All BL-001\u2013056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
+      "outcome": "TRIAGE: All BL-001–056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T08:14:44Z"
     }
@@ -151,7 +153,7 @@
     "BL-040": 81.36289680000004,
     "BL-056": 5.246291399999933,
     "BL-057": 6.706097850000106,
-    "BL-058": 28.332234600000135
+    "BL-058": 1.763799150000068
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
@@ -166,7 +168,6 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-061": 213.2184982500004,
-    "BL-058": 213.32458605000042
+    "BL-061": 213.2184982500004
   }
 }
