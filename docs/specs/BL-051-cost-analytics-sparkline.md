@@ -133,7 +133,15 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - New tests from T1–T5 all pass
   - No TypeScript errors
   - Build clean
-- **Status:** pending
+- **Status:** done
+
+  Notes: All 519 unit tests pass. New files (lib/cost-history.ts,
+  app/api/projects/[id]/cost-history/route.ts,
+  components/mission-control/sparkline-chart.tsx,
+  components/mission-control/cost-card.tsx) have no TypeScript errors.
+  Pre-existing tsc errors in lib/stream-utils.test.ts and a pre-existing
+  Next.js build prerender error on /_global-error reproduce on main and
+  are out of scope for this BL.
 
 ---
 
