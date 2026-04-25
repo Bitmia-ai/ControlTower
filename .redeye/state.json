@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "iteration": 85,
-  "started_at": "2026-04-25T07:34:29Z",
+  "iteration": 86,
+  "started_at": "2026-04-25T07:55:09Z",
   "phase": "TRIAGE",
   "phase_status": "complete",
-  "backlog_item": null,
-  "backlog_title": null,
+  "backlog_item": "BL-056",
+  "backlog_title": "Redesign backlog, history, and live tabs using designer sub-agent and frontend skill",
   "phase_progress": {
     "plan_complete": false,
     "build_complete": false,
@@ -27,18 +27,27 @@
     "documenter": {
       "status": "spawned",
       "heartbeat": "2026-04-25T02:15:00Z",
-      "working_on_iteration": 83
+      "working_on_iteration": 85
     }
   },
   "git_state": {
-    "last_commit": "feat: BL-055 — Add Schedules tab to project dashboard",
+    "last_commit": "redeye: merge BL-055 complete — Schedules tab shipped (iteration 85)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter85",
     "merge_status": "clean",
-    "notes": "BL-055 MERGE complete. 5 code commits merged to main. Schedules tab shipped: ScheduleEntry type, parseDurationMs+parseSchedules, GET /api/projects/[id]/schedules, ScheduleList/ScheduleRow components, /project/[id]/schedules page, ProjectNav GS shortcut, 42 new unit tests (627 total). Claims cleared, BL-055 marked done."
+    "notes": "Iter 86: TRIAGE complete. BL-056 (designer tab redesign, P2) selected. No open CEO questions, no overdue schedules, env healthy."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 86,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE: BL-055 done, BL-056 (designer tab redesign backlog/history/live, P2) selected. No CEO questions open, env healthy, no overdue schedules.",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T07:55:09Z"
+    },
     {
       "iteration": 85,
       "phases": [
@@ -89,21 +98,6 @@
       "outcome": "TRIAGE: BL-052 selected. PLAN: Spec written (5 sub-tasks, no CEO Qs). BUILD: All 5 sub-tasks done, 31 new unit tests (550 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 550/550 unit tests PASS. Full E2E regression PASS. VERIFY: PASS — tagged last-good-deploy-iter82. MERGE: 6 commits merged cleanly to main, BL-052 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T02:13:00Z"
-    },
-    {
-      "iteration": 81,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "TRIAGE: BL-051 selected. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks done, 26 new unit tests (519 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 519/519 unit tests, full E2E regression PASS. VERIFY: PASS — tagged last-good-deploy-iter81. MERGE: 6 commits merged cleanly to main, BL-051 done.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T01:41:00Z"
     }
   ],
   "counters": {
@@ -126,7 +120,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 85,
     "last_deploy_iteration": 85,
-    "current_iteration": 85,
+    "current_iteration": 86,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -137,8 +131,7 @@
     "BL-037": 60.530642850000035,
     "BL-043": 62.436974400000025,
     "BL-041": 73.50490740000002,
-    "BL-040": 81.36289680000004,
-    "BL-053": 9.655652699999706
+    "BL-040": 81.36289680000004
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
@@ -150,6 +143,8 @@
     "BL-050": 126.25882920000019,
     "BL-051": 135.25504920000046,
     "BL-052": 141.69885615000055,
-    "BL-055": 159.36187110000037
+    "BL-053": 156.30889500000052,
+    "BL-055": 159.36187110000037,
+    "BL-056": 166.2818368500002
   }
 }
