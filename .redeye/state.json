@@ -2,16 +2,17 @@
   "schema_version": 1,
   "iteration": 106,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "TRIAGE",
+  "phase": "PLAN",
   "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-075",
   "backlog_title": "Performance audit — Lighthouse, bundle size, Core Web Vitals",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-075-performance-audit.md",
   "phase_progress": {
     "incorporate": "Q-012 resolved. CEO /redeye:start = proceed with default (option 1). BL-075 (performance audit) added to backlog. Q-012 moved to Answered.",
-    "triage": "Env healthy. 783/783 tests pass. Build assumed clean (last verified iter 105). No tester reports. No open inbox questions. No STOP/PAUSE. 1 pending item: BL-075 (performance audit, P1). Selected BL-075."
+    "triage": "Env healthy. 783/783 tests pass. 1 pending item: BL-075 (performance audit, P1). Selected BL-075.",
+    "plan": "Spec written: docs/specs/BL-075-performance-audit.md. 5 tasks: T1 dynamic import react-markdown (3 pages), T2 viewport metadata (layout.tsx), T3 cache headers (next.config.ts), T4 performance audit report (docs/), T5 tests (6-8 new). Low risk, no new deps."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -30,20 +31,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete INCORPORATE — Q-012 resolved, BL-075 (performance audit) added (iteration 106)",
+    "last_commit": "redeye: plan BL-075 — performance audit spec",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter105-bl068",
     "merge_status": "clean",
-    "notes": "Iter 106 TRIAGE complete. 783/783 tests pass. Selected BL-075 (performance audit, P1). Proceeding to PLAN."
+    "notes": "Iter 106 PLAN complete. Spec at docs/specs/BL-075-performance-audit.md. 5 tasks (all S-tier): dynamic import react-markdown, viewport metadata, cache headers, audit report, tests."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 106,
-      "phases": ["INCORPORATE", "TRIAGE"],
-      "outcome": "INCORPORATE: Q-012 resolved, BL-075 added. TRIAGE: env healthy, 783/783 tests pass, 1 pending item BL-075 (performance audit, P1), selected for this cycle.",
-      "next": "PLAN BL-075",
-      "timestamp": "2026-04-25T21:30:00Z"
+      "phases": ["INCORPORATE", "TRIAGE", "PLAN"],
+      "outcome": "INCORPORATE: Q-012 resolved, BL-075 added. TRIAGE: env healthy, 783/783 tests, selected BL-075. PLAN: spec written (5 S-tier tasks: dynamic imports, metadata, cache headers, report, tests).",
+      "next": "BUILD BL-075",
+      "timestamp": "2026-04-25T21:40:00Z"
     },
     {
       "iteration": 105,
@@ -140,6 +141,7 @@
     "BL-066": 239.0346324000005,
     "BL-071": 241.31352765000028,
     "BL-073": 250.6147629000001,
-    "BL-065": 265.3649980500002
+    "BL-065": 265.3649980500002,
+    "BL-075": 320.75
   }
 }
