@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 102,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "plan",
+  "phase": "review",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -35,6 +35,16 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 102,
+      "phases": [
+        "PLAN",
+        "BUILD"
+      ],
+      "outcome": "PLAN: spec docs/specs/BL-070-add-schedule.md — add POST /api/projects/[id]/schedules accepting { name, frequency, description?, steps[] }, sanitize each field via sanitizeMarkdownInput, scan max SCHED-N from schedules.md and assign next, append a parser-compatible block (Last run = epoch so it lands as Never run/overdue), best-effort commitAndPush. New AddScheduleDialog modal mirrors AddBacklogDialog pattern; wired into Schedules page header + EmptyState action. BUILD: T1 POST handler + 16 route tests (id pick, ENOENT seed, validation, sanitization, commit). T2 AddScheduleDialog + 8 unit tests (no jest-dom — used .disabled / .textContent assertions to match repo convention). T3 page header button + dialog state + 2 page tests + EmptyState action wired. 762/762 tests pass (was 731, +31 new). Build clean (Next.js 16 / Turbopack).",
+      "next": "REVIEW BL-070",
+      "timestamp": "2026-04-25T22:25:00Z"
+    },
     {
       "iteration": 101,
       "phases": [
