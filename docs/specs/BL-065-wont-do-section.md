@@ -72,8 +72,8 @@ unchanged.)
       it in `parseBacklog`, add 3 unit tests.
 - [x] T2 (status: done) — UI: render reason in `WontDoItemRow`, export the
       component for testing, add 3 component tests.
-- [ ] T3 (status: pending) — Verify: `npx vitest run` (expect 773 + 6 = 779 pass)
-      and `npm run build` clean.
+- [x] T3 (status: done) — Verify: `npx vitest run` 779/779 pass, `npm run build`
+      clean.
 
 ## Risks
 

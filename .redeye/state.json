@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 104,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "plan",
+  "phase": "review",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -35,6 +35,16 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 104,
+      "phases": [
+        "PLAN",
+        "BUILD"
+      ],
+      "outcome": "PLAN: spec docs/specs/BL-065-wont-do-section.md — wont-do items already render in a collapsed section at the bottom of the backlog page; what was missing was the **Reason:** rationale that agents leave when rejecting items. Plan: extend BacklogItem with optional reason field, extract it in parseBacklog, render it inline beneath the title in WontDoItemRow. BUILD: T1 — added reason?: string to BacklogItem type, parseBacklog now picks Reason via existing pickField helper, 3 new parser tests (extracts on wont-do, undefined when absent, does not coerce from Summary). T2 — exported WontDoItemRow, added p element with data-testid=wontdo-reason rendering the rationale (mono uppercase Reason eyebrow + body text, mt-1 leading-snug), 3 new component tests (renders when present, omitted when absent, strikethrough title preserved). T3 — 779/779 tests pass (was 773, +6). Build clean.",
+      "next": "REVIEW BL-065",
+      "timestamp": "2026-04-25T22:50:00Z"
+    },
     {
       "iteration": 103,
       "phases": [

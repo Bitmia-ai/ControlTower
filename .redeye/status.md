@@ -1,57 +1,62 @@
-# BUILD Status — BL-067 Mission Control Redesign
+# BL-065 BUILD complete — Won't Do section shows Reason rationale
 
-**Iteration:** 103
+**Iteration:** 104
 **Phase:** BUILD complete → REVIEW
-**Backlog item:** BL-067 — Redesign mission control page layout and cards
+**Backlog item:** BL-065 — Add Won't Do section at the end of the backlog page
 
-## Summary
+## Sub-tasks
 
-All 3 sub-tasks shipped. Asymmetric 2-column command layout in place; right rail is fixed 300px and mission feed dominates the left. WorkingOn now reads as a hero, Questions collapses to a quiet strip when empty, Controls/Cost are tightened for the rail.
+- T1 done — type + parser
+  - Added `reason?: string` to `BacklogItem` (`lib/redeye-types.ts`)
+  - `parseBacklog` now extracts the `Reason` field via existing `pickField`
+    (`lib/redeye-parsers.ts`)
+  - +3 unit tests in `lib/redeye-parsers.test.ts` (extracts on wont-do,
+    undefined when absent, not coerced from Summary)
 
-## Sub-tasks (all done)
+- T2 done — UI render
+  - Exported `WontDoItemRow` from `app/project/[id]/backlog/page.tsx`
+  - Renders reason as a second line beneath the title with a small `Reason`
+    eyebrow + body text (`text-xs text-gray-500 dark:text-zinc-500 mt-1
+    leading-snug`)
+  - Strikethrough title link unchanged
+  - `data-testid="wontdo-reason"` on the reason `<p>` for selectors
+  - +3 component tests in `app/project/[id]/backlog/page.test.tsx`
 
-- **T1:** Restructured `app/project/[id]/page.tsx` — `grid lg:grid-cols-[1fr_300px]`, removed Backlog/Telemetry labels and the nested `md:col-span-3` wrapper. Left column = WorkingOn + Questions + (Shipped/UpNext sub-grid). Right rail = Controls + Cost + Health.
-- **T2:** Card updates:
-  - WorkingOnCard: `p-6`, `min-h-[160px]`, `text-lg font-semibold` task title, `bg-green-50/30 dark:bg-green-950/10` wash when running.
-  - QuestionsCard: collapses to compact strip (`px-4 py-2.5 rounded-md`) with no eyebrow when no pending questions; full red-tinted card unchanged when pending.
-  - ControlsCard: `p-5` to `p-4`; `border-t border-gray-100 dark:border-zinc-800 pt-3 mt-1` separator between stop/pause row and steer/add-backlog row.
-  - CostCard: Session/Total stacked vertically with `justify-between` rows; sparkline stays full-width below.
-- **T3:** Test + build verification.
-
-## Tests
-
-- **773/773 passing** (was 762; +11 net).
-- New tests:
-  - WorkingOnCard hero (4): p-6/min-h verification, green wash on/off, hero typography.
-  - QuestionsCard (5): empty strip, no red-border when empty, treats answered as empty, full-card pending, count badge.
-  - ControlsCard (2): p-4 padding, border-t separator on second row.
-- Updated tests: 3 cost-card assertions now match `Session`/`Total` labels (was `this session`/`total`).
+- T3 done — verification
+  - `npx vitest run` — **779/779 pass** (was 773, +6 new)
+  - `npm run build` — clean
 
 ## Files modified
 
-- `/Users/casa/ControlTower/app/project/[id]/page.tsx`
-- `/Users/casa/ControlTower/components/mission-control/working-on-card.tsx`
-- `/Users/casa/ControlTower/components/mission-control/questions-card.tsx`
-- `/Users/casa/ControlTower/components/mission-control/controls-card.tsx`
-- `/Users/casa/ControlTower/components/mission-control/cost-card.tsx`
-- `/Users/casa/ControlTower/components/mission-control/working-on-card.test.tsx`
-- `/Users/casa/ControlTower/components/mission-control/questions-card.test.tsx` (new)
-- `/Users/casa/ControlTower/components/mission-control/controls-card.test.tsx`
-- `/Users/casa/ControlTower/components/mission-control/cost-card.test.tsx`
-- `/Users/casa/ControlTower/docs/specs/BL-067-mission-control-redesign.md`
-
-## Build
-
-`npm run build` — clean (Next.js 16, Turbopack).
+- `lib/redeye-types.ts`
+- `lib/redeye-parsers.ts`
+- `lib/redeye-parsers.test.ts`
+- `app/project/[id]/backlog/page.tsx`
+- `app/project/[id]/backlog/page.test.tsx`
+- `docs/specs/BL-065-wont-do-section.md` (new)
 
 ## Commits
 
-- `feat: BL-067 T1 — asymmetric mission control grid`
-- `feat: BL-067 T2 — WorkingOn hero, Questions strip, Controls/Cost rail`
-- `redeye: build BL-067 complete — ready for review` (final state bump)
+- `redeye: plan BL-065 — Won't Do section spec`
+- `feat: BL-065 — extract Reason field on BacklogItem (task 1)`
+- `feat: BL-065 — render Reason rationale in Won't Do rows (task 2)`
+- `redeye: build BL-065 complete — ready for review` (final commit, this push)
 
-## Concerns / notes
+## Notes / scope
 
-- E2E (Playwright) not run — App URL configured (`http://localhost:3200`) but harness has no e2e command; defer to DEPLOY/VERIFY.
-- No pre-existing issues encountered.
-- Right rail width (300px) is tight — verified CostCard layout adapts (stacked rows). HealthCard untouched per spec; if it overflows on the rail, that is a follow-up, not in scope.
+- The collapsed Won't Do section itself was already in place from an earlier
+  iteration (positioned below Done, count badge, chevron). The CEO's request
+  specifically called out that the rationale for each rejected item must be
+  visible — that was the gap. Implementation focuses tightly on extracting
+  and rendering `**Reason:**`.
+- No API route change needed — the existing `/api/projects/[id]` endpoint
+  returns wont-do items via `recentlyShipped/upNext` after the wont-do parser
+  fix, and `reason` rides along on the existing `BacklogItem` payload.
+- E2E Playwright suite not added: `.redeye/config.md` defines no App URL for
+  this task scope, and the existing `e2e/backlog-done-section.spec.ts` covers
+  the structural pattern. The new render path is covered by component tests.
+
+## Concerns
+
+None. Pure additive change, no behaviour regression for items without a
+Reason field.
