@@ -50,9 +50,11 @@
 ### BL-068: Polish Live tab visual design — improve transcript viewer styling and readability
 - **Type:** feature
 - **Priority:** P2
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 105)
+- **Merged:** 2026-04-25 (iter 105)
 - **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
+- **Summary:** Polished the Live tab transcript viewer with the precision-instrument design system. Added standard page header (Control Tower eyebrow + h1 Live + subtitle + border-b). Applied CARD-LABEL token to all card type eyebrows. Added border-l-2 identity rails (indigo=tool calls, cyan=results, violet=thinking, red=assistant). AssistantTextCard promoted to text-[15px] with shadow-sm. ThinkingCard muted to secondary violet. ChevronRight replaces unicode arrows with smooth rotation transition. 4 new tests (783 total).
 - **Description:** The Live tab transcript viewer works well functionally but could benefit from visual polish. Use the designer subagent to enhance the visual presentation and improve readability of transcript content. Focus areas: improve Claude's Thinking cards styling and visual hierarchy, refine User message box appearance, enhance phase indicator badges, optimize line-height and spacing for better text readability, ensure consistent styling across light/dark modes. Implement via frontend skill after designer mockups.
 
 ### BL-067: Redesign mission control page layout and cards using designer + frontend

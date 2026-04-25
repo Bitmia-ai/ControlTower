@@ -2,6 +2,18 @@
 
 ## Questions (Open)
 
+### Q-012: All backlog items complete — what should we build next?
+- **From:** CTO (TRIAGE iter 106)
+- **Context:** All backlog items (BL-001–BL-068, plus wont-do items) are now done or wont-do. Most recently shipped: BL-068 (live tab visual polish, iter 105).
+- **Question:** What features, improvements, or new capabilities should we tackle next?
+- **Options:**
+  1. Performance audit — Lighthouse, bundle size, Core Web Vitals
+  2. Edit/delete schedules from the Schedules tab (complement to BL-070 add)
+  3. Full-text search across backlog items
+  4. Export backlog to markdown/CSV
+  5. Something else entirely
+- **Default (7-day):** Proceed with option 1 (performance audit) if no response
+- **Asked:** 2026-04-25 (iter 106)
 
 ## Credentials Needed
 
