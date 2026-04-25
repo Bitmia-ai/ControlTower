@@ -57,9 +57,11 @@
 ### BL-067: Redesign mission control page layout and cards using designer + frontend
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 103)
+- **Merged:** 2026-04-25 (iter 103)
 - **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
+- **Summary:** Redesigned the mission control page with an asymmetric two-column layout (lg:grid-cols-[1fr_300px]). Left column = mission feed (WorkingOn hero, QuestionsCard, Shipped+UpNext sub-grid). Right rail = Controls + Cost + Health. WorkingOnCard upgraded to hero treatment (p-6, min-h-160px, text-lg title, subtle green wash when running). QuestionsCard collapses to a minimal strip when empty. ControlsCard compacted for rail (p-4, separator row). CostCard stacked Session/Total layout. Removed Backlog/Telemetry section labels. 11 new tests (773 total).
 - **Description:** The mission control page at /project/[id] shows all critical information (Working On, Controls, Cost, Questions, Recently Shipped) but could benefit from a comprehensive visual redesign. Use the designer subagent to create mockups for a more polished, modern layout with improved visual hierarchy, better card proportions, and refined typography. Focus on: reorganizing the 3-column grid for better balance, enhancing card backgrounds and borders, improving spacing and alignment, refining typography scale and weights, and ensuring the design scales gracefully across viewports. Implement the design using the frontend skill after mockups are approved.
 
 ### BL-066: Redesign home page project cards and improve dashboard visual hierarchy

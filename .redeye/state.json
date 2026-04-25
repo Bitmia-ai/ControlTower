@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "iteration": 103,
+  "iteration": 104,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-067",
-  "backlog_title": "Redesign mission control page layout and cards using designer + frontend",
-  "spec_file": "docs/specs/BL-067-mission-control-redesign.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -27,22 +27,28 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-070 — schedule creation complete (iteration 102)",
+    "last_commit": "redeye: merge BL-067 — mission control redesign complete (iteration 103)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter102-bl070",
+    "last_good_deploy_tag": "last-good-deploy-iter103-bl067",
     "merge_status": "clean",
-    "notes": "MERGE iter 102: BL-070 schedule creation merged. 762/762 tests pass. Build clean. VERIFY: Add Schedule dialog opens from header button and EmptyState, submit disabled until name+frequency+steps filled, SCHED-2 Test Schedule appeared in list after submit. Transitioning to triage iter 103."
+    "notes": "MERGE iter 103: BL-067 mission control redesign merged. 773/773 tests pass. Build clean. VERIFY: asymmetric two-column layout confirmed in both dark and light mode. WorkingOn hero, Questions compact strip, Controls+Cost+Health right rail all correct. No Backlog/Telemetry section labels visible. Transitioning to triage iter 104."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 103,
       "phases": [
-        "BUILD"
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "BUILD: BL-067 mission control redesign. T1 — restructured app/project/[id]/page.tsx into asymmetric 2-col layout (lg:grid-cols-[1fr_300px]) with mission feed left (WorkingOn hero, Questions, Shipped+UpNext sub-grid) and control panel right (Controls, Cost, Health). Removed Backlog/Telemetry section labels and the nested md:col-span-3 wrapper. T2 — WorkingOnCard hero (p-6, min-h-[160px], text-lg font-semibold task title, green-50/30 wash when running); QuestionsCard collapses to compact strip when empty (px-4 py-2.5 rounded-md, no eyebrow); ControlsCard p-4 + border-t separator between stop/pause and steer/backlog rows; CostCard stacked Session/Total rows for the 300px rail. T3 — 11 new tests (4 WorkingOn hero, 5 Questions empty/pending, 2 ControlsCard separator); 3 cost-card test assertions updated to match new label markup. 773/773 tests pass (was 762, +11). Build clean.",
-      "next": "REVIEW BL-067",
-      "timestamp": "2026-04-25T22:40:00Z"
+      "outcome": "TRIAGE: selected BL-067 (mission control redesign, P1). PLAN: spec docs/specs/BL-067-mission-control-redesign.md. BUILD: T1 — restructured app/project/[id]/page.tsx into asymmetric 2-col layout (lg:grid-cols-[1fr_300px]) with mission feed left (WorkingOn hero, Questions, Shipped+UpNext sub-grid) and control panel right (Controls, Cost, Health). Removed Backlog/Telemetry section labels. T2 — WorkingOnCard hero (p-6, min-h-[160px], text-lg font-semibold task title, green-50/30 wash when running); QuestionsCard collapses to compact strip when empty (px-4 py-2.5 rounded-md, no eyebrow); ControlsCard p-4 + border-t separator; CostCard stacked Session/Total rows. T3 — 11 new tests. 773/773 tests pass (was 762, +11). Build clean. REVIEW: M-tier (11 files). 0C/0M/0m — grid layout correct, dark mode variants present on all new elements, green wash opacity appropriate, separator classes correct, CostCard readable at 300px. DEPLOY: build clean, 773/773 tests pass. VERIFY: asymmetric two-column layout confirmed in both dark and light mode. WorkingOn hero, Questions compact strip, Controls+Cost+Health right rail correct. No Backlog/Telemetry section labels visible. MERGE: BL-067 marked done. Cost delta ~$0.09 (total $310.39).",
+      "next": "TRIAGE iter 104",
+      "timestamp": "2026-04-25T22:50:00Z"
     },
     {
       "iteration": 102,
@@ -251,9 +257,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 102,
-    "last_deploy_iteration": 102,
-    "current_iteration": 103,
+    "last_verify_iteration": 103,
+    "last_deploy_iteration": 103,
+    "current_iteration": 104,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -277,7 +283,8 @@
     "BL-074": 0,
     "BL-073": 1.54,
     "BL-072": 3.46,
-    "BL-070": 52.84
+    "BL-070": 52.84,
+    "BL-067": 0.20593650000006392
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
