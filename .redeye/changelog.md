@@ -254,6 +254,15 @@ Each entry follows:
 - **Visual check:** PASS — home page 3 project cards render correctly; mission control Working On card shows BL-049 active; Controls card (Stop/Pause/Steer/Add to Backlog) renders correctly; no console errors; no layout regressions
 - **Documenter:** running in background (iter 45)
 
+## Iteration 81 — 2026-04-25T01:37:00Z
+- **Built:** BL-051 Cost analytics — add cumulative cost chart to mission control
+- **Review findings:** 0C 0M 0m — clean (1 review cycle)
+- **Tests:** 26 new unit tests added (SparklineChart, cost-history lib, cost-history API route, CostCard extension), 519 total, regression PASS; 1 new Playwright E2E spec (sparkline SVG in DOM with live data, hidden with 0-session data)
+- **User Tester:** 0 bugs reported, no feedback score (tester respawn-pending)
+- **Deployed:** SUCCESS (production build clean, 519/519 unit tests, full E2E regression green, tagged last-good-deploy-iter81)
+- **Visual check:** PASS — home page 3 project cards render correctly; mission control Cost card shows $140.07 session / $155.40 total; sparkline not visible in live dev server (expected — dev server runs main branch, feature not yet merged; sparkline SVG verified via worktree E2E build); no Critical bugs; no layout regressions
+- **Documenter:** running in background (iter 45)
+
 ## Iteration 80 — 2026-04-25T01:06:00Z
 - **Built:** BL-050 Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
 - **Review findings:** 0C 0M 0m — clean (2 review cycles; cycle 1 had 1 minor fix: VERIFY added to NOTIFIABLE_PHASES)

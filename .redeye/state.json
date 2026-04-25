@@ -2,15 +2,16 @@
   "schema_version": 1,
   "iteration": 81,
   "started_at": "2026-04-25T01:11:15Z",
-  "phase": "TRIAGE",
+  "phase": "VERIFY",
   "phase_status": "complete",
   "backlog_item": "BL-051",
   "backlog_title": "Cost analytics — add cumulative cost chart to mission control",
   "phase_progress": {
-    "plan": "Spec written iter 81. Pure SVG sparkline, no new deps. New lib/cost-history.ts + cost-history API route + SparklineChart component + CostCard extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed."
+    "plan": "Spec written iter 81. Pure SVG sparkline, no new deps. New lib/cost-history.ts + cost-history API route + SparklineChart component + CostCard extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed.",
+    "deploy": "Build PASS (no errors, no /_global-error prerender issue). 519/519 unit tests. Full E2E regression PASS: sparkline SVG visible with 5-session mock, hidden with 0-session mock, cost scalars invariant intact, logo nav, theme toggle, backlog, history, live pages all green."
   },
   "spec_file": "docs/specs/BL-051-cost-analytics-sparkline.md",
-  "review_cycles": 0,
+  "review_cycles": 1,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -27,21 +28,26 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: update status.md — MERGE complete BL-050",
-    "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter80",
-    "notes": "BL-050 merged cleanly. Iteration 81 begins. Routing to PLAN BL-051."
+    "last_commit": "chore: mark BL-051 quality gate done — 519 tests pass (BL-051 task 6)",
+    "branch": "feature/BL-051-cost-analytics",
+    "last_good_deploy_tag": "last-good-deploy-iter81",
+    "notes": "BL-051 VERIFY complete. Build clean, 519/519 unit tests, full E2E green including sparkline SVG verification. No Critical bugs. Visual check: home page and mission control render correctly; sparkline not visible in live dev server (expected — dev server runs main, feature branch not yet merged; E2E verified in worktree build). Env HEALTHY."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 81,
       "phases": [
-        "TRIAGE"
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY"
       ],
-      "outcome": "No tester reports, no overdue schedules, no open CEO questions, steering empty (no STOP/PAUSE). Env HEALTHY. Selected BL-051 (cost analytics sparkline chart, P2). Routing to PLAN.",
-      "next": "PLAN",
-      "timestamp": "2026-04-25T01:11:15Z"
+      "outcome": "TRIAGE: BL-051 selected. PLAN: Spec written (6 sub-tasks, no CEO Qs). BUILD: All 6 sub-tasks done, 26 new unit tests (519 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 519/519 unit tests, full E2E regression PASS — sparkline SVG verified in DOM with mocked 5-session data, hidden with 0-session data, all existing flows green. VERIFY: PASS — home page and mission control render correctly, no Critical bugs, no user tester issues, tagged last-good-deploy-iter81. Env: HEALTHY.",
+      "next": "MERGE",
+      "timestamp": "2026-04-25T01:33:00Z"
     },
     {
       "iteration": 80,
@@ -100,7 +106,7 @@
     "iterations_this_session": 61,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
-    "full_regression_last_run": 80
+    "full_regression_last_run": 81
   },
   "health": {
     "confidence": "HIGH",
@@ -108,8 +114,8 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 80,
-    "last_deploy_iteration": 80,
+    "last_verify_iteration": 81,
+    "last_deploy_iteration": 81,
     "current_iteration": 81,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
