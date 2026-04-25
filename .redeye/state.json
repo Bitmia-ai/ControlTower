@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 98,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "deploy",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -10,7 +10,7 @@
   "backlog_title": "Apply the same design styles from the main page to all the other pages and tabs",
   "spec_file": "docs/specs/BL-071-design-system-propagation.md",
   "phase_progress": {},
-  "review_cycles": 0,
+  "review_cycles": 1,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -40,11 +40,12 @@
       "phases": [
         "TRIAGE",
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW"
       ],
       "outcome": "BUILD: BL-071 design system propagation complete. T1: mission control cards switched border-l-4 → border-t-[3px] with status-driven colors (green/amber/red/zinc); section labels upgraded to font-mono CARD-LABEL token; project layout gained Control Tower eyebrow + project header with pulsing dot + Running/Idle pill above ProjectNav. T2: backlog/history/schedules/steer pages got standard eyebrow + h1 + subtitle headers with border-b dividers. T3: backlog list rows use border-l-2 (green for in-progress, transparent for spacing), backlog detail page got Control Tower — Backlog eyebrow + breadcrumb, all dt/h3 labels upgraded; SectionHeader component upgraded to mono CARD-LABEL. T4: ScheduleRow gained border-t-[3px] (amber=overdue, green=on-schedule, zinc=never-run); steer DirectiveRow + Current Directives label upgraded. Updated 2 test expectations (Scheduled Tasks→Schedules, Steer the Team→Steer headings). 691/691 tests pass, clean build.",
-      "next": "REVIEW BL-071",
-      "timestamp": "2026-04-25T21:30:00Z"
+      "next": "DEPLOY BL-071",
+      "timestamp": "2026-04-25T21:40:00Z"
     },
     {
       "iteration": 98,

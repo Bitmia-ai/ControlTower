@@ -78,3 +78,67 @@ Recommendation: **DEPLOY**
 ### Outcome
 
 Environment: healthy. Feature fully verified. Tagged `last-good-deploy-iter97-bl066`. Phase advanced to MERGE.
+
+---
+
+# Review Notes: BL-071 — Design System Propagation
+
+**Reviewer:** REVIEW agent (claude-sonnet-4-6)
+**Date:** 2026-04-25 (iter 98)
+**Review cycle:** 1
+**Verdict:** PASS
+
+## Change Size
+
+M-tier: 21 files changed (286 insertions / 143 deletions). Touches components, pages, tests.
+
+## Build & Test Results
+
+- `npx vitest run`: 691/691 pass (68 test files)
+- `npm run build`: clean, all routes present
+
+## Findings
+
+### Critical — None
+
+### Major — None
+
+### Minor
+
+**m-1: amber-500 vs amber-400 inconsistency — intentional per spec**
+`components/mission-control/controls-card.tsx` uses `border-t-amber-500` (stalled). All other amber attention signals use `border-t-amber-400` (working-on-card, schedule-list, project-card). The spec explicitly specifies `amber-500` for ControlsCard stalled state. This is intentional differentiation. No change required.
+
+**m-2: Residual old-style labels in out-of-scope files**
+`components/backlog-summary-section.tsx`, `components/transcript-viewer.tsx`, `components/onboarding-wizard.tsx`, `components/add-backlog-dialog.tsx`, `components/add-project-dialog.tsx` still use `text-xs uppercase tracking-wide`. These files were not in BL-071 scope. Future migration opportunity.
+
+## Token Consistency Check
+
+All BL-071-scoped files use consistent design tokens:
+- EYEBROW: confirmed on all 4 tab pages, layout, backlog detail
+- CARD-LABEL: confirmed on all 8 mission-control cards, section-header, steer, schedule labels
+- STATUS-TOP: `border-t-[3px]` with correct color semantics — all card shells
+- H1: `text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight` — all 4 tab pages + layout
+- DIVIDER: `border-b border-gray-200 dark:border-zinc-800` — all page headers
+
+## Dark Mode
+
+All new elements have correct `dark:` variants. No missing dark-mode classes found on changed surfaces.
+
+## Touch Targets
+
+- "Add Item" button: `min-h-[44px]` — confirmed
+- Schedule expand buttons: `min-h-[44px]` — confirmed
+
+## Regressions
+
+- SectionHeader count badge: `font-sans` reset added to prevent mono leaking into count number — correct
+- Breadcrumb on backlog detail preserved with correct link target
+- Steer directive description text moved to paragraph below header (not removed)
+- `BacklogSummarySection` left-border accent intentionally preserved as content callout
+- Test assertions updated to match new h1 structure: `getByRole("heading", { name: "Schedules", level: 1 })` and `getByRole("heading", { name: "Steer", level: 1 })`
+
+## Verdict
+
+**PASS — 0 Critical / 0 Major / 2 Minor**
+
+Both minor findings are non-actionable (spec-intentional or out-of-scope). Recommend DEPLOY.
