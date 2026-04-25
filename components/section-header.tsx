@@ -19,7 +19,7 @@ interface SectionHeaderProps {
 export function SectionHeader({ icon, label, count, className = "" }: SectionHeaderProps) {
   return (
     <div
-      className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 font-medium ${className}`}
+      className={`flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 ${className}`}
     >
       {icon && (
         <span className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true">
@@ -28,7 +28,7 @@ export function SectionHeader({ icon, label, count, className = "" }: SectionHea
       )}
       <span>{label}</span>
       {count !== undefined && (
-        <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 font-normal normal-case tracking-normal">
+        <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 font-normal normal-case tracking-normal font-sans">
           {count}
         </span>
       )}

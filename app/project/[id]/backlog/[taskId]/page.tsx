@@ -171,19 +171,29 @@ export default function BacklogItemPage({
 
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
-      <div className="mb-6">
-        <Link
-          href={`/project/${id}/backlog`}
-          className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition inline-flex items-center gap-1"
-        >
-          <span>&larr;</span>
-          <span>Back to Backlog</span>
-        </Link>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mt-2">
-          {loading ? "Loading…" : item?.title ?? taskId}
-        </h2>
-        <p className="text-xs text-gray-500 dark:text-zinc-500 mt-0.5">{taskId}</p>
-      </div>
+      <Link
+        href={`/project/${id}/backlog`}
+        className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition inline-flex items-center gap-1 mb-3"
+      >
+        <span>&larr;</span>
+        <span>Backlog</span>
+      </Link>
+
+      <header className="pt-2 pb-5 mb-6 border-b border-gray-200 dark:border-zinc-800">
+        <div className="flex items-end justify-between gap-4">
+          <div className="min-w-0">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
+              Control Tower &mdash; Backlog
+            </p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
+              {loading ? "Loading…" : item?.title ?? taskId}
+            </h1>
+            <p className="font-mono text-[11px] text-gray-500 dark:text-zinc-500 mt-1">
+              {taskId}
+            </p>
+          </div>
+        </div>
+      </header>
 
       {loading ? (
         <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">
@@ -203,7 +213,7 @@ export default function BacklogItemPage({
         </div>
       ) : editing ? (
         <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-6 flex flex-col gap-5">
-          <h2 className="text-sm font-medium text-gray-700 dark:text-zinc-300 uppercase tracking-wide">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500">
             Edit Item
           </h2>
 
@@ -289,26 +299,26 @@ export default function BacklogItemPage({
 
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
               <div>
-                <dt className="text-xs text-gray-500 dark:text-zinc-500 mb-0.5">ID</dt>
+                <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-0.5">ID</dt>
                 <dd><BacklogId id={item.id} projectId={id} /></dd>
               </div>
               {item.type && (
                 <div>
-                  <dt className="text-xs text-gray-500 dark:text-zinc-500 mb-0.5">Type</dt>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-0.5">Type</dt>
                   <dd className="text-gray-800 dark:text-zinc-200 capitalize">{item.type}</dd>
                 </div>
               )}
               <div>
-                <dt className="text-xs text-gray-500 dark:text-zinc-500 mb-0.5">Section</dt>
+                <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-0.5">Section</dt>
                 <dd className="text-gray-800 dark:text-zinc-200 capitalize">{item.section}</dd>
               </div>
               <div>
-                <dt className="text-xs text-gray-500 dark:text-zinc-500 mb-0.5">Status</dt>
+                <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-0.5">Status</dt>
                 <dd className="text-gray-800 dark:text-zinc-200">{item.status}</dd>
               </div>
               {item.status === "done" && (
                 <div>
-                  <dt className="text-xs text-gray-500 dark:text-zinc-500 mb-0.5">Cost (est.)</dt>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-0.5">Cost (est.)</dt>
                   <dd className="text-gray-800 dark:text-zinc-200 font-mono">
                     {item.cost_usd !== undefined && item.cost_usd > 0 ? (
                       `$${item.cost_usd.toFixed(2)}`
@@ -343,7 +353,7 @@ export default function BacklogItemPage({
 
             {item.details && (
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-zinc-800">
-                <h3 className="text-xs text-gray-500 dark:text-zinc-500 uppercase tracking-wide mb-3">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
                   Details
                 </h3>
                 <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none text-gray-700 dark:text-zinc-300">
@@ -356,7 +366,7 @@ export default function BacklogItemPage({
 
             {item.spec && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                <h3 className="text-xs text-gray-500 dark:text-zinc-500 uppercase tracking-wide mb-1">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
                   Spec File
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-zinc-400 font-mono">{item.spec}</p>

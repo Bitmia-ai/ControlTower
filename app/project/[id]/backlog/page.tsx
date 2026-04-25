@@ -76,7 +76,7 @@ function ActiveTaskCard({
   return (
     <div>
       <SectionHeader label="Currently Working On" className="mb-3" />
-      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-4 border-l-4 border-l-green-500">
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-4 border-l-2 border-l-green-500">
         <div className="flex items-start gap-3">
           <div className="mt-1.5 flex-shrink-0">
             <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse block" />
@@ -142,7 +142,7 @@ export function BacklogSection({
         {items.map((item) => (
           <div
             key={item.id}
-            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 flex items-start gap-3 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors"
+            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-transparent rounded-xl px-4 py-3 flex items-start gap-3 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors"
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug">
