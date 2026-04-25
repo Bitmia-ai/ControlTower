@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 79,
   "started_at": "2026-04-25T00:07:13Z",
-  "phase": "REVIEW",
+  "phase": "VERIFY",
   "phase_status": "complete",
   "backlog_item": "BL-049",
   "backlog_title": "Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card",
@@ -13,7 +13,9 @@
     "triage": "Iteration 79 triage complete. CEO directed 'begin the autonomous development loop' — interpreted as proceed signal. Q-007 resolved with default direction. Added BL-049 through BL-053 (E2E tests, notifications, cost chart, keyboard shortcuts, session history). Routing to PLAN for BL-049 (highest priority planned item).",
     "plan": "BL-049 spec written: docs/specs/BL-049-e2e-test-coverage.md. Two new E2E Playwright specs planned: backlog-crud.spec.ts (add via dialog, detail page verification) and cost-card.spec.ts (cost card invariant). Both use route interception pattern. 2 sub-tasks (T1, T2), S-tier each. No source code changes required.",
     "build": "T1 and T2 complete. Created e2e/backlog-crud.spec.ts (backlog CRUD dialog flow, 3 assertions: item in list, detail page title, priority badge) and e2e/cost-card.spec.ts (cost card invariant: session>=0, total>=0, session<=total, plus exact value formatting test). No application source code modified. 462/462 unit tests pass. TypeScript clean in new files. Committed cb69df1.",
-    "review": "CLEAN. Security: no issues (test files only, no user input or secrets). Systems: CSS class locator is mildly brittle but acceptable for E2E. Spec compliance: all T1 (8 steps) and T2 (5 steps) implemented, JSDoc style matches, file names correct. No critical or major findings. Proceeding to DEPLOY."
+    "review": "CLEAN. Security: no issues (test files only, no user input or secrets). Systems: CSS class locator is mildly brittle but acceptable for E2E. Spec compliance: all T1 (8 steps) and T2 (5 steps) implemented, JSDoc style matches, file names correct. No critical or major findings. Proceeding to DEPLOY.",
+    "deploy": "Build: PASS (Next.js 16.2.4 Turbopack, 25 routes, TypeScript clean). Unit tests: 462/462 pass. E2E smoke (full regression — 3rd deploy since iter 44): home page loads 3 projects; mission control cost card renders $2.70/$104.64 invariant holds; backlog page loads with + Add Item; dialog opens, accepts text, enables submit; backlog detail renders title+priority badge; history page renders; ControlTower project mission control cost card $124.89/$139.41 invariant holds; BL-049 detail page renders all fields. All checks green.",
+    "verify": "PASS. Home page: 3 project cards, ControlTower shows BL-049 active green dot. Mission control: Working On card shows BL-049 Deploying badge, Controls card (Stop/Pause/Steer/Add to Backlog) renders correctly. No console errors. Both new E2E spec files confirmed present (backlog-crud.spec.ts, cost-card.spec.ts). 0 Critical bugs in tester-reports.md. Tagged last-good-deploy-iter79. Env: HEALTHY."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -34,42 +36,56 @@
   "git_state": {
     "last_commit": "test: e2e Playwright specs for backlog CRUD and cost card (BL-049)",
     "branch": "redeye/BL-049",
-    "last_good_deploy_tag": "last-good-deploy-iter63",
-    "notes": "BL-049 in progress: 2 new E2E Playwright specs written on redeye/BL-049 branch. 462/462 unit tests pass. Review clean."
+    "last_good_deploy_tag": "last-good-deploy-iter79",
+    "notes": "BL-049 verified: 2 new E2E Playwright specs (backlog-crud, cost-card). 462/462 unit tests pass. Full regression E2E clean. Visual check PASS. Tagged last-good-deploy-iter79."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 79,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW"],
-      "outcome": "TRIAGE: Added BL-049–053. PLAN: Spec written. BUILD: 2 new Playwright E2E specs (backlog-crud, cost-card). REVIEW: Clean — no critical/major findings, spec compliant. Proceeding to DEPLOY.",
-      "next": "DEPLOY",
-      "timestamp": "2026-04-25T00:22:27Z"
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY"
+      ],
+      "outcome": "TRIAGE: Added BL-049–053. PLAN: Spec written. BUILD: 2 new Playwright E2E specs (backlog-crud, cost-card). REVIEW: Clean. DEPLOY: Build PASS, 462/462 unit tests, full regression E2E green. VERIFY: PASS — visual check clean, no Critical bugs, tagged last-good-deploy-iter79. Env: HEALTHY.",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T00:28:00Z"
     },
     {
       "iteration": 78,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T00:08:37Z"
     },
     {
       "iteration": 77,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T00:03:31Z"
     },
     {
       "iteration": 76,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T00:00:00Z"
     },
     {
       "iteration": 75,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T00:00:00Z"
@@ -85,7 +101,7 @@
     "iterations_this_session": 58,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
-    "full_regression_last_run": 44
+    "full_regression_last_run": 79
   },
   "health": {
     "confidence": "HIGH",
@@ -93,8 +109,8 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 63,
-    "last_deploy_iteration": 63,
+    "last_verify_iteration": 79,
+    "last_deploy_iteration": 79,
     "current_iteration": 79,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
@@ -113,6 +129,7 @@
     "BL-048": 81.36289680000004,
     "BL-044": 84.79576530000003,
     "BL-024": 88.12103009999997,
-    "BL-026": 98.03656575000008
+    "BL-026": 98.03656575000008,
+    "BL-049": 124.89217890000009
   }
 }

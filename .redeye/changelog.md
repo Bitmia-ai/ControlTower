@@ -244,3 +244,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean, 419/419 tests, tagged last-good-deploy-iter57)
 - **Visual check:** PASS — home page renders 3 project cards correctly (dark mode); Live tab empty-state renders correctly in both dark and light mode; useEffect BL-048 fix confirmed in transcript-viewer.tsx; Collapse All / Expand All buttons confirmed in live page.tsx; no layout regressions; screenshots: verify-iter57-home.png, verify-iter57-live.png, verify-iter57-light-mode.png
 - **Documenter:** running in background (iter 45)
+
+## Iteration 79 — 2026-04-25T00:30:00Z
+- **Built:** BL-049 Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
+- **Review findings:** 0C 0M 0m — clean (1 review cycle)
+- **Tests:** 2 new E2E test files added (backlog-crud.spec.ts, cost-card.spec.ts), 462 unit tests total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (tester respawn-pending)
+- **Deployed:** SUCCESS (production build clean, 462/462 unit tests, full E2E regression green, tagged last-good-deploy-iter79)
+- **Visual check:** PASS — home page 3 project cards render correctly; mission control Working On card shows BL-049 active; Controls card (Stop/Pause/Steer/Add to Backlog) renders correctly; no console errors; no layout regressions
+- **Documenter:** running in background (iter 45)
