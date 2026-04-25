@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 97,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "deploy",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -44,7 +44,8 @@
       "phases": [
         "TRIAGE",
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW"
       ],
       "outcome": "TRIAGE: env healthy. 676/676 tests pass. Build clean. 4 pending items: BL-065 (Won't Do section, P2), BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab polish, P2). Selected BL-066 (P1) per CEO directive to use designer subagent + frontend skill for home page visual redesign. PLAN: spec docs/specs/BL-066-home-page-redesign.md with precision-instrument design direction. BUILD: ProjectCard redesigned with status top border (green=running, amber=questions pending, zinc=idle), animate-ping dot, phase footer strip with PHASE_COLORS tint, hover-reveal trash, monospace path, inline red-tinted delete confirmation panel. Home page got Control Tower eyebrow + border-b divider. 691/691 tests pass (15 new tests). Build clean.",
       "next": "REVIEW BL-066",
@@ -184,6 +185,7 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-061": 218.73707190000033
+    "BL-061": 218.73707190000033,
+    "BL-066": 239.0346324000005
   }
 }
