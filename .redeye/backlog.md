@@ -5,8 +5,10 @@
 ### BL-074: "Working on" card height is different from "Controls" which is next to it. fix it
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 99)
+- **Merged:** 2026-04-25 (iter 99)
+- **Summary:** Fixed WorkingOn/Controls card height mismatch by wrapping the top mission-control row in a nested stretch-alignment grid. Root cause was the outer grid using items-start which prevented h-full from working. No card markup changed — minimal CSS fix.
 
 ### BL-073: steer tab, directives need to be rendered with markdown
 - **Type:** feature

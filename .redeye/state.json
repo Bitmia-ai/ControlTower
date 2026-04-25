@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "iteration": 99,
+  "iteration": 100,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-074",
-  "backlog_title": "\"Working on\" card height is different from \"Controls\" which is next to it. fix it",
-  "spec_file": "docs/specs/BL-074-card-height-fix.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
-  "review_cycles": 1,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -27,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-071 — design system propagation complete (iteration 98)",
+    "last_commit": "redeye: merge BL-074 — card height fix complete (iteration 99)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter98-bl071",
+    "last_good_deploy_tag": "last-good-deploy-iter99-bl074",
     "merge_status": "clean",
-    "notes": "MERGE iter 98: BL-071 design system propagation merged. 691/691 tests pass. Transitioned to triage iter 99."
+    "notes": "MERGE iter 99: BL-074 WorkingOn/Controls card height fix merged. 691/691 tests pass. Build clean. VERIFY: both cards same height confirmed via screenshot. Transitioning to triage iter 100."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -40,11 +40,15 @@
       "phases": [
         "TRIAGE",
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "TRIAGE: env healthy. 691/691 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. Pending P1 CEO Requests: BL-074 (Working On card height mismatch vs Controls card), BL-073 (steer directives markdown rendering), BL-072 (edit/delete steer directives), BL-070 (add schedules from tab), BL-069 (superseded by BL-072), BL-067 (mission control redesign). P2: BL-068 (live tab polish), BL-065 (Won't Do section). Selected BL-074 (P1, most recent CEO request — targeted card height fix). PLAN: spec docs/specs/BL-074-card-height-fix.md — wrap WorkingOn + Controls in a nested two-col grid (no items-start) so both stretch to row height; outer grid keeps items-start for later rows. BUILD: nested grid added in app/project/[id]/page.tsx; both card root divs already had h-full so they now fill the row height. 691/691 tests pass, build clean.",
-      "next": "REVIEW BL-074",
-      "timestamp": "2026-04-25T22:10:00Z"
+      "outcome": "TRIAGE: env healthy. 691/691 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. Pending P1 CEO Requests: BL-074 (Working On card height mismatch vs Controls card), BL-073 (steer directives markdown rendering), BL-072 (edit/delete steer directives), BL-070 (add schedules from tab), BL-069 (superseded by BL-072), BL-067 (mission control redesign). P2: BL-068 (live tab polish), BL-065 (Won't Do section). Selected BL-074 (P1, most recent CEO request — targeted card height fix). PLAN: spec docs/specs/BL-074-card-height-fix.md — wrap WorkingOn + Controls in a nested two-col grid (no items-start) so both stretch to row height; outer grid keeps items-start for later rows. BUILD: nested grid added in app/project/[id]/page.tsx; both card root divs already had h-full so they now fill the row height. 691/691 tests pass, build clean. REVIEW: 0C/0M/0m PASS — fix is correct, nested grid removes items-start constraint so h-full works, no regressions. DEPLOY: build clean, 691/691 tests pass. VERIFY: screenshot confirms WorkingOn and Controls cards are same height in top row. MERGE: BL-074 marked done. BL-074 cost delta ~$1.97. Transitioned to triage iter 100.",
+      "next": "TRIAGE iter 100",
+      "timestamp": "2026-04-25T22:30:00Z"
     },
     {
       "iteration": 98,
@@ -196,9 +200,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 98,
-    "last_deploy_iteration": 98,
-    "current_iteration": 98,
+    "last_verify_iteration": 99,
+    "last_deploy_iteration": 99,
+    "current_iteration": 99,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -218,7 +222,8 @@
     "BL-063": 2.621212350000036,
     "BL-064": 6.174803550000092,
     "BL-066": 109.21807290000001,
-    "BL-071": 50.40187815
+    "BL-071": 50.40187815,
+    "BL-074": 0
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
