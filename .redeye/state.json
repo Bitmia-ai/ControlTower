@@ -2,12 +2,12 @@
   "schema_version": 1,
   "iteration": 100,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "triage",
+  "phase": "plan",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": null,
-  "backlog_title": null,
+  "backlog_item": "BL-073",
+  "backlog_title": "steer tab, directives need to be rendered with markdown",
   "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
@@ -202,7 +202,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 99,
     "last_deploy_iteration": 99,
-    "current_iteration": 99,
+    "current_iteration": 100,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -240,6 +240,7 @@
     "BL-059": 183.8620549500003,
     "BL-061": 218.73707190000033,
     "BL-066": 239.0346324000005,
-    "BL-071": 241.31352765000028
+    "BL-071": 241.31352765000028,
+    "BL-073": 250.6147629000001
   }
 }

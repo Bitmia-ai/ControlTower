@@ -13,7 +13,8 @@
 ### BL-073: steer tab, directives need to be rendered with markdown
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 100)
 
 ### BL-072: Steer tab. we need to be able to edit/delete directives
 - **Type:** feature
@@ -35,7 +36,8 @@
 ### BL-069: Directives int eh Steer tab need to be editable or deletable
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** wont-do
+- **Reason:** Superseded by BL-072 which covers the same requirement (edit/delete steer directives) and was filed later as the canonical CEO request.
 
 ### BL-068: Polish Live tab visual design — improve transcript viewer styling and readability
 - **Type:** feature
