@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { BacklogSection, computeBuckets } from "./page";
+import { BacklogSection, computeBuckets, parseBacklogIdNumber } from "./page";
 import { CollapsibleSection } from "@/components/collapsible-section";
 import type { BacklogItem } from "@/lib/redeye-types";
 
@@ -183,6 +183,43 @@ describe("computeBuckets — planned/done/wontdo separation", () => {
     expect(doneItems.map((i) => i.id)).toEqual(["BL-011"]);
     expect(wontDoItems.map((i) => i.id)).toContain("BL-010");
     expect(doneItems.map((i) => i.id)).not.toContain("BL-010");
+  });
+});
+
+describe("BacklogSection — count badge in header", () => {
+  it("renders the item count in the section header", () => {
+    const items: BacklogItem[] = [
+      makeItem({ id: "BL-001", status: "pending" }),
+      makeItem({ id: "BL-002", status: "planned" }),
+    ];
+    const { container } = render(
+      <BacklogSection label="Triaged" items={items} projectId={0} />
+    );
+    // The SectionHeader renders a count badge with the number
+    const countBadge = container.querySelector(".rounded-full");
+    expect(countBadge?.textContent).toBe("2");
+  });
+
+  it("renders rounded-xl on item rows", () => {
+    const items: BacklogItem[] = [makeItem({ id: "BL-005", status: "pending" })];
+    const { container } = render(
+      <BacklogSection label="CEO Requests" items={items} projectId={0} />
+    );
+    const row = container.querySelector(".rounded-xl");
+    expect(row).not.toBeNull();
+  });
+});
+
+describe("parseBacklogIdNumber", () => {
+  it("parses BL-001 as 1", () => {
+    expect(parseBacklogIdNumber("BL-001")).toBe(1);
+  });
+  it("parses BL-053 as 53", () => {
+    expect(parseBacklogIdNumber("BL-053")).toBe(53);
+  });
+  it("returns 0 for malformed IDs", () => {
+    expect(parseBacklogIdNumber("SCHED-001")).toBe(0);
+    expect(parseBacklogIdNumber("")).toBe(0);
   });
 });
 

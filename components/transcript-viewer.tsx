@@ -62,7 +62,7 @@ function ToolUseCard({
 }) {
   const { open, toggle } = useOpenState(forceOpen);
   return (
-    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden">
+    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden">
       <button
         onClick={toggle}
         aria-label={open ? "Collapse tool call" : "Expand tool call"}
@@ -99,7 +99,7 @@ function ToolResultCard({
   const label = toolName ?? "tool result";
   const preview = firstNonEmptyLine(event.content);
   return (
-    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden">
+    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden">
       <button
         onClick={toggle}
         aria-label={open ? `Collapse ${label} result` : `Expand ${label} result`}
@@ -136,7 +136,7 @@ function ThinkingCard({
   const { open, toggle } = useOpenState(forceOpen);
   const preview = firstNonEmptyLine(event.content);
   return (
-    <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800 rounded-lg overflow-hidden">
+    <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800 rounded-xl overflow-hidden">
       <button
         onClick={toggle}
         aria-label={open ? "Collapse thinking" : "Expand thinking"}
@@ -166,7 +166,7 @@ function ThinkingCard({
 
 function AssistantTextCard({ event }: { event: ClaudeStreamEvent }) {
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-red-500 rounded-lg px-4 py-3">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-red-500 rounded-xl px-4 py-3">
       <p className="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Claude</p>
       {event.content && (
         <p className="text-sm text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">
@@ -179,7 +179,7 @@ function AssistantTextCard({ event }: { event: ClaudeStreamEvent }) {
 
 function ResultCard({ event }: { event: ClaudeStreamEvent }) {
   return (
-    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3">
+    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3">
       <p className="text-xs uppercase tracking-wide text-gray-400 dark:text-zinc-500 mb-2">
         Session Result
       </p>
@@ -231,10 +231,10 @@ export function TranscriptViewer({
         // Session boundary separator — emitted when the tailed file switches
         if ((event.type as string) === "__session_boundary__") {
           return (
-            <div key={i} className="flex items-center gap-3 py-1">
+            <div key={i} className="flex items-center gap-3 py-2 my-1">
               <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-700" />
-              <span className="text-xs text-gray-400 dark:text-zinc-500 shrink-0">
-                — New session —
+              <span className="text-[10px] font-medium text-gray-400 dark:text-zinc-500 shrink-0 px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 uppercase tracking-wide">
+                New session
               </span>
               <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-700" />
             </div>
@@ -277,7 +277,7 @@ export function TranscriptViewer({
         return (
           <div
             key={i}
-            className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-lg px-4 py-2"
+            className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-2"
           >
             <p className="text-xs text-gray-400 dark:text-zinc-600 uppercase tracking-wide mb-0.5">
               {event.type}
