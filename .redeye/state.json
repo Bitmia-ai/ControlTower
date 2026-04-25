@@ -8,7 +8,7 @@
   "worktree_branch": null,
   "backlog_item": "BL-065",
   "backlog_title": "Add Won't Do section at the end of the backlog page",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-065-wont-do-section.md",
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
