@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 103,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "build",
+  "phase": "review",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -35,6 +35,15 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 103,
+      "phases": [
+        "BUILD"
+      ],
+      "outcome": "BUILD: BL-067 mission control redesign. T1 — restructured app/project/[id]/page.tsx into asymmetric 2-col layout (lg:grid-cols-[1fr_300px]) with mission feed left (WorkingOn hero, Questions, Shipped+UpNext sub-grid) and control panel right (Controls, Cost, Health). Removed Backlog/Telemetry section labels and the nested md:col-span-3 wrapper. T2 — WorkingOnCard hero (p-6, min-h-[160px], text-lg font-semibold task title, green-50/30 wash when running); QuestionsCard collapses to compact strip when empty (px-4 py-2.5 rounded-md, no eyebrow); ControlsCard p-4 + border-t separator between stop/pause and steer/backlog rows; CostCard stacked Session/Total rows for the 300px rail. T3 — 11 new tests (4 WorkingOn hero, 5 Questions empty/pending, 2 ControlsCard separator); 3 cost-card test assertions updated to match new label markup. 773/773 tests pass (was 762, +11). Build clean.",
+      "next": "REVIEW BL-067",
+      "timestamp": "2026-04-25T22:40:00Z"
+    },
     {
       "iteration": 102,
       "phases": [
