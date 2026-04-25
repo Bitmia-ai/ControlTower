@@ -2,13 +2,14 @@
   "schema_version": 1,
   "iteration": 80,
   "started_at": "2026-04-25T01:00:00Z",
-  "phase": "PLAN",
+  "phase": "BUILD",
   "phase_status": "complete",
   "backlog_item": "BL-050",
   "backlog_title": "Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)",
   "spec_file": "docs/specs/BL-050-phase-change-notifications.md",
   "phase_progress": {
-    "plan": "Spec written. 6 sub-tasks (T1 S, T2 M, T3 M, T4 S, T5 S, T6 S). No new CEO questions. Architecture: usePhaseChangeNotifier hook (mirrors useTaskTransitionTracker pattern), usePhaseNotifications hook, ToastProvider/ToastContainer components (no new deps), wired into layout.tsx and mission-control page.tsx. Worktree to be created for feature branch."
+    "plan": "Spec written. 6 sub-tasks (T1 S, T2 M, T3 M, T4 S, T5 S, T6 S). No new CEO questions. Architecture: usePhaseChangeNotifier hook (mirrors useTaskTransitionTracker pattern), usePhaseNotifications hook, ToastProvider/ToastContainer components (no new deps), wired into layout.tsx and mission-control page.tsx. Worktree to be created for feature branch.",
+    "build": "All 6 sub-tasks complete. Files: lib/use-phase-change-notifier.ts (+test, 8 tests), lib/use-phase-notifications.ts (+test, 11 tests), components/toast-provider.tsx, components/toast-container.tsx (+test, 7 tests), app/layout.tsx (ToastProvider wired), app/project/[id]/page.tsx (usePhaseNotifications wired) + integration test (4 tests), e2e/phase-change-toast.spec.ts (4 Playwright tests). Vitest 492/492 pass (30 new). Pre-existing build failure on /_global-error (present on main before BL-050) noted in spec — DEPLOY phase to investigate."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
