@@ -1,9 +1,3 @@
 {
-  "claims": {
-    "BL-051": {
-      "instance": "main",
-      "claimed_at": "2026-04-25T01:11:15Z",
-      "title": "Cost analytics — add cumulative cost chart to mission control"
-    }
-  }
+  "claims": {}
 }
