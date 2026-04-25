@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { label: "Backlog", path: "/backlog", kbd: "GB" },
   { label: "History", path: "/history", kbd: "GH" },
   { label: "Live", path: "/live", kbd: "GL" },
+  { label: "Schedules", path: "/schedules", kbd: "GS" },
 ] as const;
 
 // BL-052: keyboard-shortcut hint badge style (matches ControlsCard kbdCls)

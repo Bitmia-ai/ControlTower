@@ -21,12 +21,13 @@ afterEach(() => {
 });
 
 describe("ProjectNav", () => {
-  it("renders all four nav tabs", () => {
+  it("renders all five nav tabs", () => {
     render(<ProjectNav projectId="1" />);
     expect(screen.getByText("Overview")).toBeTruthy();
     expect(screen.getByText("Backlog")).toBeTruthy();
     expect(screen.getByText("History")).toBeTruthy();
     expect(screen.getByText("Live")).toBeTruthy();
+    expect(screen.getByText("Schedules")).toBeTruthy();
   });
 
   it("highlights Overview tab when on project root", () => {
@@ -74,6 +75,21 @@ describe("ProjectNav", () => {
     expect(screen.getByText("Backlog").closest("a")?.getAttribute("href")).toBe("/project/42/backlog");
     expect(screen.getByText("History").closest("a")?.getAttribute("href")).toBe("/project/42/history");
     expect(screen.getByText("Live").closest("a")?.getAttribute("href")).toBe("/project/42/live");
+    expect(screen.getByText("Schedules").closest("a")?.getAttribute("href")).toBe("/project/42/schedules");
+  });
+
+  it("highlights Schedules tab when on schedules page", () => {
+    vi.mocked(usePathname).mockReturnValue("/project/1/schedules");
+    render(<ProjectNav projectId="1" />);
+    const schedulesLink = screen.getByText("Schedules").closest("a");
+    expect(schedulesLink?.className).toContain("border-red-600");
+  });
+
+  it("renders GS kbd hint on Schedules tab", () => {
+    render(<ProjectNav projectId="1" />);
+    // The Schedules link should contain "GS" as a kbd badge
+    const schedulesLink = screen.getByText("Schedules").closest("a");
+    expect(schedulesLink?.textContent).toContain("GS");
   });
 
   it("has overflow-x-auto for responsive scrolling", () => {
