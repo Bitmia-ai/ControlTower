@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "iteration": 101,
+  "iteration": 102,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-072",
-  "backlog_title": "Steer tab — edit/delete directives",
-  "spec_file": "docs/specs/BL-072-edit-delete-directives.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -27,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-073 — steer markdown rendering complete (iteration 100)",
+    "last_commit": "redeye: merge BL-072 — edit/delete directives complete (iteration 101)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter100-bl073",
+    "last_good_deploy_tag": "last-good-deploy-iter101-bl072",
     "merge_status": "clean",
-    "notes": "MERGE iter 100: BL-073 steer markdown rendering merged. 692/692 tests pass. Build clean. VERIFY: directive rows render formatted HTML (bold/code) in dark mode. Transitioning to triage iter 101."
+    "notes": "MERGE iter 101: BL-072 edit/delete steer directives merged. 731/731 tests pass. Build clean. VERIFY: edit flow pre-fills source markdown text; save updates directive in view. Delete flow shows inline confirm panel; confirm removes directive from list. Dark mode correct. Transitioning to triage iter 102."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -39,11 +39,15 @@
       "iteration": 101,
       "phases": [
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "PLAN: spec docs/specs/BL-072-edit-delete-directives.md — add applyDirectiveEdit/applyDirectiveDelete pure helpers in lib/redeye-parsers.ts that mutate steering.md by parsed-array index, then add PATCH+DELETE handlers to /api/projects/[id]/steer using sanitizeMarkdownInput (500 cap) and a 4KB body cap, then refactor DirectiveRow into a stateful component (view/editing/confirm-delete) with hover-revealed pencil+trash icons. BUILD: 39 new tests across lib (13), api route (16), UI (10). 731/731 tests pass. Build clean. Helpers preserve leading indentation, subsection headers, and surrounding lines byte-for-byte; RangeError -> 404, ENOENT -> 404. CSRF inherited from middleware.ts. Best-effort commitAndPush so TRIAGE's sync-from-main does not wipe the change.",
-      "next": "REVIEW BL-072",
-      "timestamp": "2026-04-25T22:08:00Z"
+      "outcome": "PLAN: spec docs/specs/BL-072-edit-delete-directives.md — add applyDirectiveEdit/applyDirectiveDelete pure helpers in lib/redeye-parsers.ts that mutate steering.md by parsed-array index, then add PATCH+DELETE handlers to /api/projects/[id]/steer using sanitizeMarkdownInput (500 cap) and a 4KB body cap, then refactor DirectiveRow into a stateful component (view/editing/confirm-delete) with hover-revealed pencil+trash icons. BUILD: 39 new tests across lib (13), api route (16), UI (10). 731/731 tests pass. Build clean. Helpers preserve leading indentation, subsection headers, and surrounding lines byte-for-byte; RangeError -> 404, ENOENT -> 404. CSRF inherited from middleware.ts. REVIEW: 0C/0M/0m PASS — index validation (non-negative integer), text empty-after-sanitize check, 4KB body cap, ENOENT→404, RangeError→404, section boundary logic matches parseSteering exactly. DEPLOY: build clean, 731/731 tests pass. VERIFY: edit pre-fills source markdown, save updates directive in view mode. Delete shows confirm panel, confirm removes directive. Screenshot taken. MERGE: BL-072 marked done. Cost delta ~$3.46.",
+      "next": "TRIAGE iter 102",
+      "timestamp": "2026-04-25T22:15:00Z"
     },
     {
       "iteration": 100,
@@ -224,9 +228,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 100,
-    "last_deploy_iteration": 100,
-    "current_iteration": 101,
+    "last_verify_iteration": 101,
+    "last_deploy_iteration": 101,
+    "current_iteration": 102,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -248,7 +252,8 @@
     "BL-066": 109.21807290000001,
     "BL-071": 50.40187815,
     "BL-074": 0,
-    "BL-073": 1.54
+    "BL-073": 1.54,
+    "BL-072": 3.46
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,

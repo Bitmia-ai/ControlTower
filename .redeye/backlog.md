@@ -21,8 +21,10 @@
 ### BL-072: Steer tab. we need to be able to edit/delete directives
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 101)
+- **Merged:** 2026-04-25 (iter 101)
+- **Summary:** Steer tab directives are now editable and deletable. PATCH and DELETE API endpoints added with index-based addressing, input validation, and 4KB body cap. DirectiveRow gained hover-reveal pencil/trash icons (44px touch targets, aria-labels), inline edit textarea pre-filled with directive source, and inline delete confirmation panel matching the project-card pattern. applyDirectiveEdit/applyDirectiveDelete helpers added to lib/redeye-parsers.ts preserving file structure. 39 new tests (731 total).
 
 ### BL-071: Apply the same design styles form the main page to all the other pages and tabs. use the design subagent and frond end skill
 - **Type:** feature
