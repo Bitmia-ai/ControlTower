@@ -325,6 +325,7 @@ export default function BacklogPage({
   const allItems: BacklogItem[] = [
     ...(detail?.upNext ?? []),
     ...(detail?.recentlyShipped ?? []),
+    ...(detail?.wontDoItems ?? []),
   ];
 
   const { plannedItems, doneItems, wontDoItems } = computeBuckets(

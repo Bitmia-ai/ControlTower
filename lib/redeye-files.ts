@@ -183,6 +183,10 @@ export async function readProjectDetail(
       const cost = itemCosts[item.id];
       return cost !== undefined ? { ...item, cost_usd: cost } : item;
     });
+  // parseBacklog normalizes both "wont-do" and "won't do" raw values to the
+  // single canonical status "wontdo"; section is also "wontdo". Source on
+  // status so a section-misplaced item still surfaces.
+  const wontDoItems = backlog.filter((item) => item.status === "wontdo");
   const recentChangelog = changelog.slice(0, 5);
 
   return {
@@ -193,6 +197,7 @@ export async function readProjectDetail(
     pendingQuestions,
     upNext,
     recentlyShipped,
+    wontDoItems,
     recentChangelog,
     steeringDirectives: steering,
   };

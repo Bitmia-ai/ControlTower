@@ -151,6 +151,13 @@ export interface ProjectDetail {
   pendingQuestions: InboxQuestion[];
   upNext: BacklogItem[];
   recentlyShipped: BacklogItem[];
+  /**
+   * Items the team has decided not to ship. Carried separately because
+   * upNext (planned/pending/in-progress) and recentlyShipped (done) both
+   * exclude wont-do, so without a dedicated bucket the backlog page would
+   * never render its Won't Do section.
+   */
+  wontDoItems: BacklogItem[];
   recentChangelog: ChangelogEntry[];
   steeringDirectives: SteeringDirective[];
 }
