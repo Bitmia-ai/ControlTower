@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "PLAN",
-  "phase_status": "complete",
+  "phase": "BUILD",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-061",
@@ -16,14 +16,7 @@
     "build_complete": true,
     "bl059_already_done": true,
     "bl060_already_done": true,
-    "build_tasks_completed": [
-      "T1",
-      "T2",
-      "T3",
-      "T4",
-      "T5",
-      "T6"
-    ],
+    "build_tasks_completed": [],
     "build_notes": "T1: global-error.tsx fixed (use client + no imports). ClientProviders created (custom ThemeProvider, ToastProvider, header). lib/theme-context.tsx custom ESM ThemeProvider. postinstall script patches Next.js 16.2.4 utils.js to skip _global-error prerender. not-found.tsx force-dynamic. T2-T6: already implemented in prior run. 662/662 tests pass. npm run build passes.",
     "review_fixes_needed": [
       "Major: Nested button inside button in ScheduleRow (schedule-list.tsx) \u2014 restructure so RunButton is sibling of expand button not child",
