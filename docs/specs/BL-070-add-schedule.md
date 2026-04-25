@@ -1,6 +1,6 @@
 # BL-070 — Add Schedule Creation from the Schedules Tab
 
-**Status:** in-progress
+**Status:** done
 **Priority:** P1
 **Owner:** CTO
 
@@ -138,9 +138,9 @@ Component (`components/schedules/add-schedule-dialog.test.tsx`):
 ## Sub-tasks
 
 - [done] T1 — Add POST handler to schedules route + tests
-- [in-progress] T2 — Add `AddScheduleDialog` component + tests
-- [pending] T3 — Wire button into Schedules page header + refetch on add
-- [pending] T4 — Build verification (vitest + next build)
+- [done] T2 — Add `AddScheduleDialog` component + tests
+- [done] T3 — Wire button into Schedules page header + refetch on add
+- [done] T4 — Build verification (vitest + next build) — 762/762 tests pass, build clean.
 
 ## Out of Scope
 

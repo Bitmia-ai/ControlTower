@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
-import { render, screen, cleanup, waitFor } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import { SchedulesContent } from "./page";
 import type { ScheduleEntry } from "@/lib/redeye-types";
 
@@ -94,5 +94,33 @@ describe("SchedulesContent", () => {
     render(<SchedulesContent id="0" />);
     // Heading is always rendered regardless of loading state
     expect(screen.getByRole("heading", { name: "Schedules", level: 1 })).toBeDefined();
+  });
+
+  it("renders + Add Schedule button in the header", () => {
+    vi.spyOn(global, "fetch").mockReturnValue(new Promise(() => {})); // never resolves
+    render(<SchedulesContent id="0" />);
+    const buttons = screen.getAllByRole("button", { name: /add schedule/i });
+    expect(buttons.length).toBeGreaterThan(0);
+  });
+
+  it("opens AddScheduleDialog when + Add Schedule is clicked", async () => {
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { schedules: [] } }),
+    } as Response);
+
+    render(<SchedulesContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByText("No schedules defined")).toBeDefined();
+    });
+
+    // Header button is the first one — open the dialog with it.
+    const headerBtn = screen.getAllByRole("button", { name: /\+ add schedule/i })[0];
+    fireEvent.click(headerBtn);
+
+    // Dialog now visible — name field appears.
+    await waitFor(() => {
+      expect(screen.getByLabelText(/schedule name/i)).toBeDefined();
+    });
   });
 });

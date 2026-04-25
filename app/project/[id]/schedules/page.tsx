@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, use } from "react";
 import type { ScheduleEntry } from "@/lib/redeye-types";
 import { ScheduleList } from "@/components/schedules/schedule-list";
+import { AddScheduleDialog } from "@/components/schedules/add-schedule-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 
@@ -25,6 +26,7 @@ function SchedulesSkeleton() {
 export function SchedulesContent({ id }: { id: string }) {
   const [schedules, setSchedules] = useState<ScheduleEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
 
   const fetchSchedules = useCallback(async () => {
     try {
@@ -65,6 +67,13 @@ export function SchedulesContent({ id }: { id: string }) {
                 : `${count} scheduled ${count === 1 ? "task" : "tasks"}`}
             </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setAddOpen(true)}
+            className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
+          >
+            + Add Schedule
+          </button>
         </div>
       </header>
 
@@ -79,11 +88,19 @@ export function SchedulesContent({ id }: { id: string }) {
         <EmptyState
           icon="📅"
           title="No schedules defined"
-          subtitle="Add recurring tasks to .redeye/schedules.md to see them here."
+          subtitle="Add a recurring task to get started."
+          action={{ label: "+ Add Schedule", onClick: () => setAddOpen(true) }}
         />
       ) : (
         <ScheduleList schedules={schedules} projectId={id} />
       )}
+
+      <AddScheduleDialog
+        projectId={id}
+        open={addOpen}
+        onOpenChange={setAddOpen}
+        onAdded={fetchSchedules}
+      />
     </div>
   );
 }
