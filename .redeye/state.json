@@ -3,13 +3,25 @@
   "iteration": 107,
   "started_at": "2026-04-25T21:40:53Z",
   "phase": "TRIAGE",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
   "backlog_title": null,
   "spec_file": null,
-  "phase_progress": {},
+  "phase_progress": {
+    "triage": {
+      "env_healthy": true,
+      "test_count": 796,
+      "tests_pass": true,
+      "ceo_answers_pending": 0,
+      "overdue_schedules": 2,
+      "actionable_backlog": 0,
+      "backlog_all_done": true,
+      "selected_item": null,
+      "notes": "Env healthy. 796/796 tests pass. Build clean. 2 overdue schedules (SCHED-1, SCHED-2). Backlog exhausted — all 75 items done or wont-do. Transitioning to SCHEDULES to handle overdue tasks before filing Q-013."
+    }
+  },
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
@@ -35,6 +47,13 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 107,
+      "phases": ["TRIAGE"],
+      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules (SCHED-1 weekly dep audit, SCHED-2 test schedule), backlog exhausted (all 75 items done/wont-do). Transitioning to SCHEDULES.",
+      "next": "SCHEDULES iter 107",
+      "timestamp": "2026-04-25T21:43:00Z"
+    },
     {
       "iteration": 106,
       "phases": ["INCORPORATE", "TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
@@ -62,13 +81,6 @@
       "outcome": "BL-067 mission control redesign — full cycle complete. 773/773 tests pass.",
       "next": "TRIAGE iter 104",
       "timestamp": "2026-04-25T22:50:00Z"
-    },
-    {
-      "iteration": 102,
-      "phases": ["PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "BL-070 add schedules — full cycle complete. 762/762 tests pass.",
-      "next": "TRIAGE iter 103",
-      "timestamp": "2026-04-25T22:30:00Z"
     }
   ],
   "counters": {
