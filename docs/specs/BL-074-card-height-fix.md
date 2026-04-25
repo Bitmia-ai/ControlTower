@@ -22,7 +22,7 @@ that lives directly above the rest of the grid. The `min-h-[120px]` on the
 wrappers is preserved.
 
 ## Sub-tasks
-- [pending] T1: Restructure mission-control layout so WorkingOn + Controls share a stretching row, then verify with vitest + build.
+- [done] T1: Restructure mission-control layout so WorkingOn + Controls share a stretching row, then verify with vitest + build.
 
 ## Verification
 - `npx vitest run` — all 691 tests pass.

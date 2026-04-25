@@ -163,28 +163,36 @@ export default function ProjectPage({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:items-start">
-          <div className="md:col-span-2 md:min-h-[120px]">
-            <WorkingOnCard
-              state={detail?.state ?? null}
-              running={running}
-              projectId={projectId}
-              upNextCount={detail?.upNext?.length ?? 0}
-              openQuestionCount={pendingQuestions.length}
-            />
-          </div>
+          {/*
+            BL-074: WorkingOn + Controls share the first row. We use a nested
+            grid (without `items-start`) so both cards stretch to the row's
+            height. The outer grid keeps `items-start` so later rows
+            (Shipped/UpNext, Cost/Health) preserve their top-aligned look.
+          */}
+          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="md:col-span-2 md:min-h-[120px]">
+              <WorkingOnCard
+                state={detail?.state ?? null}
+                running={running}
+                projectId={projectId}
+                upNextCount={detail?.upNext?.length ?? 0}
+                openQuestionCount={pendingQuestions.length}
+              />
+            </div>
 
-          <div className="md:col-span-1 md:min-h-[120px]">
-            <ControlsCard
-              running={running}
-              stalled={stalled}
-              onStart={() => handleAction("start")}
-              onStop={() => handleAction("stop")}
-              onPause={() => handleAction("pause")}
-              onSteer={() => setSteerOpen(true)}
-              onAddBacklog={() => setBacklogOpen(true)}
-              onRestart={handleRestart}
-              onForceStop={handleForceStop}
-            />
+            <div className="md:col-span-1 md:min-h-[120px]">
+              <ControlsCard
+                running={running}
+                stalled={stalled}
+                onStart={() => handleAction("start")}
+                onStop={() => handleAction("stop")}
+                onPause={() => handleAction("pause")}
+                onSteer={() => setSteerOpen(true)}
+                onAddBacklog={() => setBacklogOpen(true)}
+                onRestart={handleRestart}
+                onForceStop={handleForceStop}
+              />
+            </div>
           </div>
 
           <div className="md:col-span-3">
