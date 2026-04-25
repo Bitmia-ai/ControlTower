@@ -1,38 +1,45 @@
 {
   "schema_version": 1,
-  "iteration": 82,
-  "started_at": "2026-04-25T01:42:00Z",
-  "phase": "MERGE",
+  "iteration": 83,
+  "started_at": "2026-04-25T02:15:00Z",
+  "phase": "TRIAGE",
   "phase_status": "complete",
-  "backlog_item": "BL-052",
-  "backlog_title": "Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)",
-  "phase_progress": { "plan_complete": true, "build_complete": true, "review_complete": true, "deploy_complete": true, "verify_complete": true },
-  "spec_file": "docs/specs/BL-052-keyboard-shortcuts.md",
-  "review_cycles": 1,
+  "backlog_item": "BL-053",
+  "backlog_title": "Improve session history page — show phase timeline and cost per session",
+  "phase_progress": { "plan_complete": false, "build_complete": false, "review_complete": false, "deploy_complete": false, "verify_complete": false },
+  "spec_file": null,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
     "user_tester": {
-      "status": "respawn-pending",
-      "heartbeat": "2026-04-25T02:10:00Z",
+      "status": "spawned",
+      "heartbeat": "2026-04-25T02:15:00Z",
       "bugs_this_cycle": 0,
-      "persona_index": 5
+      "persona_index": 6
     },
     "documenter": {
-      "status": "idle",
-      "heartbeat": "2026-04-24T14:50:00Z",
-      "working_on_iteration": 45
+      "status": "spawned",
+      "heartbeat": "2026-04-25T02:15:00Z",
+      "working_on_iteration": 83
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-052 — Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)",
+    "last_commit": "redeye: update status.md for MERGE completion (BL-052)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter82",
     "merge_status": "clean",
-    "notes": "BL-052 merged cleanly to main. 6 commits merged. Spec conflict (add/add) resolved by taking feature branch version. Claims cleared. BL-052 marked done."
+    "notes": "BL-052 done. BL-053 selected for iteration 83."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 83,
+      "phases": ["TRIAGE"],
+      "outcome": "No tester reports, no schedules, no CEO answers, no remote. Env HEALTHY. User tester respawned (persona_index 6, deploy just happened). Documenter spawned (code changed in BL-052). BL-053 selected (only planned item).",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T02:15:00Z"
+    },
     {
       "iteration": 82,
       "phases": [
@@ -89,15 +96,6 @@
       "outcome": "TRIAGE: Added BL-049–053. PLAN: Spec written. BUILD: 2 new Playwright E2E specs (backlog-crud, cost-card). REVIEW: Clean. DEPLOY: Build PASS, 462/462 unit tests, full regression E2E green. VERIFY: PASS — visual check clean, no Critical bugs, tagged last-good-deploy-iter79. Env: HEALTHY.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T00:28:00Z"
-    },
-    {
-      "iteration": 78,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
-      "next": "waiting_for_ceo",
-      "timestamp": "2026-04-25T00:08:37Z"
     }
   ],
   "counters": {
@@ -107,7 +105,7 @@
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 62,
+    "iterations_this_session": 63,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 82
@@ -120,7 +118,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 82,
     "last_deploy_iteration": 82,
-    "current_iteration": 82,
+    "current_iteration": 83,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
