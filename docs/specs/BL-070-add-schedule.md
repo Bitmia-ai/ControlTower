@@ -137,8 +137,8 @@ Component (`components/schedules/add-schedule-dialog.test.tsx`):
 
 ## Sub-tasks
 
-- [pending] T1 — Add POST handler to schedules route + tests
-- [pending] T2 — Add `AddScheduleDialog` component + tests
+- [done] T1 — Add POST handler to schedules route + tests
+- [in-progress] T2 — Add `AddScheduleDialog` component + tests
 - [pending] T3 — Wire button into Schedules page header + refetch on add
 - [pending] T4 — Build verification (vitest + next build)
 
