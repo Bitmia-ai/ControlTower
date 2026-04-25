@@ -40,8 +40,8 @@ Control Tower monitors autonomous AI agents — this is a *command center*, not 
 ## Sub-tasks
 
 - **T1 (M) [done]:** Redesign `ProjectCard` component — status border, pulsing dot, phase footer strip, hover-reveal delete, inline delete confirmation
-- **T2 (S) [in-progress]:** Update `app/page.tsx` header — eyebrow label, border-b divider, count
-- **T3 (S) [pending]:** Update/add unit tests for new card structure; verify dark+light mode with Playwright screenshots
+- **T2 (S) [done]:** Update `app/page.tsx` header — eyebrow label, border-b divider, count
+- **T3 (S) [in-progress]:** Update/add unit tests for new card structure; verify dark+light mode with Playwright screenshots
 
 ## Test Plan
 

@@ -97,20 +97,25 @@ export default function Home() {
 
   return (
     <main className="px-4 sm:px-6 py-8 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100">Projects</h1>
-          <p className="text-sm text-gray-500 dark:text-zinc-500 mt-0.5">
+      <header className="flex items-end justify-between gap-4 mb-8 pb-5 border-b border-gray-200 dark:border-zinc-800">
+        <div className="min-w-0">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
+            Control Tower
+          </p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
+            Projects
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-zinc-500 mt-1">
             {projects.length} project{projects.length !== 1 ? "s" : ""} registered
           </p>
         </div>
         <button
           onClick={() => setDialogOpen(true)}
-          className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
+          className="shrink-0 px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
         >
           Add Project
         </button>
-      </div>
+      </header>
 
       {loading ? (
         <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">

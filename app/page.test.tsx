@@ -27,6 +27,51 @@ function dispatchVisibilityChange() {
   document.dispatchEvent(new Event("visibilitychange"));
 }
 
+describe("Home page header (BL-066)", () => {
+  beforeEach(() => {
+    setVisibility("visible");
+    // @ts-expect-error mock fetch
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ data: [] }),
+      })
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  it("renders Control Tower eyebrow label, Projects h1, and border-b divider", async () => {
+    const { container } = render(<Home />);
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(container.textContent).toContain("Control Tower");
+    const h1 = container.querySelector("h1");
+    expect(h1?.textContent).toBe("Projects");
+    // Header should have border-b divider
+    const header = container.querySelector("header");
+    expect(header).toBeTruthy();
+    expect(header?.className).toMatch(/border-b/);
+    // Eyebrow should be monospace
+    const eyebrow = Array.from(container.querySelectorAll("p")).find(
+      (p) => p.textContent === "Control Tower"
+    );
+    expect(eyebrow?.className).toMatch(/font-mono/);
+  });
+
+  it("renders project count subtitle", async () => {
+    const { container } = render(<Home />);
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(container.textContent).toContain("0 projects registered");
+  });
+});
+
 describe("Home page visibility-aware polling", () => {
   beforeEach(() => {
     vi.useFakeTimers();
