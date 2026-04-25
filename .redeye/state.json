@@ -2,15 +2,16 @@
   "schema_version": 1,
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "TRIAGE",
+  "phase": "PLAN",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": null,
-  "backlog_title": null,
-  "spec_file": null,
+  "backlog_item": "BL-059",
+  "backlog_title": "Fix discoverPid() log-freshness fallback — dashboard shows running when CTO is dead",
+  "spec_file": "docs/specs/BL-059-discover-pid-fix.md",
   "phase_progress": {
-    "incorporate_complete": true
+    "incorporate_complete": true,
+    "triage_complete": true
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -39,35 +40,59 @@
   "iteration_log": [
     {
       "iteration": 90,
-      "phases": ["INCORPORATE", "TRIAGE"],
-      "outcome": "INCORPORATE: Q-010 incorporated — CEO added BL-058 (schedules UI), BL-059 (discoverPid fix), BL-060 (blocked state UI + auto-start). TRIAGE: in-progress.",
-      "next": "PLAN",
-      "timestamp": "2026-04-25T09:06:05Z"
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE"
+      ],
+      "outcome": "INCORPORATE: Q-010 incorporated — CEO added BL-058 (schedules UI), BL-059 (discoverPid fix), BL-060 (blocked state UI + auto-start). TRIAGE: env healthy, 3 P1 items, BL-059 selected (fix discoverPid log-freshness). PLAN: in-progress.",
+      "next": "BUILD",
+      "timestamp": "2026-04-25T09:07:00Z"
     },
     {
       "iteration": 89,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: All BL-001–057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T11:10:00Z"
     },
     {
       "iteration": 88,
-      "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-057 (mobile-responsive layout) full cycle complete. INCORPORATE: Q-009 answered, BL-057 added. TRIAGE: env healthy, BL-057 selected. PLAN: spec written (8 sub-tasks). BUILD: T1-T8 complete, Tailwind responsive classes across 12 files, 2 new test files (responsive.test.tsx, mobile-responsive.spec.ts), 651/651 tests pass. REVIEW: 1 cycle, PASS. DEPLOY: build clean. VERIFY: PASS — no horizontal scroll at 375px, all pages render correctly, 0 JS errors, 0 tester bugs, tagged last-good-deploy-iter88. MERGE: 1 code commit merged cleanly to main (SHA 18a74a1), 14 files changed (259 insertions), BL-057 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T11:05:00Z"
     },
     {
       "iteration": 87,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: All BL-001–056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T08:14:44Z"
     },
     {
       "iteration": 86,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-056 (tab redesign) full cycle complete. TRIAGE: BL-055 done, BL-056 selected. PLAN: Spec (6 sub-tasks). BUILD: T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons). T2 history (Clock/GitBranch icons, section divider, SessionHistoryRow chevron expand). T3 live (sticky toolbar, EmptyState, session boundary pill). T4 SectionHeader component. T5 646/646 tests (19 new). T6 E2E spec. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: build clean, 646/646 PASS. VERIFY: PASS — all 3 tabs healthy, no JS errors, tagged last-good-deploy-iter86. MERGE: 1 code commit merged cleanly to main, BL-056 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T08:11:08Z"
@@ -119,6 +144,7 @@
     "BL-051": 135.25504920000046,
     "BL-052": 141.69885615000055,
     "BL-053": 156.30889500000052,
-    "BL-055": 159.36187110000037
+    "BL-055": 159.36187110000037,
+    "BL-059": 183.8620549500003
   }
 }
