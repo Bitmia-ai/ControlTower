@@ -78,7 +78,7 @@ Section headers within the page (status info, description) → CARD-LABEL token.
 - **T2 (S) — done:** Tab page headers — standard eyebrow/h1/divider pattern across all tabs
 - **T3 (M) — done:** Backlog list + detail — border-l status signal, detail page header, section label tokens
 - **T4 (M) — done:** History + Schedules + Steer — section label tokens, card upgrades
-- **T5 (S) — in-progress:** Tests + build verification — update any snapshot/DOM tests, `npm run build`, `npx vitest run`
+- **T5 (S) — done:** Tests + build verification — update any snapshot/DOM tests, `npm run build`, `npx vitest run`
 
 ## Test Plan
 
