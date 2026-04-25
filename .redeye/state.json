@@ -1,25 +1,22 @@
 {
   "schema_version": 1,
-  "iteration": 81,
-  "started_at": "2026-04-25T01:11:15Z",
-  "phase": "MERGE",
+  "iteration": 82,
+  "started_at": "2026-04-25T01:42:00Z",
+  "phase": "TRIAGE",
   "phase_status": "complete",
-  "backlog_item": "BL-051",
-  "backlog_title": "Cost analytics — add cumulative cost chart to mission control",
-  "phase_progress": {
-    "plan": "Spec written iter 81. Pure SVG sparkline, no new deps. New lib/cost-history.ts + cost-history API route + SparklineChart component + CostCard extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed.",
-    "deploy": "Build PASS (no errors, no /_global-error prerender issue). 519/519 unit tests. Full E2E regression PASS: sparkline SVG visible with 5-session mock, hidden with 0-session mock, cost scalars invariant intact, logo nav, theme toggle, backlog, history, live pages all green."
-  },
-  "spec_file": "docs/specs/BL-051-cost-analytics-sparkline.md",
-  "review_cycles": 1,
+  "backlog_item": "BL-052",
+  "backlog_title": "Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)",
+  "phase_progress": {},
+  "spec_file": null,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
     "user_tester": {
       "status": "respawn-pending",
-      "heartbeat": "2026-04-25T01:11:15Z",
+      "heartbeat": "2026-04-25T01:42:00Z",
       "bugs_this_cycle": 0,
-      "persona_index": 4
+      "persona_index": 5
     },
     "documenter": {
       "status": "idle",
@@ -28,14 +25,23 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-051 — Cost analytics — add cumulative cost chart to mission control",
+    "last_commit": "redeye: update status.md — MERGE complete BL-051",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter81",
     "merge_status": "clean",
-    "notes": "BL-051 merged cleanly to main. 6 commits, 10 files changed, 937 insertions. SparklineChart pure SVG component, cost-history lib and API, CostCard extended, 26 new unit tests (519 total), Playwright E2E. BL-051 marked done."
+    "notes": "BL-051 merged cleanly. Iteration 82 begins. Next: BL-052 keyboard shortcuts."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 82,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE: No tester reports. No overdue schedules. No CEO answers. No STOP/PAUSE in steering. Env HEALTHY (519/519 unit tests, last-good-deploy-iter81). User tester respawn-pending (iterations_since_last_deploy=0). Documenter idle (no code changes since last run). Selected BL-052 (keyboard shortcuts, P2, planned) — no active claims on any items.",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T01:42:00Z"
+    },
     {
       "iteration": 81,
       "phases": [
@@ -87,15 +93,6 @@
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T00:08:37Z"
-    },
-    {
-      "iteration": 77,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
-      "next": "waiting_for_ceo",
-      "timestamp": "2026-04-25T00:03:31Z"
     }
   ],
   "counters": {
@@ -105,7 +102,7 @@
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 61,
+    "iterations_this_session": 62,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 81
@@ -118,7 +115,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 81,
     "last_deploy_iteration": 81,
-    "current_iteration": 81,
+    "current_iteration": 82,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -139,6 +136,7 @@
     "BL-026": 98.03656575000008,
     "BL-049": 124.89217890000009,
     "BL-050": 126.25882920000019,
-    "BL-051": 135.25504920000046
+    "BL-051": 135.25504920000046,
+    "BL-052": 141.69885615000055
   }
 }

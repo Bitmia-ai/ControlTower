@@ -1,3 +1,9 @@
 {
-  "claims": {}
+  "claims": {
+    "BL-052": {
+      "instance": "main",
+      "claimed_at": "2026-04-25T01:42:00Z",
+      "title": "Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)"
+    }
+  }
 }
