@@ -5,8 +5,9 @@
 ### BL-056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
 - **Type:** feature
 - **Priority:** P2
-- **Status:** planned
+- **Status:** done
 - **Added:** 2026-04-25 (iter 85)
+- **Merged:** 2026-04-25 (iter 86)
 - **Spec:** docs/specs/BL-056-tab-redesign.md
 - **Details:**
   - The backlog, history, and live tabs need a visual redesign pass using the designer sub-agent and frontend skill

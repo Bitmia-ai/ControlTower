@@ -2,10 +2,10 @@
   "schema_version": 1,
   "iteration": 86,
   "started_at": "2026-04-25T07:55:09Z",
-  "phase": "MERGE",
-  "phase_status": "in-progress",
-  "worktree_path": "/Users/casa/ControlTower/.worktrees/BL-056",
-  "worktree_branch": "feat/bl-056-tab-redesign",
+  "phase": "TRIAGE",
+  "phase_status": "complete",
+  "worktree_path": null,
+  "worktree_branch": null,
   "backlog_item": "BL-056",
   "backlog_title": "Redesign backlog, history, and live tabs using designer sub-agent and frontend skill",
   "spec_file": "docs/specs/BL-056-tab-redesign.md",
@@ -37,7 +37,7 @@
     "branch": "feat/bl-056-tab-redesign",
     "last_good_deploy_tag": "last-good-deploy-iter86",
     "merge_status": "clean",
-    "notes": "Iter 86: TRIAGE+PLAN+BUILD+REVIEW+DEPLOY+VERIFY complete. BL-056. VERIFY: PASS — backlog/history/live tabs all healthy, no JS errors, tagged last-good-deploy-iter86. MERGE in-progress."
+    "notes": "Iter 86: FULL CYCLE complete. BL-056 (tab redesign) merged to main. 1 code commit. SectionHeader component, backlog/history/live redesigns, 646 tests pass. Tagged last-good-deploy-iter86."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -45,11 +45,16 @@
       "iteration": 86,
       "phases": [
         "TRIAGE",
-        "PLAN"
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "TRIAGE: BL-055 done, BL-056 (designer tab redesign backlog/history/live, P2) selected. No CEO questions, env healthy. PLAN: Spec written (6 sub-tasks). Worktree at .worktrees/BL-056 on feat/bl-056-tab-redesign. BUILD: All 6 sub-tasks done. T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons, hover states). T2 history redesign (SectionHeader Clock/GitBranch icons, section divider, SessionHistoryRow click-to-expand chevron). T3 live redesign (sticky toolbar, EmptyState, rounded-xl cards, session boundary pill). T4 SectionHeader component extracted. T5 646/646 unit tests pass (19 new). T6 E2E smoke spec added.",
-      "next": "REVIEW",
-      "timestamp": "2026-04-25T07:55:09Z"
+      "outcome": "BL-056 (tab redesign) full cycle complete. TRIAGE: BL-055 done, BL-056 selected. PLAN: Spec (6 sub-tasks). BUILD: T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons). T2 history (Clock/GitBranch icons, section divider, SessionHistoryRow chevron expand). T3 live (sticky toolbar, EmptyState, session boundary pill). T4 SectionHeader component. T5 646/646 tests (19 new). T6 E2E spec. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: build clean, 646/646 PASS. VERIFY: PASS — all 3 tabs healthy, no JS errors, tagged last-good-deploy-iter86. MERGE: 1 code commit merged cleanly to main, BL-056 marked done.",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T08:11:08Z"
     },
     {
       "iteration": 85,
@@ -110,10 +115,10 @@
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 65,
+    "iterations_this_session": 66,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
-    "full_regression_last_run": 83
+    "full_regression_last_run": 86
   },
   "health": {
     "confidence": "HIGH",
