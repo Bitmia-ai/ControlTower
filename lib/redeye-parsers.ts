@@ -101,6 +101,7 @@ export function parseBacklog(content: string): BacklogItem[] {
         details,
         spec: pickField(body, "Spec"),
         summary: pickField(body, "Summary"),
+        reason: pickField(body, "Reason"),
       });
     }
   }

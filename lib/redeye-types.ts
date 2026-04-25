@@ -102,6 +102,8 @@ export interface BacklogItem {
   cost_usd?: number;
   /** Single-line LLM-authored summary of what shipped. Written by CTO at VERIFY time. */
   summary?: string;
+  /** Rationale text from `**Reason:**` field — typically present on wont-do items. */
+  reason?: string;
 }
 
 export interface InboxQuestion {

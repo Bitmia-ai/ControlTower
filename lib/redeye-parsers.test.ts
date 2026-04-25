@@ -186,6 +186,31 @@ describe("parseBacklog", () => {
       spec: "docs/specs/BL-044.md",
     });
   });
+
+  it("extracts the Reason field on wont-do items (BL-065)", () => {
+    const content = `# Backlog\n\n## Won't Do\n\n### BL-099: Some rejected idea\n- **Type:** feature\n- **Priority:** P1\n- **Status:** wont-do\n- **Reason:** Superseded by BL-100 which covers the same requirement.\n`;
+    const items = parseBacklog(content);
+    expect(items).toHaveLength(1);
+    expect(items[0]).toMatchObject({
+      id: "BL-099",
+      status: "wontdo",
+      section: "wontdo",
+      reason: "Superseded by BL-100 which covers the same requirement.",
+    });
+  });
+
+  it("returns reason: undefined when the field is absent (BL-065)", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### BL-100: Active item\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseBacklog(content);
+    expect(items[0].reason).toBeUndefined();
+  });
+
+  it("does not coerce Reason from other fields (BL-065)", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### BL-101: Done with summary\n- **Type:** feature\n- **Status:** done\n- **Summary:** A summary text, not a reason.\n`;
+    const items = parseBacklog(content);
+    expect(items[0].summary).toBe("A summary text, not a reason.");
+    expect(items[0].reason).toBeUndefined();
+  });
 });
 
 // ---------------------------------------------------------------------------

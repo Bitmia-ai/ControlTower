@@ -68,7 +68,7 @@ unchanged.)
 
 ## Sub-tasks
 
-- [ ] T1 (status: pending) — Type + parser: add `reason` to `BacklogItem`, extract
+- [x] T1 (status: done) — Type + parser: add `reason` to `BacklogItem`, extract
       it in `parseBacklog`, add 3 unit tests.
 - [ ] T2 (status: pending) — UI: render reason in `WontDoItemRow`, export the
       component for testing, add 3 component tests.
