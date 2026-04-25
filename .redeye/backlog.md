@@ -5,7 +5,8 @@
 ### BL-074: "Working on" card height is different from "Controls" which is next to it. fix it
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 99)
 
 ### BL-073: steer tab, directives need to be rendered with markdown
 - **Type:** feature
