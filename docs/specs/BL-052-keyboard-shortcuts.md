@@ -205,9 +205,9 @@ will simply be a no-op on pages where the hook is not mounted).
 - [ ] `<kbd>` hint badges on Start, Stop, Pause, Add to Backlog buttons
 - [ ] Badges are `aria-hidden`
 - [ ] 4 new unit tests passing
-- [ ] No regressions in existing ControlsCard tests (13 existing tests still pass)
+- [x] No regressions in existing ControlsCard tests (13 existing tests still pass)
 
-**Status:** pending
+**Status:** done
 
 ---
 
