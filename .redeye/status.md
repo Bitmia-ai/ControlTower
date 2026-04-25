@@ -1,33 +1,41 @@
-# RedEye Status — Iteration 82 VERIFY
+# RedEye Status — Iteration 82 MERGE
 
-**Updated:** 2026-04-25T02:13:00Z
-**Phase:** VERIFY complete — HEALTHY
-**Active item:** BL-052 — Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
-**Branch:** feature/BL-052-keyboard-shortcuts
-**Worktree:** /Users/casa/ControlTower/.worktrees/BL-052
+**Updated:** 2026-04-25T02:16Z
+**Phase:** MERGE complete — ready for TRIAGE
+**Active item:** none (BL-052 done)
+**Branch:** main
+**Worktree:** /Users/casa/ControlTower/.worktrees/BL-052 (pending teardown by CTO)
 
 ---
 
-## VERIFY Result: PASS
+## MERGE Result: CLEAN
 
-| Check | Result |
-|-------|--------|
-| Verify command (`echo 'No verify command configured'`) | PASS (no-op) |
-| Visual check — home page | PASS — 3 project cards, Start/Stop buttons, BL-052 active on ControlTower card |
-| Visual check — project detail | Expected error state (no running agent; consistent with prior iterations) |
-| Critical bugs in tester-reports.md | 0 |
-| User tester feedback | No entry (tester respawn-pending) |
-| Deploy gate (build + 550/550 unit tests + E2E) | PASS (per DEPLOY phase) |
-| Kbd hint badges (S/X/P/B/GB/GH/GL) | PASS (confirmed via E2E; aria-hidden on all) |
-| BL-050 regression (toast system) | PASS |
-| BL-051 regression (cost sparkline) | PASS |
-| Last good deploy tag | last-good-deploy-iter82 |
+| Step | Result |
+|------|--------|
+| Unmerged commits | 6 |
+| Merge to main | PASS (add/add conflict on spec file resolved — feature branch wins) |
+| Worktree-only files restored | PASS |
+| Pull main back into worktree | PASS (fast-forward) |
+| Claims cleared | PASS (BL-052 removed, no stale claims) |
+| BL-052 marked done in backlog.md | PASS |
+| Summary authored | PASS |
+| state.json updated | PASS |
 
-**Environment:** HEALTHY
-**Confidence:** HIGH
+**merge_status:** clean
+
+---
+
+## Commits Merged (6)
+
+- `106773e` feat: add useKeyboardShortcuts hook with single-key + g-chord shortcuts (BL-052 task 1)
+- `f95b300` feat: add kbd hint badges to ControlsCard buttons (BL-052 task 2)
+- `b1aeeb1` feat: add kbd hint badges to project nav tabs (BL-052 task 3)
+- `39be318` feat: wire useKeyboardShortcuts into ProjectPage with dialog-aware enabled flag (BL-052 task 4)
+- `bb17128` chore: mark BL-052 task 5 (final sweep) done — 550 tests pass, build clean
+- `8da3113` test: add E2E spec for BL-052 keyboard shortcuts
 
 ---
 
 ## Next Phase
 
-MERGE — merge feature/BL-052-keyboard-shortcuts to main, clear claims, mark BL-052 done in backlog.md
+TRIAGE — pick up BL-053 (session history page, P2) or any new CEO requests.
