@@ -130,7 +130,7 @@ min-height wrapper naturally.
 - On desktop, row 1 (WorkingOn + Controls) both have at least 120px height.
 - Shorter cards in rows 3 and 4 no longer stretch to match their taller sibling.
 - `npx vitest run` passes.  
-**Status:** pending
+**Status:** done
 
 ---
 

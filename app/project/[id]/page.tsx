@@ -155,8 +155,8 @@ export default function ProjectPage({
           />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:items-start">
+          <div className="md:col-span-2 md:min-h-[120px]">
             <WorkingOnCard
               state={detail?.state ?? null}
               running={running}
@@ -166,7 +166,7 @@ export default function ProjectPage({
             />
           </div>
 
-          <div className="md:col-span-1">
+          <div className="md:col-span-1 md:min-h-[120px]">
             <ControlsCard
               running={running}
               stalled={stalled}
