@@ -2,14 +2,16 @@
   "schema_version": 1,
   "iteration": 95,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "TRIAGE",
-  "phase_status": "pending",
+  "phase": "waiting_for_ceo",
+  "phase_status": "blocked",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
   "backlog_title": null,
   "spec_file": null,
-  "phase_progress": {},
+  "phase_progress": {
+    "triage": "complete — all 64 backlog items done/wont-do. Backlog exhausted. Filed Q-011. Phase set to waiting_for_ceo."
+  },
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
@@ -31,10 +33,17 @@
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter94-bl063",
     "merge_status": "clean",
-    "notes": "BL-063 MERGE complete. Marked done in backlog.md. State advanced to TRIAGE iter 95. Backlog appears empty of P1 items — both BL-063 and BL-064 are now done."
+    "notes": "TRIAGE iter 95: backlog exhausted. Q-011 filed. Waiting for CEO direction."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 95,
+      "phases": ["TRIAGE"],
+      "outcome": "TRIAGE: env healthy. All 64 backlog items (BL-001–BL-064) done or wont-do. Backlog exhausted. Filed Q-011 asking CEO for next direction. Phase set to waiting_for_ceo.",
+      "next": "INCORPORATE (when CEO answers Q-011)",
+      "timestamp": "2026-04-25T11:10:00Z"
+    },
     {
       "iteration": 94,
       "phases": ["TRIAGE", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
@@ -73,7 +82,7 @@
   ],
   "counters": {
     "next_bl_id": 65,
-    "next_q_id": 11,
+    "next_q_id": 12,
     "next_cred_id": 1,
     "next_sched_id": 2
   },
@@ -86,13 +95,13 @@
   "health": {
     "confidence": "HIGH",
     "env_status": "healthy",
-    "iterations_since_last_deploy": 0,
+    "iterations_since_last_deploy": 1,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
     "last_verify_iteration": 94,
     "last_deploy_iteration": 94,
     "current_iteration": 95,
-    "questions_awaiting_ceo": 0,
+    "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
     "full_regression_overdue": false

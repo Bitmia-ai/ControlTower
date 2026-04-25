@@ -2,6 +2,19 @@
 
 ## Questions (Open)
 
+### Q-011: Backlog fully cleared — what should we build next? (after BL-001–064 complete)
+- **From:** CTO (TRIAGE iter 95)
+- **Context:** All 64 backlog items (BL-001 through BL-064) are now done or won't-do. The most recent items were BL-063 (Steer tab, iter 94) and BL-064 (cost plot scaling, iter 93), both fully shipped and merged.
+- **Question:** What features, improvements, or new capabilities should we tackle next?
+- **Options (suggestions):**
+  1. Performance improvements — page load speed, bundle size analysis, Lighthouse audit
+  2. Advanced filtering/sorting on the backlog page (filter by status, priority, type)
+  3. Multi-project improvements — bulk actions, project comparison, global cost overview
+  4. Export/reporting — export backlog to CSV/markdown, cost report PDF
+  5. User experience polish — onboarding flow, empty states, guided tour
+  6. Something else entirely — your call
+- **Default (7-day):** If no response received, proceed with option 1 (performance / Lighthouse audit)
+- **Asked:** 2026-04-25 (iter 95)
 
 ## Credentials Needed
 
