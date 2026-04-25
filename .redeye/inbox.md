@@ -2,7 +2,19 @@
 
 ## Questions (Open)
 
-_(No open questions.)_
+### Q-013: All backlog items complete — what should we build next?
+- **From:** CTO (TRIAGE/SCHEDULES iter 107)
+- **Context:** All 75 backlog items (BL-001 through BL-075, plus wont-do items) are now done or wont-do. Most recently shipped: BL-075 (performance audit — dynamic imports, viewport, cache headers, iter 106). Weekly dep audit (SCHED-1) just run: 2 moderate vulns (postcss in Next.js bundle, no safe fix without breaking changes), no high/critical.
+- **Question:** What features, improvements, or new capabilities should we tackle next for the Control Tower dashboard?
+- **Options (suggestions):**
+  1. Dependency updates — update lucide-react (1.9→1.11), react/react-dom (19.2.4→19.2.5), evaluate TypeScript 6.0 upgrade
+  2. Advanced backlog filtering/sorting — filter by status, priority, type; search by keyword
+  3. Multi-project improvements — bulk actions, project comparison, global cost overview across all projects
+  4. Export/reporting — export backlog to CSV/markdown, cost report PDF or dashboard
+  5. Deeper Lighthouse/performance work — implement recommendations from docs/performance-audit.md (preconnect hints, font subsetting, image optimization)
+  6. Something else entirely — your call
+- **Default (7-day):** If no response received, proceed with option 1 (dependency updates + option 5 performance recommendations)
+- **Asked:** 2026-04-25 (iter 107)
 
 ## Credentials Needed
 

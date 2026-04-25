@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 107,
   "started_at": "2026-04-25T21:40:53Z",
-  "phase": "SCHEDULES",
-  "phase_status": "in-progress",
+  "phase": "waiting_for_ceo",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
@@ -20,6 +20,14 @@
       "backlog_all_done": true,
       "selected_item": null,
       "notes": "Env healthy. 796/796 tests pass. Build clean. 2 overdue schedules (SCHED-1, SCHED-2). Backlog exhausted — all 75 items done or wont-do. Transitioning to SCHEDULES to handle overdue tasks before filing Q-013."
+    },
+    "schedules": {
+      "sched1_run": true,
+      "sched2_run": true,
+      "vulnerabilities_found": "2 moderate (postcss in next — not directly fixable without breaking Next.js)",
+      "high_critical": 0,
+      "backlog_items_filed": 0,
+      "notes": "SCHED-1 weekly dep audit: 2 moderate vulns (postcss XSS in Next.js bundle, no viable fix without breaking Next.js), no high/critical. Outdated: lucide-react 1.9→1.11, react 19.2.4→19.2.5, react-dom 19.2.4→19.2.5, typescript 5.9→6.0, @types/node 20→25. No backlog items required (no high/critical). SCHED-2 test schedule: trivial, marked complete. Both schedules updated to 2026-04-25T21:44:00Z."
     }
   },
   "review_cycles": 0,
@@ -43,16 +51,16 @@
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 107: env healthy, 796 tests, 2 overdue schedules, backlog exhausted. Running SCHEDULES phase."
+    "notes": "SCHEDULES iter 107: SCHED-1 dep audit complete (2 moderate vulns, no backlog items), SCHED-2 test schedule run. Both schedules updated. Transitioning to TRIAGE then Q-013 (backlog empty)."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 107,
       "phases": ["TRIAGE", "SCHEDULES"],
-      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules (SCHED-1 weekly dep audit, SCHED-2 test schedule), backlog exhausted (all 75 items done/wont-do). Transitioning to SCHEDULES.",
-      "next": "SCHEDULES iter 107",
-      "timestamp": "2026-04-25T21:43:00Z"
+      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules, backlog exhausted. SCHEDULES: SCHED-1 dep audit run — 2 moderate vulns (postcss in Next.js, no safe fix), no high/critical, no backlog items filed; SCHED-2 test schedule run. Both schedules updated.",
+      "next": "TRIAGE then Q-013 (backlog empty)",
+      "timestamp": "2026-04-25T21:44:30Z"
     },
     {
       "iteration": 106,
@@ -85,12 +93,12 @@
   ],
   "counters": {
     "next_bl_id": 76,
-    "next_q_id": 13,
+    "next_q_id": 14,
     "next_cred_id": 1,
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 78,
+    "iterations_this_session": 79,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -104,7 +112,7 @@
     "last_verify_iteration": 106,
     "last_deploy_iteration": 106,
     "current_iteration": 107,
-    "questions_awaiting_ceo": 0,
+    "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
     "full_regression_overdue": false

@@ -16,7 +16,7 @@ Each task follows:
 
 ### SCHED-1: Weekly dependency audit
 - **Frequency:** every 7 days
-- **Last run:** 1970-01-01T00:00:00Z
+- **Last run:** 2026-04-25T21:44:00Z
 - **Task:**
   1. Run `npm audit` and report vulnerabilities to `.redeye/tester-reports.md`
   2. Check for outdated packages with `npm outdated`
@@ -25,7 +25,7 @@ Each task follows:
 
 ### SCHED-2: Test Schedule
 - **Frequency:** weekly
-- **Last run:** 1970-01-01T00:00:00Z
+- **Last run:** 2026-04-25T21:44:00Z
 - **Task:**
   1. Step 1
   2. Step 2
