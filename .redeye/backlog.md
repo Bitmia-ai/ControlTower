@@ -21,7 +21,8 @@
 ### BL-072: Steer tab. we need to be able to edit/delete directives
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 101)
 
 ### BL-071: Apply the same design styles form the main page to all the other pages and tabs. use the design subagent and frond end skill
 - **Type:** feature
