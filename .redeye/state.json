@@ -46,14 +46,23 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete DEPLOY BL-058 \u2014 build clean, 662/662 tests pass (iteration 90)",
+    "last_commit": "redeye: merge BL-058 complete \u2014 schedules UI operative, 662/662 tests pass",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter90-bl058",
     "merge_status": "clean",
-    "notes": "BL-058 DEPLOY: production build clean (Turbopack). 662/662 unit tests pass. Tagged last-good-deploy-iter90-bl058."
+    "notes": "BL-058 MERGE: all code on main (no worktree used). Commits 8ac0872 (feat T1-T6) and 254f76b (RunButton sibling fix) both in main history. BL-058 done. Advancing to BUILD BL-061."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 92,
+      "phases": [
+        "MERGE"
+      ],
+      "outcome": "MERGE BL-058: all code already on main (no worktree). BL-058 commits 8ac0872 (feat T1-T6) and 254f76b (review fix: RunButton sibling) confirmed in main history. No conflicts. BL-058 marked done, Summary authored and present in backlog.md. Advancing to TRIAGE for BL-061 (remove kbd badges).",
+      "next": "BUILD BL-061",
+      "timestamp": "2026-04-25T10:30:00Z"
+    },
     {
       "iteration": 91,
       "phases": [
