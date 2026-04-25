@@ -36,8 +36,10 @@
 ### BL-070: we need to be able to add schedules form the schedule tab
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 102)
+- **Merged:** 2026-04-25 (iter 102)
+- **Summary:** Added schedule creation from the Schedules tab. POST /api/projects/[id]/schedules endpoint validates name, frequency, and steps, assigns the next SCHED-{id}, and writes the new entry to schedules.md. AddScheduleDialog Radix modal with name, frequency, steps, and optional description fields. Button added to page header and EmptyState. 31 new tests (762 total).
 
 ### BL-069: Directives int eh Steer tab need to be editable or deletable
 - **Type:** feature

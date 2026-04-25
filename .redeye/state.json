@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "iteration": 102,
+  "iteration": 103,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-070",
-  "backlog_title": "we need to be able to add schedules from the schedule tab",
-  "spec_file": "docs/specs/BL-070-add-schedule.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -27,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-072 — edit/delete directives complete (iteration 101)",
+    "last_commit": "redeye: merge BL-070 — schedule creation complete (iteration 102)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter101-bl072",
+    "last_good_deploy_tag": "last-good-deploy-iter102-bl070",
     "merge_status": "clean",
-    "notes": "MERGE iter 101: BL-072 edit/delete steer directives merged. 731/731 tests pass. Build clean. VERIFY: edit flow pre-fills source markdown text; save updates directive in view. Delete flow shows inline confirm panel; confirm removes directive from list. Dark mode correct. Transitioning to triage iter 102."
+    "notes": "MERGE iter 102: BL-070 schedule creation merged. 762/762 tests pass. Build clean. VERIFY: Add Schedule dialog opens from header button and EmptyState, submit disabled until name+frequency+steps filled, SCHED-2 Test Schedule appeared in list after submit. Transitioning to triage iter 103."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -39,11 +39,15 @@
       "iteration": 102,
       "phases": [
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "PLAN: spec docs/specs/BL-070-add-schedule.md — add POST /api/projects/[id]/schedules accepting { name, frequency, description?, steps[] }, sanitize each field via sanitizeMarkdownInput, scan max SCHED-N from schedules.md and assign next, append a parser-compatible block (Last run = epoch so it lands as Never run/overdue), best-effort commitAndPush. New AddScheduleDialog modal mirrors AddBacklogDialog pattern; wired into Schedules page header + EmptyState action. BUILD: T1 POST handler + 16 route tests (id pick, ENOENT seed, validation, sanitization, commit). T2 AddScheduleDialog + 8 unit tests (no jest-dom — used .disabled / .textContent assertions to match repo convention). T3 page header button + dialog state + 2 page tests + EmptyState action wired. 762/762 tests pass (was 731, +31 new). Build clean (Next.js 16 / Turbopack).",
-      "next": "REVIEW BL-070",
-      "timestamp": "2026-04-25T22:25:00Z"
+      "outcome": "PLAN: spec docs/specs/BL-070-add-schedule.md — add POST /api/projects/[id]/schedules accepting { name, frequency, description?, steps[] }, sanitize each field via sanitizeMarkdownInput, scan max SCHED-N from schedules.md and assign next, append a parser-compatible block (Last run = epoch so it lands as Never run/overdue), best-effort commitAndPush. New AddScheduleDialog modal mirrors AddBacklogDialog pattern; wired into Schedules page header + EmptyState action. BUILD: T1 POST handler + 16 route tests (id pick, ENOENT seed, validation, sanitization, commit). T2 AddScheduleDialog + 8 unit tests. T3 page header button + dialog state + 2 page tests + EmptyState action wired. 762/762 tests pass (was 731, +31 new). Build clean. REVIEW: M-tier (8 files). 0C/0M/0m — sanitizeMarkdownInput applied to all user fields (name/frequency/steps each), path traversal guard in schedulesPath(), readJsonBody 16KB cap + Content-Type:application/json enforcement, description accepted but silently dropped from file (correct). DEPLOY: build clean, 762/762 tests pass. VERIFY: dialog opens from header button, submit disabled until all 3 fields filled, SCHED-2 Test Schedule appeared in list after submit, count updated to 2. Screenshot taken. MERGE: BL-070 marked done. Cost delta ~$52.84. Transitioned to triage iter 103.",
+      "next": "TRIAGE iter 103",
+      "timestamp": "2026-04-25T22:30:00Z"
     },
     {
       "iteration": 101,
@@ -238,9 +242,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 101,
-    "last_deploy_iteration": 101,
-    "current_iteration": 102,
+    "last_verify_iteration": 102,
+    "last_deploy_iteration": 102,
+    "current_iteration": 103,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -263,7 +267,8 @@
     "BL-071": 50.40187815,
     "BL-074": 0,
     "BL-073": 1.54,
-    "BL-072": 3.46
+    "BL-072": 3.46,
+    "BL-070": 52.84
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
