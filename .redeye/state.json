@@ -3,7 +3,7 @@
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "VERIFY",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-058",
@@ -30,7 +30,9 @@
       "Major: next_sched_id counter stale at 1 after SCHED-1 created \u2014 now corrected to 2"
     ],
     "deploy_complete": true,
-    "deploy_notes": "Production build clean (Turbopack). 662/662 unit tests pass. No E2E CLI configured. Tagged last-good-deploy-iter90-bl058."
+    "deploy_notes": "Production build clean (Turbopack). 662/662 unit tests pass. No E2E CLI configured. Tagged last-good-deploy-iter90-bl058.",
+    "verify_complete": true,
+    "verify_notes": "662/662 tests pass. Tags exist (last-good-deploy-iter90-bl058, last-good-deploy-iter90). schedules/run route present. SCHED-1 in schedules.md. 0 tester bugs. PASS."
   },
   "review_cycles": 2,
   "max_review_cycles": 3,
@@ -57,6 +59,15 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 91,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY PASS: 662/662 tests pass. schedules/run API route present. SCHED-1 in schedules.md. 0 tester bugs. Tags last-good-deploy-iter90-bl058 confirmed.",
+      "next": "TRIAGE -> PLAN BL-061",
+      "timestamp": "2026-04-25T10:19:41Z"
+    },
     {
       "iteration": 90,
       "phases": [
@@ -104,21 +115,6 @@
       "outcome": "TRIAGE: All BL-001\u2013056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T08:14:44Z"
-    },
-    {
-      "iteration": 86,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-056 (tab redesign) full cycle complete. TRIAGE: BL-055 done, BL-056 selected. PLAN: Spec (6 sub-tasks). BUILD: T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons). T2 history (Clock/GitBranch icons, section divider, SessionHistoryRow chevron expand). T3 live (sticky toolbar, EmptyState, session boundary pill). T4 SectionHeader component. T5 646/646 tests (19 new). T6 E2E spec. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: build clean, 646/646 PASS. VERIFY: PASS \u2014 all 3 tabs healthy, no JS errors, tagged last-good-deploy-iter86. MERGE: 1 code commit merged cleanly to main, BL-056 marked done.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T08:11:08Z"
     }
   ],
   "counters": {
@@ -139,7 +135,7 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 90,
+    "last_verify_iteration": 91,
     "last_deploy_iteration": 90,
     "current_iteration": 90,
     "questions_awaiting_ceo": 0,
