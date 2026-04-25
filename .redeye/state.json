@@ -3,7 +3,7 @@
   "iteration": 92,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "VERIFY",
-  "phase_status": "in-progress",
+  "phase_status": "pass",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-062",
@@ -12,8 +12,10 @@
   "phase_progress": {
     "triage_notes": "BL-058 done (schedules UI), BL-061 done (kbd badges removed), BL-060 done. Env healthy: build clean, 656/656 tests pass. No tester bugs, no inbox questions. Schedules not overdue. 3 pending P1 items: BL-062, BL-063, BL-064. Selected BL-062 (oldest P1): fix inconsistent card sizes on main project screen.",
     "plan_notes": "Spec written: 5 sub-tasks (all S). Root cause: CSS Grid stretch + sparkline preserveAspectRatio=none. Fix: items-start on grid, min-h-[120px] on row-1 card wrappers, proportional SVG in sparkline. No new dependencies.",
-    "build_notes": "BL-062 BUILD complete. T1: md:items-start on grid + md:min-h-[120px] wrappers (page.tsx). T2: sparkline preserveAspectRatio=xMidYMid meet, removed fixed height (sparkline-chart.tsx + test). T3: max-h-[72px] overflow-hidden wrapper around sparkline (cost-card.tsx + test). T4: h-full on WorkingOnCard + ControlsCard root divs so the card background fills the min-h wrapper. T5: 657/657 tests pass, npm run build clean. E2E spec added: e2e/card-sizing.spec.ts (4 tests covering grid alignment, row-1 min-h, sparkline aspect, sparkline cap).",
-    "review_notes": "REVIEW cycle 1: 0C/0M/0m. All changes match spec. Grid items-start correct. min-h-[120px] md-scoped. h-full fills wrappers. sparkline preserveAspectRatio=xMidYMid meet correct. max-h-[72px] cap correct. 657/657 pass. PASS — cleared for DEPLOY."
+    "build_notes": "BL-062 BUILD complete. T1: md:items-start on grid + md:min-h-[120px] wrappers (page.tsx). T2: sparkline preserveAspectRatio=xMidYMid meet, removed fixed height (sparkline-chart.tsx + test). T3: max-h-[72px] overflow-hidden wrapper around sparkline (cost-card.tsx + test). T4: h-full on WorkingOnCard + ControlsCard root divs so the card background fills the min-h wrapper. T5: 657/657 tests pass, npm run build clean.",
+    "review_notes": "REVIEW cycle 1: 0C/0M/0m. All changes match spec. Grid items-start correct. min-h-[120px] md-scoped. h-full fills wrappers. sparkline preserveAspectRatio=xMidYMid meet correct. max-h-[72px] cap correct. 657/657 pass. PASS — cleared for DEPLOY.",
+    "deploy_notes": "DEPLOY: production build clean (Turbopack, ✓ Compiled). 657/657 tests pass. Tagged last-good-deploy-iter92-bl062.",
+    "verify_notes": "VERIFY PASS: grid has md:items-start confirmed in page.tsx. md:min-h-[120px] on both row-1 wrappers. h-full on WorkingOnCard and ControlsCard. preserveAspectRatio=xMidYMid meet, no height attr on SVG. max-h-[72px] overflow-hidden on sparkline wrapper. 657/657 tests pass. 0 tester bugs. Tag last-good-deploy-iter92-bl062 present."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -32,14 +34,28 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-061 complete — kbd badges removed, 656/656 tests pass",
+    "last_commit": "redeye: complete DEPLOY BL-062, start VERIFY — 657/657 pass, build clean, tagged iter92-bl062 (iteration 92)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter92-bl062",
     "merge_status": "clean",
-    "notes": "BL-061 MERGE: commit a05c1d0 on main. Removed <kbd> badge elements from project-nav.tsx and controls-card.tsx. 656/656 tests pass. Build clean. BL-061 done. Advancing to TRIAGE."
+    "notes": "BL-062 VERIFY PASS: all card sizing fixes confirmed on main. Items-start grid, min-h-[120px] row-1 wrappers, h-full card fill, proportional sparkline, 72px cap. 657/657 tests pass. Build clean."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 92,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "BL-062 full cycle complete through VERIFY. TRIAGE: env healthy, BL-062 selected. PLAN: spec written (5 sub-tasks, root cause CSS grid stretch + sparkline aspect ratio). BUILD: T1 md:items-start + md:min-h-[120px] (page.tsx), T2 sparkline preserveAspectRatio=xMidYMid meet + no fixed height, T3 max-h-[72px] overflow-hidden wrapper (cost-card.tsx), T4 h-full on WorkingOnCard + ControlsCard. T5 657/657 tests pass, build clean. REVIEW: 0C/0M/0m, PASS. DEPLOY: build clean, tagged last-good-deploy-iter92-bl062. VERIFY: all artifact checks pass, 657/657 tests.",
+      "next": "MERGE BL-062",
+      "timestamp": "2026-04-25T10:41:35Z"
+    },
     {
       "iteration": 91,
       "phases": [
@@ -64,16 +80,6 @@
       "timestamp": "2026-04-25T10:25:10Z"
     },
     {
-      "iteration": 91,
-      "phases": [
-        "VERIFY",
-        "TRIAGE"
-      ],
-      "outcome": "VERIFY PASS: 662/662 tests pass. schedules/run API route present. SCHED-1 in schedules.md. 0 tester bugs. Tags last-good-deploy-iter90-bl058 confirmed. TRIAGE: BL-058 confirmed done, BL-061 selected (remove kbd badges).",
-      "next": "PLAN BL-061",
-      "timestamp": "2026-04-25T10:19:41Z"
-    },
-    {
       "iteration": 90,
       "phases": [
         "INCORPORATE",
@@ -95,31 +101,6 @@
       "outcome": "TRIAGE: All BL-001–057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T11:10:00Z"
-    },
-    {
-      "iteration": 88,
-      "phases": [
-        "INCORPORATE",
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-057 (mobile-responsive layout) full cycle complete. INCORPORATE: Q-009 answered, BL-057 added. TRIAGE: env healthy, BL-057 selected. PLAN: spec written (8 sub-tasks). BUILD: T1-T8 complete, Tailwind responsive classes across 12 files, 2 new test files (responsive.test.tsx, mobile-responsive.spec.ts), 651/651 tests pass. REVIEW: 1 cycle, PASS. DEPLOY: build clean. VERIFY: PASS — no horizontal scroll at 375px, all pages render correctly, 0 JS errors, 0 tester bugs, tagged last-good-deploy-iter88. MERGE: 1 code commit merged cleanly to main (SHA 18a74a1), 14 files changed (259 insertions), BL-057 marked done.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T11:05:00Z"
-    },
-    {
-      "iteration": 87,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "TRIAGE: All BL-001–056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
-      "next": "waiting_for_ceo",
-      "timestamp": "2026-04-25T08:14:44Z"
     }
   ],
   "counters": {
@@ -129,10 +110,10 @@
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 72,
+    "iterations_this_session": 73,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
-    "full_regression_last_run": 91
+    "full_regression_last_run": 92
   },
   "health": {
     "confidence": "HIGH",
@@ -140,9 +121,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 91,
-    "last_deploy_iteration": 91,
-    "current_iteration": 91,
+    "last_verify_iteration": 92,
+    "last_deploy_iteration": 92,
+    "current_iteration": 92,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
