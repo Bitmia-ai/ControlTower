@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ChevronRight } from "lucide-react";
 import type { ClaudeStreamEvent } from "@/lib/redeye-types";
+
+// Mono uppercase eyebrow used as the per-card identity label. Matches the
+// CARD-LABEL token used across the rest of the precision-instrument design
+// system (SectionHeader, page eyebrows). Color is layered on per card type.
+const CARD_LABEL =
+  "font-mono text-[10px] uppercase tracking-[0.18em]";
 
 /**
  * Walk backwards from `index - 1` looking for the nearest assistant/tool_use
@@ -62,21 +69,24 @@ function ToolUseCard({
 }) {
   const { open, toggle } = useOpenState(forceOpen);
   return (
-    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-indigo-500/60 dark:border-l-indigo-400/50 rounded-xl overflow-hidden">
       <button
         onClick={toggle}
         aria-label={open ? "Collapse tool call" : "Expand tool call"}
         aria-expanded={open}
-        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-700 transition"
+        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition"
       >
-        <span className="text-xs text-gray-400 dark:text-zinc-500">{open ? "▼" : "▶"}</span>
-        <span className="text-xs font-mono text-yellow-600 dark:text-yellow-400">
+        <ChevronRight
+          className={`w-3.5 h-3.5 text-gray-400 dark:text-zinc-500 transition-transform ${open ? "rotate-90" : ""}`}
+          aria-hidden="true"
+        />
+        <span className={`${CARD_LABEL} text-indigo-600 dark:text-indigo-400`}>tool call</span>
+        <span className="text-xs font-mono text-indigo-700 dark:text-indigo-300 ml-1">
           {event.tool_name ?? "tool_use"}
         </span>
-        <span className="text-xs text-gray-400 dark:text-zinc-500 ml-1">tool call</span>
       </button>
       {open && event.tool_input && (
-        <div className="px-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
+        <div className="px-4 pb-3 border-t border-gray-100 dark:border-zinc-800">
           <pre className="text-xs text-gray-700 dark:text-zinc-300 font-mono overflow-x-auto mt-2 whitespace-pre-wrap break-all">
             {JSON.stringify(event.tool_input, null, 2)}
           </pre>
@@ -99,16 +109,19 @@ function ToolResultCard({
   const label = toolName ?? "tool result";
   const preview = firstNonEmptyLine(event.content);
   return (
-    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-cyan-500/50 dark:border-l-cyan-400/40 rounded-xl overflow-hidden">
       <button
         onClick={toggle}
         aria-label={open ? `Collapse ${label} result` : `Expand ${label} result`}
         aria-expanded={open}
-        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-700 transition"
+        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition"
       >
-        <span className="text-xs text-gray-400 dark:text-zinc-500">{open ? "▼" : "▶"}</span>
-        <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400">{label}</span>
-        <span className="text-xs text-gray-400 dark:text-zinc-500 ml-1">result</span>
+        <ChevronRight
+          className={`w-3.5 h-3.5 text-gray-400 dark:text-zinc-500 transition-transform ${open ? "rotate-90" : ""}`}
+          aria-hidden="true"
+        />
+        <span className={`${CARD_LABEL} text-cyan-600 dark:text-cyan-400`}>result</span>
+        <span className="text-xs font-mono text-cyan-700 dark:text-cyan-300 ml-1">{label}</span>
         {preview && (
           <span className="text-xs text-gray-500 dark:text-zinc-500 truncate ml-2 font-mono">
             {preview}
@@ -116,7 +129,7 @@ function ToolResultCard({
         )}
       </button>
       {open && event.content && (
-        <div className="px-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
+        <div className="px-4 pb-3 border-t border-gray-100 dark:border-zinc-800">
           <pre className="text-xs text-gray-700 dark:text-zinc-300 font-mono overflow-x-auto mt-2 whitespace-pre-wrap break-all">
             {event.content}
           </pre>
@@ -136,15 +149,18 @@ function ThinkingCard({
   const { open, toggle } = useOpenState(forceOpen);
   const preview = firstNonEmptyLine(event.content);
   return (
-    <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800 rounded-xl overflow-hidden">
+    <div className="bg-violet-50/40 dark:bg-violet-950/15 border border-violet-200/60 dark:border-violet-900/50 border-l-2 border-l-violet-500/60 dark:border-l-violet-400/50 rounded-xl overflow-hidden">
       <button
         onClick={toggle}
         aria-label={open ? "Collapse thinking" : "Expand thinking"}
         aria-expanded={open}
-        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-violet-100 dark:hover:bg-violet-900/30 transition"
+        className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-violet-100/40 dark:hover:bg-violet-900/20 transition"
       >
-        <span className="text-xs text-violet-400 dark:text-violet-500">{open ? "▼" : "▶"}</span>
-        <span className="text-xs font-medium text-violet-700 dark:text-violet-300">
+        <ChevronRight
+          className={`w-3.5 h-3.5 text-violet-400 dark:text-violet-500 transition-transform ${open ? "rotate-90" : ""}`}
+          aria-hidden="true"
+        />
+        <span className={`${CARD_LABEL} text-violet-600 dark:text-violet-400`}>
           Thinking…
         </span>
         {preview && (
@@ -154,8 +170,8 @@ function ThinkingCard({
         )}
       </button>
       {open && event.content && (
-        <div className="px-4 pb-3 border-t border-violet-200 dark:border-violet-800">
-          <p className="text-sm text-violet-800 dark:text-violet-200 whitespace-pre-wrap mt-2 leading-relaxed">
+        <div className="px-4 pb-3 border-t border-violet-200/60 dark:border-violet-900/40">
+          <p className="text-sm text-violet-900/80 dark:text-violet-200/90 whitespace-pre-wrap mt-2 leading-relaxed italic">
             {event.content}
           </p>
         </div>
@@ -166,10 +182,10 @@ function ThinkingCard({
 
 function AssistantTextCard({ event }: { event: ClaudeStreamEvent }) {
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-red-500 rounded-xl px-4 py-3">
-      <p className="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Claude</p>
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-red-500 rounded-xl px-4 py-3.5 shadow-sm">
+      <p className={`${CARD_LABEL} text-red-600 dark:text-red-400 mb-1.5`}>Claude</p>
       {event.content && (
-        <p className="text-sm text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">
+        <p className="text-[15px] text-gray-900 dark:text-zinc-100 leading-relaxed whitespace-pre-wrap">
           {event.content}
         </p>
       )}
@@ -179,26 +195,28 @@ function AssistantTextCard({ event }: { event: ClaudeStreamEvent }) {
 
 function ResultCard({ event }: { event: ClaudeStreamEvent }) {
   return (
-    <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3">
-      <p className="text-xs uppercase tracking-wide text-gray-400 dark:text-zinc-500 mb-2">
+    <div className="bg-gray-50 dark:bg-zinc-900/60 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-zinc-400 dark:border-l-zinc-600 rounded-xl px-4 py-3">
+      <p className={`${CARD_LABEL} text-gray-500 dark:text-zinc-400 mb-2`}>
         Session Result
       </p>
       {event.content && (
-        <p className="text-sm text-gray-700 dark:text-zinc-300 mb-2">{event.content}</p>
+        <p className="text-sm text-gray-700 dark:text-zinc-300 mb-2 leading-relaxed">
+          {event.content}
+        </p>
       )}
       {event.usage && (
-        <div className="flex gap-4 text-xs text-gray-500 dark:text-zinc-500">
-          <span>In: {event.usage.input_tokens.toLocaleString()} tokens</span>
-          <span>Out: {event.usage.output_tokens.toLocaleString()} tokens</span>
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-zinc-500 font-mono tabular-nums">
+          <span>In: {event.usage.input_tokens.toLocaleString()}</span>
+          <span>Out: {event.usage.output_tokens.toLocaleString()}</span>
           {event.usage.cache_read_input_tokens != null && (
             <span>
-              Cache: {event.usage.cache_read_input_tokens.toLocaleString()} tokens
+              Cache: {event.usage.cache_read_input_tokens.toLocaleString()}
             </span>
           )}
         </div>
       )}
       {event.cost != null && (
-        <p className="text-xs text-gray-500 dark:text-zinc-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-zinc-500 mt-1 font-mono tabular-nums">
           Cost: ${event.cost.toFixed(4)}
         </p>
       )}
@@ -232,11 +250,11 @@ export function TranscriptViewer({
         if ((event.type as string) === "__session_boundary__") {
           return (
             <div key={i} className="flex items-center gap-3 py-2 my-1">
-              <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-700" />
-              <span className="text-[10px] font-medium text-gray-400 dark:text-zinc-500 shrink-0 px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 uppercase tracking-wide">
+              <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-800" />
+              <span className={`${CARD_LABEL} shrink-0 px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400`}>
                 New session
               </span>
-              <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-700" />
+              <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-800" />
             </div>
           );
         }
@@ -277,9 +295,9 @@ export function TranscriptViewer({
         return (
           <div
             key={i}
-            className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-2"
+            className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-zinc-300 dark:border-l-zinc-700 rounded-xl px-4 py-2"
           >
-            <p className="text-xs text-gray-400 dark:text-zinc-600 uppercase tracking-wide mb-0.5">
+            <p className={`${CARD_LABEL} text-gray-400 dark:text-zinc-600 mb-0.5`}>
               {event.type}
             </p>
             {event.content && (

@@ -239,6 +239,78 @@ describe("TranscriptViewer — aria-labels on toggles (BL-024)", () => {
   });
 });
 
+describe("TranscriptViewer — BL-068 precision-instrument design tokens", () => {
+  it("ToolUseCard renders a CARD-LABEL eyebrow ('tool call') with mono uppercase tracking and an indigo left rail", () => {
+    const event: ClaudeStreamEvent = {
+      type: "assistant",
+      subtype: "tool_use",
+      tool_name: "Bash",
+      tool_input: { command: "ls" },
+    };
+    const { container } = render(<TranscriptViewer events={[event]} />);
+    // CARD-LABEL token: font-mono + uppercase tracking, applied to the
+    // "tool call" eyebrow, not just plain text-xs font-mono.
+    const labels = Array.from(container.querySelectorAll("span")).filter(
+      (s) => s.textContent === "tool call"
+    );
+    expect(labels.length).toBe(1);
+    expect(labels[0].className).toContain("font-mono");
+    expect(labels[0].className).toContain("uppercase");
+    expect(labels[0].className).toContain("tracking-[0.18em]");
+    // Indigo identity rail
+    expect(container.querySelector(".border-l-indigo-500\\/60")).toBeTruthy();
+  });
+
+  it("ToolResultCard renders a CARD-LABEL eyebrow ('result') and a cyan left rail", () => {
+    const events: ClaudeStreamEvent[] = [
+      { type: "assistant", subtype: "tool_use", tool_name: "Read", tool_input: {} },
+      { type: "user", subtype: "tool_result", content: "ok" },
+    ];
+    const { container } = render(<TranscriptViewer events={events} />);
+    const resultLabels = Array.from(container.querySelectorAll("span")).filter(
+      (s) => s.textContent === "result"
+    );
+    expect(resultLabels.length).toBe(1);
+    expect(resultLabels[0].className).toContain("font-mono");
+    expect(resultLabels[0].className).toContain("uppercase");
+    expect(resultLabels[0].className).toContain("tracking-[0.18em]");
+    expect(container.querySelector(".border-l-cyan-500\\/50")).toBeTruthy();
+  });
+
+  it("AssistantTextCard 'Claude' label uses CARD-LABEL token", () => {
+    const event: ClaudeStreamEvent = {
+      type: "assistant",
+      subtype: "text",
+      content: "Hello.",
+    };
+    const { container } = render(<TranscriptViewer events={[event]} />);
+    const claudeLabel = Array.from(container.querySelectorAll("p")).find(
+      (p) => p.textContent === "Claude"
+    );
+    expect(claudeLabel).toBeTruthy();
+    expect(claudeLabel!.className).toContain("font-mono");
+    expect(claudeLabel!.className).toContain("uppercase");
+    expect(claudeLabel!.className).toContain("tracking-[0.18em]");
+  });
+
+  it("ThinkingCard keeps the violet identity but adds a violet left rail", () => {
+    const event: ClaudeStreamEvent = {
+      type: "assistant",
+      subtype: "thinking",
+      content: "Reasoning step.",
+    };
+    const { container } = render(<TranscriptViewer events={[event]} />);
+    expect(container.querySelector(".border-l-violet-500\\/60")).toBeTruthy();
+    // CARD-LABEL on the "Thinking…" eyebrow
+    const labels = Array.from(container.querySelectorAll("span")).filter(
+      (s) => s.textContent === "Thinking…"
+    );
+    expect(labels.length).toBe(1);
+    expect(labels[0].className).toContain("font-mono");
+    expect(labels[0].className).toContain("uppercase");
+  });
+});
+
 describe("findPrecedingToolName", () => {
   it("returns the nearest preceding assistant/tool_use tool name", () => {
     const events: ClaudeStreamEvent[] = [

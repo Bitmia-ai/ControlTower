@@ -95,7 +95,7 @@ but no longer claims the role of being the page header.
 - **T1 (S) [done]:** Apply standard precision-instrument page header to
   `app/project/[id]/live/page.tsx`, plus refresh sticky-toolbar border tokens
   to match the rest of the app
-- **T2 (M) [in-progress]:** Restyle the five card types in
+- **T2 (M) [done]:** Restyle the five card types in
   `components/transcript-viewer.tsx` per the table above — `border-l-2`
   identity rails, mono `CARD-LABEL` eyebrows in accent colors, replace
   unicode carets with `ChevronRight` rotation. Preserve every existing test
