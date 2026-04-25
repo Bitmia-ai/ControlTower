@@ -36,7 +36,8 @@
 ### BL-070: we need to be able to add schedules form the schedule tab
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 102)
 
 ### BL-069: Directives int eh Steer tab need to be editable or deletable
 - **Type:** feature
