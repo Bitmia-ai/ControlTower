@@ -53,8 +53,9 @@
 ### BL-049: Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
 - **Type:** test
 - **Priority:** P1
-- **Status:** planned
+- **Status:** in-progress
 - **Added:** 2026-04-25 (iter 79)
+- **Spec:** docs/specs/BL-049-e2e-test-coverage.md
 - **Details:**
   - Current Playwright coverage is limited to smoke tests and the logo mark
   - Add three new E2E specs:
