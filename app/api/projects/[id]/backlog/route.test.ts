@@ -18,6 +18,11 @@ vi.mock("fs/promises", () => ({
   },
 }));
 
+// Stub the git commit+push helper so tests don't shell out to git.
+vi.mock("@/lib/git-commit-push", () => ({
+  commitAndPush: vi.fn(async () => ({ committed: true, pushed: true })),
+}));
+
 import { POST } from "./route";
 import { getProjectByIndex } from "@/lib/projects";
 import { getNextBacklogId } from "@/lib/backlog-id";

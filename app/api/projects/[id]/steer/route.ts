@@ -3,6 +3,7 @@ import { getProjectByIndex } from "@/lib/projects";
 import { readSteering, safeRedeyePath } from "@/lib/redeye-files";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { readJsonBody } from "@/lib/json-body";
+import { commitAndPush } from "@/lib/git-commit-push";
 import fs from "fs/promises";
 
 const MAX_BODY_BYTES = 64 * 1024;
@@ -77,7 +78,16 @@ export async function POST(
 
     await fs.writeFile(steeringPath, content, "utf-8");
 
-    return NextResponse.json({ data: { success: true } });
+    // Commit + push so TRIAGE's sync-from-main doesn't wipe this on the
+    // next iteration. Best-effort — never fail the request just because
+    // git is unhappy; the file is still on disk for now.
+    const { committed, pushed } = await commitAndPush(
+      project.path,
+      [".redeye/steering.md"],
+      "ceo: add steering directive (via dashboard)"
+    );
+
+    return NextResponse.json({ data: { success: true, committed, pushed } });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to add directive" },

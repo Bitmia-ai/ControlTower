@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
 import { safeRedeyePath } from "@/lib/redeye-files";
+import { commitAndPush } from "@/lib/git-commit-push";
 import fs from "fs/promises";
 
 export async function POST(
@@ -38,7 +39,15 @@ export async function POST(
 
     await fs.writeFile(steeringPath, content, "utf-8");
 
-    return NextResponse.json({ data: { success: true } });
+    // Commit + push so TRIAGE's sync-from-main doesn't wipe the PAUSE
+    // directive on the next iteration. Best-effort.
+    const { committed, pushed } = await commitAndPush(
+      project.path,
+      [".redeye/steering.md"],
+      "ceo: PAUSE directive (via dashboard)"
+    );
+
+    return NextResponse.json({ data: { success: true, committed, pushed } });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to pause" },

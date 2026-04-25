@@ -5,6 +5,7 @@ import { atomicWriteJson } from "@/lib/atomic-write";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { readJsonBody } from "@/lib/json-body";
+import { commitAndPush } from "@/lib/git-commit-push";
 import fs from "fs/promises";
 
 const QUESTION_ID_RE = /^Q-\d+$/;
@@ -102,6 +103,16 @@ export async function POST(
       console.error("[POST /answer] Failed to update state.json health counters:", stateErr);
     }
 
+    // Commit + push so TRIAGE's inbox sync-from-main re-reads the same
+    // answer instead of overwriting our local edit. Best-effort. Includes
+    // both inbox.md (the answer) and state.json (the decremented health
+    // counter) so they land atomically as one commit.
+    const { committed, pushed } = await commitAndPush(
+      project.path,
+      [".redeye/inbox.md", ".redeye/state.json"],
+      `ceo: answer ${questionId} (via dashboard)`
+    );
+
     // Auto-resume the CTO loop if it had stopped waiting on this answer.
     let resumed = false;
     try {
@@ -114,7 +125,7 @@ export async function POST(
       console.error("[POST /answer] Failed to auto-resume CTO:", sessionErr);
     }
 
-    return NextResponse.json({ data: { success: true, resumed } });
+    return NextResponse.json({ data: { success: true, resumed, committed, pushed } });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to write answer" },

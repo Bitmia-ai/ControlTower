@@ -5,6 +5,7 @@ import { getSessionStatus, startSession } from "@/lib/session-manager";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { readJsonBody } from "@/lib/json-body";
+import { commitAndPush } from "@/lib/git-commit-push";
 import fs from "fs/promises";
 
 const MAX_BODY_BYTES = 64 * 1024;
@@ -73,6 +74,14 @@ export async function POST(
 
     await fs.writeFile(backlogPath, content, "utf-8");
 
+    // Commit + push so TRIAGE's CEO Requests sync-from-main doesn't drop
+    // this item on the next iteration. Best-effort.
+    const { committed, pushed } = await commitAndPush(
+      project.path,
+      [".redeye/backlog.md"],
+      `ceo: add backlog item ${itemId} (via dashboard)`
+    );
+
     let resumed = false;
     try {
       const session = getSessionStatus(project.path);
@@ -84,7 +93,7 @@ export async function POST(
       console.error("[POST /backlog] Failed to auto-resume CTO:", sessionErr);
     }
 
-    return NextResponse.json({ data: { success: true, id: itemId, resumed } });
+    return NextResponse.json({ data: { success: true, id: itemId, resumed, committed, pushed } });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to add backlog item" },

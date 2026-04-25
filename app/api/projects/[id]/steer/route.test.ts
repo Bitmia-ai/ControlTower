@@ -22,24 +22,10 @@ vi.mock("fs/promises", () => ({
   },
 }));
 
-// Stub child_process.spawn so the route's commit-and-push flow doesn't
-// shell out during tests. We synthesise a minimal EventEmitter-like
-// object that emits `close` with code 0, so the route believes git
-// succeeded and reports { committed: true, pushed: true }.
-vi.mock("child_process", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("child_process")>();
-  const { EventEmitter } = await import("events");
-  const spawnStub = vi.fn(() => {
-    const proc = new EventEmitter();
-    setImmediate(() => proc.emit("close", 0));
-    return proc;
-  });
-  return {
-    ...actual,
-    spawn: spawnStub,
-    default: { ...actual, spawn: spawnStub },
-  };
-});
+// Stub the git commit+push helper so tests don't shell out to git.
+vi.mock("@/lib/git-commit-push", () => ({
+  commitAndPush: vi.fn(async () => ({ committed: true, pushed: true })),
+}));
 
 import { GET, POST } from "./route";
 import { getProjectByIndex } from "@/lib/projects";
