@@ -4,6 +4,8 @@ import {
   parseInbox,
   parseChangelog,
   parseSteering,
+  parseSchedules,
+  parseDurationMs,
 } from "./redeye-parsers";
 
 // ---------------------------------------------------------------------------
@@ -411,5 +413,161 @@ describe("parseSteering", () => {
     const directives = parseSteering(content);
     expect(directives).toHaveLength(1);
     expect(directives[0].text).toBe("Valid directive");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseDurationMs
+// ---------------------------------------------------------------------------
+
+describe("parseDurationMs", () => {
+  it("parses hours", () => {
+    expect(parseDurationMs("every 2h")).toBe(2 * 3600 * 1000);
+  });
+
+  it("parses days", () => {
+    expect(parseDurationMs("every 7d")).toBe(7 * 86400 * 1000);
+  });
+
+  it("parses weeks", () => {
+    expect(parseDurationMs("every 1w")).toBe(7 * 86400 * 1000);
+  });
+
+  it("returns null for unrecognised unit", () => {
+    expect(parseDurationMs("every 30m")).toBeNull();
+  });
+
+  it("returns null for empty string", () => {
+    expect(parseDurationMs("")).toBeNull();
+  });
+
+  it("handles decimal values", () => {
+    expect(parseDurationMs("every 1.5h")).toBe(1.5 * 3600 * 1000);
+  });
+
+  it("is case-insensitive for unit", () => {
+    expect(parseDurationMs("every 3D")).toBe(3 * 86400 * 1000);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseSchedules
+// ---------------------------------------------------------------------------
+
+const SAMPLE_SCHEDULES_MD = `# Scheduled Tasks
+
+### SCHED-001: Weekly security audit
+- **Frequency:** every 7d
+- **Last run:** 2026-04-18T10:00:00Z
+- **Task:**
+  1. Review recent commits for potential security issues
+  2. Check for outdated dependencies
+- **Assigned to:** Security Reviewer
+
+### SCHED-002: Hourly health check
+- **Frequency:** every 1h
+- **Last run:** 2026-04-25T06:00:00Z
+- **Task:**
+  1. Ping all services
+- **Assigned to:** Ops
+`;
+
+describe("parseSchedules", () => {
+  it("returns empty array for empty content", () => {
+    expect(parseSchedules("")).toEqual([]);
+  });
+
+  it("returns empty array when no SCHED- blocks exist", () => {
+    const content = "# Scheduled Tasks\n\n_(Define recurring tasks here.)_\n";
+    expect(parseSchedules(content)).toEqual([]);
+  });
+
+  it("parses a single complete entry", () => {
+    const nowMs = Date.parse("2026-04-26T10:00:00Z"); // 1 day + 1h after last run
+    const entries = parseSchedules(SAMPLE_SCHEDULES_MD, nowMs);
+    expect(entries).toHaveLength(2);
+
+    const first = entries[0];
+    expect(first.id).toBe("SCHED-001");
+    expect(first.title).toBe("Weekly security audit");
+    expect(first.frequency).toBe("every 7d");
+    expect(first.lastRunIso).toBe("2026-04-18T10:00:00Z");
+    expect(first.assignedTo).toBe("Security Reviewer");
+    expect(first.steps).toHaveLength(2);
+    expect(first.steps[0]).toBe("Review recent commits for potential security issues");
+    expect(first.steps[1]).toBe("Check for outdated dependencies");
+  });
+
+  it("marks entry as overdue when past next due time", () => {
+    // SCHED-001: last run 2026-04-18, every 7d -> next due 2026-04-25
+    // nowMs is 2026-04-26 -> overdue
+    const nowMs = Date.parse("2026-04-26T10:00:00Z");
+    const entries = parseSchedules(SAMPLE_SCHEDULES_MD, nowMs);
+    expect(entries[0].isOverdue).toBe(true);
+  });
+
+  it("marks entry as on-schedule when before next due time", () => {
+    // SCHED-001: next due 2026-04-25T10:00:00Z
+    // nowMs is 2026-04-24 -> not yet overdue
+    const nowMs = Date.parse("2026-04-24T09:00:00Z");
+    const entries = parseSchedules(SAMPLE_SCHEDULES_MD, nowMs);
+    expect(entries[0].isOverdue).toBe(false);
+  });
+
+  it("sets isOverdue true and nextDueMs 0 when never run (no Last run field)", () => {
+    const content = `### SCHED-003: Daily cleanup
+- **Frequency:** every 1d
+- **Task:**
+  1. Clean temp files
+- **Assigned to:** Dev
+`;
+    const nowMs = Date.now();
+    const entries = parseSchedules(content, nowMs);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].lastRunIso).toBeNull();
+    expect(entries[0].isOverdue).toBe(true);
+    expect(entries[0].nextDueMs).toBe(0);
+  });
+
+  it("sets nextDueMs null and isOverdue false when frequency not parseable", () => {
+    const content = `### SCHED-004: Some task
+- **Frequency:** every month
+- **Last run:** 2026-04-01T00:00:00Z
+- **Task:**
+  1. Do something
+- **Assigned to:** CTO
+`;
+    const nowMs = Date.now();
+    const entries = parseSchedules(content, nowMs);
+    expect(entries[0].nextDueMs).toBeNull();
+    expect(entries[0].isOverdue).toBe(false);
+  });
+
+  it("correctly computes nextDueMs from lastRunIso + frequency", () => {
+    const lastRun = "2026-04-18T10:00:00Z";
+    const content = `### SCHED-005: Weekly check
+- **Frequency:** every 7d
+- **Last run:** ${lastRun}
+- **Task:**
+  1. Check stuff
+- **Assigned to:** Dev
+`;
+    const entries = parseSchedules(content, Date.now());
+    const expectedNextDue = Date.parse(lastRun) + 7 * 86400 * 1000;
+    expect(entries[0].nextDueMs).toBe(expectedNextDue);
+  });
+
+  it("parses all three duration unit types", () => {
+    const makeContent = (freq: string) =>
+      `### SCHED-006: Test\n- **Frequency:** ${freq}\n- **Task:**\n  1. step\n- **Assigned to:** Dev\n`;
+
+    const h = parseSchedules(makeContent("every 2h"));
+    expect(h[0].nextDueMs).toBe(0); // never run -> 0
+
+    const d = parseSchedules(makeContent("every 3d"));
+    expect(d[0].nextDueMs).toBe(0);
+
+    const w = parseSchedules(makeContent("every 2w"));
+    expect(w[0].nextDueMs).toBe(0);
   });
 });

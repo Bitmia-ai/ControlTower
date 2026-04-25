@@ -149,6 +149,24 @@ export interface ProjectDetail {
   steeringDirectives: SteeringDirective[];
 }
 
+export interface ScheduleEntry {
+  /** e.g. "SCHED-001" */
+  id: string;
+  title: string;
+  /** Raw frequency string as written in schedules.md, e.g. "every 7d" */
+  frequency: string;
+  /** ISO 8601 string of last run, or null if never run / not specified */
+  lastRunIso: string | null;
+  /** Numbered step strings extracted from the Task list */
+  steps: string[];
+  /** Assigned role(s) string */
+  assignedTo: string;
+  /** Unix epoch ms of next due time; null if frequency cannot be parsed */
+  nextDueMs: number | null;
+  /** True if current time is past nextDueMs, or if never run with a parseable frequency */
+  isOverdue: boolean;
+}
+
 export interface ClaudeStreamEvent {
   type: "system" | "assistant" | "user" | "result";
   subtype?: "text" | "thinking" | "tool_use" | "tool_result";

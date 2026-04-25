@@ -3,6 +3,7 @@ import type {
   InboxQuestion,
   ChangelogEntry,
   SteeringDirective,
+  ScheduleEntry,
 } from "./redeye-types";
 
 /** Extract content between a ## header and the next ## header (or EOF). */
@@ -225,6 +226,115 @@ export function parseChangelog(content: string): ChangelogEntry[] {
   }
 
   return entries;
+}
+
+/**
+ * Parse duration string like "every 7d", "every 2h", "every 1w" -> milliseconds.
+ * Returns null for unrecognised formats.
+ */
+export function parseDurationMs(frequency: string): number | null {
+  const match = frequency.match(/every\s+(\d+(?:\.\d+)?)\s*([hdw])/i);
+  if (!match) return null;
+  const n = parseFloat(match[1]);
+  const unit = match[2].toLowerCase();
+  if (unit === "h") return n * 3600 * 1000;
+  if (unit === "d") return n * 86400 * 1000;
+  if (unit === "w") return n * 7 * 86400 * 1000;
+  return null;
+}
+
+/**
+ * Parse `.redeye/schedules.md` content into a list of ScheduleEntry objects.
+ * Each entry corresponds to a `### SCHED-{id}: {title}` block.
+ */
+export function parseSchedules(
+  content: string,
+  nowMs: number = Date.now()
+): ScheduleEntry[] {
+  if (!content) return [];
+
+  // Find all ### SCHED-{id}: {title} blocks anywhere in the content
+  const headerRegex = /^(### (SCHED-\d+):\s*(.+))$/gm;
+  const headerMatches: Array<{ index: number; id: string; title: string }> = [];
+  let m: RegExpExecArray | null;
+
+  while ((m = headerRegex.exec(content)) !== null) {
+    headerMatches.push({
+      index: m.index,
+      id: m[2],
+      title: m[3].trim(),
+    });
+  }
+
+  return headerMatches.map(({ index, id, title }, i) => {
+    const bodyStart = content.indexOf("\n", index) + 1;
+    const bodyEnd =
+      i + 1 < headerMatches.length
+        ? headerMatches[i + 1].index
+        : content.length;
+    const body = content.substring(bodyStart, bodyEnd);
+
+    const frequency = pickField(body, "Frequency") ?? "";
+    const lastRunRaw = pickField(body, "Last run");
+    const lastRunIso =
+      lastRunRaw && lastRunRaw !== "{ISO timestamp}" && lastRunRaw !== "—"
+        ? lastRunRaw
+        : null;
+    const assignedTo = pickField(body, "Assigned to") ?? "";
+
+    // Parse numbered steps from the Task: block
+    const steps: string[] = [];
+    const taskFieldIdx = body.indexOf("- **Task:**");
+    if (taskFieldIdx !== -1) {
+      const afterTask = body.substring(taskFieldIdx + "- **Task:**".length);
+      // Stop at the next `- **` field or end of body
+      const nextFieldMatch = afterTask.search(/\n- \*\*/);
+      const stepsBlock =
+        nextFieldMatch !== -1
+          ? afterTask.substring(0, nextFieldMatch)
+          : afterTask;
+
+      const stepRegex = /^\s+(\d+)\.\s+(.+)$/gm;
+      let sm: RegExpExecArray | null;
+      while ((sm = stepRegex.exec(stepsBlock)) !== null) {
+        steps.push(sm[2].trim());
+      }
+    }
+
+    // Compute nextDueMs and isOverdue
+    const durationMs = parseDurationMs(frequency);
+    let nextDueMs: number | null = null;
+    let isOverdue = false;
+
+    if (durationMs !== null) {
+      if (lastRunIso) {
+        const lastRunMs = Date.parse(lastRunIso);
+        if (!isNaN(lastRunMs)) {
+          nextDueMs = lastRunMs + durationMs;
+          isOverdue = nowMs > nextDueMs;
+        } else {
+          // Unparseable date -- treat as never run
+          nextDueMs = 0;
+          isOverdue = true;
+        }
+      } else {
+        // Never run
+        nextDueMs = 0;
+        isOverdue = true;
+      }
+    }
+
+    return {
+      id,
+      title,
+      frequency,
+      lastRunIso,
+      steps,
+      assignedTo,
+      nextDueMs,
+      isOverdue,
+    };
+  });
 }
 
 export function parseSteering(content: string): SteeringDirective[] {
