@@ -2,6 +2,33 @@
 
 ## CEO Requests
 
+### BL-068: Polish Live tab visual design — improve transcript viewer styling and readability
+- **Type:** feature
+- **Priority:** P2
+- **Status:** pending
+- **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
+- **Description:** The Live tab transcript viewer works well functionally but could benefit from visual polish. Use the designer subagent to enhance the visual presentation and improve readability of transcript content. Focus areas: improve Claude's Thinking cards styling and visual hierarchy, refine User message box appearance, enhance phase indicator badges, optimize line-height and spacing for better text readability, ensure consistent styling across light/dark modes. Implement via frontend skill after designer mockups.
+
+### BL-067: Redesign mission control page layout and cards using designer + frontend
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+- **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
+- **Description:** The mission control page at /project/[id] shows all critical information (Working On, Controls, Cost, Questions, Recently Shipped) but could benefit from a comprehensive visual redesign. Use the designer subagent to create mockups for a more polished, modern layout with improved visual hierarchy, better card proportions, and refined typography. Focus on: reorganizing the 3-column grid for better balance, enhancing card backgrounds and borders, improving spacing and alignment, refining typography scale and weights, and ensuring the design scales gracefully across viewports. Implement the design using the frontend skill after mockups are approved.
+
+### BL-066: Redesign home page project cards and improve dashboard visual hierarchy
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+- **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
+- **Description:** The Control Tower home page displays project cards in a grid, but the visual design could be more distinctive and polished. Use the designer subagent to create a modern, visually distinctive design for the project card layout. Focus areas: enhance card visual presentation with improved colors, gradients, or layered backgrounds; improve the display of status indicators (phase badge, cost, question count); optimize typography and spacing for better visual hierarchy; add subtle animation or micro-interactions to make the dashboard feel more alive; ensure excellent contrast and readability in light/dark modes. Implement via frontend skill after designer provides mockups.
+
+### BL-065: Add Won't Do section at the end of the backlog page
+- **Type:** feature
+- **Priority:** P2
+- **Status:** pending
+- **Description:** Currently wont-do items are invisible in the backlog UI — they vanish from upNext (correctly, after the wont-do parser fix) but there is no place that lists them. Add a collapsed-by-default "Won't Do" section at the bottom of the backlog page that lists every item with status=wontdo. For each item, show the title, BL-id, and any details/rationale present on the entry (the agents typically leave a short note explaining why the item was rejected — that note must be rendered, not hidden). Section header should show the count and be expandable. Goal: nothing silently disappears, and the CEO can audit why specific things were dropped.
+
 ### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
 - **Type:** feature
 - **Priority:** P1

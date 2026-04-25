@@ -2,6 +2,13 @@
 
 ## Questions (Open)
 
+
+## Credentials Needed
+
+_(No credential requests yet.)_
+
+## Answered / Provided
+
 ### Q-011: Backlog fully cleared — what should we build next? (after BL-001–064 complete)
 - **From:** CTO (TRIAGE iter 95)
 - **Context:** All 64 backlog items (BL-001 through BL-064) are now done or won't-do. The most recent items were BL-063 (Steer tab, iter 94) and BL-064 (cost plot scaling, iter 93), both fully shipped and merged.
@@ -15,12 +22,8 @@
   6. Something else entirely — your call
 - **Default (7-day):** If no response received, proceed with option 1 (performance / Lighthouse audit)
 - **Asked:** 2026-04-25 (iter 95)
+- **Answer:** use the front end skill and the designer subagent to further improve the UX of the dashboard as well as the design
 
-## Credentials Needed
-
-_(No credential requests yet.)_
-
-## Answered / Provided
 
 ### Q-010: Backlog fully cleared — what should we build next? (after BL-001–057 complete)
 - **From:** CTO (TRIAGE iter 89)
