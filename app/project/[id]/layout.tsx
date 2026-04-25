@@ -62,7 +62,7 @@ export default function ProjectLayout({
               {projectName}
             </h1>
             {project?.path && (
-              <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-mono truncate max-w-lg">
+              <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-mono truncate max-w-full">
                 {project.path}
               </p>
             )}
