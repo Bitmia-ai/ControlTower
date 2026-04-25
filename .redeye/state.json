@@ -2,15 +2,16 @@
   "schema_version": 1,
   "iteration": 93,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "TRIAGE",
+  "phase": "PLAN",
   "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-064",
-  "backlog_title": "the cost plot is nice, but it seems scaled weird — fix aspect ratio",
-  "spec_file": null,
+  "backlog_title": "the cost plot is nice, but it seems scaled weird \u2014 fix aspect ratio",
+  "spec_file": "docs/specs/BL-064-cost-plot-scaling.md",
   "phase_progress": {
-    "triage": "env healthy, BL-064 selected (cost plot aspect ratio fix, P1)"
+    "triage": "env healthy, BL-064 selected (cost plot aspect ratio fix, P1)",
+    "plan": "Spec written: 2 sub-tasks (T1: fix viewBox+SVG sizing, T2: update tests). Root cause: viewBox 200x48 too wide, width=100% stretches chart. Fix: VIEW_H=80, height=80 attribute, remove max-h clamp."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -29,7 +30,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-062 — Fix inconsistent card sizes on main project screen (iteration 92)",
+    "last_commit": "redeye: merge BL-062 \u2014 Fix inconsistent card sizes on main project screen (iteration 92)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter92-bl062",
     "merge_status": "clean",
@@ -94,7 +95,7 @@
         "REVIEW",
         "DEPLOY"
       ],
-      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m — nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m — both Majors confirmed fixed. PASS — cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
+      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m \u2014 nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m \u2014 both Majors confirmed fixed. PASS \u2014 cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
       "next": "VERIFY",
       "timestamp": "2026-04-25T14:00:00Z"
     }
