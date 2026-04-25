@@ -2,12 +2,13 @@
   "schema_version": 1,
   "iteration": 80,
   "started_at": "2026-04-25T01:00:00Z",
-  "phase": "TRIAGE",
+  "phase": "PLAN",
   "phase_status": "complete",
   "backlog_item": "BL-050",
   "backlog_title": "Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)",
+  "spec_file": "docs/specs/BL-050-phase-change-notifications.md",
   "phase_progress": {
-    "triage": "Iteration 80 triage complete. BL-049 (E2E test coverage) merged cleanly to main. No tester reports, no overdue schedules, no new CEO answers, no steering directives (no STOP/PAUSE). Active claims empty. No documenter commits in log. Background agent: user_tester respawn-pending (iterations_since_last_deploy=0 — new deploy happened iter 79). Routing to PLAN for BL-050 (highest-priority planned item, P1 notification toasts)."
+    "plan": "Spec written. 6 sub-tasks (T1 S, T2 M, T3 M, T4 S, T5 S, T6 S). No new CEO questions. Architecture: usePhaseChangeNotifier hook (mirrors useTaskTransitionTracker pattern), usePhaseNotifications hook, ToastProvider/ToastContainer components (no new deps), wired into layout.tsx and mission-control page.tsx. Worktree to be created for feature branch."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
