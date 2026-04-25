@@ -282,7 +282,11 @@ NODE_ENV=production npm run build
 **Acceptance criteria:**
 - `npx vitest run` reports 0 failures (currently 656 tests).
 - `NODE_ENV=production npm run build` exits 0.  
-**Status:** pending
+**Status:** done
+
+**Verification (iter 92):**
+- `npx vitest run`: 657/657 pass (1 new sparkline assertion added).
+- `npm run build`: clean, 0 errors.
 
 ---
 
