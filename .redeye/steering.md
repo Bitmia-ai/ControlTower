@@ -3,7 +3,7 @@
 
 ### API & security conventions
 
-- **Read request bodies via `lib/json-body.ts:readJsonBody(req, MAX_BODY_BYTES)`** — never `req.json()` directly. Cap is 64KB; use 1KB for tiny payloads (`{blId}`, `{scheduleId}`). Direct `req.json()` is bypassable via `Transfer-Encoding: chunked` and skips the Content-Type guard.
+- Read request bodies via lib/json-body.ts readJsonBody — never req.json() directly. (VERIFIED EDIT BL-072)
 - **All `.redeye/*` paths go through `safeRedeyePath(project.path, filename)`** from `lib/redeye-files.ts`. Never inline `path.resolve(project.path, ".redeye", "x.md")`.
 - **Validate URL params against strict regex before use** — mirror `QUESTION_ID_RE` (`^Q-\d+$`), `TASK_ID_RE` (`^BL-\d+$`), and the `SCHED-\d+` pattern. User input never reaches a regex builder, file path, or shell argument unvalidated.
 - **Atomic writes for `state.json` and any concurrently-mutated file.** Use `atomicWriteJson` from `lib/atomic-write.ts`. Direct `fs.writeFile` on `state.json` is forbidden — multiple routes race.
