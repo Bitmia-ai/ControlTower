@@ -5,9 +5,11 @@
 ### BL-057: Mobile-responsive layout — make the dashboard usable on phones and tablets
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
 - **Added:** 2026-04-25 (iter 88)
+- **Merged:** 2026-04-25 (iter 88)
 - **Source:** Q-009 default (iter 88) — CEO implicitly approved by invoking /redeye:start
+- **Summary:** Made all dashboard pages usable on phones and tablets using Tailwind responsive prefixes. Project cards, mission control, backlog, live tab, and schedules now reflow to single-column on mobile, with navigation tabs that scroll horizontally on small screens. Touch targets meet the 44px WCAG minimum. Playwright E2E and unit tests confirm correct rendering at 375px and 768px viewports.
 - **Details:**
   - The Control Tower dashboard is currently designed for desktop viewports only
   - Make all pages responsive so they work well on phones (≥320px) and tablets (≥768px)
