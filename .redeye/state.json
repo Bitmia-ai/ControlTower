@@ -1,19 +1,15 @@
 {
   "schema_version": 1,
-  "iteration": 97,
+  "iteration": 98,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "merge",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-066",
-  "backlog_title": "Redesign home page project cards and improve dashboard visual hierarchy",
-  "spec_file": "docs/specs/BL-066-home-page-redesign.md",
-  "phase_progress": {
-    "triage": "complete — env healthy, 676/676 tests pass. 4 pending items: BL-065 (P2), BL-066 (P1), BL-067 (P1), BL-068 (P2). Selected BL-066 (P1, home page redesign) per CEO directive to use designer subagent + frontend skill.",
-    "plan": "complete — spec written at docs/specs/BL-066-home-page-redesign.md with 3 sub-tasks (T1 ProjectCard redesign M, T2 page header S, T3 tests S).",
-    "build": "complete — T1+T2+T3 done. ProjectCard redesigned with status border (green/amber/zinc), pulsing dot, phase footer strip, hover-reveal trash, monospace path, inline red delete panel. Home page header now has Control Tower eyebrow + border-b divider. 691/691 tests pass (added 9 new precision-instrument tests + 2 header tests). Build clean."
-  },
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
+  "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
@@ -31,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: verify BL-066 — visual check pass",
+    "last_commit": "redeye: merge BL-066 — home page redesign complete (iteration 97)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter97-bl066",
     "merge_status": "clean",
-    "notes": "VERIFY iter 97: BL-066 visual check pass. Both light and dark mode confirmed. Ready for MERGE."
+    "notes": "MERGE iter 97: BL-066 home page redesign merged. 691/691 tests pass. Cards redesigned with precision-instrument aesthetic, status top border, pulsing dot, phase footer strip. Header updated with eyebrow + border-b divider. Ready for TRIAGE iter 98."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -47,11 +43,12 @@
         "BUILD",
         "REVIEW",
         "DEPLOY",
-        "VERIFY"
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "TRIAGE: env healthy. 676/676 tests pass. Build clean. 4 pending items: BL-065 (Won't Do section, P2), BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab polish, P2). Selected BL-066 (P1) per CEO directive to use designer subagent + frontend skill for home page visual redesign. PLAN: spec docs/specs/BL-066-home-page-redesign.md with precision-instrument design direction. BUILD: ProjectCard redesigned with status top border (green=running, amber=questions pending, zinc=idle), animate-ping dot, phase footer strip with PHASE_COLORS tint, hover-reveal trash, monospace path, inline red-tinted delete confirmation panel. Home page got Control Tower eyebrow + border-b divider. 691/691 tests pass (15 new tests). Build clean. VERIFY: visual check pass — all spec elements confirmed in both light and dark mode.",
-      "next": "MERGE BL-066",
-      "timestamp": "2026-04-25T11:20:00Z"
+      "outcome": "TRIAGE: env healthy. 676/676 tests pass. Build clean. 4 pending items: BL-065 (Won't Do section, P2), BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab polish, P2). Selected BL-066 (P1) per CEO directive to use designer subagent + frontend skill for home page visual redesign. PLAN: spec docs/specs/BL-066-home-page-redesign.md with precision-instrument design direction. BUILD: ProjectCard redesigned with status top border (green=running, amber=questions pending, zinc=idle), animate-ping dot, phase footer strip with PHASE_COLORS tint, hover-reveal trash, monospace path, inline red-tinted delete confirmation panel. Home page got Control Tower eyebrow + border-b divider. 691/691 tests pass (15 new tests). Build clean. VERIFY: visual check pass — all spec elements confirmed in both light and dark mode. MERGE: BL-066 marked done, state transitioned to triage.",
+      "next": "TRIAGE iter 98",
+      "timestamp": "2026-04-25T11:25:00Z"
     },
     {
       "iteration": 96,
@@ -154,7 +151,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 97,
     "last_deploy_iteration": 97,
-    "current_iteration": 95,
+    "current_iteration": 98,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -172,7 +169,8 @@
     "BL-061": 5.289914549999935,
     "BL-062": 6.174803550000092,
     "BL-063": 2.621212350000036,
-    "BL-064": 6.174803550000092
+    "BL-064": 6.174803550000092,
+    "BL-066": 109.21807290000001
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,

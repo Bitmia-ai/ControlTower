@@ -2,6 +2,16 @@
 
 ## CEO Requests
 
+### BL-070: we need to be able to add schedules form the schedule tab
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-069: Directives int eh Steer tab need to be editable or deletable
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### BL-068: Polish Live tab visual design — improve transcript viewer styling and readability
 - **Type:** feature
 - **Priority:** P2
@@ -19,9 +29,11 @@
 ### BL-066: Redesign home page project cards and improve dashboard visual hierarchy
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 97)
 - **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
 - **Description:** The Control Tower home page displays project cards in a grid, but the visual design could be more distinctive and polished. Use the designer subagent to create a modern, visually distinctive design for the project card layout. Focus areas: enhance card visual presentation with improved colors, gradients, or layered backgrounds; improve the display of status indicators (phase badge, cost, question count); optimize typography and spacing for better visual hierarchy; add subtle animation or micro-interactions to make the dashboard feel more alive; ensure excellent contrast and readability in light/dark modes. Implement via frontend skill after designer provides mockups.
+- **Summary:** Redesigned the home page project cards with a 'precision instrument' aesthetic. Cards now have a 3px status top border (green=running, amber=questions pending, zinc=idle), an animate-ping pulsing dot when running, a phase footer strip with tinted PHASE_COLORS background, hover-reveal trash icon, monospace path text, and an inline red-tinted delete confirmation panel. The page header gained a 'CONTROL TOWER' eyebrow label, 'Projects' h1, project count subtitle, and a border-b divider. 15 new tests added (691 total). Verified in both dark and light mode.
 
 ### BL-065: Add Won't Do section at the end of the backlog page
 - **Type:** feature
