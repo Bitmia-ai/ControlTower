@@ -47,6 +47,13 @@ function isProcessRunning(pid: number): boolean {
 }
 
 function discoverPid(projectPath: string, role: SessionRole): number | null {
+  // Source of truth: in-memory map (this server's spawns) and the on-disk
+  // pidfile (which the RedEye stop-hook keeps fresh on every iteration).
+  // Both must point to a live process or we treat the session as stopped.
+  // We deliberately do NOT use log-freshness as a "running" signal — log
+  // mtime can stay fresh for ~60 s after the CTO process exits because the
+  // last subagent writes flush late, which produced false-positive "running"
+  // reports in the dashboard.
   const memPid = getPid(projectPath, role);
   if (memPid !== null && isProcessRunning(memPid)) return memPid;
 
@@ -62,19 +69,13 @@ function discoverPid(projectPath: string, role: SessionRole): number | null {
     try { fs.unlinkSync(pidFile); } catch {}
   } catch {}
 
-  const logFile = path.join(projectPath, ".redeye", `session-${role}.jsonl`);
-  try {
-    const stat = fs.statSync(logFile);
-    if (Date.now() - stat.mtimeMs < 60_000) return -1;
-  } catch {}
-
   return null;
 }
 
 function makeSessionInfo(projectPath: string, role: SessionRole): SessionInfo {
   const pid = discoverPid(projectPath, role);
-  const running = pid !== null && (pid === -1 || isProcessRunning(pid));
-  if (pid !== null && pid !== -1 && !isProcessRunning(pid)) clearPid(projectPath, role);
+  const running = pid !== null && isProcessRunning(pid);
+  if (pid !== null && !running) clearPid(projectPath, role);
 
   // Determine lastActivity from transcript file mtime
   let lastActivity: number | null = null;
@@ -90,9 +91,8 @@ function makeSessionInfo(projectPath: string, role: SessionRole): SessionInfo {
     }
   }
 
-  // Detect stall: process alive but no transcript activity for >10 min
-  // Grace period: don't flag stall if process started within the last 2 min
-  const processAlive = running && pid !== -1;
+  // Detect stall: process alive but no transcript activity for >10 min.
+  // Grace period: don't flag stall if process started within the last 2 min.
   const pidFile = path.join(projectPath, ".redeye", `session-${role}.pid`);
   let processAge = Infinity;
   try {
@@ -100,14 +100,14 @@ function makeSessionInfo(projectPath: string, role: SessionRole): SessionInfo {
     processAge = Date.now() - pidStat.mtimeMs;
   } catch {}
   const stalled =
-    processAlive &&
+    running &&
     processAge > 120_000 &&
     lastActivity !== null &&
     Date.now() - lastActivity > STALL_THRESHOLD_MS;
 
   return {
     role,
-    pid: running && pid !== -1 ? pid : null,
+    pid: running ? pid : null,
     status: stalled ? "stalled" : running ? "running" : "stopped",
     lastActivity,
     logFile: path.join(projectPath, ".redeye", `session-${role}.jsonl`),
@@ -240,7 +240,7 @@ export async function startSession(
   role: SessionRole
 ): Promise<SessionInfo> {
   const existing = discoverPid(projectPath, role);
-  if (existing !== null && (existing === -1 || isProcessRunning(existing))) {
+  if (existing !== null && isProcessRunning(existing)) {
     return makeSessionInfo(projectPath, role);
   }
 
@@ -269,26 +269,24 @@ export async function stopSession(
   autoRestartEnabled.delete(sessionKey(projectPath, role));
 
   const pid = discoverPid(projectPath, role);
-  if (pid === null || (pid !== -1 && !isProcessRunning(pid))) {
+  if (pid === null || !isProcessRunning(pid)) {
     clearPid(projectPath, role);
     return;
   }
 
-  if (pid !== -1) {
+  try {
+    process.kill(pid, "SIGTERM");
+  } catch {}
+
+  const deadline = Date.now() + 10_000;
+  while (Date.now() < deadline && isProcessRunning(pid)) {
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
+  if (isProcessRunning(pid)) {
     try {
-      process.kill(pid, "SIGTERM");
+      process.kill(pid, "SIGKILL");
     } catch {}
-
-    const deadline = Date.now() + 10_000;
-    while (Date.now() < deadline && isProcessRunning(pid)) {
-      await new Promise((r) => setTimeout(r, 500));
-    }
-
-    if (isProcessRunning(pid)) {
-      try {
-        process.kill(pid, "SIGKILL");
-      } catch {}
-    }
   }
 
   clearPid(projectPath, role);

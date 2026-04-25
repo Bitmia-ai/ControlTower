@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
+import { getSessionStatus, startSession } from "@/lib/session-manager";
 import fs from "fs/promises";
 import path from "path";
 
@@ -84,7 +85,21 @@ export async function POST(
       console.error("[POST /answer] Failed to update state.json health counters:", stateErr);
     }
 
-    return NextResponse.json({ data: { success: true } });
+    // Auto-resume the CTO loop if it had stopped waiting for this answer.
+    // Without this, the user replies but nothing happens until they manually
+    // hit Start — confusing UX (see BL-060).
+    let resumed = false;
+    try {
+      const session = getSessionStatus(project.path);
+      if (session.cto.status === "stopped") {
+        await startSession(project.path, "cto");
+        resumed = true;
+      }
+    } catch (sessionErr) {
+      console.error("[POST /answer] Failed to auto-resume CTO:", sessionErr);
+    }
+
+    return NextResponse.json({ data: { success: true, resumed } });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to write answer" },

@@ -11,6 +11,7 @@ interface WorkingOnCardProps {
   running: boolean;
   projectId?: number;
   upNextCount?: number;
+  openQuestionCount?: number;
 }
 
 function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
@@ -32,9 +33,15 @@ function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
   );
 }
 
-export function WorkingOnCard({ state, running, projectId, upNextCount }: WorkingOnCardProps) {
+export function WorkingOnCard({ state, running, projectId, upNextCount, openQuestionCount }: WorkingOnCardProps) {
   const hasTask = state?.backlog_title;
   const isBacklogEmpty = !running && state?.phase === "HARDEN" && (upNextCount ?? 0) === 0;
+  // RedEye exits the loop when blocked on questions (phase=waiting_for_ceo).
+  // The dashboard must surface this clearly so the user knows their reply is
+  // expected, and so they understand the loop will resume on answer.
+  const isWaitingOnCeo =
+    !running &&
+    (state?.phase === "waiting_for_ceo" || (openQuestionCount ?? 0) > 0);
 
   return (
     <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 ${running ? "border-l-green-500" : "border-l-red-600"} rounded-lg p-5`}>
@@ -43,7 +50,21 @@ export function WorkingOnCard({ state, running, projectId, upNextCount }: Workin
       </p>
 
       {!running && !hasTask ? (
-        isBacklogEmpty ? (
+        isWaitingOnCeo ? (
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-amber-500" />
+              <span className="text-amber-600 dark:text-amber-400 text-sm font-medium">
+                RedEye stopped — waiting on your answer.
+              </span>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-zinc-500 ml-4">
+              {openQuestionCount && openQuestionCount > 0
+                ? `${openQuestionCount} open question${openQuestionCount === 1 ? "" : "s"} in the inbox. Answering resumes the loop.`
+                : "Answering the inbox question resumes the loop."}
+            </p>
+          </div>
+        ) : isBacklogEmpty ? (
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-amber-500" />

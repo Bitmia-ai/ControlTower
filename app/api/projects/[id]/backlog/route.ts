@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
 import { getNextBacklogId } from "@/lib/backlog-id";
+import { getSessionStatus, startSession } from "@/lib/session-manager";
 import fs from "fs/promises";
 import path from "path";
 
@@ -41,7 +42,19 @@ export async function POST(
 
     await fs.writeFile(backlogPath, content, "utf-8");
 
-    return NextResponse.json({ data: { success: true, id: itemId } });
+    // Auto-resume the CTO loop if it had stopped on empty backlog.
+    let resumed = false;
+    try {
+      const session = getSessionStatus(project.path);
+      if (session.cto.status === "stopped") {
+        await startSession(project.path, "cto");
+        resumed = true;
+      }
+    } catch (sessionErr) {
+      console.error("[POST /backlog] Failed to auto-resume CTO:", sessionErr);
+    }
+
+    return NextResponse.json({ data: { success: true, id: itemId, resumed } });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to add backlog item" },

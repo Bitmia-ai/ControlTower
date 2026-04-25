@@ -157,7 +157,13 @@ export default function ProjectPage({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="md:col-span-2">
-            <WorkingOnCard state={detail?.state ?? null} running={running} projectId={projectId} upNextCount={detail?.upNext?.length ?? 0} />
+            <WorkingOnCard
+              state={detail?.state ?? null}
+              running={running}
+              projectId={projectId}
+              upNextCount={detail?.upNext?.length ?? 0}
+              openQuestionCount={pendingQuestions.length}
+            />
           </div>
 
           <div className="md:col-span-1">
