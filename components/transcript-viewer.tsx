@@ -77,7 +77,7 @@ function ToolUseCard({
       </button>
       {open && event.tool_input && (
         <div className="px-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
-          <pre className="text-xs text-gray-700 dark:text-zinc-300 font-mono overflow-x-auto mt-2 whitespace-pre-wrap break-words">
+          <pre className="text-xs text-gray-700 dark:text-zinc-300 font-mono overflow-x-auto mt-2 whitespace-pre-wrap break-all">
             {JSON.stringify(event.tool_input, null, 2)}
           </pre>
         </div>
@@ -117,7 +117,7 @@ function ToolResultCard({
       </button>
       {open && event.content && (
         <div className="px-4 pb-3 border-t border-gray-200 dark:border-zinc-700">
-          <pre className="text-xs text-gray-700 dark:text-zinc-300 font-mono overflow-x-auto mt-2 whitespace-pre-wrap break-words">
+          <pre className="text-xs text-gray-700 dark:text-zinc-300 font-mono overflow-x-auto mt-2 whitespace-pre-wrap break-all">
             {event.content}
           </pre>
         </div>

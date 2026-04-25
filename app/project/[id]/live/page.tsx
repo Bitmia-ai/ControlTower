@@ -204,8 +204,8 @@ export default function LivePage({
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
       {/* Sticky toolbar */}
       <div className="sticky top-0 z-10 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-gray-100 dark:border-zinc-800 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 mb-4">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 max-w-6xl mx-auto">
+          <div className="flex flex-wrap items-center gap-3">
             {/* Connection status */}
             <div className="flex items-center gap-1.5">
               <span
@@ -235,7 +235,7 @@ export default function LivePage({
 
           {/* Toolbar actions */}
           {hasTranscript && (
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
               <button
                 onClick={() => setForceExpanded((v) => (v === true ? null : true))}
                 title="Expand all cards"

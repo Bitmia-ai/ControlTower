@@ -98,7 +98,7 @@ function ScheduleRow({ entry }: { entry: ScheduleEntry }) {
         aria-expanded={expanded}
         aria-label={`${expanded ? "Collapse" : "Expand"} schedule ${entry.id}: ${entry.title}`}
         onClick={() => setExpanded((e) => !e)}
-        className="w-full text-left px-4 py-3 flex items-start gap-3"
+        className="w-full text-left px-4 py-3 flex flex-wrap items-start gap-3 min-h-[44px]"
       >
         {/* Expand chevron */}
         <svg

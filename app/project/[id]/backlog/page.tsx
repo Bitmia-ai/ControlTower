@@ -98,7 +98,7 @@ function ActiveTaskCard({
               <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-normal">{item.type}</p>
             )}
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
             {item.priority && (
               <span
                 className={`text-xs px-2 py-0.5 rounded font-medium ${
@@ -161,7 +161,7 @@ export function BacklogSection({
                 <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5">{item.type}</p>
               )}
             </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
               {item.status === "done" && item.cost_usd !== undefined && item.cost_usd > 0 && (
                 <span className="text-xs text-gray-400 dark:text-zinc-500 font-mono">
                   ${item.cost_usd.toFixed(2)}
@@ -332,7 +332,7 @@ export default function BacklogPage({
         <h2 className="text-sm font-medium text-gray-600 dark:text-zinc-400">Backlog</h2>
         <button
           onClick={() => setBacklogOpen(true)}
-          className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition"
+          className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
         >
           + Add Item
         </button>

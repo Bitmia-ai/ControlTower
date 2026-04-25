@@ -52,7 +52,7 @@ export function SessionHistoryRow({ entry }: { entry: SessionHistoryEntry }) {
       <button
         type="button"
         onClick={() => setExpanded((e) => !e)}
-        className="w-full flex items-center gap-4 py-3 px-3 border-b border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors text-left"
+        className="w-full flex flex-wrap items-center gap-2 sm:gap-4 py-3 px-3 border-b border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors text-left"
         aria-expanded={expanded}
       >
         {/* Expand chevron */}
@@ -76,7 +76,7 @@ export function SessionHistoryRow({ entry }: { entry: SessionHistoryEntry }) {
 
         {/* Phase chips */}
         <div
-          className="flex-1 flex flex-wrap items-center gap-1 min-w-0"
+          className="flex-1 flex flex-wrap items-center gap-1 min-w-0 overflow-x-auto"
           aria-label={phasesAriaLabel}
         >
           {entry.phases.length === 0 ? (

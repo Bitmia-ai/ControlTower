@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className="bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToastProvider>
-            <header className="border-b border-gray-200 dark:border-zinc-800 px-6 py-4 flex items-center justify-between">
+            <header className="border-b border-gray-200 dark:border-zinc-800 px-4 sm:px-6 py-4 flex items-center justify-between">
               <Link
                 href="/"
                 aria-label="Control Tower — go to home"

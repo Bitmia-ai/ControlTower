@@ -159,11 +159,11 @@ export function ControlsCard({
       )}
 
       <div className="flex flex-col gap-3">
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {!running ? (
             <button
               onClick={onStart}
-              className="flex-1 px-3 py-2 text-sm font-medium bg-green-700 hover:bg-green-600 text-white rounded-md transition"
+              className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-green-700 hover:bg-green-600 text-white rounded-md transition"
             >
               Start
               <kbd aria-hidden="true" className={kbdCls}>S</kbd>
@@ -174,7 +174,7 @@ export function ControlsCard({
                 <button
                   onClick={handleStop}
                   disabled={pending === "stop" || forceStopping}
-                  className="flex-1 px-3 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-l-md transition"
+                  className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-l-md transition"
                 >
                   {stopLabel}
                   <kbd aria-hidden="true" className={kbdCls}>X</kbd>
@@ -185,7 +185,7 @@ export function ControlsCard({
                   aria-label="More stop options"
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
-                  className="px-2 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-r-md border-l border-red-600 transition flex items-center justify-center"
+                  className="min-h-[44px] px-2 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-r-md border-l border-red-600 transition flex items-center justify-center"
                 >
                   <ChevronDown size={14} />
                 </button>
@@ -198,7 +198,7 @@ export function ControlsCard({
                       <button
                         role="menuitem"
                         onClick={handleForceStopMenuClick}
-                        className="w-full px-3 py-2 text-sm text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition"
+                        className="w-full min-h-[44px] px-3 py-2 text-sm text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition"
                       >
                         Force Stop
                       </button>
@@ -206,7 +206,7 @@ export function ControlsCard({
                       <button
                         role="menuitem"
                         onClick={handleForceStopMenuClick}
-                        className="w-full px-3 py-2 text-sm text-left font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition"
+                        className="w-full min-h-[44px] px-3 py-2 text-sm text-left font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition"
                       >
                         Confirm hard kill — click again
                       </button>
@@ -218,7 +218,7 @@ export function ControlsCard({
                 <button
                   onClick={onRestart}
                   disabled={forceStopping}
-                  className="flex-1 px-3 py-2 text-sm font-medium bg-amber-600 hover:bg-amber-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-md transition"
+                  className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-amber-600 hover:bg-amber-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-md transition"
                 >
                   Restart
                 </button>
@@ -226,7 +226,7 @@ export function ControlsCard({
                 <button
                   onClick={handlePause}
                   disabled={pending === "pause" || forceStopping}
-                  className="flex-1 px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 disabled:opacity-60 disabled:cursor-not-allowed text-gray-700 dark:text-zinc-200 rounded-md transition"
+                  className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 disabled:opacity-60 disabled:cursor-not-allowed text-gray-700 dark:text-zinc-200 rounded-md transition"
                 >
                   {pauseLabel}
                   <kbd aria-hidden="true" className={kbdCls}>P</kbd>
@@ -236,17 +236,17 @@ export function ControlsCard({
           )}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={onSteer}
-            className="flex-1 px-3 py-2 text-sm font-medium bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded-md border border-gray-200 dark:border-zinc-700 transition"
+            className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded-md border border-gray-200 dark:border-zinc-700 transition"
           >
             Steer
           </button>
           <button
             onClick={onAddBacklog}
             aria-label="Add item to backlog"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md border border-indigo-200 dark:border-indigo-800 transition"
+            className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md border border-indigo-200 dark:border-indigo-800 transition"
           >
             <PlusCircle size={14} />
             Add to Backlog

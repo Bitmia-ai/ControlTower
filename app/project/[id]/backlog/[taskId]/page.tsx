@@ -261,11 +261,11 @@ export default function BacklogItemPage({
       ) : (
         <div className="flex flex-col gap-6">
           <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-6">
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 leading-snug">
+            <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+              <h2 className="min-w-0 flex-1 text-lg font-semibold text-gray-900 dark:text-zinc-100 leading-snug">
                 {item.title}
               </h2>
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                 {item.priority && (
                   <span
                     className={`text-xs px-2 py-0.5 rounded font-medium ${

@@ -55,7 +55,7 @@ Pages and components to audit and fix:
 - Home page renders without horizontal scroll at 375px width
 - "Add Project" button has visible touch target ≥44px height
 - Project cards stack 1-column at 375px, 2-column at 640px, 3-column at 1024px
-- Status: pending
+- Status: done
 
 ---
 
@@ -73,7 +73,7 @@ Pages and components to audit and fix:
 **Acceptance criteria:**
 - Mission control page renders single-column at 375px without overflow
 - All cards (Working On, Controls, Cost, Questions, Shipped, Up Next, Health) visible and scrollable
-- Status: pending
+- Status: done
 
 ---
 
@@ -91,7 +91,7 @@ Pages and components to audit and fix:
 **Acceptance criteria:**
 - All control buttons visible and tappable at 375px, no overflow
 - Button layout wraps gracefully when viewport is narrow
-- Status: pending
+- Status: done
 
 ---
 
@@ -108,7 +108,7 @@ Pages and components to audit and fix:
 **Acceptance criteria:**
 - Sparkline chart fills its container width at all viewport sizes
 - No fixed-pixel overflow from sparkline SVG
-- Status: pending
+- Status: done (already responsive — width="100%" with viewBox, confirmed during T4 audit)
 
 ---
 
@@ -126,7 +126,7 @@ Pages and components to audit and fix:
 **Acceptance criteria:**
 - Backlog list rows display correctly at 375px (title truncates, badges wrap or are visible)
 - Backlog detail page fields readable at 375px without horizontal scroll
-- Status: pending
+- Status: done
 
 ---
 
@@ -146,7 +146,7 @@ Pages and components to audit and fix:
 - History page: session rows and iteration log readable at 375px; phase chips scroll horizontally within their row without causing page overflow
 - Schedules page: schedule list items readable at 375px
 - Live page: sticky toolbar visible at 375px; transcript cards don't cause horizontal page overflow
-- Status: pending
+- Status: done
 
 ---
 
@@ -166,7 +166,7 @@ Pages and components to audit and fix:
 **Acceptance criteria:**
 - All new tests pass
 - Total vitest suite still passes
-- Status: pending
+- Status: done
 
 ---
 
@@ -198,7 +198,7 @@ test.describe('tablet 768px', () => {
 - No horizontal overflow at 375px on home, mission control, backlog, history, live, schedules pages
 - Mission control grid is 1-column at 375px, transitions to 3-column at md:
 - All Playwright assertions pass against http://localhost:3200
-- Status: pending
+- Status: done
 
 ## Questions for CEO
 

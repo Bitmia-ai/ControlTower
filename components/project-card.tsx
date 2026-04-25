@@ -119,7 +119,7 @@ export function ProjectCard({ project, index, onToggle, onDelete }: ProjectCardP
               onToggle(index);
             }}
             disabled={stopping}
-            className={`text-xs font-medium px-3 py-1.5 rounded-md transition disabled:opacity-60 disabled:cursor-not-allowed ${
+            className={`text-xs font-medium px-3 py-1.5 rounded-md transition disabled:opacity-60 disabled:cursor-not-allowed min-h-[44px] ${
               project.running
                 ? "bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-zinc-200"
                 : "bg-red-600 hover:bg-red-500 text-white"
