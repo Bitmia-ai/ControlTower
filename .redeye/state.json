@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 100,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "plan",
+  "phase": "review",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -35,6 +35,16 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 100,
+      "phases": [
+        "PLAN",
+        "BUILD"
+      ],
+      "outcome": "PLAN: spec docs/specs/BL-073-steer-markdown.md — replace plain-text directive renderer with react-markdown + remark-gfm (already installed; same pattern as backlog detail page). BUILD: app/project/[id]/steer/page.tsx DirectiveRow now renders directive text inside a Tailwind Typography prose container (prose-sm prose-zinc dark:prose-invert with tightened spacing tokens) wrapped around <ReactMarkdown remarkPlugins={[remarkGfm]}>. Date-extraction regex switched from `.` to `[\\s\\S]` so multi-line markdown still gets the trailing date stripped (avoids `s` flag — TS target is below ES2018). Input textarea unchanged (plain text). Added test asserting **bold**/`code`/[link]/list rendering. 692/692 tests pass, build clean.",
+      "next": "REVIEW BL-073",
+      "timestamp": "2026-04-25T22:55:00Z"
+    },
     {
       "iteration": 99,
       "phases": [

@@ -1,33 +1,25 @@
-# BL-074 — Working On / Controls card height fix
+# Status — BL-073 build complete
 
-**Updated:** 2026-04-25T22:15:00Z (iter 99 BUILD complete)
-**Phase:** review
-**Phase Status:** ready
-
-## Summary
-Fixed visible height mismatch between WorkingOnCard and ControlsCard on the
-mission-control grid. Both cards already used `h-full`, but the outer grid
-forced `md:items-start`, preventing row-stretch. Wrapped the two top cards in
-a nested two-column grid (without `items-start`) so they stretch to the row
-height defined by whichever is taller. Outer grid keeps `items-start` so
-subsequent rows (Shipped/UpNext, Cost/Health) preserve top-aligned behaviour.
+**Iteration:** 100
+**Phase:** REVIEW (ready)
+**Backlog item:** BL-073 — steer tab, directives need to be rendered with markdown
+**Spec:** docs/specs/BL-073-steer-markdown.md
 
 ## Sub-tasks
-- [done] T1: Restructure mission-control layout so WorkingOn + Controls share a stretching row.
+- task-1 (done): Replace plain-text directive renderer in `DirectiveRow` with `<ReactMarkdown remarkPlugins={[remarkGfm]}>` inside a Tailwind Typography `prose-sm prose-zinc dark:prose-invert max-w-none` container with tightened spacing tokens.
+- task-2 (done): Added test asserting **bold** / inline `code` / `[link]` / unordered list render correctly inside the directive row. Date badge extraction still works for multi-line markdown directives.
 
 ## Files modified
-- `/Users/casa/ControlTower/app/project/[id]/page.tsx` — nested grid for top row
-- `/Users/casa/ControlTower/docs/specs/BL-074-card-height-fix.md` — spec
-- `/Users/casa/ControlTower/.redeye/state.json` — phase + iteration log
-
-## Tests written
-None — pure CSS/layout change with no behavioural surface that vitest can
-exercise (jsdom doesn't compute layout). Existing rendering tests for both
-cards still pass and confirm no markup regressions.
+- `/Users/casa/ControlTower/app/project/[id]/steer/page.tsx`
+- `/Users/casa/ControlTower/app/project/[id]/steer/page.test.tsx`
+- `/Users/casa/ControlTower/docs/specs/BL-073-steer-markdown.md` (new)
+- `/Users/casa/ControlTower/.redeye/state.json` (spec_file, phase, iteration log)
 
 ## Verification
-- `npx vitest run` — 691/691 pass
-- `npm run build` — clean (Next.js 16 / Turbopack)
+- `npx vitest run` — 692/692 tests pass (1 new test added)
+- `npm run build` — clean (after switching `s` flag to `[\s\S]` to satisfy pre-ES2018 TS target)
 
-## Concerns
-None. Visual confirmation should happen during VERIFY via browser snapshot.
+## Notes / concerns
+- No new dependencies — `react-markdown` and `remark-gfm` were already in `package.json` and used by the backlog detail page. Mirrors that pattern exactly.
+- Initial implementation used the regex `s` flag for the date-extraction regex; TS rejected it (target below ES2018), switched to `[\s\S]*?` which behaves identically.
+- Input textarea intentionally left as plain text — only the *display* of stored directives gets markdown rendering. Matches spec.
