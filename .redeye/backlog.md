@@ -19,7 +19,7 @@
 ### BL-066: Redesign home page project cards and improve dashboard visual hierarchy
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** in-progress
 - **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
 - **Description:** The Control Tower home page displays project cards in a grid, but the visual design could be more distinctive and polished. Use the designer subagent to create a modern, visually distinctive design for the project card layout. Focus areas: enhance card visual presentation with improved colors, gradients, or layered backgrounds; improve the display of status indicators (phase badge, cost, question count); optimize typography and spacing for better visual hierarchy; add subtle animation or micro-interactions to make the dashboard feel more alive; ensure excellent contrast and readability in light/dark modes. Implement via frontend skill after designer provides mockups.
 

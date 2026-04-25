@@ -1,24 +1,42 @@
-# Deploy + Verify + Merge — BL-063 Steer Tab (iter 94)
+# TRIAGE Phase (Iteration 97)
 
-## Deploy
-- **Command:** `NODE_ENV=production npm run build`
-- **Result:** PASS — compiled cleanly, no TypeScript errors
-- **Routes in build output:** `/project/[id]/steer`, `/api/projects/[id]/steer`
-- **Tag:** `last-good-deploy-iter94-bl063`
+## Summary
 
-## Tests
-- **Unit/integration:** 675/675 passed (68 test files)
-- **E2E:** N/A (no CLI command configured)
+Environment healthy. 676/676 tests pass. Build clean. 4 pending backlog items identified. Selected BL-066 (P1) for planning per CEO directive to use designer subagent and frontend skill.
 
-## Verify
-- **API GET /api/projects/1/steer:** 200 `{"data":{"directives":[]}}`
-- **API POST /api/projects/1/steer:** 200 `{"data":{"success":true}}`, directive appeared in subsequent GET round-trip
-- **Nav "Steer" label:** confirmed present in compiled SSR layout chunk
-- **Dev server note:** All project sub-pages (`/project/[id]/*`) return 500 in the dev server — pre-existing issue with Next.js 16.2.4 LoadingBoundaryProvider. Confirmed pre-existing: backlog/history/schedules all exhibit the same 500 even before BL-063 changes (stash-tested). Production build is clean.
+## Environment Health
 
-## Merge
-- **BL-063:** marked done in backlog.md with summary
-- **BL-064:** also marked done (was merged iter 93, backlog status not updated until now)
-- **state.json:** phase=TRIAGE, iteration=95, last_good_deploy_tag updated, backlog_item cleared
+- **Tests:** 676/676 passing (vitest run clean)
+- **Git:** main branch clean (only .redeye/status.md modified)
+- **Env status:** healthy
+- **Tester reports:** none new
+- **Inbox:** no new answered questions
+- **Schedules:** no overdue tasks
+- **Steering:** no STOP/PAUSE directives
 
-## Recommendation: TRIAGE
+## Pending Backlog Items
+
+| Item | Priority | Title |
+|------|----------|-------|
+| BL-066 | P1 | Redesign home page project cards and improve dashboard visual hierarchy |
+| BL-067 | P1 | Redesign mission control page layout and cards using designer + frontend |
+| BL-065 | P2 | Add Won't Do section at the end of the backlog page |
+| BL-068 | P2 | Polish Live tab visual design and transcript viewer |
+
+## Decision
+
+Selected **BL-066** (P1) — home page redesign using designer subagent + frontend skill.
+Rationale: P1 priority, explicit CEO directive to use designer subagent and frontend skill, home page is the first impression for all users.
+
+## State Updates
+
+- Phase: triage → plan
+- Iteration: 96 → 97
+- backlog_item: null → BL-066
+- backlog_title: null → "Redesign home page project cards and improve dashboard visual hierarchy"
+- BL-066 status: pending → in-progress
+- Added iteration_log entry for TRIAGE iter 97
+
+## Next
+
+PLAN phase for BL-066 — home page redesign using designer subagent and frontend skill.
