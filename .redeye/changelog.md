@@ -263,6 +263,14 @@ Each entry follows:
 - **Visual check:** PASS — home page 3 project cards render correctly; mission control Cost card shows $140.07 session / $155.40 total; sparkline not visible in live dev server (expected — dev server runs main branch, feature not yet merged; sparkline SVG verified via worktree E2E build); no Critical bugs; no layout regressions
 - **Documenter:** running in background (iter 45)
 
+## Iteration 82 — 2026-04-25T02:13:00Z
+- **Built:** BL-052 Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
+- **Review findings:** 0C 0M 0m — clean (1 review cycle)
+- **Tests:** 31 new unit tests added, 550 total, regression PASS; full E2E green including kbd hint badge verification
+- **User Tester:** 0 bugs reported, no feedback score (tester respawn-pending)
+- **Deployed:** SUCCESS (production build clean, 550/550 unit tests, full E2E regression green, tagged last-good-deploy-iter82)
+- **Documenter:** idle (background, iter 45)
+
 ## Iteration 80 — 2026-04-25T01:06:00Z
 - **Built:** BL-050 Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
 - **Review findings:** 0C 0M 0m — clean (2 review cycles; cycle 1 had 1 minor fix: VERIFY added to NOTIFIABLE_PHASES)

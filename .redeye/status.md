@@ -1,28 +1,33 @@
-# RedEye Status
+# RedEye Status — Iteration 82 VERIFY
 
-**Updated:** 2026-04-25 (iteration 82, PLAN phase)
-**Phase:** PLAN complete — ready for BUILD
+**Updated:** 2026-04-25T02:13:00Z
+**Phase:** VERIFY complete — HEALTHY
 **Active item:** BL-052 — Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
-**Spec:** docs/specs/BL-052-keyboard-shortcuts.md
+**Branch:** feature/BL-052-keyboard-shortcuts
+**Worktree:** /Users/casa/ControlTower/.worktrees/BL-052
 
-## Planning Summary
+---
 
-- **Triage:** BL-052 confirmed as selected item. No `pending-triage` items found in Discovered section. BL-052 and BL-053 are both `planned` P2 in CEO Requests; BL-052 is selected per dispatch.
-- **Spec written:** 5 sub-tasks (4S + 1S QA sweep). No CEO questions required.
-- **Worktree:** feature/BL-052-keyboard-shortcuts created at `.worktrees/BL-052`.
+## VERIFY Result: PASS
 
-## Sub-tasks
+| Check | Result |
+|-------|--------|
+| Verify command (`echo 'No verify command configured'`) | PASS (no-op) |
+| Visual check — home page | PASS — 3 project cards, Start/Stop buttons, BL-052 active on ControlTower card |
+| Visual check — project detail | Expected error state (no running agent; consistent with prior iterations) |
+| Critical bugs in tester-reports.md | 0 |
+| User tester feedback | No entry (tester respawn-pending) |
+| Deploy gate (build + 550/550 unit tests + E2E) | PASS (per DEPLOY phase) |
+| Kbd hint badges (S/X/P/B/GB/GH/GL) | PASS (confirmed via E2E; aria-hidden on all) |
+| BL-050 regression (toast system) | PASS |
+| BL-051 regression (cost sparkline) | PASS |
+| Last good deploy tag | last-good-deploy-iter82 |
 
-| ID | Description | Size | Status |
-|----|-------------|------|--------|
-| T1 | `lib/use-keyboard-shortcuts.ts` hook + 12+ unit tests | S | pending |
-| T2 | `<kbd>` hint badges in ControlsCard + 4 new tests | S | pending |
-| T3 | `<kbd>` hint badges in project layout nav + 3 new tests | S | pending |
-| T4 | Wire hook into `app/project/[id]/page.tsx` + 3 integration tests | S | pending |
-| T5 | Final test sweep + build verification | S | pending |
+**Environment:** HEALTHY
+**Confidence:** HIGH
 
-## Environment
+---
 
-- Last deploy: last-good-deploy-iter81 (HEALTHY)
-- Unit tests at baseline: 519/519 passing
-- No CEO questions open
+## Next Phase
+
+MERGE — merge feature/BL-052-keyboard-shortcuts to main, clear claims, mark BL-052 done in backlog.md
