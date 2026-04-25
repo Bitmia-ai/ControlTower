@@ -1,12 +1,23 @@
 # RedEye Status
 
-**Updated:** 2026-04-25 (iter 98 BUILD)
-**Phase:** review
+**Updated:** 2026-04-25 (iter 98 DEPLOY)
+**Phase:** verify
 **Phase Status:** ready
 **Backlog:** BL-071 — Apply Precision Instrument Design System Across All Pages
 **Spec:** docs/specs/BL-071-design-system-propagation.md
 
-## BUILD Result
+## DEPLOY Result
+
+Build: PASS (Next.js 16.2.4 Turbopack, exit 0). Tests: 691/691 pass (68 files).
+Pre-existing fix: steer/route.test.ts child_process mock lacked `default` export; fixed using importOriginal pattern.
+
+Key routes confirmed: /, /project/[id], /project/[id]/backlog, /project/[id]/history, /project/[id]/schedules, /project/[id]/steer.
+
+Recommendation: VERIFY
+
+---
+
+## BUILD Result (previous)
 
 All 5 sub-tasks completed. 691/691 tests pass. Clean build.
 

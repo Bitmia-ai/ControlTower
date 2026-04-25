@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 98,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "deploy",
+  "phase": "verify",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -27,14 +27,27 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-066 — home page redesign complete (iteration 97)",
+    "last_commit": "redeye: deploy BL-071 — build and tests clean",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter97-bl066",
+    "last_good_deploy_tag": "last-good-deploy-iter98-bl071",
     "merge_status": "clean",
-    "notes": "MERGE iter 97: BL-066 home page redesign merged. 691/691 tests pass. Cards redesigned with precision-instrument aesthetic, status top border, pulsing dot, phase footer strip. Header updated with eyebrow + border-b divider. Ready for TRIAGE iter 98."
+    "notes": "DEPLOY iter 98: BL-071 design system propagation deployed. Build clean. 691/691 tests pass (fixed pre-existing child_process mock missing default export in steer route test). All key routes present in build output."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 98,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY: build clean (Next.js 16, Turbopack). Fixed pre-existing test failure in steer/route.test.ts (child_process mock missing default export — used importOriginal pattern). 691/691 tests pass. All key routes in build output: /, /project/[id], /project/[id]/backlog, /project/[id]/history, /project/[id]/schedules, /project/[id]/steer.",
+      "next": "VERIFY BL-071",
+      "timestamp": "2026-04-25T21:45:00Z"
+    },
     {
       "iteration": 98,
       "phases": [
@@ -153,7 +166,7 @@
     }
   ],
   "counters": {
-    "next_bl_id": 72,
+    "next_bl_id": 74,
     "next_q_id": 12,
     "next_cred_id": 1,
     "next_sched_id": 2
@@ -171,7 +184,7 @@
     "last_deploy_result": "success",
     "last_verify_result": "pass",
     "last_verify_iteration": 97,
-    "last_deploy_iteration": 97,
+    "last_deploy_iteration": 98,
     "current_iteration": 98,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
