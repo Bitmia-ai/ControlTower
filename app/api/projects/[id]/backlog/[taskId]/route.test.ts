@@ -10,6 +10,8 @@ const mockReadState = vi.fn();
 vi.mock("@/lib/redeye-files", () => ({
   readBacklog: (...args: unknown[]) => mockReadBacklog(...args),
   readState: (...args: unknown[]) => mockReadState(...args),
+  safeRedeyePath: (projectPath: string, filename: string) =>
+    `${projectPath}/.redeye/${filename}`,
 }));
 
 const mockReadFile = vi.fn();

@@ -4,14 +4,20 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
-import { readBacklog, readState } from "@/lib/redeye-files";
+import { readBacklog, readState, safeRedeyePath } from "@/lib/redeye-files";
+import { readJsonBody } from "@/lib/json-body";
 import fs from "fs/promises";
-import path from "path";
 
 type Params = { params: Promise<{ id: string; taskId: string }> };
 
+const TASK_ID_RE = /^BL-\d+$/;
+const MAX_BODY_BYTES = 64 * 1024;
+
 export async function GET(req: NextRequest, { params }: Params) {
   const { id, taskId } = await params;
+  if (!TASK_ID_RE.test(taskId)) {
+    return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+  }
   const index = parseInt(id, 10);
   const project = await getProjectByIndex(index);
   if (!project) {
@@ -37,25 +43,24 @@ export async function GET(req: NextRequest, { params }: Params) {
 export async function PATCH(req: NextRequest, { params }: Params) {
   try {
     const { id, taskId } = await params;
+    if (!TASK_ID_RE.test(taskId)) {
+      return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+    }
     const index = parseInt(id, 10);
     const project = await getProjectByIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const body = await req.json();
-    const { title, priority, details } = body as {
+    const r = await readJsonBody<Record<string, unknown>>(req, MAX_BODY_BYTES);
+    if (!r.ok) return r.response;
+    const { title, priority, details } = r.data as {
       title?: string;
       priority?: string;
       details?: string;
     };
 
-  const projectResolved = path.resolve(project.path);
-  const backlogPath = path.resolve(projectResolved, ".redeye", "backlog.md");
-
-  if (!backlogPath.startsWith(projectResolved + path.sep)) {
-    return NextResponse.json({ error: "Invalid path" }, { status: 400 });
-  }
+  const backlogPath = safeRedeyePath(project.path, "backlog.md");
 
   let content: string;
   try {
@@ -141,20 +146,16 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 export async function DELETE(req: NextRequest, { params }: Params) {
   try {
     const { id, taskId } = await params;
+    if (!TASK_ID_RE.test(taskId)) {
+      return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+    }
     const index = parseInt(id, 10);
     const project = await getProjectByIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-  // Read and rewrite backlog.md, removing the item block for taskId
-  const projectResolved = path.resolve(project.path);
-  const backlogPath = path.resolve(projectResolved, ".redeye", "backlog.md");
-
-  // Guard against path traversal
-  if (!backlogPath.startsWith(projectResolved + path.sep)) {
-    return NextResponse.json({ error: "Invalid path" }, { status: 400 });
-  }
+  const backlogPath = safeRedeyePath(project.path, "backlog.md");
 
   let content: string;
   try {

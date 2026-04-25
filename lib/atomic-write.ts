@@ -5,7 +5,9 @@
  * or other small JSON/text files concurrently. Writes to a unique temp
  * sibling, then renames over the target. The rename is atomic on POSIX
  * filesystems (a reader sees either the old file or the new file, never
- * a half-written one).
+ * a half-written one). No fdatasync — these state files are regenerable
+ * from the project's git/agent context, so torn-write durability isn't
+ * worth the per-write IO cost.
  *
  * Why unique tempfile names: same-pid concurrent writers (two API routes
  * handling requests in the same Node process) would collide on a fixed
@@ -22,7 +24,6 @@ export async function atomicWriteJson(targetPath: string, content: string): Prom
     await fs.writeFile(tmpPath, content, "utf-8");
     await fs.rename(tmpPath, targetPath);
   } catch (err) {
-    // best-effort cleanup if write or rename fails
     try { await fs.unlink(tmpPath); } catch {}
     throw err;
   }

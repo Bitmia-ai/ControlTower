@@ -33,6 +33,21 @@ export async function POST(
       return NextResponse.json({ error: "Text empty after sanitization" }, { status: 400 });
     }
 
+    const priorityRaw: unknown = body?.priority;
+    let priority = "P1";
+    if (priorityRaw !== undefined && priorityRaw !== null && priorityRaw !== "") {
+      if (typeof priorityRaw !== "string" || !/^P[012]$/.test(priorityRaw)) {
+        return NextResponse.json({ error: "priority must be P0, P1, or P2" }, { status: 400 });
+      }
+      priority = priorityRaw;
+    }
+
+    const descriptionRaw: unknown = body?.description;
+    let description = "";
+    if (typeof descriptionRaw === "string" && descriptionRaw.trim().length > 0) {
+      description = sanitizeMarkdownInput(descriptionRaw, { maxLen: 2000 });
+    }
+
     const itemId = await getNextBacklogId(project.path);
     const backlogPath = safeRedeyePath(project.path, "backlog.md");
     let content: string;
@@ -43,7 +58,8 @@ export async function POST(
       content = "# Backlog\n\n## CEO Requests\n";
     }
 
-    const newItem = `\n### ${itemId}: ${text}\n- **Type:** feature\n- **Priority:** P1\n- **Status:** pending\n`;
+    const descLine = description ? `- **Description:** ${description}\n` : "";
+    const newItem = `\n### ${itemId}: ${text}\n- **Type:** feature\n- **Priority:** ${priority}\n- **Status:** pending\n${descLine}`;
 
     const ceoHeader = "## CEO Requests";
     const ceoIdx = content.indexOf(ceoHeader);

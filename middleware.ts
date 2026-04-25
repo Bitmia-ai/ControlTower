@@ -28,9 +28,13 @@ function isSameOrigin(req: NextRequest): boolean {
   if (sfs === "same-origin" || sfs === "none") return true;
   if (sfs === "cross-site" || sfs === "same-site") return false;
 
-  // Fallback: Origin header check for older browsers / clients without sfs.
+  // Fail closed when both signals are absent. Older browsers and embedded
+  // WebViews can omit Sec-Fetch-Site on cross-origin form POSTs (CORS
+  // "simple requests" aren't preflighted), so trust-on-absence reopens the
+  // drive-by RCE this middleware exists to block. CLI tools (curl) need to
+  // pass an Origin header — trivially `-H 'Origin: http://127.0.0.1:3200'`.
   const origin = req.headers.get("origin");
-  if (!origin) return true; // CLI tools (curl) send no Origin — allow
+  if (!origin) return false;
   try {
     const url = new URL(origin);
     return ALLOWED_HOSTS.has(url.hostname);

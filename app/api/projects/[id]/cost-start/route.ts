@@ -12,9 +12,11 @@ import { getProjectByIndex } from "@/lib/projects";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { atomicWriteJson } from "@/lib/atomic-write";
 import { sumCurrentSessionCost } from "@/lib/cost-calculator";
+import { readJsonBody } from "@/lib/json-body";
 import type { RedEyeState } from "@/lib/redeye-types";
 
 const BL_ID_RE = /^BL-\d+$/;
+const MAX_BODY_BYTES = 1024;
 
 export async function POST(
   req: NextRequest,
@@ -28,14 +30,9 @@ export async function POST(
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
 
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
-  }
-
-  const blId = (body as Record<string, unknown>)?.blId;
+  const r = await readJsonBody<Record<string, unknown>>(req, MAX_BODY_BYTES);
+  if (!r.ok) return r.response;
+  const blId = r.data?.blId;
   if (typeof blId !== "string" || !BL_ID_RE.test(blId)) {
     return NextResponse.json({ error: "blId must match BL-<number>" }, { status: 400 });
   }
