@@ -212,6 +212,47 @@ describe("SteerContent", () => {
     }
   });
 
+  it("renders markdown formatting in directive text", async () => {
+    const directives = [
+      makeDirective(
+        "Use **bold** and `code` plus a [link](https://example.com) and:\n- item one\n- item two (2026-04-25)"
+      ),
+    ];
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { directives } }),
+    } as Response);
+
+    const { container } = render(<SteerContent id="0" />);
+    await waitFor(() => {
+      // <strong> wrapper from **bold** (only present after directives load)
+      const strong = container.querySelector(".prose strong");
+      expect(strong?.textContent).toBe("bold");
+    });
+
+    // Scope all markdown queries to the .prose container (directive row)
+    const prose = container.querySelector(".prose");
+    expect(prose).not.toBeNull();
+
+    // inline <code> from `code`
+    const code = prose!.querySelector("code");
+    expect(code?.textContent).toBe("code");
+
+    // <a href> from markdown link
+    const anchor = prose!.querySelector("a[href='https://example.com']");
+    expect(anchor).not.toBeNull();
+    expect(anchor?.textContent).toBe("link");
+
+    // list rendered as <ul><li>
+    const items = prose!.querySelectorAll("ul li");
+    expect(items.length).toBe(2);
+    expect(items[0].textContent).toBe("item one");
+    expect(items[1].textContent).toBe("item two");
+
+    // Date badge still extracted from trailing parens
+    expect(screen.getByText("2026-04-25")).toBeDefined();
+  });
+
   it("does not submit when textarea is whitespace-only", async () => {
     const fetchMock = vi.fn();
     fetchMock.mockResolvedValue({

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback, use } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { SteeringDirective } from "@/lib/redeye-types";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
@@ -20,15 +22,18 @@ function DirectivesSkeleton() {
 
 function DirectiveRow({ directive }: { directive: SteeringDirective }) {
   // Extract trailing date in parens if present, e.g. "Focus on UX (2026-04-25)"
-  const match = directive.text.match(/^(.*?)\s*\((\d{4}-\d{2}-\d{2})\)\s*$/);
-  const text = match ? match[1] : directive.text;
+  // [\s\S] (instead of `.` with the `s` flag) so multi-line markdown directives
+  // still get the trailing date stripped.
+  const match = directive.text.match(/^([\s\S]*?)\s*\((\d{4}-\d{2}-\d{2})\)\s*$/);
+  const rawText = match ? match[1] : directive.text;
+  const text = rawText.replace(/^\n+/, "");
   const date = match ? match[2] : directive.timestamp;
 
   return (
     <div className="flex items-start justify-between gap-4 px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg">
-      <p className="text-sm text-gray-900 dark:text-zinc-100 whitespace-pre-wrap break-words flex-1">
-        {text}
-      </p>
+      <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none break-words flex-1 text-gray-900 dark:text-zinc-100 prose-p:my-1 prose-headings:my-2 prose-pre:my-2 prose-ul:my-1 prose-ol:my-1 prose-a:text-red-600 dark:prose-a:text-red-400">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+      </div>
       {date && (
         <span className="text-xs text-gray-500 dark:text-zinc-500 font-mono shrink-0 mt-0.5">
           {date}
