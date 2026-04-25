@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
-  "iteration": 83,
-  "started_at": "2026-04-25T02:15:00Z",
-  "phase": "MERGE",
+  "iteration": 85,
+  "started_at": "2026-04-25T07:34:29Z",
+  "phase": "TRIAGE",
   "phase_status": "complete",
-  "backlog_item": "BL-053",
-  "backlog_title": "Improve session history page — show phase timeline and cost per session",
+  "backlog_item": null,
+  "backlog_title": null,
   "phase_progress": {
-    "plan_complete": true,
-    "build_complete": true,
-    "review_complete": true,
-    "deploy_complete": true,
-    "verify_complete": true
+    "plan_complete": false,
+    "build_complete": false,
+    "review_complete": false,
+    "deploy_complete": false,
+    "verify_complete": false
   },
-  "spec_file": "docs/specs/BL-053-session-history-phase-timeline.md",
-  "review_cycles": 1,
+  "spec_file": null,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -31,58 +31,89 @@
     }
   },
   "git_state": {
-    "last_commit": "fix: pre-existing infinite render loop in history page sessions section",
-    "branch": "feat/bl-053-session-history-phase-timeline",
-    "last_good_deploy_tag": "last-good-deploy-iter83",
+    "last_commit": "feat: BL-055 — Add Schedules tab to project dashboard",
+    "branch": "main",
+    "last_good_deploy_tag": "last-good-deploy-iter85",
     "merge_status": "clean",
-    "notes": "BL-053 MERGE complete. 11 commits merged to main via branch -f fast-forward. Claims cleared, BL-053 marked done. Sessions section with cost badges and phase chips shipped."
+    "notes": "BL-055 MERGE complete. 5 code commits merged to main. Schedules tab shipped: ScheduleEntry type, parseDurationMs+parseSchedules, GET /api/projects/[id]/schedules, ScheduleList/ScheduleRow components, /project/[id]/schedules page, ProjectNav GS shortcut, 42 new unit tests (627 total). Claims cleared, BL-055 marked done."
   },
   "blocked_items": [],
   "iteration_log": [
     {
+      "iteration": 85,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "TRIAGE: Q-008 answered by CEO — redesign tabs + add schedules tab. BL-054 resolved wont-do (BL-029/030 already resolved). BL-055 (Schedules tab, P1) selected. BL-056 (tab redesign, P2) queued. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks done, 42 new unit tests (627 total). Added ScheduleEntry type, parseDurationMs+parseSchedules (redeye-parsers.ts), GET /api/projects/[id]/schedules route, ScheduleList/ScheduleRow/StatusBadge components, SchedulesContent page, ProjectNav GS shortcut, GS keyboard chord. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: Build PASS (NODE_ENV=production npm run build — clean), 627/627 unit tests PASS. VERIFY: PASS — home page, nav, schedules page all healthy, tagged last-good-deploy-iter85. MERGE: 5 code commits merged cleanly to main via no-ff merge, claims cleared, BL-055 marked done.",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T07:55:09Z"
+    },
+    {
+      "iteration": 84,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE: All BL-001–053 done. Backlog exhausted. Q-008 filed (what to build next?). waiting_for_ceo.",
+      "next": "waiting_for_ceo",
+      "timestamp": "2026-04-25T03:00:00Z"
+    },
+    {
       "iteration": 83,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY"],
-      "outcome": "TRIAGE: BL-053 selected. PLAN: Spec written (7 sub-tasks). BUILD: All 7 sub-tasks done, 35 new unit tests (585 total). REVIEW: 1 cycle, 0 Critical/0 Major, 3 minors fixed. DEPLOY: Build PASS (NODE_ENV=production npm run build — clean, no global-error prerender failure). 585/585 unit tests PASS. Pre-existing bug found and fixed: infinite render loop in history page (detail in useCallback deps + setSessions(null) caused perpetual skeleton). Fix committed as 'fix: pre-existing infinite render loop...' (b76f635). Post-fix build confirmed clean. Full E2E regression PASS: home page (3 cards, Start/Stop), nav kbd hints GB/GH/GL confirmed, session history page verified — 18 sessions for ControlTower project render stably with cost badges and phase-data containers; haze project shows 10 sessions with 5 having phase chips (VER, PLN, TRI with correct colors and title tooltips), cost badges confirmed ($2.70–$71.35 range). Sessions section renders above Iteration Log. BL-051/052 regressions clean (sparkline, kbd hints). Known pre-existing issue: spawn EBADF in dev server jest-worker (unrelated to app code, dev server restart resolved). Production build unaffected.",
-      "next": "VERIFY",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY"
+      ],
+      "outcome": "TRIAGE: BL-053 selected. PLAN: Spec written (7 sub-tasks). BUILD: All 7 sub-tasks done, 35 new unit tests (585 total). REVIEW: 1 cycle, 0 Critical/0 Major, 3 minors fixed. DEPLOY: Build PASS (NODE_ENV=production npm run build — clean, no global-error prerender failure). 585/585 unit tests PASS. Pre-existing bug found and fixed: infinite render loop in history page. Full E2E regression PASS. VERIFY: PASS. MERGE: 11 commits merged to main, BL-053 done.",
+      "next": "TRIAGE",
       "timestamp": "2026-04-25T02:48:00Z"
     },
     {
       "iteration": 82,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "TRIAGE: BL-052 selected. PLAN: Spec written (5 sub-tasks, no CEO Qs). BUILD: All 5 sub-tasks done, 31 new unit tests (550 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS (no global-error prerender failure), 550/550 unit tests PASS. Full E2E regression PASS — kbd hint badges confirmed in DOM: S on Start, X on Stop, P on Pause, B on Add to Backlog, GB/GH/GL on nav tabs; all aria-hidden; Steer dialog suppression confirmed; toast system intact; cost sparkline present; BL-050/051 regressions clean. VERIFY: PASS — home page renders correctly (3 project cards, Start/Stop buttons visible), project detail page shows expected error state (no running agent, consistent with prior iterations), no Critical bugs, no tester reports, tagged last-good-deploy-iter82. MERGE: 6 commits merged cleanly to main, add/add spec conflict resolved (feature branch wins), claims cleared, BL-052 marked done.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "TRIAGE: BL-052 selected. PLAN: Spec written (5 sub-tasks, no CEO Qs). BUILD: All 5 sub-tasks done, 31 new unit tests (550 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 550/550 unit tests PASS. Full E2E regression PASS. VERIFY: PASS — tagged last-good-deploy-iter82. MERGE: 6 commits merged cleanly to main, BL-052 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T02:13:00Z"
     },
     {
       "iteration": 81,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "TRIAGE: BL-051 selected. PLAN: Spec written (6 sub-tasks, no CEO Qs). BUILD: All 6 sub-tasks done, 26 new unit tests (519 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 519/519 unit tests, full E2E regression PASS — sparkline SVG verified in DOM with mocked 5-session data, hidden with 0-session data, all existing flows green. VERIFY: PASS — home page and mission control render correctly, no Critical bugs, no user tester issues, tagged last-good-deploy-iter81. Env: HEALTHY. MERGE: 6 commits merged cleanly to main, claims cleared, BL-051 marked done.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "TRIAGE: BL-051 selected. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks done, 26 new unit tests (519 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 519/519 unit tests, full E2E regression PASS. VERIFY: PASS — tagged last-good-deploy-iter81. MERGE: 6 commits merged cleanly to main, BL-051 done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T01:41:00Z"
-    },
-    {
-      "iteration": 80,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "TRIAGE: BL-049 merged cleanly. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks complete, 30 new unit tests, 4 Playwright E2E. REVIEW: 2 cycles — cycle 1 minor fix (VERIFY added to NOTIFIABLE_PHASES), cycle 2 clean. DEPLOY: Build PASS, 493/493 unit tests, 6 E2E green. VERIFY: PASS — visual check clean, ToastContainer alert region confirmed in DOM, no Critical bugs, tagged last-good-deploy-iter80. MERGE: 9 commits merged cleanly to main, claims cleared, BL-050 marked done.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T01:09:00Z"
-    },
-    {
-      "iteration": 79,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY"],
-      "outcome": "TRIAGE: Added BL-049–053. PLAN: Spec written. BUILD: 2 new Playwright E2E specs (backlog-crud, cost-card). REVIEW: Clean. DEPLOY: Build PASS, 462/462 unit tests, full regression E2E green. VERIFY: PASS — visual check clean, no Critical bugs, tagged last-good-deploy-iter79. Env: HEALTHY.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T00:28:00Z"
     }
   ],
   "counters": {
-    "next_bl_id": 54,
-    "next_q_id": 8,
+    "next_bl_id": 57,
+    "next_q_id": 9,
     "next_cred_id": 1,
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 63,
+    "iterations_this_session": 64,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 83
@@ -93,9 +124,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 83,
-    "last_deploy_iteration": 83,
-    "current_iteration": 83,
+    "last_verify_iteration": 85,
+    "last_deploy_iteration": 85,
+    "current_iteration": 85,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -106,7 +137,8 @@
     "BL-037": 60.530642850000035,
     "BL-043": 62.436974400000025,
     "BL-041": 73.50490740000002,
-    "BL-040": 81.36289680000004
+    "BL-040": 81.36289680000004,
+    "BL-053": 9.655652699999706
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
@@ -118,6 +150,6 @@
     "BL-050": 126.25882920000019,
     "BL-051": 135.25504920000046,
     "BL-052": 141.69885615000055,
-    "BL-053": 156.30889500000052
+    "BL-055": 159.36187110000037
   }
 }

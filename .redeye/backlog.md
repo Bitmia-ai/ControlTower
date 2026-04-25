@@ -2,6 +2,46 @@
 
 ## CEO Requests
 
+### BL-056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
+- **Type:** feature
+- **Priority:** P2
+- **Status:** pending
+- **Added:** 2026-04-25 (iter 85)
+- **Details:**
+  - The backlog, history, and live tabs need a visual redesign pass using the designer sub-agent and frontend skill
+  - Apply a consistent, polished design system across all three tabs, matching the quality level of the redesigned mission control page (BL-045)
+  - Backlog tab: improve list layout, status indicators, priority badges, and the collapsible done section
+  - History tab: improve the sessions list layout, phase chips, cost badges, and the iteration log
+  - Live tab: improve the transcript viewer, collapsible user boxes, thinking cards, and the toolbar
+  - Ensure dark/light mode consistency across all redesigned components
+  - Use the designer sub-agent for visual direction, then implement with the frontend skill
+
+### BL-055: Add Schedules tab to project dashboard — view and manage RedEye scheduled tasks
+- **Type:** feature
+- **Priority:** P1
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 85)
+- **Added:** 2026-04-25 (iter 85)
+- **Spec:** docs/specs/BL-055-schedules-tab.md
+- **Summary:** Added a Schedules tab to the project dashboard. New `ScheduleEntry` type and `parseDurationMs`/`parseSchedules` parsers read `.redeye/schedules.md`. A `GET /api/projects/[id]/schedules` endpoint exposes parsed schedules. The `ScheduleList`/`ScheduleRow`/`StatusBadge` components render overdue/on-schedule sections with expandable step details. The `/project/[id]/schedules` page shows a skeleton, empty-state, error-state, or the list. ProjectNav gains a 5th "Schedules" tab with GS keyboard shortcut. 42 new unit tests added (627 total).
+- **Details:**
+  - RedEye supports scheduled recurring tasks via `.redeye/schedules.md` (SCHED-{id} format with frequency, last run, steps, assigned roles)
+  - Add a new "Schedules" tab to the project dashboard (alongside Overview, Backlog, History, Live)
+  - The tab displays all defined schedules: name, frequency, last run time, next due time, and status (on-time / overdue)
+  - Allow viewing schedule details (steps, assigned roles) in an expandable row or drawer
+  - Read-only for now (adding/editing schedules is a future enhancement)
+  - API: GET /api/projects/[id]/schedules — parse `.redeye/schedules.md` and return structured schedule data
+  - Add keyboard shortcut GS for navigation (consistent with GB/GH/GL pattern)
+  - Add unit tests for the parser and API route
+  - Add to ProjectNav alongside existing tabs
+
+### BL-054: BL-029 and BL-030 are in the backlog but were never picked
+- **Type:** bug
+- **Priority:** P1
+- **Status:** wont-do
+- **Added:** 2026-04-25 (iter 85)
+- **Reason:** CEO noted BL-029 and BL-030 were never actioned. On investigation: both are already marked wont-do. BL-029 is a duplicate of BL-013 (reopened and completed iter 42). BL-030 is also superseded by BL-013. Both bugs were resolved when BL-013 fixed the Live tab EventSource issue with Playwright verification. No further action required.
+
 ### BL-053: Improve session history page — show phase timeline and cost per session
 - **Type:** feature
 - **Priority:** P2

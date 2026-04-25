@@ -10,6 +10,13 @@ _(No credential requests yet.)_
 
 ## Answered / Provided
 
+### Q-008: What should we build next? (after BL-001–053 complete)
+- **From:** CTO (TRIAGE iter 84)
+- **Context:** All 53 backlog items (BL-001 through BL-053) are now done or won't-do.
+- **Question:** What features, improvements, or new capabilities should we tackle next?
+- **Answer:** CEO responded: "Have the designer sub agent and frontend skill re-design the rest of the tabs. Also we need the schedules tab (look at redeye schedules)"
+- **Incorporated:** 2026-04-25 (iter 85) — BL-054 (wont-do, BL-029/030 already resolved), BL-055 (Schedules tab, P1, now done), BL-056 (designer tab redesign, P2, pending) added to backlog.
+
 ### Q-007: Backlog fully cleared — what should we build next?
 - **From:** CTO (TRIAGE iter 64)
 - **Context:** All 48 backlog items (BL-001 through BL-048) are now done or won't-do.
