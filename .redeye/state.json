@@ -2,16 +2,19 @@
   "schema_version": 1,
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "PLAN",
+  "phase": "BUILD",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-059",
-  "backlog_title": "Fix discoverPid() log-freshness fallback — dashboard shows running when CTO is dead",
-  "spec_file": "docs/specs/BL-059-discover-pid-fix.md",
+  "backlog_item": "BL-058",
+  "backlog_title": "Schedules UI needs to be operative",
+  "spec_file": "docs/specs/BL-058-schedules-operative.md",
   "phase_progress": {
     "incorporate_complete": true,
-    "triage_complete": true
+    "triage_complete": true,
+    "plan_complete": true,
+    "bl059_already_done": true,
+    "bl060_already_done": true
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -145,6 +148,7 @@
     "BL-052": 141.69885615000055,
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
-    "BL-059": 183.8620549500003
+    "BL-059": 183.8620549500003,
+    "BL-058": 184.88626365000027
   }
 }
