@@ -225,7 +225,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Sessions displayed newest-first
   - "Iteration Log" heading present
   - Build clean, all tests pass
-- **Status:** in-progress
+- **Status:** done
 
 ### T6 — Playwright E2E: session history page renders sessions and phase chips
 - **Size:** S
@@ -244,7 +244,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Phase chips present (not empty)
   - Cost badge present
   - Test passes against `http://localhost:3200`
-- **Status:** pending
+- **Status:** in-progress
 
 ### T7 — Unit test coverage gate and TypeScript clean
 - **Size:** S

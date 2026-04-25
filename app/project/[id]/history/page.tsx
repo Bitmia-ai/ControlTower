@@ -4,9 +4,11 @@ import { useEffect, useState, useCallback, use } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ProjectDetail, ChangelogEntry } from "@/lib/redeye-types";
+import type { SessionHistoryEntry } from "@/lib/cost-history";
 import { linkifyBacklogIds } from "@/components/backlog-id";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
+import { SessionHistoryRow } from "@/components/history/session-history-row";
 
 function TimelineEntry({ entry, projectId }: { entry: ChangelogEntry; projectId: string }) {
   return (
@@ -41,6 +43,19 @@ function TimelineEntry({ entry, projectId }: { entry: ChangelogEntry; projectId:
   );
 }
 
+function SessionsSkeleton() {
+  return (
+    <div className="space-y-3" aria-busy="true">
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="h-12 bg-gray-100 dark:bg-zinc-800/60 rounded animate-pulse"
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function HistoryPage({
   params,
 }: {
@@ -52,13 +67,37 @@ export default function HistoryPage({
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
+  const [sessions, setSessions] = useState<SessionHistoryEntry[] | null>(null);
+  const [sessionsError, setSessionsError] = useState<string | null>(null);
+
   const fetchDetail = useCallback(async () => {
     try {
       setFetchError(null);
-      const res = await fetch(`/api/projects/${id}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      if (json.data) setDetail(json.data);
+      setSessionsError(null);
+
+      const [detailRes, sessionsRes] = await Promise.all([
+        fetch(`/api/projects/${id}`).catch((e) => {
+          throw e;
+        }),
+        fetch(`/api/projects/${id}/session-history`).catch(() => null),
+      ]);
+
+      if (!detailRes.ok) throw new Error(`HTTP ${detailRes.status}`);
+      const detailJson = await detailRes.json();
+      if (detailJson.data) setDetail(detailJson.data);
+
+      if (sessionsRes && sessionsRes.ok) {
+        try {
+          const sessionsJson = await sessionsRes.json();
+          setSessions(sessionsJson?.data?.sessions ?? []);
+        } catch {
+          setSessionsError("Failed to parse session history.");
+          setSessions([]);
+        }
+      } else {
+        setSessionsError("Failed to load session history.");
+        setSessions([]);
+      }
     } catch {
       if (!detail) {
         setFetchError("Failed to load history.");
@@ -73,28 +112,57 @@ export default function HistoryPage({
   }, [fetchDetail]);
 
   const changelog: ChangelogEntry[] = [...(detail?.recentChangelog ?? [])].reverse();
+  // Sessions arrive sorted ascending (oldest first); display newest-first.
+  const sessionsNewestFirst = sessions ? [...sessions].reverse() : null;
 
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
-      {loading && !detail ? (
-        <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">
-          Loading history…
-        </div>
-      ) : fetchError && !detail ? (
-        <FetchError message={fetchError} onRetry={fetchDetail} />
-      ) : changelog.length === 0 ? (
-        <EmptyState
-          icon={<span>~</span>}
-          title="No changelog entries yet"
-          subtitle="History will appear here as features are shipped."
-        />
-      ) : (
-        <div className="mt-2">
-          {changelog.map((entry, i) => (
-            <TimelineEntry key={i} entry={entry} projectId={id} />
-          ))}
-        </div>
-      )}
+      <section aria-label="Sessions" className="mt-4">
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-3 uppercase tracking-wide">
+          Sessions
+        </h2>
+        {sessionsNewestFirst === null ? (
+          <SessionsSkeleton />
+        ) : sessionsError && sessionsNewestFirst.length === 0 ? (
+          <FetchError message={sessionsError} onRetry={fetchDetail} />
+        ) : sessionsNewestFirst.length === 0 ? (
+          <EmptyState
+            title="No sessions found"
+            subtitle="Sessions will appear here once a RedEye session has run."
+          />
+        ) : (
+          <div>
+            {sessionsNewestFirst.map((s) => (
+              <SessionHistoryRow key={s.file} entry={s} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section aria-label="Iteration Log" className="mt-10">
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-3 uppercase tracking-wide">
+          Iteration Log
+        </h2>
+        {loading && !detail ? (
+          <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">
+            Loading history…
+          </div>
+        ) : fetchError && !detail ? (
+          <FetchError message={fetchError} onRetry={fetchDetail} />
+        ) : changelog.length === 0 ? (
+          <EmptyState
+            icon={<span>~</span>}
+            title="No changelog entries yet"
+            subtitle="History will appear here as features are shipped."
+          />
+        ) : (
+          <div className="mt-2">
+            {changelog.map((entry, i) => (
+              <TimelineEntry key={i} entry={entry} projectId={id} />
+            ))}
+          </div>
+        )}
+      </section>
     </main>
   );
 }
