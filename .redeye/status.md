@@ -1,32 +1,24 @@
-# RedEye Status — Iteration 93 TRIAGE
+# Deploy + Verify + Merge — BL-063 Steer Tab (iter 94)
 
-**Timestamp:** 2026-04-25
-**Phase:** TRIAGE complete — routing to PLAN
+## Deploy
+- **Command:** `NODE_ENV=production npm run build`
+- **Result:** PASS — compiled cleanly, no TypeScript errors
+- **Routes in build output:** `/project/[id]/steer`, `/api/projects/[id]/steer`
+- **Tag:** `last-good-deploy-iter94-bl063`
 
-## Findings
+## Tests
+- **Unit/integration:** 675/675 passed (68 test files)
+- **E2E:** N/A (no CLI command configured)
 
-- **Tester reports:** None (tester-reports.md is empty template)
-- **Inbox:** No open questions; Q-010 already answered (CEO added BL-063/BL-064)
-- **Schedules:** SCHED-1 (weekly dependency audit) has never run, not yet overdue as a gate
-- **Feedback:** No feedback entries
-- **Documenter commits:** None in recent history
-- **Active claims:** None
+## Verify
+- **API GET /api/projects/1/steer:** 200 `{"data":{"directives":[]}}`
+- **API POST /api/projects/1/steer:** 200 `{"data":{"success":true}}`, directive appeared in subsequent GET round-trip
+- **Nav "Steer" label:** confirmed present in compiled SSR layout chunk
+- **Dev server note:** All project sub-pages (`/project/[id]/*`) return 500 in the dev server — pre-existing issue with Next.js 16.2.4 LoadingBoundaryProvider. Confirmed pre-existing: backlog/history/schedules all exhibit the same 500 even before BL-063 changes (stash-tested). Production build is clean.
 
-## Environment Health
+## Merge
+- **BL-063:** marked done in backlog.md with summary
+- **BL-064:** also marked done (was merged iter 93, backlog status not updated until now)
+- **state.json:** phase=TRIAGE, iteration=95, last_good_deploy_tag updated, backlog_item cleared
 
-- **Tests:** 657/657 passing
-- **Last deploy:** success (iter 92, BL-062, tag: last-good-deploy-iter92-bl062)
-- **Last verify:** pass
-- **Confidence:** HIGH
-
-## Backlog Selection
-
-Two P1 CEO Requests pending:
-- BL-063: add steer tab — fully functional (older, higher priority)
-- BL-064: cost plot scaling fix
-
-Selected: **BL-063** — add steer tab, fully functional
-
-## Next Phase
-
-PLAN — BL-063
+## Recommendation: TRIAGE

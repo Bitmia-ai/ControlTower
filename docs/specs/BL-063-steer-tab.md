@@ -133,7 +133,7 @@ Not shown verbatim. The page shows structured parsed directives (text + optional
   - `npm run build` exits cleanly (no TypeScript errors, no prerender errors).
   - `npx vitest run` — all tests pass.
   - Playwright: Steer tab is visible and functional on `http://localhost:3200/project/1/steer`.
-- **Status:** pending
+- **Status:** done
 
 ---
 

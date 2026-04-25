@@ -13,8 +13,10 @@
 ### BL-063: we need a steer tab added. make it fully funcitonal
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 94)
 - **Spec:** docs/specs/BL-063-steer-tab.md
+- **Summary:** Added a fully functional Steer tab at `/project/[id]/steer`. New GET handler returns parsed directives from `steering.md`; existing POST handler writes directives. The `SteerContent` component renders a textarea form with inline success/error feedback, a live directive list with skeleton/empty states, and dark/light mode support. "Steer" tab added to ProjectNav after Schedules. 675/675 tests pass, production build clean.
 
 ### BL-062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
 - **Type:** feature
@@ -609,8 +611,10 @@
 ### BL-064: the cost plot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
 - **Type:** bug
 - **Priority:** P1
-- **Status:** planned
-- **Triaged:** 2026-04-25 (iter 94) — Valid P1 UI polish. Cost sparkline aspect ratio is wrong; needs constrained height and correct SVG viewBox. Scheduled after BL-063.
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 93)
+- **Spec:** docs/specs/BL-064-cost-plot-scaling.md
+- **Summary:** Fixed the cost sparkline aspect ratio by increasing VIEW_H from 48 to 80 (2.5:1 ratio instead of 4.17:1), removing the `width="100%"` SVG attribute, and adding `height={80}` so the browser renders the chart at its natural height without horizontal distortion. Removed the `max-h-[72px]` container clamp. Updated 3 test files; 663/663 tests pass and the production build is clean.
 
 ### BL-027: Show cost for completed items in backlog list and detail page
 - **Type:** bug

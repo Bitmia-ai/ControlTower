@@ -1,21 +1,16 @@
 {
   "schema_version": 1,
-  "iteration": 94,
+  "iteration": 95,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "DEPLOY",
-  "phase_status": "in-progress",
+  "phase": "TRIAGE",
+  "phase_status": "pending",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-063",
-  "backlog_title": "Steer tab — fully functional",
-  "spec_file": "docs/specs/BL-063-steer-tab.md",
-  "phase_progress": {
-    "triage": "complete — env healthy, BL-063 selected (steer tab, P1)",
-    "plan": "complete — spec at docs/specs/BL-063-steer-tab.md (5 sub-tasks), all tasks built",
-    "build": "complete — all 5 tasks committed to main (GET handler, nav tab, SteerContent page, unit tests, E2E spec)",
-    "review": "PASS — 0C/0M/2m. 675/675 tests pass. Minor: untracked card-sizing.spec.ts (BL-062 leftover), uncommitted spec status update. No blocking issues."
-  },
-  "review_cycles": 1,
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -32,45 +27,73 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start REVIEW BL-063 cycle 1 (iteration 94)",
+    "last_commit": "redeye: merge BL-063 — Steer tab fully functional (iteration 94)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter93-bl064",
+    "last_good_deploy_tag": "last-good-deploy-iter94-bl063",
     "merge_status": "clean",
-    "notes": "REVIEW PASS. Advancing to DEPLOY."
+    "notes": "BL-063 merged. Advancing to iter 95 TRIAGE. Next candidate: BL-064 (cost plot scaling, already done iter 93 — will be skipped by TRIAGE). Next new item TBD."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 94,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "BL-063 full cycle complete. Steer tab: GET+POST API, SteerContent page, nav tab. 675/675 tests pass. DEPLOY: build clean, tagged last-good-deploy-iter94-bl063. VERIFY: API round-trip confirmed (GET/POST), nav compiled into layout chunk, dev server 500s confirmed pre-existing (all project sub-pages). MERGE: BL-063 done.",
+      "next": "TRIAGE iter 95",
+      "timestamp": "2026-04-25T11:05:00Z"
+    },
+    {
+      "iteration": 94,
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: env healthy, no schedules overdue, no CEO answers pending. BL-063 selected (steer tab — fully functional, P1). All 5 tasks already built and committed to main.",
       "next": "REVIEW BL-063",
       "timestamp": "2026-04-25T10:57:24Z"
     },
     {
       "iteration": 93,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "BL-064 through VERIFY. VIEW_H=48->80, 663/663 tests, REVIEW PASS, DEPLOY clean, VERIFY pass.",
-      "next": "MERGE BL-064",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "BL-064 full cycle complete. VIEW_H=48->80, 663/663 tests, REVIEW PASS, DEPLOY clean, VERIFY pass. BL-064 done.",
+      "next": "TRIAGE",
       "timestamp": "2026-04-25T10:58:00Z"
     },
     {
-      "iteration": 93,
-      "phases": ["TRIAGE"],
-      "outcome": "TRIAGE: env healthy. BL-064 selected. BL-063 deferred.",
-      "next": "PLAN BL-064",
-      "timestamp": "2026-04-25T10:47:00Z"
-    },
-    {
       "iteration": 92,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-062 full cycle complete. Card sizing fixed.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:55:00Z"
     },
     {
       "iteration": 91,
-      "phases": ["DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-061 full cycle complete. kbd badges removed.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:30:00Z"
@@ -83,7 +106,7 @@
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 76,
+    "iterations_this_session": 77,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 93
@@ -94,9 +117,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 93,
-    "last_deploy_iteration": 93,
-    "current_iteration": 94,
+    "last_verify_iteration": 94,
+    "last_deploy_iteration": 94,
+    "current_iteration": 95,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -113,7 +136,7 @@
     "BL-058": 1.763799150000068,
     "BL-061": 5.289914549999935,
     "BL-062": 6.174803550000092,
-    "BL-063": 2.621212350000036
+    "BL-063": 233.63058390000037
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
