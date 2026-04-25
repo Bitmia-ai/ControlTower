@@ -13,8 +13,10 @@
 ### BL-073: steer tab, directives need to be rendered with markdown
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 100)
+- **Merged:** 2026-04-25 (iter 100)
+- **Summary:** Steer tab directives now render as markdown using react-markdown + remark-gfm (already in package.json). DirectiveRow wraps directive text in a Tailwind Typography prose container with dark mode support. Input textarea remains plain text. Links render in red-600 accent color.
 
 ### BL-072: Steer tab. we need to be able to edit/delete directives
 - **Type:** feature

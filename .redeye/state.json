@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "iteration": 100,
+  "iteration": 101,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-073",
-  "backlog_title": "steer tab, directives need to be rendered with markdown",
-  "spec_file": "docs/specs/BL-073-steer-markdown.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -27,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-074 — card height fix complete (iteration 99)",
+    "last_commit": "redeye: merge BL-073 — steer markdown rendering complete (iteration 100)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter99-bl074",
+    "last_good_deploy_tag": "last-good-deploy-iter100-bl073",
     "merge_status": "clean",
-    "notes": "MERGE iter 99: BL-074 WorkingOn/Controls card height fix merged. 691/691 tests pass. Build clean. VERIFY: both cards same height confirmed via screenshot. Transitioning to triage iter 100."
+    "notes": "MERGE iter 100: BL-073 steer markdown rendering merged. 692/692 tests pass. Build clean. VERIFY: directive rows render formatted HTML (bold/code) in dark mode. Transitioning to triage iter 101."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -39,11 +39,15 @@
       "iteration": 100,
       "phases": [
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "PLAN: spec docs/specs/BL-073-steer-markdown.md — replace plain-text directive renderer with react-markdown + remark-gfm (already installed; same pattern as backlog detail page). BUILD: app/project/[id]/steer/page.tsx DirectiveRow now renders directive text inside a Tailwind Typography prose container (prose-sm prose-zinc dark:prose-invert with tightened spacing tokens) wrapped around <ReactMarkdown remarkPlugins={[remarkGfm]}>. Date-extraction regex switched from `.` to `[\\s\\S]` so multi-line markdown still gets the trailing date stripped (avoids `s` flag — TS target is below ES2018). Input textarea unchanged (plain text). Added test asserting **bold**/`code`/[link]/list rendering. 692/692 tests pass, build clean.",
-      "next": "REVIEW BL-073",
-      "timestamp": "2026-04-25T22:55:00Z"
+      "outcome": "PLAN: spec docs/specs/BL-073-steer-markdown.md — replace plain-text directive renderer with react-markdown + remark-gfm (already installed; same pattern as backlog detail page). BUILD: app/project/[id]/steer/page.tsx DirectiveRow now renders directive text inside a Tailwind Typography prose container (prose-sm prose-zinc dark:prose-invert with tightened spacing tokens) wrapped around ReactMarkdown with remarkGfm. Date-extraction regex switched from `.` to `[\\s\\S]` so multi-line markdown still gets the trailing date stripped (avoids `s` flag). Input textarea unchanged (plain text). Added test asserting bold/code/link/list rendering. 692/692 tests pass, build clean. REVIEW: 0C/0M/0m — XSS safe (react-markdown uses React element tree, no raw HTML injection), dark:prose-invert present, regex multiline correct, tests cover all markdown node types. DEPLOY: build clean, 692/692 tests pass. VERIFY: screenshot confirms real directive rows render as formatted HTML (bold/code), not raw markdown syntax. Dark mode active and correct. MERGE: BL-073 marked done. Cost delta ~$1.54. Transitioned to triage iter 101.",
+      "next": "TRIAGE iter 101",
+      "timestamp": "2026-04-25T23:00:00Z"
     },
     {
       "iteration": 99,
@@ -210,9 +214,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 99,
-    "last_deploy_iteration": 99,
-    "current_iteration": 100,
+    "last_verify_iteration": 100,
+    "last_deploy_iteration": 100,
+    "current_iteration": 101,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -233,7 +237,8 @@
     "BL-064": 6.174803550000092,
     "BL-066": 109.21807290000001,
     "BL-071": 50.40187815,
-    "BL-074": 0
+    "BL-074": 0,
+    "BL-073": 1.54
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
