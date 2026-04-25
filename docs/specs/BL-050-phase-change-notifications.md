@@ -153,13 +153,13 @@ Create `usePhaseNotifications(phase, backlog_title, projectId)`:
 - Assert: cleanup removes the document click listener.
 
 **Acceptance criteria:**
-- [ ] Hook exported from `lib/use-phase-notifications.ts`
-- [ ] `NOTIFIABLE_PHASES` exported as `const` Set for testability
-- [ ] 6+ unit tests, all passing
-- [ ] No toast fires on first mount
-- [ ] Notification permission request fires only on first document click
+- [x] Hook exported from `lib/use-phase-notifications.ts`
+- [x] `NOTIFIABLE_PHASES` exported as `const` Set for testability
+- [x] 6+ unit tests, all passing
+- [x] No toast fires on first mount
+- [x] Notification permission request fires only on first document click
 
-**Status:** pending
+**Status:** done
 
 ---
 
