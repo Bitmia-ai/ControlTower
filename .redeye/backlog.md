@@ -76,7 +76,8 @@
 ### BL-065: Add Won't Do section at the end of the backlog page
 - **Type:** feature
 - **Priority:** P2
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 104)
 - **Description:** Currently wont-do items are invisible in the backlog UI — they vanish from upNext (correctly, after the wont-do parser fix) but there is no place that lists them. Add a collapsed-by-default "Won't Do" section at the bottom of the backlog page that lists every item with status=wontdo. For each item, show the title, BL-id, and any details/rationale present on the entry (the agents typically leave a short note explaining why the item was rejected — that note must be rendered, not hidden). Section header should show the count and be expandable. Goal: nothing silently disappears, and the CEO can audit why specific things were dropped.
 
 ### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it

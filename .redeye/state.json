@@ -2,12 +2,12 @@
   "schema_version": 1,
   "iteration": 104,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "triage",
+  "phase": "plan",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": null,
-  "backlog_title": null,
+  "backlog_item": "BL-065",
+  "backlog_title": "Add Won't Do section at the end of the backlog page",
   "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
@@ -302,6 +302,7 @@
     "BL-061": 218.73707190000033,
     "BL-066": 239.0346324000005,
     "BL-071": 241.31352765000028,
-    "BL-073": 250.6147629000001
+    "BL-073": 250.6147629000001,
+    "BL-065": 265.3649980500002
   }
 }
