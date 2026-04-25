@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "iteration": 86,
-  "started_at": "2026-04-25T07:55:09Z",
+  "iteration": 87,
+  "started_at": "2026-04-25T08:13:18Z",
   "phase": "TRIAGE",
-  "phase_status": "complete",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-056",
-  "backlog_title": "Redesign backlog, history, and live tabs using designer sub-agent and frontend skill",
-  "spec_file": "docs/specs/BL-056-tab-redesign.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {
-    "plan_complete": true,
-    "build_complete": true,
-    "review_complete": true,
-    "deploy_complete": true,
-    "verify_complete": true
+    "plan_complete": false,
+    "build_complete": false,
+    "review_complete": false,
+    "deploy_complete": false,
+    "verify_complete": false
   },
-  "review_cycles": 1,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -33,8 +33,8 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start BUILD (iteration 86)",
-    "branch": "feat/bl-056-tab-redesign",
+    "last_commit": "redeye: merge BL-056 complete — tab redesign shipped (iteration 86)",
+    "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter86",
     "merge_status": "clean",
     "notes": "Iter 86: FULL CYCLE complete. BL-056 (tab redesign) merged to main. 1 code commit. SectionHeader component, backlog/history/live redesigns, 646 tests pass. Tagged last-good-deploy-iter86."
@@ -115,7 +115,7 @@
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 66,
+    "iterations_this_session": 67,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 86
@@ -128,7 +128,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 86,
     "last_deploy_iteration": 86,
-    "current_iteration": 86,
+    "current_iteration": 87,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
