@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ProjectDetail, InboxQuestion } from "@/lib/redeye-types";
 import { useTaskTransitionTracker } from "@/lib/use-task-transition-tracker";
 import { usePhaseNotifications } from "@/lib/use-phase-notifications";
+import { useKeyboardShortcuts } from "@/lib/use-keyboard-shortcuts";
 import { WorkingOnCard } from "@/components/mission-control/working-on-card";
 import { HealthCard } from "@/components/mission-control/health-card";
 import { QuestionsCard } from "@/components/mission-control/questions-card";
@@ -116,6 +117,21 @@ export default function ProjectPage({
   const running = detail?.project?.running ?? false;
   const stalled =
     detail?.project?.sessionStatus?.cto?.status === "stalled";
+
+  // BL-052: global keyboard shortcuts for mission-control actions.
+  // Disabled while any dialog is open to avoid double-handling key events.
+  useKeyboardShortcuts({
+    enabled: !answerOpen && !steerOpen && !backlogOpen,
+    running,
+    projectId,
+    onStart: () => handleAction("start"),
+    onStop: () => handleAction("stop"),
+    onPause: () => handleAction("pause"),
+    onAddBacklog: () => setBacklogOpen(true),
+    navigate: (path) => {
+      window.location.href = path;
+    },
+  });
   const pendingQuestions = (detail?.pendingQuestions ?? []).filter(
     (q) => !q.answered
   );

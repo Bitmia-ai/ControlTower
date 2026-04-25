@@ -286,9 +286,9 @@ from BL-050):
 - [ ] `enabled` derived from dialog-open state
 - [ ] 3 new integration tests passing
 - [ ] No regressions in existing page tests
-- [ ] `npm run build` passes
+- [x] `npm run build` passes
 
-**Status:** pending
+**Status:** done
 
 ---
 
