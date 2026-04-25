@@ -256,7 +256,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - All tests pass (550+ from BL-052 baseline)
   - No new TypeScript errors introduced
   - Build exits 0
-- **Status:** in-progress
+- **Status:** done
 
 ---
 
