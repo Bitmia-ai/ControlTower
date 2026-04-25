@@ -297,3 +297,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (worktree build clean, 651/651 unit tests, tagged last-good-deploy-iter88)
 - **Visual check:** PASS — home page no horizontal scroll at 375px (scrollWidth===375), 1-column card grid, all pages (mission control, backlog, history, live) render without overflow; worktree code audit confirms all 8 acceptance criteria met: min-h-[44px] on all interactive buttons, flex-wrap on button rows and chip strips, overflow-x-auto on nav and phase chips, break-all on code blocks, sparkline SVG width=100%; 0 JS errors on home and project pages
 - **Documenter:** running in background
+
+## Iteration 90 — 2026-04-25T15:00:00Z
+- **Built:** BL-058 Schedules UI needs to be operative (6 sub-tasks: T1 global-error fix, T2 schedules API, T3 schedules page, T4 schedule-list component, T5 tests, T6 E2E spec)
+- **Review findings:** 0C 2M 2m — 2 review cycles; both Majors fixed (nested button restructured, stale sched counter corrected)
+- **Tests:** 0 new E2E tests (no CLI configured), 662 total unit/integration, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (no tester entry this iteration)
+- **Deployed:** SUCCESS (production build clean Turbopack, 662/662 tests, tagged last-good-deploy-iter90-bl058)
+- **Visual check:** PASS — SCHED-1 renders at /project/1/schedules with Overdue badge; Run now button is sibling of expand button (not nested); POST /api/projects/1/schedules/run returns 200 {data:{queued:true}}; 0 app JS errors; SSR 500 is pre-existing dev-mode Turbopack quirk, not a production issue
+- **Documenter:** running in background
