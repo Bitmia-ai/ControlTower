@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "iteration": 77,
-  "started_at": "2026-04-25T00:03:31Z",
+  "iteration": 78,
+  "started_at": "2026-04-25T00:07:13Z",
   "phase": "TRIAGE",
-  "phase_status": "waiting_for_ceo",
+  "phase_status": "in-progress",
   "backlog_item": null,
   "backlog_title": null,
   "spec_file": null,
@@ -35,6 +35,13 @@
   "blocked_items": [],
   "iteration_log": [
     {
+      "iteration": 78,
+      "phases": ["TRIAGE"],
+      "outcome": "in-progress",
+      "next": "TBD",
+      "timestamp": "2026-04-25T00:07:13Z"
+    },
+    {
       "iteration": 77,
       "phases": ["TRIAGE"],
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
@@ -61,13 +68,6 @@
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-24T23:54:10Z"
-    },
-    {
-      "iteration": 73,
-      "phases": ["TRIAGE"],
-      "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). No documenter commits. Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
-      "next": "waiting_for_ceo",
-      "timestamp": "2026-04-25T00:00:00Z"
     }
   ],
   "counters": {
@@ -90,7 +90,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 63,
     "last_deploy_iteration": 63,
-    "current_iteration": 77,
+    "current_iteration": 78,
     "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
