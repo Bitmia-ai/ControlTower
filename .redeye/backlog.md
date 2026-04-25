@@ -2,6 +2,27 @@
 
 ## CEO Requests
 
+### BL-057: Mobile-responsive layout — make the dashboard usable on phones and tablets
+- **Type:** feature
+- **Priority:** P1
+- **Status:** planned
+- **Added:** 2026-04-25 (iter 88)
+- **Source:** Q-009 default (iter 88) — CEO implicitly approved by invoking /redeye:start
+- **Details:**
+  - The Control Tower dashboard is currently designed for desktop viewports only
+  - Make all pages responsive so they work well on phones (≥320px) and tablets (≥768px)
+  - Pages to target: home page (project cards), mission control (/project/[id]), backlog list, backlog detail, history, live tab, schedules tab
+  - Key layout changes needed:
+    - Home page: project cards stack vertically on mobile instead of grid
+    - Mission control: single-column stack on mobile (Working On, Controls, Cost, Questions, Recently Shipped)
+    - Project nav tabs: horizontal scroll or collapsed hamburger menu on mobile
+    - Backlog list: full-width rows, hide secondary columns on small screens
+    - Live tab: toolbar collapses, transcript cards full-width
+  - Use Tailwind responsive prefixes (sm:, md:, lg:) — no new CSS libraries needed
+  - Ensure touch targets are at least 44x44px (WCAG 2.5.5)
+  - Test with Playwright viewport resize (375x667 iPhone SE, 768x1024 iPad)
+  - Add unit tests for any new responsive hooks or components
+
 ### BL-056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
 - **Type:** feature
 - **Priority:** P2
