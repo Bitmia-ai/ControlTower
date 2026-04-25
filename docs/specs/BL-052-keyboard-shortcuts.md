@@ -306,12 +306,12 @@ from BL-050):
 5. Verify chord timeout clears on navigation (no dangling timers after route change).
 
 **Acceptance criteria:**
-- [ ] All existing tests pass (no regressions)
-- [ ] 15+ new tests added across T1–T4
-- [ ] Build passes
-- [ ] No TypeScript errors in new files
+- [x] All existing tests pass (no regressions)
+- [x] 15+ new tests added across T1–T4
+- [x] Build passes
+- [x] No TypeScript errors in new files
 
-**Status:** pending
+**Status:** done
 
 ---
 
