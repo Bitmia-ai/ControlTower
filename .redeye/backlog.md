@@ -50,7 +50,8 @@
 ### BL-068: Polish Live tab visual design — improve transcript viewer styling and readability
 - **Type:** feature
 - **Priority:** P2
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 105)
 - **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
 - **Description:** The Live tab transcript viewer works well functionally but could benefit from visual polish. Use the designer subagent to enhance the visual presentation and improve readability of transcript content. Focus areas: improve Claude's Thinking cards styling and visual hierarchy, refine User message box appearance, enhance phase indicator badges, optimize line-height and spacing for better text readability, ensure consistent styling across light/dark modes. Implement via frontend skill after designer mockups.
 
