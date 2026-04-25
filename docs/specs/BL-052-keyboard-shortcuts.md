@@ -237,9 +237,9 @@ not present):
 **Acceptance criteria:**
 - [ ] `<kbd>` hint badges on Backlog, History, Live nav items
 - [ ] Badges are `aria-hidden`
-- [ ] 3 new unit tests passing
+- [x] 3 new unit tests passing
 
-**Status:** pending
+**Status:** done
 
 ---
 
