@@ -53,7 +53,8 @@
 ### BL-049: Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
 - **Type:** test
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 79)
 - **Added:** 2026-04-25 (iter 79)
 - **Spec:** docs/specs/BL-049-e2e-test-coverage.md
 - **Details:**
@@ -63,6 +64,7 @@
     2. Start/Stop flow: click Start, verify button state changes to "Stop" and working-on card updates; click Stop, verify return to idle
     3. Cost card: verify cost card renders, values are non-negative, session cost <= total cost invariant holds in the DOM
   - Each spec should run against http://localhost:3200 with an existing initialized project
+- **Summary:** Added two new Playwright E2E specs: backlog-crud.spec.ts exercises the full add-via-dialog flow through to the detail page, and cost-card.spec.ts verifies the session/total cost non-negative invariant and exact value formatting. Both specs use route interception to avoid external dependencies.
 
 ### BL-048: In the live tab, User boxes need to be collapsible and collapsed by default In the live tab, User boxes need to be collapsible and collapsed by default
 - **Type:** feature
