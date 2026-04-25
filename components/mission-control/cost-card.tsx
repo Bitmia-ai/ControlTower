@@ -1,10 +1,17 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { SparklineChart } from "./sparkline-chart";
 
 interface CostData {
   session: number;
   total: number;
+}
+
+interface SessionEntry {
+  file: string;
+  cost: number;
+  mtimeMs: number;
 }
 
 interface CostCardProps {
@@ -16,33 +23,54 @@ function formatCost(value: number): string {
   return `$${value.toFixed(2)}`;
 }
 
+async function fetchJsonWithTimeout<T>(
+  url: string,
+  timeoutMs = 8000
+): Promise<T | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { data?: T };
+    return json.data ?? null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export function CostCard({ projectId, running }: CostCardProps) {
   const [data, setData] = useState<CostData | null>(null);
+  const [sessions, setSessions] = useState<SessionEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  async function fetchCost() {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
-      const res = await fetch(`/api/projects/${projectId}/cost`, { signal: controller.signal });
-      clearTimeout(timeout);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      if (json.data) {
-        setData(json.data as CostData);
-        setError(false);
-      }
-    } catch {
+  async function fetchAll() {
+    const [costData, historyData] = await Promise.all([
+      fetchJsonWithTimeout<CostData>(`/api/projects/${projectId}/cost`),
+      fetchJsonWithTimeout<{ sessions: SessionEntry[] }>(
+        `/api/projects/${projectId}/cost-history`
+      ),
+    ]);
+
+    if (costData) {
+      setData(costData);
+      setError(false);
+    } else {
       setError(true);
-    } finally {
-      setLoading(false);
     }
+
+    // Sparkline degrades gracefully — null means just hide it
+    setSessions(historyData?.sessions ?? []);
+
+    setLoading(false);
   }
 
   useEffect(() => {
-    fetchCost();
+    fetchAll();
   }, [projectId]);
 
   useEffect(() => {
@@ -51,7 +79,7 @@ export function CostCard({ projectId, running }: CostCardProps) {
       intervalRef.current = null;
     }
     if (running) {
-      intervalRef.current = setInterval(fetchCost, 30_000);
+      intervalRef.current = setInterval(fetchAll, 30_000);
     }
     return () => {
       if (intervalRef.current) {
@@ -88,12 +116,23 @@ export function CostCard({ projectId, running }: CostCardProps) {
             </div>
           </div>
 
+          {sessions.length >= 2 && (
+            <div className="pt-2">
+              <p className="text-xs text-gray-500 dark:text-zinc-500 mb-1">
+                Last {sessions.length} sessions
+              </p>
+              <div className="text-red-500 dark:text-red-400">
+                <SparklineChart sessions={sessions} />
+              </div>
+            </div>
+          )}
+
           <div className="text-xs text-gray-400 dark:text-zinc-600">
             {error ? (
               <span>
                 Failed to refresh.{" "}
                 <button
-                  onClick={fetchCost}
+                  onClick={fetchAll}
                   className="underline hover:text-gray-600 dark:hover:text-zinc-400"
                 >
                   Retry

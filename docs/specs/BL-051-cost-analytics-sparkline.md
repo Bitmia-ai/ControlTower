@@ -61,7 +61,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - Entries sorted ascending by mtimeMs (oldest first = left edge of chart)
   - Capped at `limit` most-recent files
   - Unit tests pass
-- **Status:** pending
+- **Status:** done
 
 ### T2 — `GET /api/projects/[id]/cost-history/route.ts`: cost-history endpoint
 - **Size:** S
@@ -74,7 +74,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - Response shape: `{ data: { sessions: Array<{ file: string, cost: number, mtimeMs: number }> } }`
   - Try-catch with structured error response
   - Unit tests pass
-- **Status:** pending
+- **Status:** done
 
 ### T3 — `components/mission-control/sparkline-chart.tsx`: pure SVG sparkline
 - **Size:** M
@@ -92,7 +92,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - SVG has `width="100%"` and `viewBox` attribute
   - `currentColor` used for stroke (not hardcoded hex)
   - All unit tests pass
-- **Status:** pending
+- **Status:** done
 
 ### T4 — Extend `CostCard` to fetch and display sparkline
 - **Size:** S
@@ -108,7 +108,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - 30s poll fetches both endpoints in parallel
   - Graceful degradation: chart failure does not affect scalar display
   - Unit tests pass
-- **Status:** pending
+- **Status:** done
 
 ### T5 — Playwright E2E: cost-history chart renders in DOM
 - **Size:** S
@@ -120,7 +120,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - SVG sparkline is visible when mocked history returns >= 2 sessions
   - "Last 5 sessions" label is visible
   - Test passes against `http://localhost:3200`
-- **Status:** pending
+- **Status:** done
 
 ### T6 — Unit tests for all new modules (coverage gate)
 - **Size:** S
@@ -133,7 +133,15 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - New tests from T1–T5 all pass
   - No TypeScript errors
   - Build clean
-- **Status:** pending
+- **Status:** done
+
+  Notes: All 519 unit tests pass. New files (lib/cost-history.ts,
+  app/api/projects/[id]/cost-history/route.ts,
+  components/mission-control/sparkline-chart.tsx,
+  components/mission-control/cost-card.tsx) have no TypeScript errors.
+  Pre-existing tsc errors in lib/stream-utils.test.ts and a pre-existing
+  Next.js build prerender error on /_global-error reproduce on main and
+  are out of scope for this BL.
 
 ---
 
