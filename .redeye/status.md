@@ -1,9 +1,54 @@
-# RedEye Status — Iteration 80 BUILD
+# RedEye Status — Iteration 80 REVIEW cycle 2
 
 **Date:** 2026-04-25
-**Phase:** BUILD complete — ready for REVIEW/DEPLOY
+**Phase:** REVIEW cycle 2 — CLEAN. Recommendation: DEPLOY
 **Active Item:** BL-050 — In-app notification toast for phase changes
 **Branch:** `feature/BL-050-phase-notifications` (worktree at `.worktrees/BL-050`)
+
+## REVIEW cycle 2 verdict: 0C / 0M / 1m — DEPLOY
+
+### Findings
+
+- **m-1 (Minor, no-block):** The spec (AD-4, line 68) has a copy-paste contradiction — `VERIFY`
+  appears in both the "notified" and "not-notified" lists. The implementation correctly follows
+  the prescriptive intent (line 65: VERIFY = "completed" signal). The spec line 68 is stale and
+  should be corrected on merge, but does not block deployment.
+
+### Cycle 1 fixes verified
+
+- M-1: `VERIFY` added to `NOTIFIABLE_PHASES` and routed to the `MERGE` case-fall-through in
+  `composeMessage`. New test `"VERIFY transition uses same 'completed' phrasing as MERGE"` passes.
+  Fix is correct.
+- m-1: `_idCounter` mutable module state replaced with `crypto.randomUUID()` + `Date.now()+Math.random()`
+  fallback. Implementation is correct; fallback guards the non-secure context edge case.
+- m-2: `Notification` constructor TS cast simplified to intersection type; `N.permission` now
+  accessed directly without a second lookup. Correct and cleaner.
+
+### Test results: 493/493 pass
+
+---
+
+## Latest commit: `ad544df` — fix: REVIEW M-1 add VERIFY to NOTIFIABLE_PHASES
+
+REVIEW findings addressed:
+
+- **M-1 (Major) — fixed**: Added `"VERIFY"` to `NOTIFIABLE_PHASES` and routed
+  `case "VERIFY":` to the same "completed" branch as `MERGE` in
+  `composeMessage`. New unit test asserts VERIFY transition fires the
+  "completed" phrasing with backlog title.
+- **m-1 — fixed**: Replaced module-level `_idCounter` mutable state in
+  `components/toast-provider.tsx` with `crypto.randomUUID()` (with
+  `Date.now()+random` fallback for non-secure contexts).
+- **m-2 — fixed**: Simplified the `Notification` constructor TypeScript cast
+  in `lib/use-phase-notifications.ts` by intersecting `permission` onto the
+  constructor type instead of double-casting through `unknown`.
+
+Tests after fix: **493/493 pass** (492 + 1 new VERIFY test). `npx tsc --noEmit`
+on `lib/use-phase-notifications.ts` clean (only pre-existing errors in
+`lib/session-manager.test.ts` and `lib/stream-utils.test.ts` remain — unrelated).
+
+---
+
 
 ## Sub-tasks Completed (6/6)
 
