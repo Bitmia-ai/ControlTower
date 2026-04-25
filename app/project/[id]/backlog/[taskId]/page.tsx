@@ -17,6 +17,7 @@ const STATUS_COLORS: Record<string, string> = {
   done: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
   blocked: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
   "pending-triage": "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300",
+  wontdo: "bg-gray-200 text-gray-500 dark:bg-zinc-800 dark:text-zinc-500 line-through",
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
@@ -33,6 +34,7 @@ const STATUS_OPTIONS = [
   "done",
   "blocked",
   "pending-triage",
+  "wontdo",
 ];
 
 export default function BacklogItemPage({

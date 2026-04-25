@@ -127,6 +127,8 @@ function normalizeStatus(raw: string | undefined): BacklogItem["status"] {
   if (lower === "blocked") return "blocked";
   if (lower === "pending-triage" || lower === "pending triage")
     return "pending-triage";
+  if (lower === "wont-do" || lower === "wontdo" || lower === "won't do")
+    return "wontdo";
   return "pending";
 }
 

@@ -133,6 +133,20 @@ describe("parseBacklog", () => {
     expect(items[0].section).toBe("wontdo");
   });
 
+  // Regression: `wont-do` status was falling through normalizeStatus's default
+  // case and being misclassified as `pending`, which made the dashboard count
+  // wont-do items as remaining work and the loop never reached "exhausted".
+  it("normalizes wont-do status (any spelling) to wontdo, not pending", () => {
+    const content =
+      `# Backlog\n\n## Triaged\n\n` +
+      `### BL-001: hyphen form\n- **Status:** wont-do\n\n` +
+      `### BL-002: smushed form\n- **Status:** wontdo\n\n` +
+      `### BL-003: apostrophe form\n- **Status:** Won't Do\n`;
+    const items = parseBacklog(content);
+    expect(items).toHaveLength(3);
+    expect(items.map((i) => i.status)).toEqual(["wontdo", "wontdo", "wontdo"]);
+  });
+
   // ---- Summary field (BL-026) ----
 
   it("parses Summary field on a done item", () => {

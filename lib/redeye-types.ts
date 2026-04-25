@@ -94,7 +94,7 @@ export interface BacklogItem {
   title: string;
   type?: string;
   priority?: string;
-  status: "pending" | "planned" | "in-progress" | "done" | "blocked" | "pending-triage";
+  status: "pending" | "planned" | "in-progress" | "done" | "blocked" | "pending-triage" | "wontdo";
   section: "ceo" | "discovered" | "triaged" | "wontdo";
   details?: string;
   spec?: string;
