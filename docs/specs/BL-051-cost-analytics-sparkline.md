@@ -108,7 +108,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - 30s poll fetches both endpoints in parallel
   - Graceful degradation: chart failure does not affect scalar display
   - Unit tests pass
-- **Status:** in-progress
+- **Status:** done
 
 ### T5 — Playwright E2E: cost-history chart renders in DOM
 - **Size:** S
@@ -120,7 +120,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - SVG sparkline is visible when mocked history returns >= 2 sessions
   - "Last 5 sessions" label is visible
   - Test passes against `http://localhost:3200`
-- **Status:** pending
+- **Status:** in-progress
 
 ### T6 — Unit tests for all new modules (coverage gate)
 - **Size:** S
