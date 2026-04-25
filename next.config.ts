@@ -6,6 +6,33 @@ const nextConfig: NextConfig = {
   // Fixes "Cannot read properties of null (reading 'useContext'/'use')" in
   // /_global-error prerender (Next.js 16 + React 19 + Turbopack bug).
   serverExternalPackages: ["react", "react-dom"],
+
+  // Explicit cache-control headers.
+  // /_next/static/* assets are content-addressed (filename includes a hash),
+  // so it is safe to cache them indefinitely (immutable).
+  // /api/* routes are always dynamic — no-store prevents stale responses.
+  async headers() {
+    return [
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

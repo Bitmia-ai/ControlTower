@@ -3,9 +3,20 @@
 import { useEffect, useState, useCallback, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import dynamic from "next/dynamic";
 import type { BacklogItem } from "@/lib/redeye-types";
+
+// Dynamic import moves react-markdown out of the shared chunk into a lazy
+// route chunk that is only fetched when the backlog detail page is visited.
+const MarkdownRenderer = dynamic(
+  () => import("@/components/markdown-renderer"),
+  {
+    ssr: false,
+    loading: () => (
+      <span className="text-gray-400 dark:text-zinc-600 animate-pulse">…</span>
+    ),
+  }
+);
 import { BacklogId } from "@/components/backlog-id";
 import { FetchError } from "@/components/fetch-error";
 import { BacklogSummarySection } from "@/components/backlog-summary-section";
@@ -357,9 +368,7 @@ export default function BacklogItemPage({
                   Details
                 </h3>
                 <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none text-gray-700 dark:text-zinc-300">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {item.details}
-                  </ReactMarkdown>
+                  <MarkdownRenderer>{item.details}</MarkdownRenderer>
                 </div>
               </div>
             )}

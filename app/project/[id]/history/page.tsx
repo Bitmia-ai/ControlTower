@@ -1,9 +1,20 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef, use } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import dynamic from "next/dynamic";
 import { Clock, GitBranch } from "lucide-react";
+
+// Dynamic import moves react-markdown out of the shared chunk into a lazy
+// route chunk that is only fetched when the History tab is visited.
+const MarkdownRenderer = dynamic(
+  () => import("@/components/markdown-renderer"),
+  {
+    ssr: false,
+    loading: () => (
+      <span className="text-gray-400 dark:text-zinc-600 animate-pulse">…</span>
+    ),
+  }
+);
 import type { ProjectDetail, ChangelogEntry } from "@/lib/redeye-types";
 import type { SessionHistoryEntry } from "@/lib/cost-history";
 import { linkifyBacklogIds } from "@/components/backlog-id";
@@ -26,15 +37,14 @@ function TimelineEntry({ entry, projectId }: { entry: ChangelogEntry; projectId:
         </p>
         {entry.details && (
           <div className="text-sm text-gray-600 dark:text-zinc-400 mt-1 leading-relaxed prose prose-zinc dark:prose-invert prose-sm max-w-none">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+            <MarkdownRenderer
               components={{
                 p: ({ children }) => <p>{typeof children === "string" ? linkifyBacklogIds(children, projectId) : children}</p>,
                 li: ({ children }) => <li>{typeof children === "string" ? linkifyBacklogIds(children, projectId) : children}</li>,
               }}
             >
               {entry.details}
-            </ReactMarkdown>
+            </MarkdownRenderer>
           </div>
         )}
         {entry.date && (

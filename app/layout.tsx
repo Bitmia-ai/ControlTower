@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClientProviders } from "@/components/client-providers";
 import "./globals.css";
@@ -13,9 +13,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: "Control Tower",
-  description: "RedEye autonomous dev agent dashboard",
+  title: {
+    default: "Control Tower",
+    template: "%s | Control Tower",
+  },
+  description: "RedEye autonomous dev agent dashboard — monitor and manage AI coding sessions",
+  robots: { index: false, follow: false },
 };
 
 // Force-dynamic prevents static prerendering of layout-wrapped routes,

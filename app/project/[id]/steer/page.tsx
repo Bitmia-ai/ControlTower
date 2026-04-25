@@ -1,9 +1,20 @@
 "use client";
 
 import { useEffect, useState, useCallback, use } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import dynamic from "next/dynamic";
 import { Pencil, Trash2 } from "lucide-react";
+
+// Dynamic import moves react-markdown out of the shared chunk into a lazy
+// route chunk that is only fetched when the Steer page is visited.
+const MarkdownRenderer = dynamic(
+  () => import("@/components/markdown-renderer"),
+  {
+    ssr: false,
+    loading: () => (
+      <span className="text-gray-400 dark:text-zinc-600 animate-pulse">…</span>
+    ),
+  }
+);
 import type { SteeringDirective } from "@/lib/redeye-types";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
@@ -158,7 +169,7 @@ function DirectiveRow({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none break-words flex-1 text-gray-900 dark:text-zinc-100 prose-p:my-1 prose-headings:my-2 prose-pre:my-2 prose-ul:my-1 prose-ol:my-1 prose-a:text-red-600 dark:prose-a:text-red-400">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+          <MarkdownRenderer>{text}</MarkdownRenderer>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {date && (

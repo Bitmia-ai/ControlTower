@@ -39,10 +39,31 @@ vi.mock("@/components/client-providers", () => ({
   ),
 }));
 
-import RootLayout from "./layout";
+import RootLayout, { metadata, viewport } from "./layout";
 
 afterEach(() => {
   cleanup();
+});
+
+describe("RootLayout metadata exports", () => {
+  it("exports viewport with device-width and initialScale 1", () => {
+    expect(viewport).toMatchObject({ width: "device-width", initialScale: 1 });
+  });
+
+  it("exports metadata with a title template and default", () => {
+    // metadata.title is an object with .default and .template
+    expect(typeof metadata.title).toBe("object");
+    const title = metadata.title as { default: string; template: string };
+    expect(title.default).toBe("Control Tower");
+    expect(title.template).toContain("%s");
+  });
+
+  it("exports metadata with robots noindex", () => {
+    // local-only dashboard should not be indexed
+    expect(metadata.robots).toBeTruthy();
+    const robots = metadata.robots as { index: boolean; follow: boolean };
+    expect(robots.index).toBe(false);
+  });
 });
 
 describe("RootLayout logo mark", () => {
