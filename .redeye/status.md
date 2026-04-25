@@ -1,31 +1,44 @@
-# Merge Status — BL-049 — Iteration 79
+# RedEye Status — Iteration 80 TRIAGE
 
 **Date:** 2026-04-25
-**Branch:** redeye/BL-049
-**Phase:** MERGE — COMPLETE
-**Merge Status:** clean
+**Phase:** TRIAGE complete — routing to PLAN
+**Health:** HEALTHY
 
-## Merge Result
+## What Was Found
 
-- Branch `redeye/BL-049` merged into `main` via `ort` strategy (no conflicts)
-- Merge commit: f279d9a — "redeye: merge BL-049 — Expand E2E test coverage (Playwright specs for backlog CRUD and cost card)"
-- State/backlog commit: 04602bc — "redeye: merge complete BL-049 — E2E test coverage shipped, status → done"
+- **BL-049 merged cleanly** to main (E2E test coverage: backlog-crud.spec.ts + cost-card.spec.ts)
+- **Tester reports:** None — tester-reports.md is empty
+- **Schedules:** None defined — schedules.md is empty
+- **Inbox:** No new CEO answers; Q-007 resolved in iter 79; no open questions
+- **Steering:** Empty — no STOP or PAUSE directive
+- **Active claims:** BL-045 claim was expired (iter 61, >4h); cleared and replaced with BL-050 claim
 
-## Files Changed
+## Backlog Planned Items (by priority)
 
-- `e2e/backlog-crud.spec.ts` — new, 219 lines (Playwright spec for backlog CRUD dialog flow)
-- `e2e/cost-card.spec.ts` — new, 156 lines (Playwright spec for cost card invariant)
+| ID | Title | Priority | Status |
+|----|-------|----------|--------|
+| BL-050 | In-app notification toast for phase changes | P1 | planned |
+| BL-051 | Cost analytics — cumulative cost chart | P2 | planned |
+| BL-052 | Keyboard shortcuts for common actions | P2 | planned |
+| BL-053 | Session history page — phase timeline + cost | P2 | planned |
 
-## Claims
+## Background Agents
 
-- No BL-049 claim found in `.active-claims.json` (already clear or not registered)
-- BL-045 claim retained (not stale — claimed_at in future relative to now)
+- **User Tester:** respawn-pending (new deploy happened iter 79 — iterations_since_last_deploy=0); persona rotated to index 3
+- **Documenter:** idle (no code changes since last doc run)
 
-## Backlog
+## Environment
 
-- BL-049 Status: `in-progress` → `done`
-- Summary bullet authored and written into backlog.md
+- Last deploy: iter 79 — PASS
+- Last verify: iter 79 — PASS
+- Unit tests: 462/462 passing
+- Last good deploy tag: last-good-deploy-iter79
+- Full regression last run: iter 79
 
-## Next Phase
+## Decision
 
-TRIAGE
+**Next Phase: PLAN**
+**Selected Item: BL-050** — In-app notification toast when RedEye phase changes (P1)
+
+Rationale: BL-050 is the highest-priority (P1) planned item. No blocking conditions.
+Claim written to .active-claims.json.

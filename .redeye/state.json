@@ -1,32 +1,23 @@
 {
   "schema_version": 1,
-  "iteration": 79,
-  "started_at": "2026-04-25T00:07:13Z",
-  "phase": "MERGE",
+  "iteration": 80,
+  "started_at": "2026-04-25T01:00:00Z",
+  "phase": "TRIAGE",
   "phase_status": "complete",
-  "merge_status": "clean",
-  "backlog_item": "BL-049",
-  "backlog_title": "Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card",
-  "spec_file": "docs/specs/BL-049-e2e-test-coverage.md",
-  "worktree_path": "/Users/casa/ControlTower/.worktrees/BL-049",
-  "worktree_branch": "redeye/BL-049",
+  "backlog_item": "BL-050",
+  "backlog_title": "Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)",
   "phase_progress": {
-    "triage": "Iteration 79 triage complete. CEO directed 'begin the autonomous development loop' — interpreted as proceed signal. Q-007 resolved with default direction. Added BL-049 through BL-053 (E2E tests, notifications, cost chart, keyboard shortcuts, session history). Routing to PLAN for BL-049 (highest priority planned item).",
-    "plan": "BL-049 spec written: docs/specs/BL-049-e2e-test-coverage.md. Two new E2E Playwright specs planned: backlog-crud.spec.ts (add via dialog, detail page verification) and cost-card.spec.ts (cost card invariant). Both use route interception pattern. 2 sub-tasks (T1, T2), S-tier each. No source code changes required.",
-    "build": "T1 and T2 complete. Created e2e/backlog-crud.spec.ts (backlog CRUD dialog flow, 3 assertions: item in list, detail page title, priority badge) and e2e/cost-card.spec.ts (cost card invariant: session>=0, total>=0, session<=total, plus exact value formatting test). No application source code modified. 462/462 unit tests pass. TypeScript clean in new files. Committed cb69df1.",
-    "review": "CLEAN. Security: no issues (test files only, no user input or secrets). Systems: CSS class locator is mildly brittle but acceptable for E2E. Spec compliance: all T1 (8 steps) and T2 (5 steps) implemented, JSDoc style matches, file names correct. No critical or major findings. Proceeding to DEPLOY.",
-    "deploy": "Build: PASS (Next.js 16.2.4 Turbopack, 25 routes, TypeScript clean). Unit tests: 462/462 pass. E2E smoke (full regression — 3rd deploy since iter 44): home page loads 3 projects; mission control cost card renders $2.70/$104.64 invariant holds; backlog page loads with + Add Item; dialog opens, accepts text, enables submit; backlog detail renders title+priority badge; history page renders; ControlTower project mission control cost card $124.89/$139.41 invariant holds; BL-049 detail page renders all fields. All checks green.",
-    "verify": "PASS. Home page: 3 project cards, ControlTower shows BL-049 active green dot. Mission control: Working On card shows BL-049 Deploying badge, Controls card (Stop/Pause/Steer/Add to Backlog) renders correctly. No console errors. Both new E2E spec files confirmed present (backlog-crud.spec.ts, cost-card.spec.ts). 0 Critical bugs in tester-reports.md. Tagged last-good-deploy-iter79. Env: HEALTHY."
+    "triage": "Iteration 80 triage complete. BL-049 (E2E test coverage) merged cleanly to main. No tester reports, no overdue schedules, no new CEO answers, no steering directives (no STOP/PAUSE). Active claims empty. No documenter commits in log. Background agent: user_tester respawn-pending (iterations_since_last_deploy=0 — new deploy happened iter 79). Routing to PLAN for BL-050 (highest-priority planned item, P1 notification toasts)."
   },
-  "review_cycles": 1,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
     "user_tester": {
       "status": "respawn-pending",
-      "heartbeat": "2026-04-24T10:50:00Z",
+      "heartbeat": "2026-04-25T01:00:00Z",
       "bugs_this_cycle": 0,
-      "persona_index": 2
+      "persona_index": 3
     },
     "documenter": {
       "status": "idle",
@@ -35,13 +26,22 @@
     }
   },
   "git_state": {
-    "last_commit": "test: e2e Playwright specs for backlog CRUD and cost card (BL-049)",
-    "branch": "redeye/BL-049",
+    "last_commit": "redeye: merge complete BL-049 — E2E test coverage shipped, status → done",
+    "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter79",
-    "notes": "BL-049 verified: 2 new E2E Playwright specs (backlog-crud, cost-card). 462/462 unit tests pass. Full regression E2E clean. Visual check PASS. Tagged last-good-deploy-iter79."
+    "notes": "BL-049 merged cleanly. 2 new Playwright E2E specs (backlog-crud, cost-card). 462/462 unit tests pass. Tagged last-good-deploy-iter79."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 80,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE: BL-049 merged cleanly. No tester reports, no schedules, no new CEO answers. Health: HEALTHY. Routing to PLAN for BL-050 (P1 — in-app notification toasts for phase changes).",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T01:00:00Z"
+    },
     {
       "iteration": 79,
       "phases": [
@@ -72,24 +72,6 @@
       "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T00:03:31Z"
-    },
-    {
-      "iteration": 76,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
-      "next": "waiting_for_ceo",
-      "timestamp": "2026-04-25T00:00:00Z"
-    },
-    {
-      "iteration": 75,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "Triage confirmed: no tester reports, no overdue schedules, no CEO answers, no planned backlog items. Steering file empty (no STOP/PAUSE). Q-007 still open awaiting CEO direction. Holding in TRIAGE waiting_for_ceo.",
-      "next": "waiting_for_ceo",
-      "timestamp": "2026-04-25T00:00:00Z"
     }
   ],
   "counters": {
@@ -99,7 +81,7 @@
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 58,
+    "iterations_this_session": 59,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 79
@@ -112,7 +94,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 79,
     "last_deploy_iteration": 79,
-    "current_iteration": 79,
+    "current_iteration": 80,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -131,6 +113,7 @@
     "BL-044": 84.79576530000003,
     "BL-024": 88.12103009999997,
     "BL-026": 98.03656575000008,
-    "BL-049": 124.89217890000009
+    "BL-049": 124.89217890000009,
+    "BL-050": 126.25882920000019
   }
 }

@@ -1,10 +1,10 @@
 {
   "claims": {
-    "BL-045": {
+    "BL-050": {
       "instance": "main",
-      "iteration": 61,
-      "claimed_at": "2026-04-25T01:10:00Z",
-      "title": "Improve main project screen design using designer subagent and frontend skill"
+      "iteration": 80,
+      "claimed_at": "2026-04-25T01:00:00Z",
+      "title": "Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)"
     }
   }
 }
