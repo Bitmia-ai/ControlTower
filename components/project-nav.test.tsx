@@ -85,13 +85,6 @@ describe("ProjectNav", () => {
     expect(schedulesLink?.className).toContain("border-red-600");
   });
 
-  it("renders GS kbd hint on Schedules tab", () => {
-    render(<ProjectNav projectId="1" />);
-    // The Schedules link should contain "GS" as a kbd badge
-    const schedulesLink = screen.getByText("Schedules").closest("a");
-    expect(schedulesLink?.textContent).toContain("GS");
-  });
-
   it("has overflow-x-auto for responsive scrolling", () => {
     vi.mocked(usePathname).mockReturnValue("/project/1");
     const { container } = render(<ProjectNav projectId="1" />);

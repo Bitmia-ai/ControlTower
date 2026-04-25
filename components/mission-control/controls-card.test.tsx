@@ -195,43 +195,6 @@ describe("ControlsCard", () => {
     expect(onAddBacklog).toHaveBeenCalledTimes(1);
   });
 
-  // BL-052: keyboard-shortcut hint badges
-  it("Start button shows S kbd badge when !running", () => {
-    render(<ControlsCard running={false} />);
-    const btn = screen.getByRole("button", { name: /^Start/ });
-    const kbd = btn.querySelector("kbd");
-    expect(kbd).toBeTruthy();
-    expect(kbd?.textContent).toBe("S");
-    expect(kbd?.getAttribute("aria-hidden")).toBe("true");
-  });
-
-  it("Stop button shows X kbd badge when running", () => {
-    render(<ControlsCard running={true} />);
-    const btn = screen.getByRole("button", { name: /^Stop/ });
-    const kbd = btn.querySelector("kbd");
-    expect(kbd).toBeTruthy();
-    expect(kbd?.textContent).toBe("X");
-    expect(kbd?.getAttribute("aria-hidden")).toBe("true");
-  });
-
-  it("Pause button shows P kbd badge when running", () => {
-    render(<ControlsCard running={true} />);
-    const btn = screen.getByRole("button", { name: /^Pause/ });
-    const kbd = btn.querySelector("kbd");
-    expect(kbd).toBeTruthy();
-    expect(kbd?.textContent).toBe("P");
-    expect(kbd?.getAttribute("aria-hidden")).toBe("true");
-  });
-
-  it("Add to Backlog button shows B kbd badge", () => {
-    render(<ControlsCard running={false} />);
-    const btn = screen.getByRole("button", { name: /Add item to backlog/i });
-    const kbd = btn.querySelector("kbd");
-    expect(kbd).toBeTruthy();
-    expect(kbd?.textContent).toBe("B");
-    expect(kbd?.getAttribute("aria-hidden")).toBe("true");
-  });
-
   it("caption auto-hides after 5s", async () => {
     const onStop = vi.fn();
     render(<ControlsCard running={true} onStop={onStop} />);

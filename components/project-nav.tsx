@@ -4,16 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { label: "Overview", path: "", kbd: null },
-  { label: "Backlog", path: "/backlog", kbd: "GB" },
-  { label: "History", path: "/history", kbd: "GH" },
-  { label: "Live", path: "/live", kbd: "GL" },
-  { label: "Schedules", path: "/schedules", kbd: "GS" },
+  { label: "Overview", path: "" },
+  { label: "Backlog", path: "/backlog" },
+  { label: "History", path: "/history" },
+  { label: "Live", path: "/live" },
+  { label: "Schedules", path: "/schedules" },
 ] as const;
-
-// BL-052: keyboard-shortcut hint badge style (matches ControlsCard kbdCls)
-const kbdCls =
-  "ml-1.5 text-[10px] leading-none font-mono px-1 py-0.5 rounded border border-current opacity-50";
 
 export function ProjectNav({ projectId }: { projectId: string }) {
   const rawPathname = usePathname();
@@ -33,7 +29,7 @@ export function ProjectNav({ projectId }: { projectId: string }) {
 
   return (
     <nav className="flex gap-4 border-b border-gray-200 dark:border-zinc-800 pb-0 overflow-x-auto">
-      {NAV_ITEMS.map(({ label, path, kbd }) => (
+      {NAV_ITEMS.map(({ label, path }) => (
         <Link
           key={label}
           href={basePath + path}
@@ -44,11 +40,6 @@ export function ProjectNav({ projectId }: { projectId: string }) {
           }`}
         >
           {label}
-          {kbd && (
-            <kbd aria-hidden="true" className={kbdCls}>
-              {kbd}
-            </kbd>
-          )}
         </Link>
       ))}
     </nav>
