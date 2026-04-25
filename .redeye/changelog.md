@@ -279,3 +279,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean, 493/493 unit tests, 6 E2E flows green, tagged last-good-deploy-iter80)
 - **Visual check:** PASS — home page renders 3 project cards correctly; mission control page for ControlTower renders all cards (Working On, Controls, Questions, Backlog, Cost, Health); ToastContainer alert region confirmed present in DOM via accessibility snapshot; no layout regressions; no Critical bugs in tester-reports.md
 - **Documenter:** running in background (iter 45)
+
+## Iteration 83 — 2026-04-25T02:52:00Z
+- **Built:** BL-053 Improve session history page — show phase timeline and cost per session
+- **Review findings:** 0C 0M 3m — 3 minors fixed (1 review cycle)
+- **Tests:** 35 new unit tests added, 585 total, regression PASS; full E2E green (18-session ControlTower history, phase chips on haze project)
+- **User Tester:** 0 bugs reported, no feedback score (no tester feedback this iteration)
+- **Deployed:** SUCCESS (production build clean, 585/585 unit tests, full E2E regression green; pre-existing infinite render loop bug in history page found and fixed as part of BL-053 work)
+- **Visual check:** PASS — ControlTower history page renders 18 sessions with cost badges ($0.22–$5.82) above Iteration Log; haze history page shows 10 sessions with phase chips (VER green, PLN blue, TRI gray) and cost badges ($0.17–$71.35); Sessions section correctly above Iteration Log; "No changelog entries yet" empty state correct for haze; no console errors; no layout regressions; screenshots: verify-iter83-home.png, verify-iter83-history-controltower.png, verify-iter83-history-haze.png
+- **Documenter:** running in background

@@ -1,33 +1,62 @@
-# RedEye Status — Iteration 83 TRIAGE
+# VERIFY Status — BL-053 (Iteration 83)
 
-**Updated:** 2026-04-25T02:15Z
-**Phase:** TRIAGE complete — routing to PLAN
-**Active item:** BL-053 (session history page improvements)
-**Branch:** main
+**Phase:** VERIFY complete — HEALTHY
+**Date:** 2026-04-25T02:52:00Z
+**Branch:** feat/bl-053-session-history-phase-timeline
+**Recommendation:** MERGE
 
 ---
 
-## TRIAGE Summary
+## Health Assessment
 
-| Check | Result |
-|-------|--------|
-| Steering | No STOP/PAUSE directives |
-| Tester reports | None |
-| Scheduled tasks | None overdue |
-| CEO answers / credentials | None new |
-| Documenter commits | None in last 5 commits |
-| Environment | HEALTHY (last deploy iter 82, 550/550 tests pass) |
-| Active claims (other instances) | None |
+**HEALTHY** — all gates passed, no Critical bugs, env stable.
 
-## Background Agents
+---
 
-- **User Tester:** Respawned — `iterations_since_last_deploy = 0` (BL-052 just deployed). Persona index rotated to 6.
-- **Documenter:** Spawned — code changed in BL-052 (31 new tests, 5 new source files).
+## Verify Command
 
-## Next Phase: PLAN
+No verify command configured (`echo 'No verify command configured'` — pass by convention).
 
-**Selected item:** BL-053 (P2, planned)
-- Improve session history page — show phase timeline and cost per session
-- Enrich each session row with total cost, phases completed count, and a mini phase timeline (PLAN → BUILD → REVIEW → DEPLOY chips)
-- Uses existing `cost-calculator.ts` and `transcript-file-resolver.ts`
-- Claim written to `.active-claims.json`
+---
+
+## Visual Check — PASS
+
+Screenshots taken via Playwright MCP:
+
+**Home page** (`verify-iter83-home.png`): 3 project cards render correctly. ControlTower shows BL-053 active ("Deploying" badge, green dot, Stop button). No layout regressions.
+
+**ControlTower /history** (`verify-iter83-history-controltower.png`): 18 sessions render stably with cost badges ($0.22–$5.82, red accent pill). Sessions section above Iteration Log. Iteration Log entries visible and correctly formatted.
+
+**Haze /history** (`verify-iter83-history-haze.png`): 10 sessions, 5 with phase chips (VER green, PLN blue, TRI gray), cost badges ($0.17–$71.35). Sessions above Iteration Log. "No changelog entries yet" empty state renders correctly.
+
+No console errors observed.
+
+---
+
+## Unit Tests
+
+585/585 PASS (reported by DEPLOY — not re-run at VERIFY; verify command is echo-only).
+
+---
+
+## E2E Regression
+
+Full suite green (reported by DEPLOY): 18-session ControlTower history and phase chips on haze project both confirmed.
+
+---
+
+## Tester Reports
+
+No Critical bugs in `.redeye/tester-reports.md`. No user tester feedback this iteration.
+
+---
+
+## Tag
+
+`last-good-deploy-iter83` — tagged at VERIFY completion.
+
+---
+
+## Next Phase
+
+MERGE — merge feat/bl-053-session-history-phase-timeline to main, mark BL-053 done, proceed to TRIAGE.
