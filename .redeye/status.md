@@ -1,36 +1,31 @@
-# Verify Status — BL-049 — Iteration 79
+# Merge Status — BL-049 — Iteration 79
 
 **Date:** 2026-04-25
 **Branch:** redeye/BL-049
-**Phase:** VERIFY — COMPLETE
-**Health:** HEALTHY
+**Phase:** MERGE — COMPLETE
+**Merge Status:** clean
 
-## Verify Command
+## Merge Result
 
-- Command: `echo 'No verify command configured'` (no-op)
-- Result: PASS
+- Branch `redeye/BL-049` merged into `main` via `ort` strategy (no conflicts)
+- Merge commit: f279d9a — "redeye: merge BL-049 — Expand E2E test coverage (Playwright specs for backlog CRUD and cost card)"
+- State/backlog commit: 04602bc — "redeye: merge complete BL-049 — E2E test coverage shipped, status → done"
 
-## Visual Check
+## Files Changed
 
-- Home page (http://localhost:3200): PASS — 3 project cards render correctly; ControlTower card shows BL-049 active with green dot and "Deploying" phase label
-- Mission control (/project/1): PASS — Working On card shows BL-049 active; Controls card (Stop/Pause/Steer/Add to Backlog) renders correctly; no console errors
+- `e2e/backlog-crud.spec.ts` — new, 219 lines (Playwright spec for backlog CRUD dialog flow)
+- `e2e/cost-card.spec.ts` — new, 156 lines (Playwright spec for cost card invariant)
 
-## Tester Feedback
+## Claims
 
-- Critical bugs: 0 (tester-reports.md clean)
-- User feedback score: none (tester respawn-pending)
+- No BL-049 claim found in `.active-claims.json` (already clear or not registered)
+- BL-045 claim retained (not stale — claimed_at in future relative to now)
 
-## E2E Spec Delivery
+## Backlog
 
-- e2e/backlog-crud.spec.ts: confirmed on disk
-- e2e/cost-card.spec.ts: confirmed on disk
-- Total unit tests: 462/462 (from DEPLOY, unchanged)
+- BL-049 Status: `in-progress` → `done`
+- Summary bullet authored and written into backlog.md
 
-## Git
+## Next Phase
 
-- Tag applied: last-good-deploy-iter79
-- Stabilize attempts reset: 0
-
-## Conclusion
-
-Environment is HEALTHY. No regressions. No Critical bugs. Feature cycle for BL-049 complete. Routing to TRIAGE.
+TRIAGE
