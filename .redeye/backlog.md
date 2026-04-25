@@ -2,10 +2,27 @@
 
 ## CEO Requests
 
+### BL-074: "Working on" card height is different from "Controls" which is next to it. fix it
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-073: steer tab, directives need to be rendered with markdown
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-072: Steer tab. we need to be able to edit/delete directives
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### BL-071: Apply the same design styles form the main page to all the other pages and tabs. use the design subagent and frond end skill
 - **Type:** feature
 - **Priority:** P1
-- **Status:** in-progress
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 98)
+- **Summary:** Propagated the precision-instrument design system from the home page to all dashboard pages. Mission control cards switched to a 3px status top border with phase-driven colors and monospace section labels. The project layout gained a Control Tower eyebrow, project name h1 with pulsing dot, and a Running/Idle pill above the nav. Backlog, History, Schedules, and Steer pages each received a standard eyebrow, h1, subtitle, and border-b header. Backlog list rows show a border-l-2 status indicator and ScheduleRow gained a border-t-[3px] with overdue/on-schedule color coding. 691/691 tests pass.
 
 ### BL-070: we need to be able to add schedules form the schedule tab
 - **Type:** feature
