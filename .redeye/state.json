@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 98,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "verify",
+  "phase": "merge",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -42,10 +42,11 @@
         "PLAN",
         "BUILD",
         "REVIEW",
-        "DEPLOY"
+        "DEPLOY",
+        "VERIFY"
       ],
-      "outcome": "DEPLOY: build clean (Next.js 16, Turbopack). Fixed pre-existing test failure in steer/route.test.ts (child_process mock missing default export — used importOriginal pattern). 691/691 tests pass. All key routes in build output: /, /project/[id], /project/[id]/backlog, /project/[id]/history, /project/[id]/schedules, /project/[id]/steer.",
-      "next": "VERIFY BL-071",
+      "outcome": "DEPLOY+VERIFY: build clean (Next.js 16, Turbopack). 691/691 tests pass. VERIFY visual check PASS — all 6 pages confirmed: home (eyebrow + status-border cards), mission control (eyebrow + h1 + pulsing dot + Running pill + colored card top borders + monospace section labels), backlog (eyebrow + Backlog h1 + item count + border-b), history (eyebrow + History h1 + subtitle), schedules (eyebrow + Schedules h1 + amber border on overdue row), steer (eyebrow + Steer h1 + CURRENT DIRECTIVES mono label).",
+      "next": "MERGE BL-071",
       "timestamp": "2026-04-25T21:45:00Z"
     },
     {
@@ -183,7 +184,7 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 97,
+    "last_verify_iteration": 98,
     "last_deploy_iteration": 98,
     "current_iteration": 98,
     "questions_awaiting_ceo": 0,
