@@ -57,7 +57,8 @@
 ### BL-067: Redesign mission control page layout and cards using designer + frontend
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** in-progress
+- **Started:** 2026-04-25 (iter 103)
 - **Source:** Q-011 answer (iter 96) — CEO requested UX/design improvements using designer subagent and frontend skill
 - **Description:** The mission control page at /project/[id] shows all critical information (Working On, Controls, Cost, Questions, Recently Shipped) but could benefit from a comprehensive visual redesign. Use the designer subagent to create mockups for a more polished, modern layout with improved visual hierarchy, better card proportions, and refined typography. Focus on: reorganizing the 3-column grid for better balance, enhancing card backgrounds and borders, improving spacing and alignment, refining typography scale and weights, and ensuring the design scales gracefully across viewports. Implement the design using the frontend skill after mockups are approved.
 
