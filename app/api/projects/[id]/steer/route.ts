@@ -1,7 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
+import { readSteering } from "@/lib/redeye-files";
 import fs from "fs/promises";
 import path from "path";
+
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const index = parseInt(id, 10);
+    const project = await getProjectByIndex(index);
+    if (!project) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    const directives = await readSteering(project.path);
+    return NextResponse.json({ data: { directives } });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to read directives" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(
   req: NextRequest,

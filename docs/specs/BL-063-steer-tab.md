@@ -66,7 +66,7 @@ Not shown verbatim. The page shows structured parsed directives (text + optional
   - Returns `{ data: { directives: [] } }` when file is empty or has no Directives section.
   - Returns 404 when project index is invalid.
   - Returns structured 500 on unexpected errors.
-- **Status:** pending
+- **Status:** done
 
 ### T2 — Add Steer tab to ProjectNav (S)
 - **File:** `components/project-nav.tsx`
@@ -122,7 +122,7 @@ Not shown verbatim. The page shows structured parsed directives (text + optional
 - **Acceptance criteria:**
   - All GET test cases pass.
   - `npx vitest run` green across full suite.
-- **Status:** pending
+- **Status:** done
 
 ### T5 — Production build and full regression (S)
 - **Work:** Run `NODE_ENV=production npm run build` and `npx vitest run`. Fix any TypeScript or lint errors introduced by T1–T4.
