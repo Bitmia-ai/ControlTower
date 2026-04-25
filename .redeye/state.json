@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "iteration": 93,
+  "iteration": 94,
   "started_at": "2026-04-25T10:55:00Z",
   "phase": "TRIAGE",
   "phase_status": "pending",
@@ -104,7 +104,7 @@
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 74,
+    "iterations_this_session": 75,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 93
@@ -134,7 +134,7 @@
     "BL-058": 1.763799150000068,
     "BL-061": 5.289914549999935,
     "BL-062": 6.174803550000092,
-    "BL-063": 227.39612070000038
+    "BL-063": 2.621212350000036
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
@@ -149,7 +149,6 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-061": 218.73707190000033,
-    "BL-063": 228.30474285000034
+    "BL-061": 218.73707190000033
   }
 }
