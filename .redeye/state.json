@@ -2,13 +2,13 @@
   "schema_version": 1,
   "iteration": 97,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "plan",
+  "phase": "build",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-066",
   "backlog_title": "Redesign home page project cards and improve dashboard visual hierarchy",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-066-home-page-redesign.md",
   "phase_progress": {
     "triage": "complete — env healthy, 676/676 tests pass. 4 pending items: BL-065 (P2), BL-066 (P1), BL-067 (P1), BL-068 (P2). Selected BL-066 (P1, home page redesign) per CEO directive to use designer subagent + frontend skill."
   },
@@ -128,7 +128,7 @@
     }
   ],
   "counters": {
-    "next_bl_id": 69,
+    "next_bl_id": 71,
     "next_q_id": 12,
     "next_cred_id": 1,
     "next_sched_id": 2
