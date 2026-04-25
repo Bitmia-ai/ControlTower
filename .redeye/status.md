@@ -1,21 +1,28 @@
 # RedEye Status
 
-**Updated:** 2026-04-25T01:41:00Z
-**Iteration:** 81
-**Phase:** MERGE — complete
-**Active item:** BL-051 (done)
+**Updated:** 2026-04-25 (iteration 82, PLAN phase)
+**Phase:** PLAN complete — ready for BUILD
+**Active item:** BL-052 — Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
+**Spec:** docs/specs/BL-052-keyboard-shortcuts.md
 
-## MERGE Result
+## Planning Summary
 
-BL-051 (Cost analytics — add cumulative cost chart to mission control) merged cleanly to main.
+- **Triage:** BL-052 confirmed as selected item. No `pending-triage` items found in Discovered section. BL-052 and BL-053 are both `planned` P2 in CEO Requests; BL-052 is selected per dispatch.
+- **Spec written:** 5 sub-tasks (4S + 1S QA sweep). No CEO questions required.
+- **Worktree:** feature/BL-052-keyboard-shortcuts created at `.worktrees/BL-052`.
 
-- **Commits merged:** 6
-- **Files changed:** 10 (937 insertions, 24 deletions)
-- **Key files:** lib/cost-history.ts, app/api/projects/[id]/cost-history/route.ts, components/mission-control/sparkline-chart.tsx, components/mission-control/cost-card.tsx, e2e/cost-analytics.spec.ts, plus 5 test files
-- **Merge commit:** 9c5bdaa
-- **Claims cleared:** BL-051 removed from .active-claims.json
-- **BL-051 status:** done
+## Sub-tasks
 
-## Next
+| ID | Description | Size | Status |
+|----|-------------|------|--------|
+| T1 | `lib/use-keyboard-shortcuts.ts` hook + 12+ unit tests | S | pending |
+| T2 | `<kbd>` hint badges in ControlsCard + 4 new tests | S | pending |
+| T3 | `<kbd>` hint badges in project layout nav + 3 new tests | S | pending |
+| T4 | Wire hook into `app/project/[id]/page.tsx` + 3 integration tests | S | pending |
+| T5 | Final test sweep + build verification | S | pending |
 
-TRIAGE (iteration 82)
+## Environment
+
+- Last deploy: last-good-deploy-iter81 (HEALTHY)
+- Unit tests at baseline: 519/519 passing
+- No CEO questions open
