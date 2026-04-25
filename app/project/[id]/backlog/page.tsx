@@ -57,12 +57,12 @@ export function computeBuckets(
   wontDoItems: BacklogItem[];
 } {
   const plannedItems = allItems.filter(
-    (i) => i.status !== "done" && i.section !== "wontdo" && i.id !== activeId,
+    (i) => i.status !== "done" && i.status !== "wontdo" && i.id !== activeId,
   );
   const doneItems = allItems
-    .filter((i) => i.status === "done" && i.section !== "wontdo" && i.id !== activeId)
+    .filter((i) => i.status === "done" && i.id !== activeId)
     .sort((a, b) => parseBacklogIdNumber(b.id) - parseBacklogIdNumber(a.id));
-  const wontDoItems = allItems.filter((i) => i.section === "wontdo");
+  const wontDoItems = allItems.filter((i) => i.status === "wontdo");
   return { plannedItems, doneItems, wontDoItems };
 }
 

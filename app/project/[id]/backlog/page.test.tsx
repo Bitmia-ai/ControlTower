@@ -174,15 +174,18 @@ describe("computeBuckets — planned/done/wontdo separation", () => {
     expect(doneItems.map((i) => i.id)).toEqual(["BL-022"]);
   });
 
-  it("item with status=done and section=wontdo goes to wontDoItems only, not doneItems", () => {
+  it("item with status=wontdo goes to wontDoItems only, regardless of section", () => {
     const all: BacklogItem[] = [
-      makeItem({ id: "BL-010", status: "done", section: "wontdo" }),
+      makeItem({ id: "BL-010", status: "wontdo", section: "ceo" }),
+      makeItem({ id: "BL-014", status: "wontdo", section: "discovered" }),
       makeItem({ id: "BL-011", status: "done", section: "triaged" }),
     ];
-    const { doneItems, wontDoItems } = computeBuckets(all, null);
+    const { doneItems, plannedItems, wontDoItems } = computeBuckets(all, null);
     expect(doneItems.map((i) => i.id)).toEqual(["BL-011"]);
-    expect(wontDoItems.map((i) => i.id)).toContain("BL-010");
+    expect(wontDoItems.map((i) => i.id).sort()).toEqual(["BL-010", "BL-014"]);
     expect(doneItems.map((i) => i.id)).not.toContain("BL-010");
+    expect(plannedItems.map((i) => i.id)).not.toContain("BL-010");
+    expect(plannedItems.map((i) => i.id)).not.toContain("BL-014");
   });
 });
 
