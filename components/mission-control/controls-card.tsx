@@ -17,6 +17,10 @@ interface ControlsCardProps {
 
 type PendingAction = "stop" | "pause" | "force-stop" | null;
 
+// BL-052: keyboard-shortcut hint badge style
+const kbdCls =
+  "ml-1.5 text-[10px] leading-none font-mono px-1 py-0.5 rounded border border-current opacity-50";
+
 export function ControlsCard({
   running,
   stalled,
@@ -162,6 +166,7 @@ export function ControlsCard({
               className="flex-1 px-3 py-2 text-sm font-medium bg-green-700 hover:bg-green-600 text-white rounded-md transition"
             >
               Start
+              <kbd aria-hidden="true" className={kbdCls}>S</kbd>
             </button>
           ) : (
             <>
@@ -172,6 +177,7 @@ export function ControlsCard({
                   className="flex-1 px-3 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-l-md transition"
                 >
                   {stopLabel}
+                  <kbd aria-hidden="true" className={kbdCls}>X</kbd>
                 </button>
                 <button
                   onClick={handleChevronClick}
@@ -223,6 +229,7 @@ export function ControlsCard({
                   className="flex-1 px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 disabled:opacity-60 disabled:cursor-not-allowed text-gray-700 dark:text-zinc-200 rounded-md transition"
                 >
                   {pauseLabel}
+                  <kbd aria-hidden="true" className={kbdCls}>P</kbd>
                 </button>
               )}
             </>
@@ -243,6 +250,7 @@ export function ControlsCard({
           >
             <PlusCircle size={14} />
             Add to Backlog
+            <kbd aria-hidden="true" className={kbdCls}>B</kbd>
           </button>
         </div>
 

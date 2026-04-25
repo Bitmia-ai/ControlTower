@@ -166,9 +166,9 @@ Implementation:
 - [ ] Hook exported from `lib/use-keyboard-shortcuts.ts`
 - [ ] 12+ unit tests, all passing
 - [ ] TypeScript strict — no `any`
-- [ ] Chord timeout cleared on unmount (no memory leaks)
+- [x] Chord timeout cleared on unmount (no memory leaks)
 
-**Status:** pending
+**Status:** done
 
 ---
 
@@ -205,9 +205,9 @@ will simply be a no-op on pages where the hook is not mounted).
 - [ ] `<kbd>` hint badges on Start, Stop, Pause, Add to Backlog buttons
 - [ ] Badges are `aria-hidden`
 - [ ] 4 new unit tests passing
-- [ ] No regressions in existing ControlsCard tests (13 existing tests still pass)
+- [x] No regressions in existing ControlsCard tests (13 existing tests still pass)
 
-**Status:** pending
+**Status:** done
 
 ---
 
@@ -237,9 +237,9 @@ not present):
 **Acceptance criteria:**
 - [ ] `<kbd>` hint badges on Backlog, History, Live nav items
 - [ ] Badges are `aria-hidden`
-- [ ] 3 new unit tests passing
+- [x] 3 new unit tests passing
 
-**Status:** pending
+**Status:** done
 
 ---
 
@@ -286,9 +286,9 @@ from BL-050):
 - [ ] `enabled` derived from dialog-open state
 - [ ] 3 new integration tests passing
 - [ ] No regressions in existing page tests
-- [ ] `npm run build` passes
+- [x] `npm run build` passes
 
-**Status:** pending
+**Status:** done
 
 ---
 
@@ -306,12 +306,12 @@ from BL-050):
 5. Verify chord timeout clears on navigation (no dangling timers after route change).
 
 **Acceptance criteria:**
-- [ ] All existing tests pass (no regressions)
-- [ ] 15+ new tests added across T1–T4
-- [ ] Build passes
-- [ ] No TypeScript errors in new files
+- [x] All existing tests pass (no regressions)
+- [x] 15+ new tests added across T1–T4
+- [x] Build passes
+- [x] No TypeScript errors in new files
 
-**Status:** pending
+**Status:** done
 
 ---
 
