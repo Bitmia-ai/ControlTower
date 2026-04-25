@@ -1,8 +1,6 @@
 
 ## Directives
 
-- smoke test directive — should commit and push (2026-04-25)
-
 ### API & security conventions
 
 - **Read request bodies via `lib/json-body.ts:readJsonBody(req, MAX_BODY_BYTES)`** — never `req.json()` directly. Cap is 64KB; use 1KB for tiny payloads (`{blId}`, `{scheduleId}`). Direct `req.json()` is bypassable via `Transfer-Encoding: chunked` and skips the Content-Type guard.

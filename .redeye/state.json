@@ -8,7 +8,7 @@
   "worktree_branch": null,
   "backlog_item": "BL-074",
   "backlog_title": "\"Working on\" card height is different from \"Controls\" which is next to it. fix it",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-074-card-height-fix.md",
   "phase_progress": {},
   "review_cycles": 1,
   "max_review_cycles": 3,
