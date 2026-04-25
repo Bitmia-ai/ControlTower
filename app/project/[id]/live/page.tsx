@@ -218,8 +218,20 @@ export default function LivePage({
 
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
+      <header className="pt-2 pb-5 mb-4 border-b border-gray-200 dark:border-zinc-800">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
+          Control Tower
+        </p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
+          Live
+        </h1>
+        <p className="text-sm text-gray-500 dark:text-zinc-500 mt-1">
+          Real-time transcript of the autonomous loop
+        </p>
+      </header>
+
       {/* Sticky toolbar */}
-      <div className="sticky top-0 z-10 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-gray-100 dark:border-zinc-800 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 mb-4">
+      <div className="sticky top-0 z-10 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-gray-200 dark:border-zinc-800 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 mb-4">
         <div className="flex flex-wrap items-center justify-between gap-2 max-w-6xl mx-auto">
           <div className="flex flex-wrap items-center gap-3">
             {/* Connection status */}
