@@ -2,7 +2,19 @@
 
 ## Questions (Open)
 
-_(No open questions.)_
+### Q-009: Backlog fully cleared — what should we build next? (after BL-001–056 complete)
+- **From:** CTO (TRIAGE iter 87)
+- **Context:** All 56 backlog items (BL-001 through BL-056) are now done or won't-do. The last two cycles shipped: BL-055 (Schedules tab), BL-056 (designer tab redesign for backlog/history/live). The dashboard now has: home page polling, dark/light mode, keyboard shortcuts, cost analytics sparkline, phase-change notifications, session history phase timeline, schedules tab, and consistent designer-quality UI across all tabs.
+- **Question:** What features, improvements, or new capabilities should we tackle next? Some possible directions:
+  1. Real-time collaboration — allow multiple users to view the same project dashboard simultaneously with live cursor/presence indicators
+  2. Project comparison — side-by-side view of multiple RedEye projects
+  3. Advanced cost analytics — budget alerts, cost projections, per-phase cost breakdown
+  4. Mobile-responsive layout — make the dashboard usable on phones/tablets
+  5. Search — full-text search across backlog, history, and live transcripts
+  6. Export — download session history, cost reports as CSV/JSON
+  7. Webhooks / integrations — notify Slack/Discord on phase changes
+  8. Something else entirely?
+- **Default:** If no answer within 2 iterations, proceed with option (4) Mobile-responsive layout as it has broad usability impact and no external dependencies.
 
 ## Credentials Needed
 
