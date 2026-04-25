@@ -1,20 +1,26 @@
-# Triage Status — Iteration 78
+# Triage Status — Iteration 79
 
 **Date:** 2026-04-25
-**Phase:** TRIAGE
-**Phase status:** waiting_for_ceo
+**Phase:** TRIAGE -> PLAN
+**Phase status:** complete
 
 ## Summary
 
 - **Steering:** Empty — no STOP/PAUSE directives.
-- **Inbox (Q-007):** Still open. No CEO answer. Question posted iter 64: "Backlog fully cleared — what should we build next?"
-- **Tester reports:** None. tester-reports.md is empty (template only).
+- **Inbox (Q-007):** RESOLVED. CEO sent "Run /redeye:start and follow the skill instructions. Begin the autonomous development loop." — treated as proceed directive. Q-007 closed with default direction.
+- **Tester reports:** None.
 - **Schedules:** None defined.
-- **Feedback:** No user tester feedback entries.
-- **Backlog:** All BL-001 through BL-048 done or wont-do. Zero planned items.
-- **Active claims:** None (claims object empty).
-- **Documenter:** Idle. No documenter commits in recent git log (all recent commits are TRIAGE hold iterations).
-- **Background agents:** User tester remains respawn-pending (no new deploy since iter 63).
+- **Backlog:** Added BL-049 through BL-053 (5 new planned items). Next BL ID = 54.
+- **Active claims:** None prior.
+- **Background agents:** User tester respawn-pending (rotated persona_index to 2).
+
+## New Backlog Items Added
+
+- BL-049 (P1): Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, cost card
+- BL-050 (P1): In-app notification toast on phase changes (Notification API + in-app fallback)
+- BL-051 (P2): Cost analytics — cumulative cost sparkline chart per session
+- BL-052 (P2): Keyboard shortcuts for Start, Stop, Backlog nav
+- BL-053 (P2): Session history — phase timeline and cost per session
 
 ## Health
 
@@ -22,8 +28,8 @@
 - Env: healthy
 - Last deploy: success (iter 63)
 - Last verify: pass (iter 63)
-- Open questions: 1 (Q-007)
+- Open questions: 0
 
 ## Decision
 
-HOLD — no work to do. Backlog is fully empty. No CEO direction received. No tester bugs. No overdue schedules. Continuing in TRIAGE waiting_for_ceo until Q-007 is answered.
+PLAN — routing to BL-049 (P1, E2E test coverage expansion). Highest priority item, builds on existing Playwright infrastructure.

@@ -2,18 +2,20 @@
 
 ## Questions (Open)
 
-### Q-007: Backlog fully cleared — what should we build next?
-- **From:** CTO (TRIAGE iter 64)
-- **Context:** All 48 backlog items (BL-001 through BL-048) are now done or won't-do. The Control Tower dashboard is fully functional: project cards with live polling, mission control layout, live transcript viewer with collapsible tool/thinking cards, per-task cost tracking, dark/light mode, aria-labels, backlog CRUD with collapsible done section, graceful + force stop/pause controls, and the split-weight logo mark. There is no remaining planned work.
-- **Question:** What features, improvements, or new capabilities should we tackle next? Please describe what you'd like — any area of the product (UI polish, new pages, agent management features, cost analysis, notifications, etc.) or a whole new direction. We're ready to start immediately.
-- **Default (7 days):** If no answer in 7 days, hold in TRIAGE waiting state. No work will be started without CEO direction.
-- **Status:** open
+_(No open questions.)_
 
 ## Credentials Needed
 
 _(No credential requests yet.)_
 
 ## Answered / Provided
+
+### Q-007: Backlog fully cleared — what should we build next?
+- **From:** CTO (TRIAGE iter 64)
+- **Context:** All 48 backlog items (BL-001 through BL-048) are now done or won't-do.
+- **Question:** What features, improvements, or new capabilities should we tackle next?
+- **Answer:** CEO responded (TRIAGE iter 79) with "Run /redeye:start and follow the skill instructions. Begin the autonomous development loop." — interpreted as directive to proceed. Default direction applied: continue with high-value product improvements (notification system, keyboard shortcuts, cost analytics improvements, E2E test coverage expansion, session history improvements).
+- **Incorporated:** 2026-04-25 (iter 79) — BL-049 through BL-053 added to backlog.
 
 ### Q-006: BL-047 — What logo do you want on the dashboard?
 - **From:** CTO (TRIAGE iter 61)

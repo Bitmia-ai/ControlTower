@@ -2,7 +2,68 @@
 
 ## CEO Requests
 
-### BL-048: In the live tab, User boxes need to be collapsible and collapsed by default
+### BL-053: Improve session history page — show phase timeline and cost per session
+- **Type:** feature
+- **Priority:** P2
+- **Status:** planned
+- **Added:** 2026-04-25 (iter 79)
+- **Details:**
+  - The history page at /project/[id]/history shows a flat session list with start/end times
+  - Enrich each session row with: total cost for that session, number of phases completed, and a mini phase timeline (PLAN → BUILD → REVIEW → DEPLOY chips)
+  - Parse session cost from the corresponding JSONL transcript file
+  - Show a "phases completed" count badge and an expandable phase list on each row
+  - Should use existing cost-calculator.ts and transcript-file-resolver.ts
+
+### BL-052: Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
+- **Type:** feature
+- **Priority:** P2
+- **Status:** planned
+- **Added:** 2026-04-25 (iter 79)
+- **Details:**
+  - Power users have no keyboard shortcuts for frequent actions
+  - Add: `S` to Start session (when idle), `X` to gracefully Stop (when running), `B` to navigate to Backlog, `H` to navigate to History, `L` to navigate to Live tab
+  - Show keyboard hint labels on buttons (small secondary text like "⌘S")
+  - Implement via a global keydown listener in a client component; disable shortcuts when a modal/dialog is open or a text input is focused
+  - Add unit tests for the shortcut hook
+
+### BL-051: Cost analytics — add cumulative cost chart to mission control
+- **Type:** feature
+- **Priority:** P2
+- **Status:** planned
+- **Added:** 2026-04-25 (iter 79)
+- **Details:**
+  - The cost card shows current session + total as numbers, but no trend data
+  - Add a simple bar or line sparkline chart showing cost per session over the last 10 sessions
+  - Use recharts (already in many Next.js stacks) or a lightweight SVG chart — check if recharts is already in package.json; if not, implement as a pure SVG component to avoid adding a dependency
+  - Chart should be responsive and respect dark/light mode
+  - Data source: parse each JSONL transcript file for cost_usd sum per file (one file = one session)
+
+### BL-050: Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
+- **Type:** feature
+- **Priority:** P1
+- **Status:** planned
+- **Added:** 2026-04-25 (iter 79)
+- **Details:**
+  - Users have no awareness of phase changes without watching the dashboard constantly
+  - When the mission control 5s poll detects a phase change, show a toast notification (e.g. "RedEye entered BUILD phase — working on BL-049")
+  - Use the browser Notification API with permission request on first interaction; fall back to an in-app toast overlay if permission denied
+  - Toast should auto-dismiss after 5 seconds; clicking it navigates to the Live tab
+  - Add unit tests for the notification hook (mock Notification API)
+
+### BL-049: Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
+- **Type:** test
+- **Priority:** P1
+- **Status:** planned
+- **Added:** 2026-04-25 (iter 79)
+- **Details:**
+  - Current Playwright coverage is limited to smoke tests and the logo mark
+  - Add three new E2E specs:
+    1. Backlog CRUD: add a task via dialog, verify it appears in list, navigate to detail, verify fields render
+    2. Start/Stop flow: click Start, verify button state changes to "Stop" and working-on card updates; click Stop, verify return to idle
+    3. Cost card: verify cost card renders, values are non-negative, session cost <= total cost invariant holds in the DOM
+  - Each spec should run against http://localhost:3200 with an existing initialized project
+
+### BL-048: In the live tab, User boxes need to be collapsible and collapsed by default In the live tab, User boxes need to be collapsible and collapsed by default
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
