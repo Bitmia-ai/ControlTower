@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 92,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "REVIEW",
+  "phase": "VERIFY",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
@@ -34,7 +34,7 @@
   "git_state": {
     "last_commit": "redeye: merge BL-061 complete — kbd badges removed, 656/656 tests pass",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter91-bl061",
+    "last_good_deploy_tag": "last-good-deploy-iter92-bl062",
     "merge_status": "clean",
     "notes": "BL-061 MERGE: commit a05c1d0 on main. Removed <kbd> badge elements from project-nav.tsx and controls-card.tsx. 656/656 tests pass. Build clean. BL-061 done. Advancing to TRIAGE."
   },
