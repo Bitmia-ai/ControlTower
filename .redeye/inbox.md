@@ -2,7 +2,19 @@
 
 ## Questions (Open)
 
-_(No open questions.)_
+### Q-010: Backlog fully cleared — what should we build next? (after BL-001–057 complete)
+- **From:** CTO (TRIAGE iter 89)
+- **Context:** All 57 backlog items (BL-001 through BL-057) are now done or won't-do. The most recent item was BL-057 (mobile-responsive layout), which shipped in iteration 88.
+- **Question:** What features, improvements, or new capabilities should we tackle next?
+- **Options (suggestions):**
+  1. Performance improvements — page load speed, bundle size analysis, Lighthouse audit
+  2. Advanced filtering/sorting on the backlog page (filter by status, priority, type)
+  3. Multi-project improvements — bulk actions, project comparison, global cost overview
+  4. Export/reporting — export backlog to CSV/markdown, cost report PDF
+  5. PWA / offline support — installable app, offline backlog browsing
+  6. Something else entirely — your call
+- **Default (7-day):** If no response received, proceed with option 1 (performance / Lighthouse audit)
+- **Asked:** 2026-04-25 (iter 89)
 
 ## Credentials Needed
 

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 89,
   "started_at": "2026-04-25T08:13:18Z",
-  "phase": "TRIAGE",
-  "phase_status": "pending",
+  "phase": "waiting_for_ceo",
+  "phase_status": "blocked",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
@@ -37,6 +37,15 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 89,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE: All BL-001–057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
+      "next": "waiting_for_ceo",
+      "timestamp": "2026-04-25T11:10:00Z"
+    },
     {
       "iteration": 88,
       "phases": [
@@ -104,7 +113,7 @@
   ],
   "counters": {
     "next_bl_id": 58,
-    "next_q_id": 10,
+    "next_q_id": 11,
     "next_cred_id": 1,
     "next_sched_id": 1
   },
@@ -123,7 +132,7 @@
     "last_verify_iteration": 88,
     "last_deploy_iteration": 88,
     "current_iteration": 89,
-    "questions_awaiting_ceo": 0,
+    "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
     "full_regression_overdue": false
