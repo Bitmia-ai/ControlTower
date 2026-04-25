@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 99,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "plan",
+  "phase": "review",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -38,10 +38,12 @@
     {
       "iteration": 99,
       "phases": [
-        "TRIAGE"
+        "TRIAGE",
+        "PLAN",
+        "BUILD"
       ],
-      "outcome": "TRIAGE: env healthy. 691/691 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. Pending P1 CEO Requests: BL-074 (Working On card height mismatch vs Controls card), BL-073 (steer directives markdown rendering), BL-072 (edit/delete steer directives), BL-070 (add schedules from tab), BL-069 (superseded by BL-072), BL-067 (mission control redesign). P2: BL-068 (live tab polish), BL-065 (Won't Do section). Selected BL-074 (P1, most recent CEO request — targeted card height fix).",
-      "next": "PLAN BL-074",
+      "outcome": "TRIAGE: env healthy. 691/691 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. Pending P1 CEO Requests: BL-074 (Working On card height mismatch vs Controls card), BL-073 (steer directives markdown rendering), BL-072 (edit/delete steer directives), BL-070 (add schedules from tab), BL-069 (superseded by BL-072), BL-067 (mission control redesign). P2: BL-068 (live tab polish), BL-065 (Won't Do section). Selected BL-074 (P1, most recent CEO request — targeted card height fix). PLAN: spec docs/specs/BL-074-card-height-fix.md — wrap WorkingOn + Controls in a nested two-col grid (no items-start) so both stretch to row height; outer grid keeps items-start for later rows. BUILD: nested grid added in app/project/[id]/page.tsx; both card root divs already had h-full so they now fill the row height. 691/691 tests pass, build clean.",
+      "next": "REVIEW BL-074",
       "timestamp": "2026-04-25T22:10:00Z"
     },
     {
