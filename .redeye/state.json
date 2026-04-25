@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 107,
   "started_at": "2026-04-25T21:40:53Z",
-  "phase": "TRIAGE",
-  "phase_status": "complete",
+  "phase": "SCHEDULES",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
@@ -43,13 +43,13 @@
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
     "merge_status": "clean",
-    "notes": "MERGE iter 106: BL-075 performance audit merged. 796/796 tests pass. Build clean. VERIFY: no static ReactMarkdown imports in changed pages, MarkdownRenderer dynamic import confirmed, viewport exported, title template present, robots:noindex, headers() in next.config, docs/performance-audit.md written. Transitioning to TRIAGE iter 107."
+    "notes": "TRIAGE iter 107: env healthy, 796 tests, 2 overdue schedules, backlog exhausted. Running SCHEDULES phase."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 107,
-      "phases": ["TRIAGE"],
+      "phases": ["TRIAGE", "SCHEDULES"],
       "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules (SCHED-1 weekly dep audit, SCHED-2 test schedule), backlog exhausted (all 75 items done/wont-do). Transitioning to SCHEDULES.",
       "next": "SCHEDULES iter 107",
       "timestamp": "2026-04-25T21:43:00Z"
