@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { BacklogSection, computeBuckets, parseBacklogIdNumber } from "./page";
+import { BacklogSection, WontDoItemRow, computeBuckets, parseBacklogIdNumber } from "./page";
 import { CollapsibleSection } from "@/components/collapsible-section";
 import type { BacklogItem } from "@/lib/redeye-types";
 
@@ -220,6 +220,54 @@ describe("parseBacklogIdNumber", () => {
   it("returns 0 for malformed IDs", () => {
     expect(parseBacklogIdNumber("SCHED-001")).toBe(0);
     expect(parseBacklogIdNumber("")).toBe(0);
+  });
+});
+
+describe("WontDoItemRow — reason rendering (BL-065)", () => {
+  it("renders the reason text when item.reason is present", () => {
+    const item = makeItem({
+      id: "BL-099",
+      title: "Rejected feature",
+      status: "wontdo",
+      section: "wontdo",
+      reason: "Superseded by BL-100 which covers the same requirement.",
+    });
+    const { container } = render(<WontDoItemRow item={item} projectId={0} />);
+    expect(container.textContent).toContain(
+      "Superseded by BL-100 which covers the same requirement."
+    );
+    const reasonEl = container.querySelector("[data-testid=wontdo-reason]");
+    expect(reasonEl).not.toBeNull();
+    expect(reasonEl?.className).toContain("text-xs");
+    expect(reasonEl?.className).toContain("mt-1");
+  });
+
+  it("does not render a reason element when item.reason is absent", () => {
+    const item = makeItem({
+      id: "BL-098",
+      title: "Quietly dropped",
+      status: "wontdo",
+      section: "wontdo",
+    });
+    const { container } = render(<WontDoItemRow item={item} projectId={0} />);
+    const reasonEl = container.querySelector("[data-testid=wontdo-reason]");
+    expect(reasonEl).toBeNull();
+  });
+
+  it("keeps the strikethrough title link in either case", () => {
+    const item = makeItem({
+      id: "BL-097",
+      title: "Strike me out",
+      status: "wontdo",
+      section: "wontdo",
+      reason: "Some rationale.",
+    });
+    const { container } = render(<WontDoItemRow item={item} projectId={0} />);
+    const titleLink = Array.from(container.querySelectorAll("a")).find((a) =>
+      a.textContent?.includes("Strike me out")
+    );
+    expect(titleLink).toBeTruthy();
+    expect(titleLink?.className).toContain("line-through");
   });
 });
 

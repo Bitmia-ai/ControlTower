@@ -234,7 +234,7 @@ function DoneItemRow({
   );
 }
 
-function WontDoItemRow({
+export function WontDoItemRow({
   item,
   projectId,
 }: {
@@ -261,6 +261,17 @@ function WontDoItemRow({
             {item.title}
           </Link>
         </p>
+        {item.reason && (
+          <p
+            data-testid="wontdo-reason"
+            className="text-xs text-gray-500 dark:text-zinc-500 mt-1 leading-snug"
+          >
+            <span className="font-mono uppercase tracking-[0.14em] text-[10px] text-gray-400 dark:text-zinc-600 mr-1.5">
+              Reason
+            </span>
+            {item.reason}
+          </p>
+        )}
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 dark:bg-zinc-800 dark:text-zinc-500">
