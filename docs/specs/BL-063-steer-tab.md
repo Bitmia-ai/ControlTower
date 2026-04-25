@@ -111,7 +111,7 @@ Not shown verbatim. The page shows structured parsed directives (text + optional
   - Error from API surfaces as a red inline message.
   - Directive list refreshes after each successful submission.
   - Dark and light mode both render correctly.
-- **Status:** pending
+- **Status:** done
 
 ### T4 — Unit tests for steer API GET (S)
 - **File:** `app/api/projects/[id]/steer/route.test.ts` (new)
