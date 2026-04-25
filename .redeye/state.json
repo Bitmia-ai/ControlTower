@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 86,
   "started_at": "2026-04-25T07:55:09Z",
-  "phase": "REVIEW",
+  "phase": "DEPLOY",
   "phase_status": "in-progress",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/BL-056",
   "worktree_branch": "feat/bl-056-tab-redesign",
@@ -12,11 +12,11 @@
   "phase_progress": {
     "plan_complete": true,
     "build_complete": true,
-    "review_complete": false,
+    "review_complete": true,
     "deploy_complete": false,
     "verify_complete": false
   },
-  "review_cycles": 0,
+  "review_cycles": 1,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -37,7 +37,7 @@
     "branch": "feat/bl-056-tab-redesign",
     "last_good_deploy_tag": "last-good-deploy-iter85",
     "merge_status": "clean",
-    "notes": "Iter 86: TRIAGE+PLAN complete. BL-056 (designer tab redesign, P2) spec written (6 sub-tasks). Worktree at .worktrees/BL-056 on feat/bl-056-tab-redesign. BUILD in-progress."
+    "notes": "Iter 86: TRIAGE+PLAN+BUILD+REVIEW complete. BL-056 (designer tab redesign, P2). REVIEW: 1 cycle, 0 Critical/0 Major, 3 minor (icon dupe, expand-detail UX, count-on-load). PASS. DEPLOY in-progress."
   },
   "blocked_items": [],
   "iteration_log": [
