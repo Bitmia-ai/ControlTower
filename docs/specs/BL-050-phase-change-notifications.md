@@ -202,14 +202,14 @@ interface ToastContextValue {
 - Assert that toast with `href` renders a link.
 
 **Acceptance criteria:**
-- [ ] `ToastProvider` and `useToast` hook exported from `components/toast-provider.tsx`
-- [ ] `ToastContainer` renders inside `ToastProvider`
-- [ ] Auto-dismiss at 5 seconds (configurable)
-- [ ] `×` dismiss button
-- [ ] Correct dark/light mode classes
-- [ ] 4+ unit tests passing
+- [x] `ToastProvider` and `useToast` hook exported from `components/toast-provider.tsx`
+- [x] `ToastContainer` renders inside `ToastProvider`
+- [x] Auto-dismiss at 5 seconds (configurable)
+- [x] `×` dismiss button
+- [x] Correct dark/light mode classes
+- [x] 4+ unit tests passing
 
-**Status:** pending
+**Status:** done
 
 ---
 
