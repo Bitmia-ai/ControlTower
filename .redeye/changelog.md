@@ -288,3 +288,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean, 585/585 unit tests, full E2E regression green; pre-existing infinite render loop bug in history page found and fixed as part of BL-053 work)
 - **Visual check:** PASS — ControlTower history page renders 18 sessions with cost badges ($0.22–$5.82) above Iteration Log; haze history page shows 10 sessions with phase chips (VER green, PLN blue, TRI gray) and cost badges ($0.17–$71.35); Sessions section correctly above Iteration Log; "No changelog entries yet" empty state correct for haze; no console errors; no layout regressions; screenshots: verify-iter83-home.png, verify-iter83-history-controltower.png, verify-iter83-history-haze.png
 - **Documenter:** running in background
+
+## Iteration 88 — 2026-04-25T10:47:00Z
+- **Built:** BL-057 Mobile-responsive layout — make the dashboard usable on phones and tablets
+- **Review findings:** 0C 0M 0m — clean (1 review cycle)
+- **Tests:** 5 new unit tests added, 651 total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (no tester feedback this iteration)
+- **Deployed:** SUCCESS (worktree build clean, 651/651 unit tests, tagged last-good-deploy-iter88)
+- **Visual check:** PASS — home page no horizontal scroll at 375px (scrollWidth===375), 1-column card grid, all pages (mission control, backlog, history, live) render without overflow; worktree code audit confirms all 8 acceptance criteria met: min-h-[44px] on all interactive buttons, flex-wrap on button rows and chip strips, overflow-x-auto on nav and phase chips, break-all on code blocks, sparkline SVG width=100%; 0 JS errors on home and project pages
+- **Documenter:** running in background
