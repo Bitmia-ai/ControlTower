@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   description: "RedEye autonomous dev agent dashboard",
 };
 
-// Force-dynamic: prevents Next.js from statically prerendering any layout-wrapped
-// page in the build workers, where CJS React resolves to null and causes
-// React.use/useContext errors in the App Router context setup.
+// Force-dynamic prevents static prerendering of layout-wrapped routes,
+// sidestepping the null-React prerender crash on Next.js 16.2.4 + Turbopack.
+// The _global-error prerender is additionally fixed via scripts/patch-next.mjs.
 export const dynamic = "force-dynamic";
 
 export default function RootLayout({
@@ -35,10 +35,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100">
-        {/* ClientProviders is a "use client" component that wraps ThemeProvider,
-            ToastProvider, the site header (with ThemeToggle), and page content.
-            It uses next/dynamic with ssr:false for next-themes to prevent
-            null.useContext build failures on /_global-error and /_not-found. */}
+        {/* ClientProviders ("use client") owns ThemeProvider (custom ESM),
+            ToastProvider, and the site header (logo + ThemeToggle). Using a
+            custom lib/theme-context instead of next-themes avoids the CJS
+            require("react") that resolves to null in Turbopack prerender workers. */}
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>

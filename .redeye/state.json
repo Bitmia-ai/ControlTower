@@ -3,7 +3,7 @@
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "REVIEW",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-058",

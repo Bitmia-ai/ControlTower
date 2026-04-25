@@ -3,7 +3,10 @@
 // global-error.tsx must be a Client Component (Next.js requirement).
 // Keep it completely standalone — no imports from components/ — so that
 // no context hooks (useContext) are reachable from this bundle.
-// force-dynamic prevents the /_global-error prerender failure in Next.js 16.
+// The /_global-error prerender failure on Next.js 16.2.4 + Turbopack + React 19
+// is fixed by scripts/patch-next.mjs (postinstall) which prevents _global-error
+// from entering staticPaths. This export is kept for consistency but has no
+// effect on Client Components in Next.js App Router.
 export const dynamic = "force-dynamic";
 
 export default function GlobalError({
