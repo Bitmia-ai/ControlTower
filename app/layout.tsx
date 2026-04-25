@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ToastProvider } from "@/components/toast-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,22 +34,24 @@ export default function RootLayout({
     >
       <body className="bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <header className="border-b border-gray-200 dark:border-zinc-800 px-6 py-4 flex items-center justify-between">
-            <Link
-              href="/"
-              aria-label="Control Tower — go to home"
-              className="flex flex-col items-start leading-none select-none"
-            >
-              <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
-                Control
-              </span>
-              <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
-                Tower
-              </span>
-            </Link>
-            <ThemeToggle />
-          </header>
-          {children}
+          <ToastProvider>
+            <header className="border-b border-gray-200 dark:border-zinc-800 px-6 py-4 flex items-center justify-between">
+              <Link
+                href="/"
+                aria-label="Control Tower — go to home"
+                className="flex flex-col items-start leading-none select-none"
+              >
+                <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
+                  Control
+                </span>
+                <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
+                  Tower
+                </span>
+              </Link>
+              <ThemeToggle />
+            </header>
+            {children}
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

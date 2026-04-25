@@ -116,11 +116,11 @@ Create `usePhaseChangeNotifier(phase, backlog_title, onPhaseChange)`:
 - Callback update across renders: always invokes latest function (ref stability test).
 
 **Acceptance criteria:**
-- [x] Hook exported from `lib/use-phase-change-notifier.ts`
-- [x] 5+ unit tests, all passing
-- [x] TypeScript strict — no `any`
+- [ ] Hook exported from `lib/use-phase-change-notifier.ts`
+- [ ] 5+ unit tests, all passing
+- [ ] TypeScript strict — no `any`
 
-**Status:** done
+**Status:** pending
 
 ---
 
@@ -153,13 +153,13 @@ Create `usePhaseNotifications(phase, backlog_title, projectId)`:
 - Assert: cleanup removes the document click listener.
 
 **Acceptance criteria:**
-- [x] Hook exported from `lib/use-phase-notifications.ts`
-- [x] `NOTIFIABLE_PHASES` exported as `const` Set for testability
-- [x] 6+ unit tests, all passing
-- [x] No toast fires on first mount
-- [x] Notification permission request fires only on first document click
+- [ ] Hook exported from `lib/use-phase-notifications.ts`
+- [ ] `NOTIFIABLE_PHASES` exported as `const` Set for testability
+- [ ] 6+ unit tests, all passing
+- [ ] No toast fires on first mount
+- [ ] Notification permission request fires only on first document click
 
-**Status:** done
+**Status:** pending
 
 ---
 
@@ -202,14 +202,14 @@ interface ToastContextValue {
 - Assert that toast with `href` renders a link.
 
 **Acceptance criteria:**
-- [x] `ToastProvider` and `useToast` hook exported from `components/toast-provider.tsx`
-- [x] `ToastContainer` renders inside `ToastProvider`
-- [x] Auto-dismiss at 5 seconds (configurable)
-- [x] `×` dismiss button
-- [x] Correct dark/light mode classes
-- [x] 4+ unit tests passing
+- [ ] `ToastProvider` and `useToast` hook exported from `components/toast-provider.tsx`
+- [ ] `ToastContainer` renders inside `ToastProvider`
+- [ ] Auto-dismiss at 5 seconds (configurable)
+- [ ] `×` dismiss button
+- [ ] Correct dark/light mode classes
+- [ ] 4+ unit tests passing
 
-**Status:** done
+**Status:** pending
 
 ---
 
@@ -231,11 +231,11 @@ correctly and no hydration errors appear. Update the layout unit test (if presen
 that `ToastProvider` is in the component tree.
 
 **Acceptance criteria:**
-- [ ] `ToastProvider` wrapping `children` in `app/layout.tsx`
-- [ ] `npm run build` passes (no hydration/SSR errors)
-- [ ] No regressions in existing unit tests
+- [x] `ToastProvider` wrapping `children` in `app/layout.tsx`
+- [x] `npm run build` passes (no hydration/SSR errors)
+- [x] No regressions in existing unit tests
 
-**Status:** pending
+**Status:** done
 
 ---
 
@@ -263,12 +263,12 @@ In `app/project/[id]/page.tsx`:
 - This is the integration test that ties the full chain together.
 
 **Acceptance criteria:**
-- [ ] `usePhaseNotifications` called in page with correct args
-- [ ] Toast appears in DOM when phase changes to a notifiable phase in test
-- [ ] No toast on initial render
-- [ ] `npm run build` still passes
+- [x] `usePhaseNotifications` called in page with correct args
+- [x] Toast appears in DOM when phase changes to a notifiable phase in test
+- [x] No toast on initial render
+- [x] `npm run build` still passes
 
-**Status:** pending
+**Status:** done
 
 ---
 
