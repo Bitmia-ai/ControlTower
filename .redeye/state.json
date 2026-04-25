@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "iteration": 98,
+  "iteration": 99,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "merge",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-071",
-  "backlog_title": "Apply the same design styles from the main page to all the other pages and tabs",
-  "spec_file": "docs/specs/BL-071-design-system-propagation.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -27,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: deploy BL-071 — build and tests clean",
+    "last_commit": "redeye: merge BL-071 — design system propagation complete (iteration 98)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter98-bl071",
     "merge_status": "clean",
-    "notes": "DEPLOY iter 98: BL-071 design system propagation deployed. Build clean. 691/691 tests pass (fixed pre-existing child_process mock missing default export in steer route test). All key routes present in build output."
+    "notes": "MERGE iter 98: BL-071 design system propagation merged. 691/691 tests pass. Transitioned to triage iter 99."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -43,11 +43,12 @@
         "BUILD",
         "REVIEW",
         "DEPLOY",
-        "VERIFY"
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "DEPLOY+VERIFY: build clean (Next.js 16, Turbopack). 691/691 tests pass. VERIFY visual check PASS — all 6 pages confirmed: home (eyebrow + status-border cards), mission control (eyebrow + h1 + pulsing dot + Running pill + colored card top borders + monospace section labels), backlog (eyebrow + Backlog h1 + item count + border-b), history (eyebrow + History h1 + subtitle), schedules (eyebrow + Schedules h1 + amber border on overdue row), steer (eyebrow + Steer h1 + CURRENT DIRECTIVES mono label).",
-      "next": "MERGE BL-071",
-      "timestamp": "2026-04-25T21:45:00Z"
+      "outcome": "DEPLOY+VERIFY: build clean (Next.js 16, Turbopack). 691/691 tests pass. VERIFY visual check PASS — all 6 pages confirmed: home (eyebrow + status-border cards), mission control (eyebrow + h1 + pulsing dot + Running pill + colored card top borders + monospace section labels), backlog (eyebrow + Backlog h1 + item count + border-b), history (eyebrow + History h1 + subtitle), schedules (eyebrow + Schedules h1 + amber border on overdue row), steer (eyebrow + Steer h1 + CURRENT DIRECTIVES mono label). MERGE: BL-071 marked done. Item cost recorded: $50.40. Transitioned to triage iter 99.",
+      "next": "TRIAGE iter 99",
+      "timestamp": "2026-04-25T22:00:00Z"
     },
     {
       "iteration": 98,
@@ -167,7 +168,7 @@
     }
   ],
   "counters": {
-    "next_bl_id": 74,
+    "next_bl_id": 75,
     "next_q_id": 12,
     "next_cred_id": 1,
     "next_sched_id": 2
@@ -205,7 +206,8 @@
     "BL-062": 6.174803550000092,
     "BL-063": 2.621212350000036,
     "BL-064": 6.174803550000092,
-    "BL-066": 109.21807290000001
+    "BL-066": 109.21807290000001,
+    "BL-071": 50.40187815
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
