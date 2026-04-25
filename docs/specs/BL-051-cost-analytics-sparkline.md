@@ -74,7 +74,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - Response shape: `{ data: { sessions: Array<{ file: string, cost: number, mtimeMs: number }> } }`
   - Try-catch with structured error response
   - Unit tests pass
-- **Status:** in-progress
+- **Status:** done
 
 ### T3 — `components/mission-control/sparkline-chart.tsx`: pure SVG sparkline
 - **Size:** M
@@ -92,7 +92,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - SVG has `width="100%"` and `viewBox` attribute
   - `currentColor` used for stroke (not hardcoded hex)
   - All unit tests pass
-- **Status:** pending
+- **Status:** in-progress
 
 ### T4 — Extend `CostCard` to fetch and display sparkline
 - **Size:** S
