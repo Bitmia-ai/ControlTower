@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 94,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "REVIEW",
+  "phase": "DEPLOY",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
@@ -11,8 +11,9 @@
   "spec_file": "docs/specs/BL-063-steer-tab.md",
   "phase_progress": {
     "triage": "complete — env healthy, BL-063 selected (steer tab, P1)",
-    "plan": "complete — spec at docs/specs/BL-063-steer-tab.md (5 sub-tasks), all tasks built and committed to main in prior iteration",
-    "build": "complete — all 5 tasks committed to main (GET handler, nav tab, SteerContent page, unit tests, E2E spec)"
+    "plan": "complete — spec at docs/specs/BL-063-steer-tab.md (5 sub-tasks), all tasks built",
+    "build": "complete — all 5 tasks committed to main (GET handler, nav tab, SteerContent page, unit tests, E2E spec)",
+    "review": "PASS — 0C/0M/2m. 675/675 tests pass. Minor: untracked card-sizing.spec.ts (BL-062 leftover), uncommitted spec status update. No blocking issues."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -31,46 +32,46 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start TRIAGE (iteration 94)",
+    "last_commit": "redeye: start REVIEW BL-063 cycle 1 (iteration 94)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter93-bl064",
     "merge_status": "clean",
-    "notes": "TRIAGE+PLAN recognized as pre-done. Advancing directly to REVIEW for BL-063."
+    "notes": "REVIEW PASS. Advancing to DEPLOY."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 94,
       "phases": ["TRIAGE"],
-      "outcome": "TRIAGE: env healthy, no schedules overdue, no CEO answers pending. BL-063 selected (steer tab — fully functional, P1). All 5 tasks already built and committed to main. Proceeding to PLAN (pre-done) then REVIEW.",
-      "next": "PLAN BL-063",
+      "outcome": "TRIAGE: env healthy, no schedules overdue, no CEO answers pending. BL-063 selected (steer tab — fully functional, P1). All 5 tasks already built and committed to main.",
+      "next": "REVIEW BL-063",
       "timestamp": "2026-04-25T10:57:24Z"
     },
     {
       "iteration": 93,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "BL-064 through VERIFY. TRIAGE: env healthy, BL-064 selected. PLAN: spec written (2 sub-tasks, viewBox ratio fix). BUILD: VIEW_H=48->80, width=100%->height=80, max-h-[72px] removed. Tests: 657->663 pass. REVIEW: 0C/0M/0m PASS. DEPLOY: build clean, 663/663 tests, tagged last-good-deploy-iter93-bl064. VERIFY: all checks pass.",
+      "outcome": "BL-064 through VERIFY. VIEW_H=48->80, 663/663 tests, REVIEW PASS, DEPLOY clean, VERIFY pass.",
       "next": "MERGE BL-064",
       "timestamp": "2026-04-25T10:58:00Z"
     },
     {
       "iteration": 93,
       "phases": ["TRIAGE"],
-      "outcome": "TRIAGE: env healthy, no schedules overdue, no CEO answers pending. BL-064 selected. BL-063 deferred to iteration 94.",
+      "outcome": "TRIAGE: env healthy. BL-064 selected. BL-063 deferred.",
       "next": "PLAN BL-064",
       "timestamp": "2026-04-25T10:47:00Z"
     },
     {
       "iteration": 92,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "BL-062 full cycle complete. Card sizing fixed, 657/657 tests pass. MERGE: BL-062 done.",
+      "outcome": "BL-062 full cycle complete. Card sizing fixed.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:55:00Z"
     },
     {
       "iteration": 91,
       "phases": ["DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "BL-061 full cycle complete. DEPLOY: build clean, 656/656 tests, tagged. VERIFY: 0 kbd elements. MERGE: BL-061 done.",
+      "outcome": "BL-061 full cycle complete. kbd badges removed.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:30:00Z"
     }
