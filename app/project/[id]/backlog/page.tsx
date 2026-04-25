@@ -327,17 +327,31 @@ export default function BacklogPage({
     triaged: plannedItems.filter((i) => i.section === "triaged"),
   };
 
+  const totalCount = allItems.length + (activeItem ? 1 : 0);
+
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-sm font-medium text-gray-600 dark:text-zinc-400">Backlog</h2>
-        <button
-          onClick={() => setBacklogOpen(true)}
-          className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
-        >
-          + Add Item
-        </button>
-      </div>
+      <header className="pt-2 pb-5 mb-6 border-b border-gray-200 dark:border-zinc-800">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
+              Control Tower
+            </p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
+              Backlog
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-zinc-500 mt-1">
+              {totalCount} {totalCount === 1 ? "item" : "items"}
+            </p>
+          </div>
+          <button
+            onClick={() => setBacklogOpen(true)}
+            className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
+          >
+            + Add Item
+          </button>
+        </div>
+      </header>
 
       {loading && !detail ? (
         <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">

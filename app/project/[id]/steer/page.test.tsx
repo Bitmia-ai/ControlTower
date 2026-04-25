@@ -34,7 +34,7 @@ describe("SteerContent", () => {
   it("renders heading and form immediately", () => {
     vi.spyOn(global, "fetch").mockReturnValue(new Promise(() => {}));
     render(<SteerContent id="0" />);
-    expect(screen.getByText("Steer the Team")).toBeDefined();
+    expect(screen.getByRole("heading", { name: "Steer", level: 1 })).toBeDefined();
     expect(screen.getByLabelText("New directive")).toBeDefined();
     expect(screen.getByRole("button", { name: /Send Directive/i })).toBeDefined();
   });

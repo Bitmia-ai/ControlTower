@@ -93,6 +93,6 @@ describe("SchedulesContent", () => {
     vi.spyOn(global, "fetch").mockReturnValue(new Promise(() => {})); // never resolves
     render(<SchedulesContent id="0" />);
     // Heading is always rendered regardless of loading state
-    expect(screen.getByText("Scheduled Tasks")).toBeDefined();
+    expect(screen.getByRole("heading", { name: "Schedules", level: 1 })).toBeDefined();
   });
 });

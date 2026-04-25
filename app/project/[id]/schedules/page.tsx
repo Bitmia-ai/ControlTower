@@ -46,19 +46,27 @@ export function SchedulesContent({ id }: { id: string }) {
     fetchSchedules();
   }, [fetchSchedules]);
 
+  const count = schedules?.length ?? 0;
+
   return (
     <div className="px-4 sm:px-6 pb-12 max-w-6xl mx-auto">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-zinc-100">
-          Scheduled Tasks
-        </h2>
-        <p className="text-sm text-gray-500 dark:text-zinc-500 mt-0.5">
-          Recurring tasks defined in{" "}
-          <code className="font-mono text-xs bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded">
-            .redeye/schedules.md
-          </code>
-        </p>
-      </div>
+      <header className="pt-2 pb-5 mb-6 border-b border-gray-200 dark:border-zinc-800">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
+              Control Tower
+            </p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
+              Schedules
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-zinc-500 mt-1">
+              {schedules === null
+                ? "Loading scheduled tasks…"
+                : `${count} scheduled ${count === 1 ? "task" : "tasks"}`}
+            </p>
+          </div>
+        </div>
+      </header>
 
       {error ? (
         <FetchError
