@@ -2,11 +2,13 @@
   "schema_version": 1,
   "iteration": 79,
   "started_at": "2026-04-25T00:07:13Z",
-  "phase": "PLAN",
-  "phase_status": "complete",
+  "phase": "BUILD",
+  "phase_status": "in-progress",
   "backlog_item": "BL-049",
   "backlog_title": "Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card",
   "spec_file": "docs/specs/BL-049-e2e-test-coverage.md",
+  "worktree_path": "/Users/casa/ControlTower/.worktrees/BL-049",
+  "worktree_branch": "redeye/BL-049",
   "phase_progress": {
     "triage": "Iteration 79 triage complete. CEO directed 'begin the autonomous development loop' — interpreted as proceed signal. Q-007 resolved with default direction. Added BL-049 through BL-053 (E2E tests, notifications, cost chart, keyboard shortcuts, session history). Routing to PLAN for BL-049 (highest priority planned item).",
     "plan": "BL-049 spec written: docs/specs/BL-049-e2e-test-coverage.md. Two new E2E Playwright specs planned: backlog-crud.spec.ts (add via dialog, detail page verification) and cost-card.spec.ts (cost card invariant). Both use route interception pattern. 2 sub-tasks (T1, T2), S-tier each. No source code changes required."
@@ -28,8 +30,8 @@
     }
   },
   "git_state": {
-    "last_commit": "test: e2e Playwright spec for Control Tower logo mark (BL-047)",
-    "branch": "master",
+    "last_commit": "redeye: complete PLAN — BL-049 spec written, 2 E2E Playwright specs planned (iteration 79)",
+    "branch": "redeye/BL-049",
     "last_good_deploy_tag": "last-good-deploy-iter63",
     "notes": "BL-047 DONE: split-weight Control Tower logo mark (CONTROL small/TOWER large, red-600/red-500 dark variant) in root layout; 5 unused scaffold SVGs removed; 462/462 tests pass; Playwright VERIFY PASS — logo visible in header light mode, CONTROL+TOWER spans confirmed, logo click navigates to /; tagged last-good-deploy-iter63"
   },
