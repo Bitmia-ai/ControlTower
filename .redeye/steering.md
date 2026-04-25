@@ -20,4 +20,3 @@
 
 ### Process / network
 
-- **Dev and prod scripts bind to `127.0.0.1`** (in `package.json`). Local-first trust model — never `0.0.0.0`. The CSRF middleware assumes this binding.
