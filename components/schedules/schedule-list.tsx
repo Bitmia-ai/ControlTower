@@ -160,11 +160,18 @@ function ScheduleRow({
     ? formatRelativeTime(entry.nextDueMs, nowMs)
     : "—";
 
+  // Top status border: amber for overdue, zinc for never-run, green for on-schedule.
+  const topBorder = entry.isOverdue
+    ? "border-t-amber-400"
+    : entry.lastRunIso === null
+    ? "border-t-zinc-300 dark:border-t-zinc-700"
+    : "border-t-green-500";
+
   return (
     <div
-      className={`rounded-lg border transition-colors ${
+      className={`rounded-lg border border-t-[3px] ${topBorder} transition-colors ${
         entry.isOverdue
-          ? "border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/10"
+          ? "border-gray-200 dark:border-zinc-800 bg-red-50 dark:bg-red-950/10"
           : "border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
       }`}
     >
@@ -289,7 +296,7 @@ export function ScheduleList({
     <div className="space-y-4">
       {overdue.length > 0 && (
         <section aria-label="Overdue schedules">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-red-600 dark:text-red-400 mb-2">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-red-600 dark:text-red-400 mb-2">
             Overdue ({overdue.length})
           </h2>
           <div className="space-y-2">
@@ -303,7 +310,7 @@ export function ScheduleList({
       {onSchedule.length > 0 && (
         <section aria-label="On-schedule tasks">
           {overdue.length > 0 && (
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-zinc-500 mb-2">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-2">
               On schedule ({onSchedule.length})
             </h2>
           )}

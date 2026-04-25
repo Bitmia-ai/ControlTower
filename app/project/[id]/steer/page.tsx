@@ -25,7 +25,7 @@ function DirectiveRow({ directive }: { directive: SteeringDirective }) {
   const date = match ? match[2] : directive.timestamp;
 
   return (
-    <div className="flex items-start justify-between gap-4 px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg">
+    <div className="flex items-start justify-between gap-4 px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg">
       <p className="text-sm text-gray-900 dark:text-zinc-100 whitespace-pre-wrap break-words flex-1">
         {text}
       </p>
@@ -178,7 +178,7 @@ export function SteerContent({ id }: { id: string }) {
       </form>
 
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-zinc-100 mb-3">
+        <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
           Current Directives
         </h3>
 
