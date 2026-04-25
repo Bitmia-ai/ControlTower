@@ -3,7 +3,7 @@
   "iteration": 93,
   "started_at": "2026-04-25T10:55:00Z",
   "phase": "VERIFY",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-063",
@@ -12,7 +12,8 @@
   "phase_progress": {
     "build": "T1: VIEW_H=80, height attr=80, removed width=100%, removed max-h-[72px] from container. T2: updated 3 test files. 657/657 tests pass. Build clean.",
     "review": "Cycle 1: 0C/0M/0m \u2014 PASS. Fix is minimal and correct: VIEW_H=80, fixed height attr prevents horizontal stretch, max-h clamp removed, 3 test files updated. Build and tests clean.",
-    "deploy": "Production build clean (Turbopack). 663/663 tests pass. Tagged last-good-deploy-iter93-bl064."
+    "deploy": "Production build clean (Turbopack). 663/663 tests pass. Tagged last-good-deploy-iter93-bl064.",
+    "verify": "663/663 tests pass. VIEW_H=80 confirmed, height attr set, max-h removed. Build artifacts clean. Backlog BL-064 marked done."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -39,6 +40,20 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 93,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "BL-064 through VERIFY. TRIAGE: env healthy, BL-064 selected. PLAN: spec written (2 sub-tasks, viewBox ratio fix). BUILD: VIEW_H=48->80, width=100%->height=80, max-h-[72px] removed. Tests: 657->663 pass. REVIEW: 0C/0M/0m PASS. DEPLOY: build clean, 663/663 tests, tagged last-good-deploy-iter93-bl064. VERIFY: all checks pass.",
+      "next": "MERGE BL-064",
+      "timestamp": "2026-04-25T10:58:00Z"
+    },
     {
       "iteration": 93,
       "phases": [
@@ -85,20 +100,6 @@
       "outcome": "VERIFY PASS (662/662 tests, all artifacts confirmed). TRIAGE: BL-058 done, BL-061 selected. PLAN: spec written (remove kbd badges). BUILD: project-nav.tsx and controls-card.tsx stripped of all <kbd> shortcut badges. Tests updated (656/656 pass). Build clean.",
       "next": "REVIEW BL-061",
       "timestamp": "2026-04-25T10:25:10Z"
-    },
-    {
-      "iteration": 90,
-      "phases": [
-        "INCORPORATE",
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY"
-      ],
-      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m \u2014 nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m \u2014 both Majors confirmed fixed. PASS \u2014 cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
-      "next": "VERIFY",
-      "timestamp": "2026-04-25T14:00:00Z"
     }
   ],
   "counters": {

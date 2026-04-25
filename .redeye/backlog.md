@@ -2,6 +2,14 @@
 
 ## CEO Requests
 
+### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
+- **Type:** feature
+- **Priority:** P1
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 93)
+- **Spec:** docs/specs/BL-064-cost-plot-scaling.md
+- **Summary:** Fixed the cost sparkline aspect ratio by increasing VIEW_H from 48 to 80 (2.5:1 ratio instead of 4.17:1), removing the `width="100%"` SVG attribute, and adding `height={80}` so the browser renders the chart at its natural height without horizontal distortion. Removed the `max-h-[72px]` container clamp. Updated 3 test files; 663/663 tests pass and the production build is clean.
+
 ### BL-063: we need a steer tab added. make it fully funcitonal
 - **Type:** feature
 - **Priority:** P1
