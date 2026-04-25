@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "INCORPORATE",
+  "phase": "TRIAGE",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
@@ -10,7 +10,7 @@
   "backlog_title": null,
   "spec_file": null,
   "phase_progress": {
-    "merge_complete": true
+    "incorporate_complete": true
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -39,10 +39,10 @@
   "iteration_log": [
     {
       "iteration": 90,
-      "phases": ["INCORPORATE"],
-      "outcome": "in-progress",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T09:05:06Z"
+      "phases": ["INCORPORATE", "TRIAGE"],
+      "outcome": "INCORPORATE: Q-010 incorporated — CEO added BL-058 (schedules UI), BL-059 (discoverPid fix), BL-060 (blocked state UI + auto-start). TRIAGE: in-progress.",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T09:06:05Z"
     },
     {
       "iteration": 89,
