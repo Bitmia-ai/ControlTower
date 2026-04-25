@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import os from "os";
 import path from "path";
+import { Readable } from "stream";
 
 const mockStatSync = vi.fn();
 const mockReaddirSync = vi.fn();
@@ -31,7 +32,6 @@ import { getSessionCostHistory, extractSessionPhases, getSessionHistory } from "
  * The stream is consumed by readline.createInterface.
  */
 function mockJsonlStream(lines: string[]) {
-  const { Readable } = require("stream");
   return Readable.from(lines.map((l) => l + "\n"));
 }
 

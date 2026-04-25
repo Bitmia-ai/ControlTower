@@ -74,6 +74,10 @@ export default function HistoryPage({
     try {
       setFetchError(null);
       setSessionsError(null);
+      // Clear sessions on retry so the loading skeleton renders instead of
+      // momentarily flashing the "no sessions" empty state from a previous
+      // failed fetch.
+      setSessions(null);
 
       const [detailRes, sessionsRes] = await Promise.all([
         fetch(`/api/projects/${id}`).catch((e) => {

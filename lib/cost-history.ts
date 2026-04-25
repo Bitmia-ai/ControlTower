@@ -216,6 +216,16 @@ async function readFirstLineTimestamp(filePath: string, fallback: number): Promi
  * an approximate duration derived from the first-line timestamp (or mtime as fallback).
  *
  * Returns `[]` if the CLI projects directory is unreadable. Never throws.
+ *
+ * KNOWN PERFORMANCE ISSUE (BL-053 review m-1, accepted):
+ * Each transcript file is opened and streamed three times per call:
+ *   1) `sumTranscriptFileCost` — full scan for token usage
+ *   2) `extractSessionPhases` — full scan for phase markers
+ *   3) `readFirstLineTimestamp` — opens stream, reads one line, closes
+ * For large transcripts this triples I/O. A future optimisation could fuse
+ * these into a single pass that yields cost, phases, and the first timestamp
+ * together. Deferred: current call sites cap `limit` at 50 and the route
+ * is not in a tight hot path; correctness was prioritised over throughput.
  */
 export async function getSessionHistory(
   projectPath: string,
