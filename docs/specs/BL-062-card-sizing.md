@@ -180,7 +180,7 @@ correctly in the proportional render — they stay near the bottom of the viewBo
 - `data-testid="sparkline"` element has no `height` attribute (or height is omitted).
 - `preserveAspectRatio` is `xMidYMid meet`.
 - `npx vitest run` passes.  
-**Status:** pending
+**Status:** done
 
 ---
 

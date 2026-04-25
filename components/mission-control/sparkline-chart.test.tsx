@@ -42,6 +42,21 @@ describe("SparklineChart", () => {
     expect(pairs).toHaveLength(3);
   });
 
+  it("uses proportional preserveAspectRatio to avoid horizontal stretching", () => {
+    const { container } = render(
+      <SparklineChart
+        sessions={[
+          { cost: 1, mtimeMs: 1_000_000 },
+          { cost: 2, mtimeMs: 2_000_000 },
+        ]}
+      />
+    );
+    const svg = container.querySelector("svg");
+    expect(svg?.getAttribute("preserveAspectRatio")).toBe("xMidYMid meet");
+    // No fixed height attribute — SVG scales proportionally
+    expect(svg?.getAttribute("height")).toBeNull();
+  });
+
   it("normalizes points across min/max with first point on baseline-relative low", () => {
     const { container } = render(
       <SparklineChart

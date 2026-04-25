@@ -75,8 +75,7 @@ export function SparklineChart({ sessions, className }: SparklineChartProps) {
       data-testid="sparkline"
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       width="100%"
-      height={VIEW_H}
-      preserveAspectRatio="none"
+      preserveAspectRatio="xMidYMid meet"
       className={className}
       role="img"
       aria-label={`Cost sparkline for last ${sessions.length} sessions`}
