@@ -7,8 +7,9 @@
   "backlog_item": "BL-051",
   "backlog_title": "Cost analytics — add cumulative cost chart to mission control",
   "phase_progress": {
-    "triage": "Iteration 81: No tester reports, no overdue schedules, no open CEO questions, no STOP/PAUSE. BL-050 confirmed merged (iter 80, 493/493 tests). Env HEALTHY. Routing to PLAN on BL-051 (cost analytics sparkline, P2)."
+    "plan": "Spec written iter 81. Pure SVG sparkline, no new deps. New lib/cost-history.ts + cost-history API route + SparklineChart component + CostCard extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed."
   },
+  "spec_file": "docs/specs/BL-051-cost-analytics-sparkline.md",
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,

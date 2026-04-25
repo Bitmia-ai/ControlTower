@@ -31,6 +31,8 @@
 - **Priority:** P2
 - **Status:** planned
 - **Added:** 2026-04-25 (iter 79)
+- **Spec:** docs/specs/BL-051-cost-analytics-sparkline.md
+- **Planning:** Pure SVG sparkline (no new deps). New `lib/cost-history.ts`, `GET /api/projects/[id]/cost-history`, `SparklineChart` component, and `CostCard` extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed.
 - **Details:**
   - The cost card shows current session + total as numbers, but no trend data
   - Add a simple bar or line sparkline chart showing cost per session over the last 10 sessions
