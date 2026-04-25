@@ -2,17 +2,14 @@
   "schema_version": 1,
   "iteration": 93,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "PLAN",
-  "phase_status": "complete",
+  "phase": "BUILD",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-064",
-  "backlog_title": "the cost plot is nice, but it seems scaled weird \u2014 fix aspect ratio",
-  "spec_file": "docs/specs/BL-064-cost-plot-scaling.md",
-  "phase_progress": {
-    "triage": "env healthy, BL-064 selected (cost plot aspect ratio fix, P1)",
-    "plan": "Spec written: 2 sub-tasks (T1: fix viewBox+SVG sizing, T2: update tests). Root cause: viewBox 200x48 too wide, width=100% stretches chart. Fix: VIEW_H=80, height=80 attribute, remove max-h clamp."
-  },
+  "backlog_item": "BL-063",
+  "backlog_title": "we need a steer tab added. make it fully functional",
+  "spec_file": "docs/specs/BL-063-steer-tab.md",
+  "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
@@ -152,6 +149,7 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-061": 218.73707190000033
+    "BL-061": 218.73707190000033,
+    "BL-063": 228.30474285000034
   }
 }
