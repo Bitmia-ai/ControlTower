@@ -9,10 +9,10 @@ interface SparklineChartProps {
 }
 
 const VIEW_W = 200;
-const VIEW_H = 48;
+const VIEW_H = 80;
 const PADDING_X = 4;
 const PADDING_TOP = 4;
-const PADDING_BOTTOM = 14; // reserve room for date labels
+const PADDING_BOTTOM = 18; // reserve room for date labels
 
 const MONTHS = [
   "Jan",
@@ -74,7 +74,7 @@ export function SparklineChart({ sessions, className }: SparklineChartProps) {
     <svg
       data-testid="sparkline"
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-      width="100%"
+      height={VIEW_H}
       preserveAspectRatio="xMidYMid meet"
       className={className}
       role="img"

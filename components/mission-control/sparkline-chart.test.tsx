@@ -31,8 +31,8 @@ describe("SparklineChart", () => {
     );
     const svg = container.querySelector("svg");
     expect(svg).not.toBeNull();
-    expect(svg?.getAttribute("viewBox")).toBe("0 0 200 48");
-    expect(svg?.getAttribute("width")).toBe("100%");
+    expect(svg?.getAttribute("viewBox")).toBe("0 0 200 80");
+    expect(svg?.getAttribute("height")).toBe("80");
 
     const polyline = container.querySelector("polyline");
     expect(polyline).not.toBeNull();
@@ -42,7 +42,7 @@ describe("SparklineChart", () => {
     expect(pairs).toHaveLength(3);
   });
 
-  it("uses proportional preserveAspectRatio to avoid horizontal stretching", () => {
+  it("uses fixed height and preserveAspectRatio to avoid horizontal stretching", () => {
     const { container } = render(
       <SparklineChart
         sessions={[
@@ -53,8 +53,10 @@ describe("SparklineChart", () => {
     );
     const svg = container.querySelector("svg");
     expect(svg?.getAttribute("preserveAspectRatio")).toBe("xMidYMid meet");
-    // No fixed height attribute — SVG scales proportionally
-    expect(svg?.getAttribute("height")).toBeNull();
+    // Fixed height attribute — SVG renders at natural height without distortion
+    expect(svg?.getAttribute("height")).toBe("80");
+    // No explicit width — browser auto-sizes width proportionally from height
+    expect(svg?.getAttribute("width")).toBeNull();
   });
 
   it("normalizes points across min/max with first point on baseline-relative low", () => {

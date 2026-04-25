@@ -68,7 +68,7 @@ describe("BL-057 responsive classes", () => {
     expect(nav?.className).toContain("overflow-x-auto");
   });
 
-  it("SparklineChart SVG uses width=100% (responsive width)", () => {
+  it("SparklineChart SVG uses fixed height (no horizontal distortion)", () => {
     const sessions = [
       { cost: 0.1, mtimeMs: 1_700_000_000_000 },
       { cost: 0.2, mtimeMs: 1_700_001_000_000 },
@@ -77,8 +77,9 @@ describe("BL-057 responsive classes", () => {
     const { container } = render(<SparklineChart sessions={sessions} />);
     const svg = container.querySelector("svg");
     expect(svg).toBeTruthy();
-    expect(svg?.getAttribute("width")).toBe("100%");
-    // viewBox guarantees scaling
+    // Fixed height prevents the SVG from stretching horizontally across wide containers.
+    expect(svg?.getAttribute("height")).toBe("80");
+    // viewBox guarantees correct internal scaling
     expect(svg?.getAttribute("viewBox")).toMatch(/^0 0 \d+ \d+$/);
   });
 

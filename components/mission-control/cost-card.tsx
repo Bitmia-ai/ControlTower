@@ -121,7 +121,7 @@ export function CostCard({ projectId, running }: CostCardProps) {
               <p className="text-xs text-gray-500 dark:text-zinc-500 mb-1">
                 Last {sessions.length} sessions
               </p>
-              <div className="text-red-500 dark:text-red-400 max-h-[72px] overflow-hidden">
+              <div className="text-red-500 dark:text-red-400 overflow-hidden rounded">
                 <SparklineChart sessions={sessions} />
               </div>
             </div>
