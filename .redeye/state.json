@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 86,
   "started_at": "2026-04-25T07:55:09Z",
-  "phase": "TRIAGE",
-  "phase_status": "complete",
+  "phase": "PLAN",
+  "phase_status": "in-progress",
   "backlog_item": "BL-056",
   "backlog_title": "Redesign backlog, history, and live tabs using designer sub-agent and frontend skill",
   "phase_progress": {
