@@ -40,23 +40,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env.test
+# RedEye — track the canonical project state (backlog, steering, inbox,
+# state.json, etc.) so the repo is a self-contained record of how this
+# project was built. Only exclude truly transient runtime artifacts:
+# regenerated digests, lock files, session logs, pid files.
 .redeye/digest.json
 .redeye/gate-*
-.worktrees/
-
-# Per-project runtime — Control Tower manages these at runtime, don't ship them
-.redeye/state.json
 .redeye/session-*.jsonl
 .redeye/session-*.pid
-.redeye/status.md
-.redeye/specs/
-.redeye/tester-reports.md
-.redeye/feedback.md
-.redeye/changelog.md
-.redeye/inbox.md
-.redeye/backlog.md
-.redeye/schedules.md
-.redeye/config.md
+.redeye/*.log
+.worktrees/
 
 # Claude Code local state
 .claude/
