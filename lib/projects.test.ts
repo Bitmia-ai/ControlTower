@@ -16,11 +16,15 @@ beforeEach(async () => {
   tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "redeye-test-"));
   configPath = path.join(tmpDir, "config.json");
   process.env.REDEYE_CONFIG_PATH = configPath;
+  // Tests use /tmp paths which addProject would reject as outside $HOME.
+  // Opt-out for test environment only.
+  process.env.ALLOW_OUTSIDE_HOME = "1";
 });
 
 afterEach(async () => {
   await fs.rm(tmpDir, { recursive: true, force: true });
   delete process.env.REDEYE_CONFIG_PATH;
+  delete process.env.ALLOW_OUTSIDE_HOME;
 });
 
 async function readRawConfig(p: string) {

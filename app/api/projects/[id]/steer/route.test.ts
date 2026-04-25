@@ -7,6 +7,10 @@ vi.mock("@/lib/projects", () => ({
 
 vi.mock("@/lib/redeye-files", () => ({
   readSteering: vi.fn(),
+  // safeRedeyePath was added during the security hardening pass; mocked
+  // here so steer's POST handler can resolve the steering.md path.
+  safeRedeyePath: (projectPath: string, filename: string) =>
+    `${projectPath}/.redeye/${filename}`,
 }));
 
 const mockReadFile = vi.fn();

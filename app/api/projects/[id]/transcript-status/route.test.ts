@@ -55,10 +55,10 @@ describe("GET /api/projects/[id]/transcript-status", () => {
     const res = await GET(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.available).toBe(false);
-    expect(json.source).toBeNull();
-    expect(json.mtime).toBeNull();
-    expect(json.ageSeconds).toBeNull();
+    expect(json.data.available).toBe(false);
+    expect(json.data.source).toBeNull();
+    expect(json.data.mtime).toBeNull();
+    expect(json.data.ageSeconds).toBeNull();
   });
 
   it("returns available:true, source:'redeye' for .redeye/session-cto.jsonl", async () => {
@@ -71,11 +71,11 @@ describe("GET /api/projects/[id]/transcript-status", () => {
     const res = await GET(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.available).toBe(true);
-    expect(json.source).toBe("redeye");
-    expect(json.mtime).toBeTruthy();
-    expect(json.ageSeconds).toBeGreaterThanOrEqual(9);
-    expect(json.ageSeconds).toBeLessThan(15);
+    expect(json.data.available).toBe(true);
+    expect(json.data.source).toBe("redeye");
+    expect(json.data.mtime).toBeTruthy();
+    expect(json.data.ageSeconds).toBeGreaterThanOrEqual(9);
+    expect(json.data.ageSeconds).toBeLessThan(15);
   });
 
   it("returns available:true, source:'cli' for CLI transcript files", async () => {
@@ -88,9 +88,9 @@ describe("GET /api/projects/[id]/transcript-status", () => {
     const res = await GET(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.available).toBe(true);
-    expect(json.source).toBe("cli");
-    expect(json.ageSeconds).toBeGreaterThanOrEqual(299);
+    expect(json.data.available).toBe(true);
+    expect(json.data.source).toBe("cli");
+    expect(json.data.ageSeconds).toBeGreaterThanOrEqual(299);
   });
 
   it("returns available:false when resolveTranscriptFile returns a stale file that can't be stat'd", async () => {
@@ -102,8 +102,8 @@ describe("GET /api/projects/[id]/transcript-status", () => {
     const res = await GET(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.available).toBe(false);
-    expect(json.source).toBeNull();
+    expect(json.data.available).toBe(false);
+    expect(json.data.source).toBeNull();
   });
 
   it("returns correct shape with all required fields", async () => {
@@ -115,9 +115,9 @@ describe("GET /api/projects/[id]/transcript-status", () => {
     const [req, ctx] = makeGet("0");
     const res = await GET(req, ctx);
     const json = await res.json();
-    expect(json).toHaveProperty("available");
-    expect(json).toHaveProperty("source");
-    expect(json).toHaveProperty("mtime");
-    expect(json).toHaveProperty("ageSeconds");
+    expect(json.data).toHaveProperty("available");
+    expect(json.data).toHaveProperty("source");
+    expect(json.data).toHaveProperty("mtime");
+    expect(json.data).toHaveProperty("ageSeconds");
   });
 });

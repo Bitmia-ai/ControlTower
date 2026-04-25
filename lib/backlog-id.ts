@@ -12,22 +12,9 @@
 
 import fs from "fs/promises";
 import path from "path";
-import crypto from "crypto";
 import { readState, scanMaxBacklogId } from "./redeye-files";
+import { atomicWriteJson } from "./atomic-write";
 import type { RedEyeState } from "./redeye-types";
-
-/** Atomic writeFile: write to a unique sibling tmp, fsync, rename. */
-async function atomicWriteJson(targetPath: string, content: string): Promise<void> {
-  const tmpPath = `${targetPath}.tmp.${process.pid}.${crypto.randomBytes(4).toString("hex")}`;
-  const fh = await fs.open(tmpPath, "w");
-  try {
-    await fh.writeFile(content, "utf-8");
-    await fh.sync();
-  } finally {
-    await fh.close();
-  }
-  await fs.rename(tmpPath, targetPath);
-}
 
 /**
  * Compute and atomically allocate the next BL-xxx ID for the given project.
