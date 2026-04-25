@@ -138,7 +138,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - `getSessionHistory` returns sessions sorted ascending by `mtimeMs`
   - Existing `getSessionCostHistory` still works and all its existing tests pass
   - New unit tests pass
-- **Status:** pending
+- **Status:** done
 
 ### T2 — `GET /api/projects/[id]/session-history/route.ts`: new endpoint
 - **Size:** S
@@ -156,7 +156,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Response shape matches `SessionHistoryEntry[]` contract
   - try-catch with `{ error }` on failure
   - All unit tests pass
-- **Status:** pending
+- **Status:** in-progress
 
 ### T3 — `components/history/phase-chip.tsx`: small phase pill component
 - **Size:** S
