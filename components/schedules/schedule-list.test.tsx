@@ -1,13 +1,14 @@
-import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import { ScheduleList } from "./schedule-list";
 import type { ScheduleEntry } from "@/lib/redeye-types";
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
-const NOW_MS = Date.parse("2026-04-25T10:00:00Z");
+const PROJECT_ID = "1";
 
 function makeEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry {
   return {
@@ -17,7 +18,7 @@ function makeEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry {
     lastRunIso: "2026-04-18T10:00:00Z",
     steps: ["Step one", "Step two"],
     assignedTo: "Dev",
-    nextDueMs: Date.parse("2026-04-25T10:00:00Z") + 1000, // slightly in future
+    nextDueMs: Date.parse("2026-04-25T10:00:00Z") + 1000,
     isOverdue: false,
     ...overrides,
   };
@@ -25,9 +26,7 @@ function makeEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry {
 
 describe("ScheduleList", () => {
   it("renders empty state gracefully when no schedules", () => {
-    // ScheduleList expects non-empty array; empty renders nothing
-    const { container } = render(<ScheduleList schedules={[]} />);
-    // Container should be mostly empty (no rows)
+    const { container } = render(<ScheduleList schedules={[]} projectId={PROJECT_ID} />);
     expect(container.querySelectorAll("button").length).toBe(0);
   });
 
@@ -36,7 +35,7 @@ describe("ScheduleList", () => {
       makeEntry({ id: "SCHED-001", title: "Alpha check" }),
       makeEntry({ id: "SCHED-002", title: "Beta check" }),
     ];
-    render(<ScheduleList schedules={entries} />);
+    render(<ScheduleList schedules={entries} projectId={PROJECT_ID} />);
     expect(screen.getByText("Alpha check")).toBeDefined();
     expect(screen.getByText("Beta check")).toBeDefined();
   });
@@ -49,13 +48,13 @@ describe("ScheduleList", () => {
       lastRunIso: "2026-04-01T00:00:00Z",
       nextDueMs: Date.parse("2026-04-08T00:00:00Z"),
     });
-    render(<ScheduleList schedules={[overdueEntry]} />);
+    render(<ScheduleList schedules={[overdueEntry]} projectId={PROJECT_ID} />);
     expect(screen.getByText(/Overdue \(1\)/i)).toBeDefined();
   });
 
   it("shows Overdue badge on overdue entry row", () => {
     const overdueEntry = makeEntry({ isOverdue: true, nextDueMs: Date.parse("2026-04-01T00:00:00Z") });
-    render(<ScheduleList schedules={[overdueEntry]} />);
+    render(<ScheduleList schedules={[overdueEntry]} projectId={PROJECT_ID} />);
     expect(screen.getByText("Overdue")).toBeDefined();
   });
 
@@ -65,7 +64,7 @@ describe("ScheduleList", () => {
       lastRunIso: "2026-04-24T10:00:00Z",
       nextDueMs: Date.parse("2026-05-01T10:00:00Z"),
     });
-    render(<ScheduleList schedules={[entry]} />);
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
     expect(screen.getByText("On schedule")).toBeDefined();
   });
 
@@ -75,8 +74,7 @@ describe("ScheduleList", () => {
       nextDueMs: 0,
       isOverdue: true,
     });
-    render(<ScheduleList schedules={[entry]} />);
-    // isOverdue = true and lastRunIso = null -> "Never run" badge
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
     expect(screen.getByText("Never run")).toBeDefined();
   });
 
@@ -86,18 +84,16 @@ describe("ScheduleList", () => {
       isOverdue: false,
       lastRunIso: null,
     });
-    render(<ScheduleList schedules={[entry]} />);
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
     expect(screen.getByText("Unknown schedule")).toBeDefined();
   });
 
   it("expands steps when row button is clicked", () => {
     const entry = makeEntry({ steps: ["Clean files", "Run audit"] });
-    render(<ScheduleList schedules={[entry]} />);
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
 
-    // Steps are hidden initially
     expect(screen.queryByText("Clean files")).toBeNull();
 
-    // Click to expand
     const btn = screen.getByRole("button", { name: /expand schedule/i });
     fireEvent.click(btn);
 
@@ -107,17 +103,17 @@ describe("ScheduleList", () => {
 
   it("collapses steps when expanded row button is clicked again", () => {
     const entry = makeEntry({ steps: ["Step A"] });
-    render(<ScheduleList schedules={[entry]} />);
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
     const btn = screen.getByRole("button", { name: /expand schedule/i });
-    fireEvent.click(btn); // expand
+    fireEvent.click(btn);
     expect(screen.getByText("Step A")).toBeDefined();
-    fireEvent.click(btn); // collapse
+    fireEvent.click(btn);
     expect(screen.queryByText("Step A")).toBeNull();
   });
 
   it("shows entry ID badge", () => {
     const entry = makeEntry({ id: "SCHED-007" });
-    render(<ScheduleList schedules={[entry]} />);
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
     expect(screen.getByText("SCHED-007")).toBeDefined();
   });
 
@@ -132,10 +128,54 @@ describe("ScheduleList", () => {
       isOverdue: false,
       nextDueMs: Date.parse("2026-05-01T00:00:00Z"),
     });
-    render(<ScheduleList schedules={[onTime, overdue]} />);
-    // Overdue section should appear
+    render(<ScheduleList schedules={[onTime, overdue]} projectId={PROJECT_ID} />);
     expect(screen.getByText(/Overdue \(1\)/i)).toBeDefined();
-    // On-schedule section should appear (since there is also an overdue one)
     expect(screen.getByText(/On schedule \(1\)/i)).toBeDefined();
+  });
+
+  it("renders Run now button for each schedule row", () => {
+    const entries = [
+      makeEntry({ id: "SCHED-001" }),
+      makeEntry({ id: "SCHED-002" }),
+    ];
+    render(<ScheduleList schedules={entries} projectId={PROJECT_ID} />);
+    const buttons = screen.getAllByRole("button", { name: /run schedule/i });
+    expect(buttons.length).toBe(2);
+  });
+
+  it("Run now button POSTs to the correct endpoint on click", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { queued: true } }) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId="42" />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/projects/42/schedules/run",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({ scheduleId: "SCHED-001" }),
+        })
+      );
+    });
+  });
+
+  it("shows Queued feedback after successful run", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { queued: true } }) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Queued/i)).toBeDefined();
+    });
   });
 });

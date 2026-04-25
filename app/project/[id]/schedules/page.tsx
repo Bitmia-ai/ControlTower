@@ -74,7 +74,7 @@ export function SchedulesContent({ id }: { id: string }) {
           subtitle="Add recurring tasks to .redeye/schedules.md to see them here."
         />
       ) : (
-        <ScheduleList schedules={schedules} />
+        <ScheduleList schedules={schedules} projectId={id} />
       )}
     </div>
   );

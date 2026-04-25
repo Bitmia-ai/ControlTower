@@ -126,14 +126,16 @@ describe("ToastProvider", () => {
     expect(screen.getAllByText("first").length).toBe(2);
   });
 
-  it("throws if useToast is called outside ToastProvider", () => {
+  it("returns a no-op fallback when useToast is called outside ToastProvider", () => {
+    // useToast now returns a safe fallback (empty toasts, no-op callbacks) when
+    // there is no ToastProvider — this prevents the /_global-error prerender
+    // from crashing when Next.js renders context-dependent components without
+    // their providers during static generation.
     function Outside() {
-      useToast();
-      return null;
+      const ctx = useToast();
+      return <div data-testid="toasts-count">{ctx.toasts.length}</div>;
     }
-    // suppress React error log
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    expect(() => render(<Outside />)).toThrow();
-    spy.mockRestore();
+    render(<Outside />);
+    expect(screen.getByTestId("toasts-count").textContent).toBe("0");
   });
 });

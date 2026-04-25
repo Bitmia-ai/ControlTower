@@ -17,6 +17,28 @@ vi.mock("@/components/theme-toggle", () => ({
   ThemeToggle: () => <button>theme</button>,
 }));
 
+// ClientProviders now owns the header (logo link + ThemeToggle) plus ThemeProvider
+// and ToastProvider. Mock it to render the full header structure so layout tests
+// can find the logo link, "Control" text, "Tower" text, and children.
+vi.mock("@/components/client-providers", () => ({
+  ClientProviders: ({ children }: { children: React.ReactNode }) => (
+    <>
+      <header>
+        <a href="/" aria-label="Control Tower — go to home">
+          <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
+            Control
+          </span>
+          <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
+            Tower
+          </span>
+        </a>
+        <button>theme</button>
+      </header>
+      {children}
+    </>
+  ),
+}));
+
 import RootLayout from "./layout";
 
 afterEach(() => {

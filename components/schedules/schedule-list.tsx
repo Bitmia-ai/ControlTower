@@ -70,10 +70,85 @@ function StatusBadge({ entry }: { entry: ScheduleEntry }) {
 }
 
 // ---------------------------------------------------------------------------
+// RunButton
+// ---------------------------------------------------------------------------
+
+type RunState = "idle" | "loading" | "success" | "error";
+
+function RunButton({
+  scheduleId,
+  projectId,
+}: {
+  scheduleId: string;
+  projectId: string;
+}) {
+  const [runState, setRunState] = useState<RunState>("idle");
+
+  async function handleRun(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (runState === "loading") return;
+    setRunState("loading");
+    try {
+      const res = await fetch(`/api/projects/${projectId}/schedules/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scheduleId }),
+      });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        console.error("Run schedule failed:", json.error);
+        setRunState("error");
+      } else {
+        setRunState("success");
+      }
+    } catch {
+      setRunState("error");
+    }
+
+    // Reset back to idle after 3 seconds
+    setTimeout(() => setRunState("idle"), 3000);
+  }
+
+  const label =
+    runState === "loading"
+      ? "Queuing…"
+      : runState === "success"
+        ? "Queued ✓"
+        : runState === "error"
+          ? "Failed ✗"
+          : "Run now";
+
+  const colorClass =
+    runState === "success"
+      ? "text-green-600 dark:text-green-400"
+      : runState === "error"
+        ? "text-red-600 dark:text-red-400"
+        : "text-blue-600 dark:text-blue-400 hover:underline";
+
+  return (
+    <button
+      type="button"
+      aria-label={`Run schedule ${scheduleId} now`}
+      disabled={runState === "loading"}
+      onClick={handleRun}
+      className={`text-xs font-medium transition-colors disabled:cursor-not-allowed ${colorClass}`}
+    >
+      {label}
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // ScheduleRow
 // ---------------------------------------------------------------------------
 
-function ScheduleRow({ entry }: { entry: ScheduleEntry }) {
+function ScheduleRow({
+  entry,
+  projectId,
+}: {
+  entry: ScheduleEntry;
+  projectId: string;
+}) {
   const [expanded, setExpanded] = useState(false);
   const nowMs = Date.now();
 
@@ -153,7 +228,7 @@ function ScheduleRow({ entry }: { entry: ScheduleEntry }) {
           </div>
         </div>
 
-        {/* Status badge + roles */}
+        {/* Status badge + roles + run button */}
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
           <StatusBadge entry={entry} />
           {entry.assignedTo && (
@@ -161,6 +236,7 @@ function ScheduleRow({ entry }: { entry: ScheduleEntry }) {
               {entry.assignedTo}
             </span>
           )}
+          <RunButton scheduleId={entry.id} projectId={projectId} />
         </div>
       </button>
 
@@ -193,7 +269,13 @@ function ScheduleRow({ entry }: { entry: ScheduleEntry }) {
 // ScheduleList
 // ---------------------------------------------------------------------------
 
-export function ScheduleList({ schedules }: { schedules: ScheduleEntry[] }) {
+export function ScheduleList({
+  schedules,
+  projectId,
+}: {
+  schedules: ScheduleEntry[];
+  projectId: string;
+}) {
   const overdue = schedules.filter((s) => s.isOverdue);
   const onSchedule = schedules.filter((s) => !s.isOverdue);
 
@@ -206,7 +288,7 @@ export function ScheduleList({ schedules }: { schedules: ScheduleEntry[] }) {
           </h2>
           <div className="space-y-2">
             {overdue.map((s) => (
-              <ScheduleRow key={s.id} entry={s} />
+              <ScheduleRow key={s.id} entry={s} projectId={projectId} />
             ))}
           </div>
         </section>
@@ -221,7 +303,7 @@ export function ScheduleList({ schedules }: { schedules: ScheduleEntry[] }) {
           )}
           <div className="space-y-2">
             {onSchedule.map((s) => (
-              <ScheduleRow key={s.id} entry={s} />
+              <ScheduleRow key={s.id} entry={s} projectId={projectId} />
             ))}
           </div>
         </section>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ProjectNav } from "@/components/project-nav";
 
@@ -12,12 +13,11 @@ interface ProjectInfo {
 
 export default function ProjectLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params);
+  const params = useParams<{ id: string }>();
+  const id = params.id;
   const [project, setProject] = useState<ProjectInfo | null>(null);
 
   const fetchProject = useCallback(async () => {

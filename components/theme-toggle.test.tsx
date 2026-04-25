@@ -1,13 +1,12 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 
-// Mock next-themes
-vi.mock("next-themes", () => ({
-  useTheme: vi.fn(() => ({ theme: "system", setTheme: vi.fn() })),
+vi.mock("@/lib/theme-context", () => ({
+  useTheme: vi.fn(() => ({ theme: "system", setTheme: vi.fn(), resolvedTheme: "dark", systemTheme: "dark" })),
 }));
 
 import { ThemeToggle } from "./theme-toggle";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/lib/theme-context";
 
 afterEach(() => {
   cleanup();
@@ -27,7 +26,7 @@ describe("ThemeToggle", () => {
 
   it("cycles from system to light on click", () => {
     const setTheme = vi.fn();
-    vi.mocked(useTheme).mockReturnValue({ theme: "system", setTheme, themes: [] } as ReturnType<typeof useTheme>);
+    vi.mocked(useTheme).mockReturnValue({ theme: "system", setTheme, resolvedTheme: "dark", systemTheme: "dark" });
     render(<ThemeToggle />);
     fireEvent.click(screen.getByRole("button"));
     expect(setTheme).toHaveBeenCalledWith("light");
@@ -35,7 +34,7 @@ describe("ThemeToggle", () => {
 
   it("cycles from light to dark on click", () => {
     const setTheme = vi.fn();
-    vi.mocked(useTheme).mockReturnValue({ theme: "light", setTheme, themes: [] } as ReturnType<typeof useTheme>);
+    vi.mocked(useTheme).mockReturnValue({ theme: "light", setTheme, resolvedTheme: "light", systemTheme: "dark" });
     render(<ThemeToggle />);
     fireEvent.click(screen.getByRole("button"));
     expect(setTheme).toHaveBeenCalledWith("dark");
@@ -43,7 +42,7 @@ describe("ThemeToggle", () => {
 
   it("cycles from dark to system on click", () => {
     const setTheme = vi.fn();
-    vi.mocked(useTheme).mockReturnValue({ theme: "dark", setTheme, themes: [] } as ReturnType<typeof useTheme>);
+    vi.mocked(useTheme).mockReturnValue({ theme: "dark", setTheme, resolvedTheme: "dark", systemTheme: "dark" });
     render(<ThemeToggle />);
     fireEvent.click(screen.getByRole("button"));
     expect(setTheme).toHaveBeenCalledWith("system");

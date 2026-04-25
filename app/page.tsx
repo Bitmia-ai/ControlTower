@@ -1,5 +1,8 @@
 "use client";
 
+// Opt out of static prerendering — all data is fetched client-side anyway.
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState, useCallback } from "react";
 import type { ProjectWithStatus } from "@/lib/redeye-types";
 import { ProjectCard } from "@/components/project-card";

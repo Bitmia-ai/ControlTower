@@ -18,12 +18,18 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
+const noop = () => {};
+const fallbackCtx: ToastContextValue = {
+  toasts: [],
+  showToast: noop,
+  dismissToast: noop,
+};
+
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error("useToast must be used inside <ToastProvider>");
-  }
-  return ctx;
+  // Return a no-op fallback when there is no provider (e.g. during /_global-error
+  // prerender, which runs without the root layout's ToastProvider).
+  return ctx ?? fallbackCtx;
 }
 
 function nextId(): string {

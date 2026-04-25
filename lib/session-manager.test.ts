@@ -22,6 +22,7 @@ const {
   mockUnlinkSync,
   mockProcessKill,
   mockResolveTranscriptFile,
+  mockExecFileSync,
 } = vi.hoisted(() => ({
   mockStatSync: vi.fn(),
   mockWriteFileSync: vi.fn(),
@@ -29,6 +30,7 @@ const {
   mockUnlinkSync: vi.fn(),
   mockProcessKill: vi.fn(),
   mockResolveTranscriptFile: vi.fn(),
+  mockExecFileSync: vi.fn(),
 }));
 
 vi.mock(import("fs"), async (importOriginal) => {
@@ -45,6 +47,16 @@ vi.mock(import("fs"), async (importOriginal) => {
 vi.mock(import("./transcript-file-resolver"), () => ({
   resolveTranscriptFile: mockResolveTranscriptFile,
 }));
+
+// Mock child_process so pidCwd() returns the test project path for LIVE_PID,
+// preventing the CWD-verification step from discarding the discovered PID.
+vi.mock(import("child_process"), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    execFileSync: mockExecFileSync,
+  };
+});
 
 // We need to mock process.kill for isProcessRunning; use vi.spyOn after import.
 // Also mock spawnClaudeSession so we don't actually spawn.
@@ -91,6 +103,15 @@ beforeEach(() => {
     throw err;
   });
   mockResolveTranscriptFile.mockReturnValue(null);
+  // Default: lsof returns the project path for LIVE_PID so pidCwd() passes.
+  // The "n" prefix tells pidCwd() this is the cwd line (lsof -Fn output format).
+  mockExecFileSync.mockImplementation((cmd: string, args: string[]) => {
+    if (cmd === "lsof" && args.includes(String(LIVE_PID))) {
+      return `p${LIVE_PID}\ncwd\nn${PROJECT_PATH}\n`;
+    }
+    // ps calls (findOrphanCtoPid) — return empty so no orphan is found
+    return "";
+  });
 });
 
 // ---------------------------------------------------------------------------

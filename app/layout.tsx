@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { ToastProvider } from "@/components/toast-provider";
+import { ClientProviders } from "@/components/client-providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,6 +18,11 @@ export const metadata: Metadata = {
   description: "RedEye autonomous dev agent dashboard",
 };
 
+// Force-dynamic: prevents Next.js from statically prerendering any layout-wrapped
+// page in the build workers, where CJS React resolves to null and causes
+// React.use/useContext errors in the App Router context setup.
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,26 +35,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ToastProvider>
-            <header className="border-b border-gray-200 dark:border-zinc-800 px-4 sm:px-6 py-4 flex items-center justify-between">
-              <Link
-                href="/"
-                aria-label="Control Tower — go to home"
-                className="flex flex-col items-start leading-none select-none"
-              >
-                <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
-                  Control
-                </span>
-                <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
-                  Tower
-                </span>
-              </Link>
-              <ThemeToggle />
-            </header>
-            {children}
-          </ToastProvider>
-        </ThemeProvider>
+        {/* ClientProviders is a "use client" component that wraps ThemeProvider,
+            ToastProvider, the site header (with ThemeToggle), and page content.
+            It uses next/dynamic with ssr:false for next-themes to prevent
+            null.useContext build failures on /_global-error and /_not-found. */}
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
