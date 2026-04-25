@@ -162,71 +162,51 @@ export default function ProjectPage({
           />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 lg:items-start">
           {/*
-            BL-074: WorkingOn + Controls share the first row. We use a nested
-            grid (without `items-start`) so both cards stretch to the row's
-            height. The outer grid keeps `items-start` so later rows
-            (Shipped/UpNext, Cost/Health) preserve their top-aligned look.
+            BL-067: Asymmetric two-column command layout.
+            Left column = mission feed (WorkingOn hero, Questions, Shipped+UpNext).
+            Right rail = control panel (Controls, Cost, Health) — fixed 300px.
           */}
-          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="md:col-span-2 md:min-h-[120px]">
-              <WorkingOnCard
-                state={detail?.state ?? null}
-                running={running}
-                projectId={projectId}
-                upNextCount={detail?.upNext?.length ?? 0}
-                openQuestionCount={pendingQuestions.length}
-              />
-            </div>
+          <div className="flex flex-col gap-4 min-w-0">
+            <WorkingOnCard
+              state={detail?.state ?? null}
+              running={running}
+              projectId={projectId}
+              upNextCount={detail?.upNext?.length ?? 0}
+              openQuestionCount={pendingQuestions.length}
+            />
 
-            <div className="md:col-span-1 md:min-h-[120px]">
-              <ControlsCard
-                running={running}
-                stalled={stalled}
-                onStart={() => handleAction("start")}
-                onStop={() => handleAction("stop")}
-                onPause={() => handleAction("pause")}
-                onSteer={() => setSteerOpen(true)}
-                onAddBacklog={() => setBacklogOpen(true)}
-                onRestart={handleRestart}
-                onForceStop={handleForceStop}
-              />
-            </div>
-          </div>
-
-          <div className="md:col-span-3">
             <QuestionsCard
               questions={detail?.pendingQuestions ?? []}
               onAnswer={() => setAnswerOpen(true)}
             />
+
+            <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4">
+              <ShippedCard
+                items={detail?.recentlyShipped ?? []}
+                changelog={detail?.recentChangelog ?? []}
+                projectId={projectId}
+              />
+              <UpNextCard items={detail?.upNext ?? []} projectId={projectId} />
+            </div>
           </div>
 
-          <p className="md:col-span-3 hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mt-2">
-            Backlog
-          </p>
-
-          <div className="md:col-span-2">
-            <ShippedCard
-              items={detail?.recentlyShipped ?? []}
-              changelog={detail?.recentChangelog ?? []}
-              projectId={projectId}
+          <div className="flex flex-col gap-4">
+            <ControlsCard
+              running={running}
+              stalled={stalled}
+              onStart={() => handleAction("start")}
+              onStop={() => handleAction("stop")}
+              onPause={() => handleAction("pause")}
+              onSteer={() => setSteerOpen(true)}
+              onAddBacklog={() => setBacklogOpen(true)}
+              onRestart={handleRestart}
+              onForceStop={handleForceStop}
             />
-          </div>
 
-          <div className="md:col-span-1">
-            <UpNextCard items={detail?.upNext ?? []} projectId={projectId} />
-          </div>
-
-          <p className="md:col-span-3 hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mt-2">
-            Telemetry
-          </p>
-
-          <div className="md:col-span-2">
             <CostCard projectId={projectId} running={running} />
-          </div>
 
-          <div className="md:col-span-1">
             <HealthCard
               state={detail?.state ?? null}
               recentlyShippedCount={detail?.recentlyShipped?.length ?? 0}
