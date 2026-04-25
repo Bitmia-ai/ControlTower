@@ -1,62 +1,47 @@
-# VERIFY Status — BL-053 (Iteration 83)
+# MERGE Status — BL-053 (Iteration 83)
 
-**Phase:** VERIFY complete — HEALTHY
-**Date:** 2026-04-25T02:52:00Z
+**Phase:** MERGE complete
+**Date:** 2026-04-25T02:54Z
 **Branch:** feat/bl-053-session-history-phase-timeline
-**Recommendation:** MERGE
 
 ---
 
-## Health Assessment
+## Merge Result
 
-**HEALTHY** — all gates passed, no Critical bugs, env stable.
+CLEAN. Feature branch fast-forwarded to main (11 commits).
 
----
+**Commits merged:**
+- c33b659 redeye: plan BL-053
+- 47b56d1 feat: add SessionHistoryEntry, extractSessionPhases, getSessionHistory (T1)
+- c7f62a4 feat: add GET /api/projects/[id]/session-history endpoint (T2)
+- eee4ac8 feat: add PhaseChip presentational component (T3)
+- 0fb3061 feat: add SessionHistoryRow component with phase chip strip and cost badge (T4)
+- 20c5cd1 feat: refactor history page with sessions section above iteration log (T5)
+- 23e0267 feat: add Playwright E2E for session history page (T6)
+- 1c0c3a1 feat: complete quality gate — 585/585 unit tests pass (T7)
+- 1894475 fix: address minor REVIEW findings for BL-053
+- b76f635 fix: pre-existing infinite render loop in history page sessions section
+- d6103d4 redeye: verify iteration 83 — healthy
 
-## Verify Command
-
-No verify command configured (`echo 'No verify command configured'` — pass by convention).
-
----
-
-## Visual Check — PASS
-
-Screenshots taken via Playwright MCP:
-
-**Home page** (`verify-iter83-home.png`): 3 project cards render correctly. ControlTower shows BL-053 active ("Deploying" badge, green dot, Stop button). No layout regressions.
-
-**ControlTower /history** (`verify-iter83-history-controltower.png`): 18 sessions render stably with cost badges ($0.22–$5.82, red accent pill). Sessions section above Iteration Log. Iteration Log entries visible and correctly formatted.
-
-**Haze /history** (`verify-iter83-history-haze.png`): 10 sessions, 5 with phase chips (VER green, PLN blue, TRI gray), cost badges ($0.17–$71.35). Sessions above Iteration Log. "No changelog entries yet" empty state renders correctly.
-
-No console errors observed.
-
----
-
-## Unit Tests
-
-585/585 PASS (reported by DEPLOY — not re-run at VERIFY; verify command is echo-only).
+**Key files changed:**
+- `lib/cost-history.ts` — SessionHistoryEntry, extractSessionPhases, getSessionHistory
+- `app/api/projects/[id]/session-history/route.ts` — new endpoint
+- `components/history/phase-chip.tsx` — new
+- `components/history/session-history-row.tsx` — new
+- `app/project/[id]/history/page.tsx` — sessions section above Iteration Log
+- `tests/e2e/session-history.spec.ts` — new Playwright E2E
+- 4 test files
 
 ---
 
-## E2E Regression
+## State Updates
 
-Full suite green (reported by DEPLOY): 18-session ControlTower history and phase chips on haze project both confirmed.
-
----
-
-## Tester Reports
-
-No Critical bugs in `.redeye/tester-reports.md`. No user tester feedback this iteration.
-
----
-
-## Tag
-
-`last-good-deploy-iter83` — tagged at VERIFY completion.
+- BL-053 claim removed from `.active-claims.json`
+- BL-053 marked **done** in `.redeye/backlog.md` with Summary
+- `state.json` phase set to MERGE/complete, merge_status clean
 
 ---
 
 ## Next Phase
 
-MERGE — merge feat/bl-053-session-history-phase-timeline to main, mark BL-053 done, proceed to TRIAGE.
+TRIAGE
