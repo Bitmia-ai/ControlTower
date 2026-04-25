@@ -1,42 +1,30 @@
-# TRIAGE Phase (Iteration 97)
+# DEPLOY status — BL-066 (iteration 97)
 
-## Summary
+## Deploy Result
 
-Environment healthy. 676/676 tests pass. Build clean. 4 pending backlog items identified. Selected BL-066 (P1) for planning per CEO directive to use designer subagent and frontend skill.
+- Command: `NODE_ENV=production npm run build`
+- Result: SUCCESS (exit 0)
+- TypeScript: clean (no errors, finished in 2.4s)
+- Turbopack compiled in 1928ms
 
-## Environment Health
+## Key Routes Verified
 
-- **Tests:** 676/676 passing (vitest run clean)
-- **Git:** main branch clean (only .redeye/status.md modified)
-- **Env status:** healthy
-- **Tester reports:** none new
-- **Inbox:** no new answered questions
-- **Schedules:** no overdue tasks
-- **Steering:** no STOP/PAUSE directives
+- `/` — home page present
+- `/project/[id]` — project page present
+- All API routes present (start, stop, restart, pause, steer, answer, init, backlog, cost, sessions, stream, etc.)
 
-## Pending Backlog Items
+## Tests
 
-| Item | Priority | Title |
-|------|----------|-------|
-| BL-066 | P1 | Redesign home page project cards and improve dashboard visual hierarchy |
-| BL-067 | P1 | Redesign mission control page layout and cards using designer + frontend |
-| BL-065 | P2 | Add Won't Do section at the end of the backlog page |
-| BL-068 | P2 | Polish Live tab visual design and transcript viewer |
+- Command: `npx vitest run`
+- Result: 691/691 passed (68 test files)
+- Duration: 3.40s
 
-## Decision
+## Warnings (non-blocking, pre-existing)
 
-Selected **BL-066** (P1) — home page redesign using designer subagent + frontend skill.
-Rationale: P1 priority, explicit CEO directive to use designer subagent and frontend skill, home page is the first impression for all users.
+- Workspace root lockfile detection warning
+- Middleware deprecation warning
+- NFT list trace warning for next.config.ts/claude-runner.ts
 
-## State Updates
+## Recommendation
 
-- Phase: triage → plan
-- Iteration: 96 → 97
-- backlog_item: null → BL-066
-- backlog_title: null → "Redesign home page project cards and improve dashboard visual hierarchy"
-- BL-066 status: pending → in-progress
-- Added iteration_log entry for TRIAGE iter 97
-
-## Next
-
-PLAN phase for BL-066 — home page redesign using designer subagent and frontend skill.
+VERIFY — build clean, all 691 tests pass.
