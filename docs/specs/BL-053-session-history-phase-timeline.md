@@ -156,7 +156,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Response shape matches `SessionHistoryEntry[]` contract
   - try-catch with `{ error }` on failure
   - All unit tests pass
-- **Status:** in-progress
+- **Status:** done
 
 ### T3 — `components/history/phase-chip.tsx`: small phase pill component
 - **Size:** S
@@ -174,7 +174,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - `title` tooltip contains full phase name
   - Dark mode classes included (inherits from `PHASE_COLORS`)
   - Unit tests pass
-- **Status:** pending
+- **Status:** in-progress
 
 ### T4 — `components/history/session-history-row.tsx`: session row component
 - **Size:** M
