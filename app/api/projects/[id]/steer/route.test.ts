@@ -13,6 +13,12 @@ vi.mock("@/lib/redeye-files", () => ({
     `${projectPath}/.redeye/${filename}`,
 }));
 
+// Use the real parser helpers — they're pure string transforms with no I/O.
+vi.mock("@/lib/redeye-parsers", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/redeye-parsers")>();
+  return actual;
+});
+
 const mockReadFile = vi.fn();
 const mockWriteFile = vi.fn();
 vi.mock("fs/promises", () => ({
@@ -27,7 +33,7 @@ vi.mock("@/lib/git-commit-push", () => ({
   commitAndPush: vi.fn(async () => ({ committed: true, pushed: true })),
 }));
 
-import { GET, POST } from "./route";
+import { GET, POST, PATCH, DELETE } from "./route";
 import { getProjectByIndex } from "@/lib/projects";
 import { readSteering } from "@/lib/redeye-files";
 
@@ -158,5 +164,185 @@ describe("POST /api/projects/[id]/steer", () => {
     const json = await res.json();
     expect(json.error).toBeDefined();
     expect(typeof json.error).toBe("string");
+  });
+});
+
+function makeMutateRequest(
+  method: "PATCH" | "DELETE",
+  id: string,
+  body: unknown
+): [NextRequest, { params: Promise<{ id: string }> }] {
+  const req = new NextRequest(`http://localhost:3200/api/projects/${id}/steer`, {
+    method,
+    body: JSON.stringify(body),
+    headers: { "content-type": "application/json" },
+  });
+  const params = Promise.resolve({ id });
+  return [req, { params }];
+}
+
+const STEERING_FIXTURE =
+  `# Steering\n\n## Directives\n\n- first directive\n- second directive\n- third directive\n`;
+
+describe("PATCH /api/projects/[id]/steer", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockReadFile.mockResolvedValue(STEERING_FIXTURE);
+    mockWriteFile.mockResolvedValue(undefined);
+  });
+
+  it("returns 404 when project not found", async () => {
+    mockGetProject.mockResolvedValue(null);
+    const [req, ctx] = makeMutateRequest("PATCH", "99", { index: 0, text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 400 when index missing", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when index is negative", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { index: -1, text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when index is not an integer", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { index: 1.5, text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when text missing", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { index: 0 });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when text empty after sanitization", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    // Only control chars / whitespace → sanitized to empty.
+    const [req, ctx] = makeMutateRequest("PATCH", "0", {
+      index: 0,
+      text: "\x00\x00",
+    });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 404 when index out of range", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { index: 99, text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(404);
+    const json = await res.json();
+    expect(json.error).toMatch(/out of range/i);
+  });
+
+  it("returns 404 when steering.md is missing", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const enoent = Object.assign(new Error("ENOENT"), { code: "ENOENT" });
+    mockReadFile.mockRejectedValue(enoent);
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { index: 0, text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 200 and writes the edited file on happy path", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("PATCH", "0", {
+      index: 1,
+      text: "second EDITED",
+    });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.data.success).toBe(true);
+    // writeFile was called with the file path + the patched content.
+    expect(mockWriteFile).toHaveBeenCalledTimes(1);
+    const written = mockWriteFile.mock.calls[0][1] as string;
+    expect(written).toContain("- first directive");
+    expect(written).toContain("- second EDITED");
+    expect(written).not.toContain("- second directive\n");
+    expect(written).toContain("- third directive");
+  });
+
+  it("returns 500 when writeFile throws", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    mockWriteFile.mockRejectedValue(new Error("disk full"));
+    const [req, ctx] = makeMutateRequest("PATCH", "0", { index: 0, text: "x" });
+    const res = await PATCH(req, ctx);
+    expect(res.status).toBe(500);
+  });
+});
+
+describe("DELETE /api/projects/[id]/steer", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockReadFile.mockResolvedValue(STEERING_FIXTURE);
+    mockWriteFile.mockResolvedValue(undefined);
+  });
+
+  it("returns 404 when project not found", async () => {
+    mockGetProject.mockResolvedValue(null);
+    const [req, ctx] = makeMutateRequest("DELETE", "99", { index: 0 });
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 400 when index missing", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("DELETE", "0", {});
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when index is a string", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("DELETE", "0", { index: "1" });
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 404 when index out of range", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("DELETE", "0", { index: 99 });
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 404 when steering.md is missing", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const enoent = Object.assign(new Error("ENOENT"), { code: "ENOENT" });
+    mockReadFile.mockRejectedValue(enoent);
+    const [req, ctx] = makeMutateRequest("DELETE", "0", { index: 0 });
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(404);
+  });
+
+  it("returns 200 and writes the file with the directive removed", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    const [req, ctx] = makeMutateRequest("DELETE", "0", { index: 1 });
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(200);
+    const written = mockWriteFile.mock.calls[0][1] as string;
+    expect(written).toContain("- first directive");
+    expect(written).not.toContain("- second directive");
+    expect(written).toContain("- third directive");
+  });
+
+  it("returns 500 when writeFile throws", async () => {
+    mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
+    mockWriteFile.mockRejectedValue(new Error("disk full"));
+    const [req, ctx] = makeMutateRequest("DELETE", "0", { index: 0 });
+    const res = await DELETE(req, ctx);
+    expect(res.status).toBe(500);
   });
 });

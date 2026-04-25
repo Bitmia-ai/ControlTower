@@ -1,6 +1,6 @@
 # BL-072 — Edit and Delete Steer Directives
 
-**Status:** in-progress
+**Status:** done
 **Priority:** P1
 **Owner:** CTO
 
@@ -102,10 +102,10 @@ UI (`page.test.tsx`):
 
 ## Sub-tasks
 
-- [in-progress] T1 — Add `applyDirectiveEdit` / `applyDirectiveDelete` lib helpers + unit tests
-- [pending] T2 — Add PATCH + DELETE handlers in steer route + tests
-- [pending] T3 — Refactor DirectiveRow with edit/delete UI + tests
-- [pending] T4 — Build verification (vitest + next build)
+- [done] T1 — Add `applyDirectiveEdit` / `applyDirectiveDelete` lib helpers + unit tests
+- [done] T2 — Add PATCH + DELETE handlers in steer route + tests
+- [done] T3 — Refactor DirectiveRow with edit/delete UI + tests
+- [done] T4 — Build verification (vitest + next build) — 731/731 tests pass, build clean.
 
 ## Out of Scope
 

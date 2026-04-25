@@ -356,3 +356,91 @@ export function parseSteering(content: string): SteeringDirective[] {
 
   return directives;
 }
+
+/**
+ * Locate the absolute line indices (within the full file split by `\n`) of
+ * directives in the `## Directives` section, in the same order and with the
+ * same skip rules as `parseSteering`. Used by the edit/delete helpers below
+ * so the API can address directives by their parsed-array index without the
+ * caller having to know the file's line layout.
+ */
+function findDirectiveLineIndices(content: string): number[] {
+  const headerIdx = content.indexOf("## Directives");
+  if (headerIdx === -1) return [];
+
+  // Compute the byte range of the section (header through next `## ` or EOF),
+  // then map back to absolute line indices in the original file.
+  const afterHeader = content.substring(headerIdx + "## Directives".length);
+  const nextSection = afterHeader.match(/\n## (?!#)/);
+  const sectionEndAbs =
+    headerIdx +
+    "## Directives".length +
+    (nextSection ? nextSection.index! : afterHeader.length);
+
+  const lines = content.split("\n");
+  const indices: number[] = [];
+  let cursor = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const lineStart = cursor;
+    const lineEnd = cursor + lines[i].length; // not including trailing \n
+    cursor = lineEnd + 1; // advance past \n
+
+    // Only consider lines that fall inside the directives section (after the
+    // header, before the next ## section).
+    if (lineStart < headerIdx) continue;
+    if (lineStart >= sectionEndAbs) break;
+
+    const trimmed = lines[i].trim();
+    if (!trimmed.startsWith("- ")) continue;
+    const text = trimmed.substring(2).trim();
+    if (!text || text.startsWith("_(")) continue;
+
+    indices.push(i);
+  }
+  return indices;
+}
+
+/**
+ * Replace the Nth parsed directive (matching `parseSteering` indexing) with
+ * `- {newText}`, preserving leading indentation of the original bullet and
+ * the rest of the file byte-for-byte.
+ *
+ * `newText` MUST already be sanitized (single-line, no control chars) — the
+ * caller (API route) runs `sanitizeMarkdownInput` before calling this.
+ *
+ * Throws RangeError when `index` is out of range.
+ */
+export function applyDirectiveEdit(
+  content: string,
+  index: number,
+  newText: string
+): string {
+  const indices = findDirectiveLineIndices(content);
+  if (index < 0 || index >= indices.length) {
+    throw new RangeError("directive index out of range");
+  }
+  const lineIdx = indices[index];
+  const lines = content.split("\n");
+  const original = lines[lineIdx];
+  const indentMatch = original.match(/^(\s*)-\s/);
+  const indent = indentMatch ? indentMatch[1] : "";
+  lines[lineIdx] = `${indent}- ${newText}`;
+  return lines.join("\n");
+}
+
+/**
+ * Remove the Nth parsed directive line entirely (and its trailing newline),
+ * leaving every other line of the file untouched.
+ *
+ * Throws RangeError when `index` is out of range.
+ */
+export function applyDirectiveDelete(content: string, index: number): string {
+  const indices = findDirectiveLineIndices(content);
+  if (index < 0 || index >= indices.length) {
+    throw new RangeError("directive index out of range");
+  }
+  const lineIdx = indices[index];
+  const lines = content.split("\n");
+  lines.splice(lineIdx, 1);
+  return lines.join("\n");
+}

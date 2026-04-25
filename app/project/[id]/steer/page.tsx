@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, use } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Pencil, Trash2 } from "lucide-react";
 import type { SteeringDirective } from "@/lib/redeye-types";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
@@ -20,7 +21,24 @@ function DirectivesSkeleton() {
   );
 }
 
-function DirectiveRow({ directive }: { directive: SteeringDirective }) {
+type RowMode = "view" | "editing" | "confirm-delete";
+
+function DirectiveRow({
+  directive,
+  index,
+  projectId,
+  onChanged,
+}: {
+  directive: SteeringDirective;
+  index: number;
+  projectId: string;
+  onChanged: () => void | Promise<void>;
+}) {
+  const [mode, setMode] = useState<RowMode>("view");
+  const [editText, setEditText] = useState(directive.text);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   // Extract trailing date in parens if present, e.g. "Focus on UX (2026-04-25)"
   // [\s\S] (instead of `.` with the `s` flag) so multi-line markdown directives
   // still get the trailing date stripped.
@@ -29,15 +47,184 @@ function DirectiveRow({ directive }: { directive: SteeringDirective }) {
   const text = rawText.replace(/^\n+/, "");
   const date = match ? match[2] : directive.timestamp;
 
-  return (
-    <div className="flex items-start justify-between gap-4 px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg">
-      <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none break-words flex-1 text-gray-900 dark:text-zinc-100 prose-p:my-1 prose-headings:my-2 prose-pre:my-2 prose-ul:my-1 prose-ol:my-1 prose-a:text-red-600 dark:prose-a:text-red-400">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+  const startEdit = () => {
+    setEditText(directive.text);
+    setError(null);
+    setMode("editing");
+  };
+
+  const cancel = () => {
+    setError(null);
+    setMode("view");
+  };
+
+  const handleSave = async () => {
+    const trimmed = editText.trim();
+    if (!trimmed || busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/projects/${projectId}/steer`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ index, text: trimmed }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(json.error ?? "Failed to save directive");
+      } else {
+        setMode("view");
+        await onChanged();
+      }
+    } catch {
+      setError("Network error — failed to save directive");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/projects/${projectId}/steer`, {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ index }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(json.error ?? "Failed to delete directive");
+      } else {
+        await onChanged();
+        // Row will be removed by the parent on refetch; no need to reset mode.
+      }
+    } catch {
+      setError("Network error — failed to delete directive");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (mode === "editing") {
+    return (
+      <div
+        data-testid={`directive-row-${index}`}
+        className="px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg"
+      >
+        <label className="sr-only" htmlFor={`directive-edit-${index}`}>
+          Edit directive
+        </label>
+        <textarea
+          id={`directive-edit-${index}`}
+          value={editText}
+          onChange={(e) => setEditText(e.target.value)}
+          disabled={busy}
+          rows={3}
+          className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-md text-gray-900 dark:text-zinc-100 placeholder:text-gray-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-red-600 disabled:opacity-50 resize-y font-mono"
+        />
+        <div className="mt-2 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={busy || editText.trim().length === 0}
+            className="px-3 py-1.5 text-xs font-medium bg-red-600 hover:bg-red-500 text-white rounded transition disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+          >
+            {busy ? "Saving…" : "Save"}
+          </button>
+          <button
+            type="button"
+            onClick={cancel}
+            disabled={busy}
+            className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded transition disabled:opacity-50 min-h-[44px]"
+          >
+            Cancel
+          </button>
+          {error && (
+            <span role="alert" className="text-xs text-red-700 dark:text-red-400">
+              {error}
+            </span>
+          )}
+        </div>
       </div>
-      {date && (
-        <span className="text-xs text-gray-500 dark:text-zinc-500 font-mono shrink-0 mt-0.5">
-          {date}
-        </span>
+    );
+  }
+
+  return (
+    <div
+      data-testid={`directive-row-${index}`}
+      className="group px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none break-words flex-1 text-gray-900 dark:text-zinc-100 prose-p:my-1 prose-headings:my-2 prose-pre:my-2 prose-ul:my-1 prose-ol:my-1 prose-a:text-red-600 dark:prose-a:text-red-400">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {date && (
+            <span className="text-xs text-gray-500 dark:text-zinc-500 font-mono mt-0.5">
+              {date}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={startEdit}
+            aria-label={`Edit directive ${index + 1}`}
+            title="Edit directive"
+            className="opacity-0 group-hover:opacity-100 focus:opacity-100 text-gray-400 dark:text-zinc-600 hover:text-gray-700 dark:hover:text-zinc-300 transition p-1 -m-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          >
+            <Pencil size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setError(null);
+              setMode("confirm-delete");
+            }}
+            aria-label={`Delete directive ${index + 1}`}
+            title="Delete directive"
+            className="opacity-0 group-hover:opacity-100 focus:opacity-100 text-gray-400 dark:text-zinc-600 hover:text-red-500 dark:hover:text-red-400 transition p-1 -m-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      </div>
+
+      {mode === "confirm-delete" && (
+        <div
+          data-testid={`directive-delete-confirm-${index}`}
+          className="mt-3 rounded-md border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/20 p-3"
+        >
+          <p className="text-sm font-medium text-red-800 dark:text-red-200">
+            Delete this directive?
+          </p>
+          <p className="text-xs text-red-700/80 dark:text-red-300/80 mt-0.5">
+            This removes it from <code className="font-mono">.redeye/steering.md</code>.
+          </p>
+          <div className="flex gap-2 mt-2.5 items-center">
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={busy}
+              className="text-xs font-medium px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded transition disabled:opacity-50 min-h-[44px]"
+            >
+              {busy ? "Deleting…" : "Delete"}
+            </button>
+            <button
+              type="button"
+              onClick={cancel}
+              disabled={busy}
+              className="text-xs font-medium px-3 py-1.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded transition disabled:opacity-50 min-h-[44px]"
+            >
+              Cancel
+            </button>
+            {error && (
+              <span role="alert" className="text-xs text-red-700 dark:text-red-400">
+                {error}
+              </span>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -202,7 +389,13 @@ export function SteerContent({ id }: { id: string }) {
         ) : (
           <div className="space-y-2">
             {directives.map((d, i) => (
-              <DirectiveRow key={`${i}-${d.text}`} directive={d} />
+              <DirectiveRow
+                key={`${i}-${d.text}`}
+                directive={d}
+                index={i}
+                projectId={id}
+                onChanged={fetchDirectives}
+              />
             ))}
           </div>
         )}

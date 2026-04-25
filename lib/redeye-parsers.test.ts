@@ -6,6 +6,8 @@ import {
   parseSteering,
   parseSchedules,
   parseDurationMs,
+  applyDirectiveEdit,
+  applyDirectiveDelete,
 } from "./redeye-parsers";
 
 // ---------------------------------------------------------------------------
@@ -427,6 +429,113 @@ describe("parseSteering", () => {
     const directives = parseSteering(content);
     expect(directives).toHaveLength(1);
     expect(directives[0].text).toBe("Valid directive");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// applyDirectiveEdit / applyDirectiveDelete
+// ---------------------------------------------------------------------------
+
+describe("applyDirectiveEdit", () => {
+  it("replaces the Nth directive while preserving surrounding lines", () => {
+    const content = `# Steering\n\n## Directives\n\n- first\n- second\n- third\n`;
+    const out = applyDirectiveEdit(content, 1, "second-edited");
+    expect(out).toBe(`# Steering\n\n## Directives\n\n- first\n- second-edited\n- third\n`);
+  });
+
+  it("preserves ### subsection headers and blank lines", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a1\n- a2\n\n### Group B\n\n- b1\n`;
+    const out = applyDirectiveEdit(content, 1, "a2-edited");
+    // Only the second bullet should change; subsection headers/blanks intact.
+    expect(out).toBe(
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a1\n- a2-edited\n\n### Group B\n\n- b1\n`
+    );
+  });
+
+  it("skips placeholder _( ) lines when counting", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- _(none yet)_\n- first\n- second\n`;
+    // index 0 should map to "first", not the placeholder.
+    const out = applyDirectiveEdit(content, 0, "first-edited");
+    expect(out).toContain("- first-edited");
+    expect(out).toContain("- _(none yet)_");
+    expect(out).toContain("- second");
+  });
+
+  it("does not touch bullets in later sections", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- only directive\n\n## Other\n\n- not a directive\n`;
+    const out = applyDirectiveEdit(content, 0, "edited");
+    expect(out).toContain("- edited");
+    expect(out).toContain("- not a directive");
+  });
+
+  it("preserves leading indentation of nested bullets", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n  - indented directive\n`;
+    const out = applyDirectiveEdit(content, 0, "edited");
+    expect(out).toBe(`# Steering\n\n## Directives\n\n  - edited\n`);
+  });
+
+  it("throws RangeError when index is out of range", () => {
+    const content = `# Steering\n\n## Directives\n\n- only\n`;
+    expect(() => applyDirectiveEdit(content, 5, "x")).toThrow(RangeError);
+    expect(() => applyDirectiveEdit(content, -1, "x")).toThrow(RangeError);
+  });
+
+  it("throws RangeError when there is no directives section", () => {
+    expect(() => applyDirectiveEdit("# Steering\n", 0, "x")).toThrow(RangeError);
+  });
+});
+
+describe("applyDirectiveDelete", () => {
+  it("removes the Nth directive line entirely", () => {
+    const content = `# Steering\n\n## Directives\n\n- first\n- second\n- third\n`;
+    const out = applyDirectiveDelete(content, 1);
+    expect(out).toBe(`# Steering\n\n## Directives\n\n- first\n- third\n`);
+  });
+
+  it("removes a directive without disturbing subsection headers", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a1\n- a2\n\n### Group B\n\n- b1\n`;
+    const out = applyDirectiveDelete(content, 0);
+    expect(out).toBe(
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a2\n\n### Group B\n\n- b1\n`
+    );
+  });
+
+  it("skips placeholder _( ) lines when counting", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- _(none yet)_\n- first\n- second\n`;
+    const out = applyDirectiveDelete(content, 0);
+    // "first" should be gone, placeholder kept.
+    expect(out).toContain("- _(none yet)_");
+    expect(out).not.toMatch(/^- first$/m);
+    expect(out).toContain("- second");
+  });
+
+  it("does not touch bullets in later sections", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- only directive\n\n## Other\n\n- not a directive\n`;
+    const out = applyDirectiveDelete(content, 0);
+    expect(out).not.toContain("- only directive");
+    expect(out).toContain("- not a directive");
+  });
+
+  it("throws RangeError when index is out of range", () => {
+    const content = `# Steering\n\n## Directives\n\n- only\n`;
+    expect(() => applyDirectiveDelete(content, 5)).toThrow(RangeError);
+    expect(() => applyDirectiveDelete(content, -1)).toThrow(RangeError);
+  });
+
+  it("after parse → delete → parse, the array shrinks by one", () => {
+    const content = `# Steering\n\n## Directives\n\n- a\n- b\n- c\n`;
+    const before = parseSteering(content);
+    const out = applyDirectiveDelete(content, 1);
+    const after = parseSteering(out);
+    expect(before.map((d) => d.text)).toEqual(["a", "b", "c"]);
+    expect(after.map((d) => d.text)).toEqual(["a", "c"]);
   });
 });
 

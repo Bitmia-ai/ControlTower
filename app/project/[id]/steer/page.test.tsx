@@ -253,6 +253,255 @@ describe("SteerContent", () => {
     expect(screen.getByText("2026-04-25")).toBeDefined();
   });
 
+  it("renders edit and delete buttons for each directive row", async () => {
+    const directives = [
+      makeDirective("First directive (2026-04-25)"),
+      makeDirective("Second directive (2026-04-24)"),
+    ];
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { directives } }),
+    } as Response);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Edit directive 1")).toBeDefined();
+      expect(screen.getByLabelText("Delete directive 1")).toBeDefined();
+      expect(screen.getByLabelText("Edit directive 2")).toBeDefined();
+      expect(screen.getByLabelText("Delete directive 2")).toBeDefined();
+    });
+  });
+
+  it("delete flow: clicking trash shows confirm panel; cancel restores view", async () => {
+    const directives = [makeDirective("only one (2026-04-25)")];
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { directives } }),
+    } as Response);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Delete directive 1")).toBeDefined();
+    });
+
+    fireEvent.click(screen.getByLabelText("Delete directive 1"));
+    expect(screen.getByText("Delete this directive?")).toBeDefined();
+    expect(screen.getByRole("button", { name: /^Delete$/ })).toBeDefined();
+
+    fireEvent.click(screen.getByRole("button", { name: /^Cancel$/ }));
+    expect(screen.queryByText("Delete this directive?")).toBeNull();
+  });
+
+  it("delete flow: confirm fires DELETE with correct payload and refetches", async () => {
+    const fetchMock = vi.fn();
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          directives: [
+            makeDirective("first (2026-04-25)"),
+            makeDirective("second (2026-04-25)"),
+          ],
+        },
+      }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ data: { success: true } }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: { directives: [makeDirective("first (2026-04-25)")] },
+      }),
+    });
+    vi.spyOn(global, "fetch").mockImplementation(fetchMock);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Delete directive 2")).toBeDefined();
+    });
+
+    fireEvent.click(screen.getByLabelText("Delete directive 2"));
+    fireEvent.click(screen.getByRole("button", { name: /^Delete$/ }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    });
+    const deleteCall = fetchMock.mock.calls[1];
+    expect(deleteCall[0]).toBe("/api/projects/0/steer");
+    expect((deleteCall[1] as RequestInit).method).toBe("DELETE");
+    const deleteBody = JSON.parse((deleteCall[1] as RequestInit).body as string);
+    expect(deleteBody).toEqual({ index: 1 });
+
+    await waitFor(() => {
+      expect(screen.queryByText("second")).toBeNull();
+      expect(screen.getByText("first")).toBeDefined();
+    });
+  });
+
+  it("delete flow: shows inline error on failed DELETE", async () => {
+    const fetchMock = vi.fn();
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: { directives: [makeDirective("only (2026-04-25)")] },
+      }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ error: "out of range" }),
+    });
+    vi.spyOn(global, "fetch").mockImplementation(fetchMock);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Delete directive 1")).toBeDefined();
+    });
+
+    fireEvent.click(screen.getByLabelText("Delete directive 1"));
+    fireEvent.click(screen.getByRole("button", { name: /^Delete$/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText("out of range")).toBeDefined();
+    });
+    // Confirm panel is still visible
+    expect(screen.getByText("Delete this directive?")).toBeDefined();
+  });
+
+  it("edit flow: pencil opens textarea pre-filled with directive source", async () => {
+    const directives = [makeDirective("Hello **world** (2026-04-25)")];
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { directives } }),
+    } as Response);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Edit directive 1")).toBeDefined();
+    });
+
+    fireEvent.click(screen.getByLabelText("Edit directive 1"));
+    const textarea = screen.getByLabelText("Edit directive") as HTMLTextAreaElement;
+    expect(textarea.value).toBe("Hello **world** (2026-04-25)");
+    expect(screen.getByRole("button", { name: /^Save$/ })).toBeDefined();
+    expect(screen.getByRole("button", { name: /^Cancel$/ })).toBeDefined();
+  });
+
+  it("edit flow: cancel restores view without firing PATCH", async () => {
+    const fetchMock = vi.fn();
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: { directives: [makeDirective("orig (2026-04-25)")] },
+      }),
+    });
+    vi.spyOn(global, "fetch").mockImplementation(fetchMock);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Edit directive 1")).toBeDefined();
+    });
+    fireEvent.click(screen.getByLabelText("Edit directive 1"));
+    fireEvent.click(screen.getByRole("button", { name: /^Cancel$/ }));
+
+    expect(screen.queryByLabelText("Edit directive")).toBeNull();
+    expect(fetchMock).toHaveBeenCalledTimes(1); // only initial GET
+  });
+
+  it("edit flow: save fires PATCH with correct payload and refetches", async () => {
+    const fetchMock = vi.fn();
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: { directives: [makeDirective("orig (2026-04-25)")] },
+      }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ data: { success: true } }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: { directives: [makeDirective("edited (2026-04-25)")] },
+      }),
+    });
+    vi.spyOn(global, "fetch").mockImplementation(fetchMock);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Edit directive 1")).toBeDefined();
+    });
+
+    fireEvent.click(screen.getByLabelText("Edit directive 1"));
+    const textarea = screen.getByLabelText("Edit directive") as HTMLTextAreaElement;
+    fireEvent.change(textarea, { target: { value: "edited (2026-04-25)" } });
+    fireEvent.click(screen.getByRole("button", { name: /^Save$/ }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    });
+    const patchCall = fetchMock.mock.calls[1];
+    expect(patchCall[0]).toBe("/api/projects/0/steer");
+    expect((patchCall[1] as RequestInit).method).toBe("PATCH");
+    const body = JSON.parse((patchCall[1] as RequestInit).body as string);
+    expect(body).toEqual({ index: 0, text: "edited (2026-04-25)" });
+
+    await waitFor(() => {
+      expect(screen.getByText("edited")).toBeDefined();
+    });
+  });
+
+  it("edit flow: shows inline error and keeps editor open on PATCH failure", async () => {
+    const fetchMock = vi.fn();
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: { directives: [makeDirective("orig (2026-04-25)")] },
+      }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ error: "disk full" }),
+    });
+    vi.spyOn(global, "fetch").mockImplementation(fetchMock);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Edit directive 1")).toBeDefined();
+    });
+
+    fireEvent.click(screen.getByLabelText("Edit directive 1"));
+    const textarea = screen.getByLabelText("Edit directive") as HTMLTextAreaElement;
+    fireEvent.change(textarea, { target: { value: "new" } });
+    fireEvent.click(screen.getByRole("button", { name: /^Save$/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText("disk full")).toBeDefined();
+    });
+    // Editor still open
+    expect(screen.getByLabelText("Edit directive")).toBeDefined();
+  });
+
+  it("edit flow: save button disabled when textarea is empty", async () => {
+    const directives = [makeDirective("orig (2026-04-25)")];
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { directives } }),
+    } as Response);
+
+    render(<SteerContent id="0" />);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Edit directive 1")).toBeDefined();
+    });
+    fireEvent.click(screen.getByLabelText("Edit directive 1"));
+    const textarea = screen.getByLabelText("Edit directive") as HTMLTextAreaElement;
+    fireEvent.change(textarea, { target: { value: "   " } });
+    const save = screen.getByRole("button", { name: /^Save$/ }) as HTMLButtonElement;
+    expect(save.disabled).toBe(true);
+  });
+
   it("does not submit when textarea is whitespace-only", async () => {
     const fetchMock = vi.fn();
     fetchMock.mockResolvedValue({
