@@ -2,14 +2,16 @@
   "schema_version": 1,
   "iteration": 80,
   "started_at": "2026-04-25T01:00:00Z",
-  "phase": "VERIFY",
+  "phase": "MERGE",
   "phase_status": "complete",
+  "merge_status": "clean",
   "backlog_item": "BL-050",
   "backlog_title": "Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)",
   "spec_file": "docs/specs/BL-050-phase-change-notifications.md",
   "phase_progress": {
     "plan": "Spec written. 6 sub-tasks (T1 S, T2 M, T3 M, T4 S, T5 S, T6 S). No new CEO questions. Architecture: usePhaseChangeNotifier hook (mirrors useTaskTransitionTracker pattern), usePhaseNotifications hook, ToastProvider/ToastContainer components (no new deps), wired into layout.tsx and mission-control page.tsx. Worktree to be created for feature branch.",
-    "deploy": "Build PASS (no /_global-error error this run — known pre-existing issue documented). 493/493 unit tests pass. Full E2E regression: home, mission-control, backlog, backlog-item-detail, history, live — all pages green. Toast alert region confirmed present in DOM on all pages. Visual screenshot clean."
+    "deploy": "Build PASS (no /_global-error error this run — known pre-existing issue documented). 493/493 unit tests pass. Full E2E regression: home, mission-control, backlog, backlog-item-detail, history, live — all pages green. Toast alert region confirmed present in DOM on all pages. Visual screenshot clean.",
+    "merge": "BL-050 merged cleanly to main. 9 commits, no code conflicts. .redeye/ tracking files retained from pre-merge main. Claims cleared. Backlog item marked done with Summary authored."
   },
   "review_cycles": 2,
   "max_review_cycles": 3,
@@ -28,10 +30,10 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: verify iteration 80 — healthy",
-    "branch": "feature/BL-050-phase-notifications",
+    "last_commit": "redeye: merge BL-050 — Add in-app notification toast when RedEye phase changes",
+    "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter80",
-    "notes": "BL-050 VERIFY PASS. ToastProvider+ToastContainer wired, 30 new unit tests, 4 Playwright E2E tests. 493/493 unit tests pass. Tagged last-good-deploy-iter80."
+    "notes": "BL-050 merged cleanly. 9 commits from feature/BL-050-phase-notifications. Worktree teardown pending by CTO."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -43,11 +45,12 @@
         "BUILD",
         "REVIEW",
         "DEPLOY",
-        "VERIFY"
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "TRIAGE: BL-049 merged cleanly. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks complete, 30 new unit tests, 4 Playwright E2E. REVIEW: 2 cycles — cycle 1 minor fix (VERIFY added to NOTIFIABLE_PHASES), cycle 2 clean. DEPLOY: Build PASS, 493/493 unit tests, 6 E2E green. VERIFY: PASS — visual check clean, ToastContainer alert region confirmed in DOM, no Critical bugs, tagged last-good-deploy-iter80. Env: HEALTHY.",
+      "outcome": "TRIAGE: BL-049 merged cleanly. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks complete, 30 new unit tests, 4 Playwright E2E. REVIEW: 2 cycles — cycle 1 minor fix (VERIFY added to NOTIFIABLE_PHASES), cycle 2 clean. DEPLOY: Build PASS, 493/493 unit tests, 6 E2E green. VERIFY: PASS — visual check clean, ToastContainer alert region confirmed in DOM, no Critical bugs, tagged last-good-deploy-iter80. MERGE: 9 commits merged cleanly to main, claims cleared, BL-050 marked done.",
       "next": "TRIAGE",
-      "timestamp": "2026-04-25T01:06:00Z"
+      "timestamp": "2026-04-25T01:09:00Z"
     },
     {
       "iteration": 79,

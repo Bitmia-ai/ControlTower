@@ -41,7 +41,8 @@
 ### BL-050: Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 80)
 - **Added:** 2026-04-25 (iter 79)
 - **Details:**
   - Users have no awareness of phase changes without watching the dashboard constantly
@@ -49,6 +50,7 @@
   - Use the browser Notification API with permission request on first interaction; fall back to an in-app toast overlay if permission denied
   - Toast should auto-dismiss after 5 seconds; clicking it navigates to the Live tab
   - Add unit tests for the notification hook (mock Notification API)
+- **Summary:** Phase-change toast notifications are now shown in the mission control page whenever RedEye enters BUILD, REVIEW, DEPLOY, VERIFY, or DONE. A ToastProvider and ToastContainer were wired into the root layout, with an auto-dismissing overlay and a browser Notification API fallback. Thirty new unit tests and four Playwright E2E tests verify the feature end-to-end.
 
 ### BL-049: Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
 - **Type:** test
