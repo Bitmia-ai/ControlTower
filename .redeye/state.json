@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "TRIAGE",
-  "phase_status": "in-progress",
+  "phase": "DEPLOY",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-058",
@@ -26,8 +26,8 @@
     ],
     "build_notes": "T1: global-error.tsx fixed (use client + no imports). ClientProviders created (custom ThemeProvider, ToastProvider, header). lib/theme-context.tsx custom ESM ThemeProvider. postinstall script patches Next.js 16.2.4 utils.js to skip _global-error prerender. not-found.tsx force-dynamic. T2-T6: already implemented in prior run. 662/662 tests pass. npm run build passes.",
     "review_fixes_needed": [
-      "Major: Nested button inside button in ScheduleRow (schedule-list.tsx) \u2014 restructure so RunButton is sibling of expand button not child",
-      "Major: next_sched_id counter stale at 1 after SCHED-1 created \u2014 now corrected to 2"
+      "Major: Nested button inside button in ScheduleRow (schedule-list.tsx) — restructure so RunButton is sibling of expand button not child",
+      "Major: next_sched_id counter stale at 1 after SCHED-1 created — now corrected to 2"
     ]
   },
   "review_cycles": 2,
@@ -47,7 +47,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-057 complete \u2014 mobile-responsive layout shipped (iteration 88)",
+    "last_commit": "redeye: merge BL-057 complete — mobile-responsive layout shipped (iteration 88)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter90",
     "merge_status": "clean",
@@ -64,7 +64,7 @@
         "BUILD",
         "REVIEW"
       ],
-      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m \u2014 nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m \u2014 both Majors confirmed fixed. PASS \u2014 cleared for DEPLOY.",
+      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m — nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m — both Majors confirmed fixed. PASS — cleared for DEPLOY.",
       "next": "DEPLOY",
       "timestamp": "2026-04-25T13:00:00Z"
     },
@@ -73,7 +73,7 @@
       "phases": [
         "TRIAGE"
       ],
-      "outcome": "TRIAGE: All BL-001\u2013057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
+      "outcome": "TRIAGE: All BL-001–057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T11:10:00Z"
     },
@@ -89,7 +89,7 @@
         "VERIFY",
         "MERGE"
       ],
-      "outcome": "BL-057 (mobile-responsive layout) full cycle complete. INCORPORATE: Q-009 answered, BL-057 added. TRIAGE: env healthy, BL-057 selected. PLAN: spec written (8 sub-tasks). BUILD: T1-T8 complete, Tailwind responsive classes across 12 files, 2 new test files (responsive.test.tsx, mobile-responsive.spec.ts), 651/651 tests pass. REVIEW: 1 cycle, PASS. DEPLOY: build clean. VERIFY: PASS \u2014 no horizontal scroll at 375px, all pages render correctly, 0 JS errors, 0 tester bugs, tagged last-good-deploy-iter88. MERGE: 1 code commit merged cleanly to main (SHA 18a74a1), 14 files changed (259 insertions), BL-057 marked done.",
+      "outcome": "BL-057 (mobile-responsive layout) full cycle complete. INCORPORATE: Q-009 answered, BL-057 added. TRIAGE: env healthy, BL-057 selected. PLAN: spec written (8 sub-tasks). BUILD: T1-T8 complete, Tailwind responsive classes across 12 files, 2 new test files (responsive.test.tsx, mobile-responsive.spec.ts), 651/651 tests pass. REVIEW: 1 cycle, PASS. DEPLOY: build clean. VERIFY: PASS — no horizontal scroll at 375px, all pages render correctly, 0 JS errors, 0 tester bugs, tagged last-good-deploy-iter88. MERGE: 1 code commit merged cleanly to main (SHA 18a74a1), 14 files changed (259 insertions), BL-057 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T11:05:00Z"
     },
@@ -98,7 +98,7 @@
       "phases": [
         "TRIAGE"
       ],
-      "outcome": "TRIAGE: All BL-001\u2013056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
+      "outcome": "TRIAGE: All BL-001–056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T08:14:44Z"
     },
@@ -113,7 +113,7 @@
         "VERIFY",
         "MERGE"
       ],
-      "outcome": "BL-056 (tab redesign) full cycle complete. TRIAGE: BL-055 done, BL-056 selected. PLAN: Spec (6 sub-tasks). BUILD: T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons). T2 history (Clock/GitBranch icons, section divider, SessionHistoryRow chevron expand). T3 live (sticky toolbar, EmptyState, session boundary pill). T4 SectionHeader component. T5 646/646 tests (19 new). T6 E2E spec. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: build clean, 646/646 PASS. VERIFY: PASS \u2014 all 3 tabs healthy, no JS errors, tagged last-good-deploy-iter86. MERGE: 1 code commit merged cleanly to main, BL-056 marked done.",
+      "outcome": "BL-056 (tab redesign) full cycle complete. TRIAGE: BL-055 done, BL-056 selected. PLAN: Spec (6 sub-tasks). BUILD: T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons). T2 history (Clock/GitBranch icons, section divider, SessionHistoryRow chevron expand). T3 live (sticky toolbar, EmptyState, session boundary pill). T4 SectionHeader component. T5 646/646 tests (19 new). T6 E2E spec. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: build clean, 646/646 PASS. VERIFY: PASS — all 3 tabs healthy, no JS errors, tagged last-good-deploy-iter86. MERGE: 1 code commit merged cleanly to main, BL-056 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T08:11:08Z"
     }
@@ -151,7 +151,8 @@
     "BL-041": 73.50490740000002,
     "BL-040": 81.36289680000004,
     "BL-056": 5.246291399999933,
-    "BL-057": 6.706097850000106
+    "BL-057": 6.706097850000106,
+    "BL-058": 28.332234600000135
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
@@ -166,6 +167,7 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-058": 184.88626365000027
+    "BL-061": 213.2184982500004,
+    "BL-058": 213.32458605000042
   }
 }
