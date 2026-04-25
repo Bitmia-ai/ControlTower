@@ -3,19 +3,21 @@
 import { useEffect, useState, useCallback, useRef, use } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Clock, GitBranch } from "lucide-react";
 import type { ProjectDetail, ChangelogEntry } from "@/lib/redeye-types";
 import type { SessionHistoryEntry } from "@/lib/cost-history";
 import { linkifyBacklogIds } from "@/components/backlog-id";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { SessionHistoryRow } from "@/components/history/session-history-row";
+import { SectionHeader } from "@/components/section-header";
 
 function TimelineEntry({ entry, projectId }: { entry: ChangelogEntry; projectId: string }) {
   return (
     <div className="flex gap-4">
       <div className="flex flex-col items-center">
-        <div className="h-2.5 w-2.5 rounded-full bg-red-600 flex-shrink-0 mt-1" />
-        <div className="flex-1 w-px bg-gray-200 dark:bg-zinc-800 mt-1" />
+        <div className="h-2.5 w-2.5 rounded-full bg-red-600 ring-2 ring-red-100 dark:ring-red-950/60 flex-shrink-0 mt-1" />
+        <div className="flex-1 w-px bg-gray-200 dark:bg-zinc-800 mt-1.5 border-dashed" />
       </div>
 
       <div className="pb-8 flex-1 min-w-0">
@@ -49,7 +51,7 @@ function SessionsSkeleton() {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className="h-12 bg-gray-100 dark:bg-zinc-800/60 rounded animate-pulse"
+          className="h-12 bg-gray-100 dark:bg-zinc-800/60 rounded-xl animate-pulse"
         />
       ))}
     </div>
@@ -129,9 +131,12 @@ export default function HistoryPage({
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
       <section aria-label="Sessions" className="mt-4">
-        <h2 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-3 uppercase tracking-wide">
-          Sessions
-        </h2>
+        <SectionHeader
+          icon={<Clock className="w-3.5 h-3.5" />}
+          label="Sessions"
+          count={sessionsNewestFirst?.length}
+          className="mb-3"
+        />
         {sessionsNewestFirst === null ? (
           <SessionsSkeleton />
         ) : sessionsError && sessionsNewestFirst.length === 0 ? (
@@ -150,10 +155,15 @@ export default function HistoryPage({
         )}
       </section>
 
-      <section aria-label="Iteration Log" className="mt-10">
-        <h2 className="text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-3 uppercase tracking-wide">
-          Iteration Log
-        </h2>
+      <div className="border-t border-gray-100 dark:border-zinc-800 my-8" />
+
+      <section aria-label="Iteration Log" className="mt-4">
+        <SectionHeader
+          icon={<GitBranch className="w-3.5 h-3.5" />}
+          label="Iteration Log"
+          count={changelog.length > 0 ? changelog.length : undefined}
+          className="mb-3"
+        />
         {loading && !detail ? (
           <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">
             Loading history…

@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import { SessionHistoryRow, formatDuration } from "./session-history-row";
 import type { SessionHistoryEntry } from "@/lib/cost-history";
 
@@ -86,5 +86,31 @@ describe("SessionHistoryRow", () => {
   it("renders formatted duration", () => {
     render(<SessionHistoryRow entry={makeEntry({ durationMs: 90 * 60_000 })} />);
     expect(screen.getByText("1h 30m")).toBeTruthy();
+  });
+
+  it("renders an expand/collapse button with aria-expanded=false by default", () => {
+    render(<SessionHistoryRow entry={makeEntry()} />);
+    const btn = screen.getByRole("button");
+    expect(btn.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("expands to show file path when button clicked", () => {
+    const entry = makeEntry({ file: "my-session.jsonl" });
+    render(<SessionHistoryRow entry={entry} />);
+    const btn = screen.getByRole("button");
+    expect(screen.queryByText("my-session.jsonl")).toBeNull();
+    fireEvent.click(btn);
+    expect(screen.getByText("my-session.jsonl")).toBeTruthy();
+    expect(btn.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("collapses again when button clicked a second time", () => {
+    const entry = makeEntry({ file: "session.jsonl" });
+    render(<SessionHistoryRow entry={entry} />);
+    const btn = screen.getByRole("button");
+    fireEvent.click(btn);
+    expect(screen.getByText("session.jsonl")).toBeTruthy();
+    fireEvent.click(btn);
+    expect(screen.queryByText("session.jsonl")).toBeNull();
   });
 });

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, use } from "react";
+import { Terminal, ChevronsUpDown, ArrowDown } from "lucide-react";
 import type { ClaudeStreamEvent } from "@/lib/redeye-types";
 import { TranscriptViewer } from "@/components/transcript-viewer";
+import { EmptyState } from "@/components/empty-state";
 import { isNearBottom } from "@/lib/scroll-utils";
 
 const BOTTOM_THRESHOLD_PX = 80;
@@ -200,48 +202,79 @@ export default function LivePage({
 
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-sm font-medium text-gray-600 dark:text-zinc-400">Live Transcript</h2>
+      {/* Sticky toolbar */}
+      <div className="sticky top-0 z-10 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-gray-100 dark:border-zinc-800 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 mb-4">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
+          <div className="flex items-center gap-3">
+            {/* Connection status */}
+            <div className="flex items-center gap-1.5">
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  connected ? "bg-green-500 animate-pulse" : "bg-gray-400 dark:bg-zinc-600"
+                }`}
+                aria-hidden="true"
+              />
+              <span className="text-xs font-medium text-gray-600 dark:text-zinc-400">
+                {connected ? "Live" : "Disconnected"}
+              </span>
+            </div>
 
-        <div className="flex items-center gap-3">
-          {bannerText && (
-            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-              bannerText === "Live session"
-                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                : bannerText === "Recent transcript"
-                ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
-                : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400"
-            }`}>
-              {bannerText}
-            </span>
-          )}
-
-          <div className="flex items-center gap-1.5">
-            <span
-              className={`h-2 w-2 rounded-full ${
-                connected ? "bg-green-500 animate-pulse" : "bg-gray-400 dark:bg-zinc-600"
-              }`}
-            />
-            <span className="text-xs text-gray-500 dark:text-zinc-500">
-              {connected ? "Live" : "Disconnected"}
-            </span>
+            {/* Session banner badge */}
+            {bannerText && (
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                bannerText === "Live session"
+                  ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                  : bannerText === "Recent transcript"
+                  ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                  : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400"
+              }`}>
+                {bannerText}
+              </span>
+            )}
           </div>
 
+          {/* Toolbar actions */}
           {hasTranscript && (
-            <>
+            <div className="flex items-center gap-1.5">
               <button
-                onClick={() => setAutoScroll((v) => !v)}
-                className={`px-3 py-1.5 text-xs rounded-md border transition ${
-                  autoScroll
+                onClick={() => setForceExpanded((v) => (v === true ? null : true))}
+                title="Expand all cards"
+                className={`p-1.5 rounded-md border transition ${
+                  forceExpanded === true
                     ? "bg-red-600 border-red-600 text-white"
                     : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
                 }`}
+                aria-label="Expand all"
               >
-                {autoScroll
-                  ? scrolledAway
-                    ? "Auto-scroll paused"
-                    : "Auto-scroll ON"
-                  : "Auto-scroll OFF"}
+                <ChevronsUpDown className="w-3.5 h-3.5" aria-hidden="true" />
+              </button>
+
+              <button
+                onClick={() => setForceExpanded((v) => (v === false ? null : false))}
+                title="Collapse all cards"
+                className={`p-1.5 rounded-md border transition ${
+                  forceExpanded === false
+                    ? "bg-red-600 border-red-600 text-white"
+                    : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
+                }`}
+                aria-label="Collapse all"
+              >
+                <ChevronsUpDown className="w-3.5 h-3.5 rotate-180" aria-hidden="true" />
+              </button>
+
+              <button
+                onClick={() => setAutoScroll((v) => !v)}
+                title={autoScroll ? "Disable auto-scroll" : "Enable auto-scroll"}
+                className={`p-1.5 rounded-md border transition ${
+                  autoScroll
+                    ? scrolledAway
+                      ? "bg-yellow-500 border-yellow-500 text-white"
+                      : "bg-red-600 border-red-600 text-white"
+                    : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
+                }`}
+                aria-label={autoScroll ? "Auto-scroll on" : "Auto-scroll off"}
+              >
+                <ArrowDown className="w-3.5 h-3.5" aria-hidden="true" />
               </button>
 
               {!connected && (
@@ -254,34 +287,12 @@ export default function LivePage({
               )}
 
               <button
-                onClick={() => setForceExpanded((v) => (v === true ? null : true))}
-                className={`px-3 py-1.5 text-xs rounded-md border transition ${
-                  forceExpanded === true
-                    ? "bg-red-600 border-red-600 text-white"
-                    : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
-                }`}
-              >
-                Expand all
-              </button>
-
-              <button
-                onClick={() => setForceExpanded((v) => (v === false ? null : false))}
-                className={`px-3 py-1.5 text-xs rounded-md border transition ${
-                  forceExpanded === false
-                    ? "bg-red-600 border-red-600 text-white"
-                    : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
-                }`}
-              >
-                Collapse all
-              </button>
-
-              <button
                 onClick={() => setEvents([])}
                 className="px-3 py-1.5 text-xs rounded-md bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200 transition"
               >
                 Clear
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -291,14 +302,11 @@ export default function LivePage({
           <p className="text-sm text-gray-500 dark:text-zinc-500">Loading...</p>
         </div>
       ) : !hasTranscript && running === false ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-3">
-          <div className="h-10 w-10 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
-            <span className="text-gray-500 dark:text-zinc-500 text-lg">~</span>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-zinc-400">
-            No active session. Start RedEye to see live output.
-          </p>
-        </div>
+        <EmptyState
+          icon={<Terminal className="w-5 h-5" />}
+          title="No active session"
+          subtitle="Start RedEye to see live output here."
+        />
       ) : (
         <>
           <TranscriptViewer events={events} forceExpanded={forceExpanded} />

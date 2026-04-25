@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useCallback, use } from "react";
 import Link from "next/link";
+import { Check, X } from "lucide-react";
 import type { ProjectDetail, BacklogItem } from "@/lib/redeye-types";
 import { BacklogId } from "@/components/backlog-id";
 import { AddBacklogDialog } from "@/components/add-backlog-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { CollapsibleSection } from "@/components/collapsible-section";
+import { SectionHeader } from "@/components/section-header";
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-zinc-300",
@@ -72,30 +74,28 @@ function ActiveTaskCard({
 }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3 font-medium">
-        Currently Working On
-      </p>
-      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg px-4 py-4 border-l-4 border-l-green-500">
+      <SectionHeader label="Currently Working On" className="mb-3" />
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-4 border-l-4 border-l-green-500">
         <div className="flex items-start gap-3">
           <div className="mt-1.5 flex-shrink-0">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse block" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug">
+            <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug font-medium">
               <BacklogId
                 id={item.id}
                 projectId={projectId}
-                className="text-xs text-gray-400 dark:text-zinc-500 mr-1.5"
+                className="text-xs text-gray-400 dark:text-zinc-500 mr-1.5 font-normal"
               />
               <Link
                 href={`/project/${projectId}/backlog/${item.id}`}
-                className="hover:text-red-400 transition font-medium"
+                className="hover:text-red-600 dark:hover:text-red-400 transition"
               >
                 {item.title}
               </Link>
             </p>
             {item.type && (
-              <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5">{item.type}</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-normal">{item.type}</p>
             )}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -108,7 +108,7 @@ function ActiveTaskCard({
                 {item.priority}
               </span>
             )}
-            <span className="text-xs px-2 py-0.5 rounded bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
+            <span className="text-xs px-2 py-0.5 rounded bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 font-medium">
               in-progress
             </span>
             <Link
@@ -136,14 +136,12 @@ export function BacklogSection({
   if (items.length === 0) return null;
   return (
     <div>
-      <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3 font-medium">
-        {label}
-      </h2>
+      <SectionHeader label={label} count={items.length} className="mb-3" />
       <div className="flex flex-col gap-2">
         {items.map((item) => (
           <div
             key={item.id}
-            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg px-4 py-3 flex items-start gap-3"
+            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 flex items-start gap-3 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors"
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug">
@@ -154,7 +152,7 @@ export function BacklogSection({
                 />
                 <Link
                   href={`/project/${projectId}/backlog/${item.id}`}
-                  className="hover:text-red-400 transition"
+                  className="hover:text-red-600 dark:hover:text-red-400 transition"
                 >
                   {item.title}
                 </Link>
@@ -201,7 +199,11 @@ function DoneItemRow({
   projectId: number;
 }) {
   return (
-    <div className="group flex items-start gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+    <div className="group flex items-start gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors">
+      <Check
+        className="w-3.5 h-3.5 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 min-w-0">
         <p className="text-sm leading-snug">
           <BacklogId
@@ -223,7 +225,7 @@ function DoneItemRow({
             ${item.cost_usd.toFixed(2)}
           </span>
         )}
-        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">
+        <span className="text-xs px-2 py-0.5 rounded-full bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400">
           done
         </span>
       </div>
@@ -239,7 +241,11 @@ function WontDoItemRow({
   projectId: number;
 }) {
   return (
-    <div className="group flex items-start gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+    <div className="group flex items-start gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors">
+      <X
+        className="w-3.5 h-3.5 text-gray-400 dark:text-zinc-600 mt-0.5 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 min-w-0">
         <p className="text-sm leading-snug">
           <BacklogId
@@ -367,7 +373,7 @@ export default function BacklogPage({
               open={doneOpen}
               onToggle={() => setDoneOpen((o) => !o)}
             >
-              <div className="flex flex-col gap-1.5 pb-1">
+              <div className="flex flex-col gap-0.5 pb-1">
                 {doneItems.map((item) => (
                   <DoneItemRow
                     key={item.id}
@@ -386,7 +392,7 @@ export default function BacklogPage({
               open={wontDoOpen}
               onToggle={() => setWontDoOpen((o) => !o)}
             >
-              <div className="flex flex-col gap-1.5 pb-1">
+              <div className="flex flex-col gap-0.5 pb-1">
                 {wontDoItems.map((item) => (
                   <WontDoItemRow
                     key={item.id}
