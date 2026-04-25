@@ -218,7 +218,7 @@ renders cleanly.
 **Acceptance criteria:**
 - Sparkline container height never exceeds 72px in the DOM.
 - `npx vitest run` passes.  
-**Status:** pending
+**Status:** done
 
 ---
 

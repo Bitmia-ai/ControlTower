@@ -84,6 +84,11 @@ describe("CostCard sparkline integration", () => {
       expect(document.querySelector("svg[data-testid='sparkline']")).not.toBeNull();
     });
     expect(screen.getByText("Last 3 sessions")).toBeTruthy();
+    // BL-062: sparkline wrapper caps growth so the card doesn't grow tall on wide layouts.
+    const svg = document.querySelector("svg[data-testid='sparkline']");
+    const wrapper = svg?.parentElement;
+    expect(wrapper?.className ?? "").toContain("max-h-[72px]");
+    expect(wrapper?.className ?? "").toContain("overflow-hidden");
   });
 
   it("does not render sparkline when history fetch fails (graceful degradation)", async () => {
