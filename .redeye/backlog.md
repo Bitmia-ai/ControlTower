@@ -15,12 +15,15 @@
 ### BL-062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** planned
+- **Spec:** docs/specs/BL-062-card-sizing.md
 
 ### BL-061: remove the keyboard shortcuts from all buttons like (GB)
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 91)
+- **Summary:** Removed all keyboard shortcut badge `<kbd>` elements from project-nav.tsx (G+B, G+H, G+L, G+S tab hints) and controls-card.tsx (S, X, P, B action buttons). The shortcut logic itself was also stripped. Tests updated across 3 files; 656/656 pass. Build clean.
 
 ### BL-060: When phase=waiting_for_ceo and CTO has exited, the dashboard should clearly show blocked state on the project card (banner/badge) with CTA to answer the inbox question or hit Start. Today the card looks identical to running, leading to confusion when the user replies and nothing happens. Also: when state is waiting_for_ceo and inbox.md is updated with an answer, the dashboard should auto-start the CTO without manual intervention.
 - **Type:** feature

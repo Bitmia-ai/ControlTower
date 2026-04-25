@@ -2,15 +2,16 @@
   "schema_version": 1,
   "iteration": 92,
   "started_at": "2026-04-25T09:05:06Z",
-  "phase": "PLAN",
+  "phase": "BUILD",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-062",
   "backlog_title": "Fix inconsistent card sizes on main project screen",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-062-card-sizing.md",
   "phase_progress": {
-    "triage_notes": "BL-058 done (schedules UI), BL-061 done (kbd badges removed), BL-060 done. Env healthy: build clean, 656/656 tests pass. No tester bugs, no inbox questions. Schedules not overdue. 3 pending P1 items: BL-062, BL-063, BL-064. Selected BL-062 (oldest P1): fix inconsistent card sizes on main project screen."
+    "triage_notes": "BL-058 done (schedules UI), BL-061 done (kbd badges removed), BL-060 done. Env healthy: build clean, 656/656 tests pass. No tester bugs, no inbox questions. Schedules not overdue. 3 pending P1 items: BL-062, BL-063, BL-064. Selected BL-062 (oldest P1): fix inconsistent card sizes on main project screen.",
+    "plan_notes": "Spec written: 5 sub-tasks (all S). Root cause: CSS Grid stretch + sparkline preserveAspectRatio=none. Fix: items-start on grid, min-h-[120px] on row-1 card wrappers, proportional SVG in sparkline. No new dependencies."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
