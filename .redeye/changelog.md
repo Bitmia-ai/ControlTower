@@ -253,3 +253,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean, 462/462 unit tests, full E2E regression green, tagged last-good-deploy-iter79)
 - **Visual check:** PASS — home page 3 project cards render correctly; mission control Working On card shows BL-049 active; Controls card (Stop/Pause/Steer/Add to Backlog) renders correctly; no console errors; no layout regressions
 - **Documenter:** running in background (iter 45)
+
+## Iteration 80 — 2026-04-25T01:06:00Z
+- **Built:** BL-050 Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
+- **Review findings:** 0C 0M 0m — clean (2 review cycles; cycle 1 had 1 minor fix: VERIFY added to NOTIFIABLE_PHASES)
+- **Tests:** 30 new unit tests added (usePhaseChangeNotifier ×8, usePhaseNotifications ×11, ToastContainer ×7, integration ×4), 4 new Playwright E2E tests, 493 unit tests total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (tester respawn-pending)
+- **Deployed:** SUCCESS (production build clean, 493/493 unit tests, 6 E2E flows green, tagged last-good-deploy-iter80)
+- **Visual check:** PASS — home page renders 3 project cards correctly; mission control page for ControlTower renders all cards (Working On, Controls, Questions, Backlog, Cost, Health); ToastContainer alert region confirmed present in DOM via accessibility snapshot; no layout regressions; no Critical bugs in tester-reports.md
+- **Documenter:** running in background (iter 45)
