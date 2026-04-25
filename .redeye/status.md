@@ -1,21 +1,25 @@
-# Verify Status — BL-061
+# Plan Status — BL-062
 
 **Date:** 2026-04-25
-**Iteration:** 91
-**Phase:** VERIFY — HEALTHY
-
-## Health Assessment
-
-- **Environment:** HEALTHY
-- **Confidence:** HIGH
-- **Deploy tag:** `last-good-deploy-iter91-bl061` confirmed present
-- **Unit tests:** 656/656 pass (67 test files, 3.43s)
-- **Verify command:** `echo 'No verify command configured'` — PASS (no-op)
-- **Visual check:** PARTIAL — Playwright MCP browser locked by concurrent Chrome session; source code audit confirms 0 `<kbd>` elements in components/project-nav.tsx and controls card (file restructured/removed); git grep confirms no `<kbd>` in any component; feature objective fully achieved
-- **Tester bugs:** 0 Critical bugs in tester-reports.md
-- **User tester feedback:** no entry this iteration (score N/A)
-- **State:** phase already advanced to TRIAGE (iteration 92) by prior VERIFY run
+**Iteration:** 92
+**Phase:** PLAN — COMPLETE
 
 ## Summary
 
-BL-061 is complete. Keyboard shortcut badges (`<kbd>` elements) have been removed from project-nav.tsx and the controls card. 656/656 tests pass. Production build was clean. No regressions. Environment is healthy and ready for TRIAGE of BL-062.
+TRIAGE: No pending-triage items found. BL-062 confirmed highest-priority P1 (oldest of three pending: BL-062, BL-063, BL-064).
+
+PLAN: Spec written at docs/specs/BL-062-card-sizing.md. Root cause of inconsistent card sizes: CSS Grid default `align-items: stretch` makes all cards in a row equal height, causing blank voids in shorter cards. Secondary issue: sparkline SVG uses `preserveAspectRatio="none"` + fixed height, horizontally distorting the chart on wide containers.
+
+Fix: 5 sub-tasks, all S-tier. No new dependencies, no API changes.
+
+## Sub-tasks
+
+- T1 (S): Add `items-start` to grid + `min-h-[120px]` on row-1 wrappers — pending
+- T2 (S): Fix sparkline `preserveAspectRatio` to `xMidYMid meet`, remove fixed height — pending
+- T3 (S): Add `max-h-[72px]` cap on sparkline container in CostCard — pending
+- T4 (S): Audit/verify all card internals at min-height boundary — pending
+- T5 (S): Full test suite + build verification — pending
+
+## Next Phase
+
+BUILD — implement T1 through T5.
