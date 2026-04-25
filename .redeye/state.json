@@ -3,7 +3,7 @@
   "iteration": 79,
   "started_at": "2026-04-25T00:07:13Z",
   "phase": "BUILD",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "backlog_item": "BL-049",
   "backlog_title": "Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card",
   "spec_file": "docs/specs/BL-049-e2e-test-coverage.md",
@@ -11,7 +11,8 @@
   "worktree_branch": "redeye/BL-049",
   "phase_progress": {
     "triage": "Iteration 79 triage complete. CEO directed 'begin the autonomous development loop' — interpreted as proceed signal. Q-007 resolved with default direction. Added BL-049 through BL-053 (E2E tests, notifications, cost chart, keyboard shortcuts, session history). Routing to PLAN for BL-049 (highest priority planned item).",
-    "plan": "BL-049 spec written: docs/specs/BL-049-e2e-test-coverage.md. Two new E2E Playwright specs planned: backlog-crud.spec.ts (add via dialog, detail page verification) and cost-card.spec.ts (cost card invariant). Both use route interception pattern. 2 sub-tasks (T1, T2), S-tier each. No source code changes required."
+    "plan": "BL-049 spec written: docs/specs/BL-049-e2e-test-coverage.md. Two new E2E Playwright specs planned: backlog-crud.spec.ts (add via dialog, detail page verification) and cost-card.spec.ts (cost card invariant). Both use route interception pattern. 2 sub-tasks (T1, T2), S-tier each. No source code changes required.",
+    "build": "T1 and T2 complete. Created e2e/backlog-crud.spec.ts (backlog CRUD dialog flow, 3 assertions: item in list, detail page title, priority badge) and e2e/cost-card.spec.ts (cost card invariant: session>=0, total>=0, session<=total, plus exact value formatting test). No application source code modified. 462/462 unit tests pass. TypeScript clean in new files. Committed cb69df1."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -30,19 +31,19 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete PLAN — BL-049 spec written, 2 E2E Playwright specs planned (iteration 79)",
+    "last_commit": "test: e2e Playwright specs for backlog CRUD and cost card (BL-049)",
     "branch": "redeye/BL-049",
     "last_good_deploy_tag": "last-good-deploy-iter63",
-    "notes": "BL-047 DONE: split-weight Control Tower logo mark (CONTROL small/TOWER large, red-600/red-500 dark variant) in root layout; 5 unused scaffold SVGs removed; 462/462 tests pass; Playwright VERIFY PASS — logo visible in header light mode, CONTROL+TOWER spans confirmed, logo click navigates to /; tagged last-good-deploy-iter63"
+    "notes": "BL-049 in progress: 2 new E2E Playwright specs written on redeye/BL-049 branch. 462/462 unit tests pass."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 79,
-      "phases": ["TRIAGE", "PLAN"],
-      "outcome": "TRIAGE: Added BL-049–053. PLAN: Spec written for BL-049 (E2E coverage). Two new Playwright specs: backlog-crud.spec.ts and cost-card.spec.ts using route interception pattern. Routing to BUILD.",
-      "next": "BUILD",
-      "timestamp": "2026-04-25T02:20:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD"],
+      "outcome": "TRIAGE: Added BL-049–053. PLAN: Spec written (docs/specs/BL-049-e2e-test-coverage.md). BUILD: Created e2e/backlog-crud.spec.ts and e2e/cost-card.spec.ts — Playwright E2E specs for backlog CRUD dialog flow and cost card invariant. 462/462 tests pass.",
+      "next": "REVIEW",
+      "timestamp": "2026-04-25T00:22:27Z"
     },
     {
       "iteration": 78,
