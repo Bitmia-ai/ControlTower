@@ -144,7 +144,7 @@ export function ControlsCard({
   const forceStopping = pending === "force-stop";
 
   return (
-    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 ${stalled ? "border-l-amber-500" : "border-l-gray-300 dark:border-l-zinc-700"} rounded-lg p-5`}>
+    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 ${stalled ? "border-l-amber-500" : "border-l-gray-300 dark:border-l-zinc-700"} rounded-lg p-5 h-full`}>
       <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-4">
         Controls
       </p>

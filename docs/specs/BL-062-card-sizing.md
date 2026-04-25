@@ -251,7 +251,14 @@ that card's root div and add a suitable minimum content block.
 - No card has blank voids or clipped content.
 - All 7 cards render visually clean at standard desktop viewports.
 - `npx vitest run` passes.  
-**Status:** pending
+**Status:** done
+
+**Audit notes (iter 92):**
+- Added `h-full` to `WorkingOnCard` and `ControlsCard` root divs so the card
+  background fills the `min-h-[120px]` wrapper (otherwise the wrapper would
+  show a transparent strip beneath the card on row 1).
+- Other cards (Questions, Shipped, UpNext, Cost, Health) sit in non-min-height
+  wrappers and size to their content as expected — no internal changes needed.
 
 ---
 
