@@ -112,7 +112,7 @@
     }
   ],
   "counters": {
-    "next_bl_id": 58,
+    "next_bl_id": 59,
     "next_q_id": 11,
     "next_cred_id": 1,
     "next_sched_id": 1
@@ -132,7 +132,7 @@
     "last_verify_iteration": 88,
     "last_deploy_iteration": 88,
     "current_iteration": 89,
-    "questions_awaiting_ceo": 1,
+    "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
     "full_regression_overdue": false
