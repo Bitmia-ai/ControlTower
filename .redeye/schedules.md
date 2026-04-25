@@ -22,3 +22,11 @@ Each task follows:
   2. Check for outdated packages with `npm outdated`
   3. File backlog items for any high/critical vulnerabilities found
 - **Assigned to:** CTO
+
+### SCHED-2: Test Schedule
+- **Frequency:** weekly
+- **Last run:** 1970-01-01T00:00:00Z
+- **Task:**
+  1. Step 1
+  2. Step 2
+- **Assigned to:** CTO
