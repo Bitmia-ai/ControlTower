@@ -62,13 +62,16 @@
   "blocked_items": [],
   "iteration_log": [
     {
-      "iteration": 92,
+      "iteration": 91,
       "phases": [
-        "MERGE"
+        "VERIFY",
+        "TRIAGE",
+        "PLAN",
+        "BUILD"
       ],
-      "outcome": "MERGE BL-058: all code already on main (no worktree). BL-058 commits 8ac0872 (feat T1-T6) and 254f76b (review fix: RunButton sibling) confirmed in main history. No conflicts. BL-058 marked done, Summary authored and present in backlog.md. Advancing to TRIAGE for BL-061 (remove kbd badges).",
-      "next": "BUILD BL-061",
-      "timestamp": "2026-04-25T10:30:00Z"
+      "outcome": "VERIFY PASS (662/662 tests, all artifacts confirmed). TRIAGE: BL-058 done, BL-061 selected. PLAN: spec written (remove kbd badges). BUILD: project-nav.tsx and controls-card.tsx stripped of all <kbd> shortcut badges. Tests updated (656/656 pass). Build clean.",
+      "next": "REVIEW BL-061",
+      "timestamp": "2026-04-25T10:25:10Z"
     },
     {
       "iteration": 91,
@@ -136,7 +139,7 @@
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 70,
+    "iterations_this_session": 71,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 90
