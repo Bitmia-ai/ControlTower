@@ -47,46 +47,52 @@ export default function ProjectLayout({
 
   return (
     <div className="min-h-screen">
-      <div className="px-4 sm:px-6 pt-8 max-w-6xl mx-auto">
-        <div className="mb-8">
-          <Link
-            href="/"
-            className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition mb-4 inline-flex items-center gap-1"
-          >
-            <span>&larr;</span>
-            <span>All projects</span>
-          </Link>
+      <div className="px-4 sm:px-6 pt-6 max-w-6xl mx-auto">
+        <Link
+          href="/"
+          className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition mb-4 inline-flex items-center gap-1"
+        >
+          <span>&larr;</span>
+          <span>All projects</span>
+        </Link>
 
-          <div className="mt-2">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100">
-              {projectName}
-            </h1>
-            {project?.path && (
-              <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5 font-mono truncate max-w-full">
-                {project.path}
+        <header className="pt-2 pb-4">
+          <div className="flex items-end justify-between gap-4 pb-4 border-b border-gray-200 dark:border-zinc-800">
+            <div className="min-w-0">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
+                Control Tower
               </p>
-            )}
-            <div className="flex items-center gap-2 mt-2">
-              <span
-                className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${
-                  running
-                    ? "bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400"
-                    : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-500"
-                }`}
-              >
-                <span
-                  className={`h-1.5 w-1.5 rounded-full ${
-                    running ? "bg-green-500 animate-pulse" : "bg-gray-400 dark:bg-zinc-600"
-                  }`}
-                />
-                {running ? "Running" : "Stopped"}
-              </span>
+              <div className="flex items-center gap-3">
+                {running && (
+                  <span className="relative flex h-2.5 w-2.5 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+                  </span>
+                )}
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight truncate">
+                  {projectName}
+                </h1>
+              </div>
+              {project?.path && (
+                <p className="font-mono text-[11px] text-gray-500 dark:text-zinc-500 mt-1 truncate">
+                  {project.path}
+                </p>
+              )}
             </div>
+            <span
+              className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border ${
+                running
+                  ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-900 text-green-700 dark:text-green-400"
+                  : "bg-gray-100 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-zinc-500"
+              }`}
+            >
+              {running ? "Running" : "Idle"}
+            </span>
           </div>
+        </header>
 
-          <div className="mt-5">
-            <ProjectNav projectId={id} />
-          </div>
+        <div className="mt-4 mb-6">
+          <ProjectNav projectId={id} />
         </div>
       </div>
       {children}

@@ -194,7 +194,7 @@ export default function ProjectPage({
             />
           </div>
 
-          <p className="md:col-span-3 hidden md:block text-xs uppercase tracking-widest font-medium text-gray-400 dark:text-zinc-600 mt-2">
+          <p className="md:col-span-3 hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mt-2">
             Backlog
           </p>
 
@@ -210,7 +210,7 @@ export default function ProjectPage({
             <UpNextCard items={detail?.upNext ?? []} projectId={projectId} />
           </div>
 
-          <p className="md:col-span-3 hidden md:block text-xs uppercase tracking-widest font-medium text-gray-400 dark:text-zinc-600 mt-2">
+          <p className="md:col-span-3 hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mt-2">
             Telemetry
           </p>
 

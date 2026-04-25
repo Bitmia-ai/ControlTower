@@ -14,14 +14,14 @@ export function QuestionsCard({ questions, onAnswer }: QuestionsCardProps) {
 
   return (
     <div
-      className={`border border-l-4 rounded-lg p-5 transition-colors ${
+      className={`border border-t-[3px] rounded-lg p-5 transition-colors ${
         hasPending
-          ? "border-red-600 bg-red-50 dark:bg-red-950/50"
-          : "bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 border-l-gray-300 dark:border-l-zinc-700"
+          ? "border-gray-200 dark:border-zinc-800 border-t-red-500 bg-red-50 dark:bg-red-950/50"
+          : "bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 border-t-zinc-300 dark:border-t-zinc-700"
       }`}
     >
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500">
           Questions
           {hasPending && (
             <span className="ml-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-xs font-bold h-4 min-w-[1rem] px-1">

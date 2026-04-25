@@ -43,9 +43,15 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
     !running &&
     (state?.phase === "waiting_for_ceo" || (openQuestionCount ?? 0) > 0);
 
+  const topBorder = running
+    ? "border-t-green-500"
+    : isWaitingOnCeo
+    ? "border-t-amber-400"
+    : "border-t-zinc-300 dark:border-t-zinc-700";
+
   return (
-    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-4 ${running ? "border-l-green-500" : "border-l-red-600"} rounded-lg p-5 h-full`}>
-      <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3">
+    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] ${topBorder} rounded-lg p-5 h-full`}>
+      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
         Working On
       </p>
 

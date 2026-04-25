@@ -39,8 +39,8 @@ export function HealthCard({ state, recentlyShippedCount }: HealthCardProps) {
   const blockedItems = state?.health?.blocked_items_count ?? 0;
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-5">
-      <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-zinc-500 mb-3">Health</p>
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg p-5">
+      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">Health</p>
 
       <div className="space-y-3">
         <div>

@@ -74,11 +74,11 @@ Section headers within the page (status info, description) → CARD-LABEL token.
 
 ## Sub-tasks
 
-- **T1 (L):** Mission control cards — border-t, label tokens, page header above nav
-- **T2 (S):** Tab page headers — standard eyebrow/h1/divider pattern across all tabs
-- **T3 (M):** Backlog list + detail — border-l status signal, detail page header, section label tokens
-- **T4 (M):** History + Schedules + Steer — section label tokens, card upgrades
-- **T5 (S):** Tests + build verification — update any snapshot/DOM tests, `npm run build`, `npx vitest run`
+- **T1 (L) — done:** Mission control cards — border-t, label tokens, page header above nav
+- **T2 (S) — in-progress:** Tab page headers — standard eyebrow/h1/divider pattern across all tabs
+- **T3 (M) — pending:** Backlog list + detail — border-l status signal, detail page header, section label tokens
+- **T4 (M) — pending:** History + Schedules + Steer — section label tokens, card upgrades
+- **T5 (S) — pending:** Tests + build verification — update any snapshot/DOM tests, `npm run build`, `npx vitest run`
 
 ## Test Plan
 
