@@ -3,7 +3,7 @@
   "iteration": 94,
   "started_at": "2026-04-25T10:55:00Z",
   "phase": "TRIAGE",
-  "phase_status": "pending",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
@@ -27,7 +27,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-064 \u2014 Fix cost plot aspect ratio (iteration 93)",
+    "last_commit": "redeye: merge BL-064 — Fix cost plot aspect ratio (iteration 93)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter93-bl064",
     "merge_status": "clean",
@@ -37,62 +37,36 @@
   "iteration_log": [
     {
       "iteration": 93,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
       "outcome": "BL-064 through VERIFY. TRIAGE: env healthy, BL-064 selected. PLAN: spec written (2 sub-tasks, viewBox ratio fix). BUILD: VIEW_H=48->80, width=100%->height=80, max-h-[72px] removed. Tests: 657->663 pass. REVIEW: 0C/0M/0m PASS. DEPLOY: build clean, 663/663 tests, tagged last-good-deploy-iter93-bl064. VERIFY: all checks pass.",
       "next": "MERGE BL-064",
       "timestamp": "2026-04-25T10:58:00Z"
     },
     {
       "iteration": 93,
-      "phases": [
-        "TRIAGE"
-      ],
+      "phases": ["TRIAGE"],
       "outcome": "TRIAGE: env healthy, no schedules overdue, no CEO answers pending. BL-064 selected (cost plot aspect ratio fix, P1). BL-063 (steer tab) deferred to iteration 94.",
       "next": "PLAN BL-064",
       "timestamp": "2026-04-25T10:47:00Z"
     },
     {
       "iteration": 92,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-062 full cycle complete. TRIAGE: env healthy, BL-062 selected. PLAN: spec written (5 sub-tasks, root cause CSS grid stretch + sparkline aspect ratio). BUILD: T1 md:items-start + md:min-h-[120px] (page.tsx), T2 sparkline preserveAspectRatio=xMidYMid meet + no fixed height, T3 max-h-[72px] overflow-hidden wrapper (cost-card.tsx), T4 h-full on WorkingOnCard + ControlsCard. T5 657/657 tests pass, build clean. REVIEW: 0C/0M/0m, PASS. DEPLOY: build clean, tagged last-good-deploy-iter92-bl062. VERIFY: all artifact checks pass, 657/657 tests. MERGE: BL-062 marked done in backlog.md, state advanced to TRIAGE iter 93. 2 P1 items pending: BL-063, BL-064.",
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "BL-062 full cycle complete. TRIAGE: env healthy, BL-062 selected. PLAN: spec written. BUILD: card sizing fixed, 657/657 tests pass. REVIEW: 0C/0M/0m PASS. DEPLOY: build clean, tagged last-good-deploy-iter92-bl062. VERIFY: all artifact checks pass. MERGE: BL-062 done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:55:00Z"
     },
     {
       "iteration": 91,
-      "phases": [
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-061 full cycle complete. DEPLOY: production build clean (Turbopack), 656/656 tests pass, tagged last-good-deploy-iter91-bl061. VERIFY: 0 <kbd> elements on /project/1 and /, 0 app JS errors, Playwright confirmed. MERGE: BL-061 marked done in backlog.md, state.json advanced to TRIAGE, git_state updated. 3 P1 items pending: BL-062, BL-063, BL-064.",
+      "phases": ["DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "BL-061 full cycle complete. DEPLOY: build clean, 656/656 tests, tagged. VERIFY: 0 kbd elements, 0 JS errors. MERGE: BL-061 done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:30:00Z"
     },
     {
       "iteration": 91,
-      "phases": [
-        "VERIFY",
-        "TRIAGE",
-        "PLAN",
-        "BUILD"
-      ],
-      "outcome": "VERIFY PASS (662/662 tests, all artifacts confirmed). TRIAGE: BL-058 done, BL-061 selected. PLAN: spec written (remove kbd badges). BUILD: project-nav.tsx and controls-card.tsx stripped of all <kbd> shortcut badges. Tests updated (656/656 pass). Build clean.",
+      "phases": ["VERIFY", "TRIAGE", "PLAN", "BUILD"],
+      "outcome": "VERIFY PASS (662/662 tests). TRIAGE: BL-061 selected. PLAN: spec written. BUILD: kbd badges stripped.",
       "next": "REVIEW BL-061",
       "timestamp": "2026-04-25T10:25:10Z"
     }
@@ -117,7 +91,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 93,
     "last_deploy_iteration": 93,
-    "current_iteration": 93,
+    "current_iteration": 94,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
