@@ -2,15 +2,11 @@
 
 ## CEO Requests
 
-### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
-- **Type:** feature
-- **Priority:** P1
-- **Status:** pending
-
 ### BL-063: we need a steer tab added. make it fully funcitonal
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** planned
+- **Spec:** docs/specs/BL-063-steer-tab.md
 
 ### BL-062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
 - **Type:** feature
@@ -601,6 +597,12 @@
 - **Reason:** Duplicate of BL-013 (reopened). BL-013 covers the same bug and is currently being planned in iteration 40.
 
 ## Triaged
+
+### BL-064: the cost plot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
+- **Type:** bug
+- **Priority:** P1
+- **Status:** planned
+- **Triaged:** 2026-04-25 (iter 94) — Valid P1 UI polish. Cost sparkline aspect ratio is wrong; needs constrained height and correct SVG viewBox. Scheduled after BL-063.
 
 ### BL-027: Show cost for completed items in backlog list and detail page
 - **Type:** bug
