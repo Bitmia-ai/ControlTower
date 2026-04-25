@@ -3,11 +3,11 @@
   "iteration": 88,
   "started_at": "2026-04-25T08:13:18Z",
   "phase": "TRIAGE",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": null,
-  "backlog_title": null,
+  "backlog_item": "BL-057",
+  "backlog_title": "Mobile-responsive layout — make the dashboard usable on phones and tablets",
   "spec_file": null,
   "phase_progress": {
     "plan_complete": false,
@@ -43,35 +43,58 @@
   "iteration_log": [
     {
       "iteration": 88,
-      "phases": ["INCORPORATE"],
-      "outcome": "INCORPORATE: Q-009 answered (mobile-responsive layout default). BL-057 added (P1, planned). 0 credentials. 1 question incorporated.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T08:21:24Z"
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE"
+      ],
+      "outcome": "INCORPORATE: Q-009 answered (mobile-responsive layout default), BL-057 added. TRIAGE: env healthy, 0 tester reports, 0 schedules. BL-057 selected (mobile-responsive, P1).",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T08:23:43Z"
     },
     {
       "iteration": 87,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: All BL-001–056 done. Backlog exhausted. Q-009 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T08:14:44Z"
     },
     {
       "iteration": 86,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-056 (tab redesign) full cycle complete. TRIAGE: BL-055 done, BL-056 selected. PLAN: Spec (6 sub-tasks). BUILD: T1 backlog redesign (rounded-xl, SectionHeader counts, Check/X icons). T2 history (Clock/GitBranch icons, section divider, SessionHistoryRow chevron expand). T3 live (sticky toolbar, EmptyState, session boundary pill). T4 SectionHeader component. T5 646/646 tests (19 new). T6 E2E spec. REVIEW: 1 cycle, 0 Critical/0 Major, PASS. DEPLOY: build clean, 646/646 PASS. VERIFY: PASS — all 3 tabs healthy, no JS errors, tagged last-good-deploy-iter86. MERGE: 1 code commit merged cleanly to main, BL-056 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T08:11:08Z"
     },
     {
       "iteration": 85,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "TRIAGE: Q-008 answered by CEO — redesign tabs + add schedules tab. BL-054 resolved wont-do (BL-029/030 already resolved). BL-055 (Schedules tab, P1) selected. BL-056 (tab redesign, P2) queued. PLAN: Spec written (6 sub-tasks). BUILD: All 6 sub-tasks done, 42 new unit tests (627 total). Added ScheduleEntry type, parseDurationMs+parseSchedules (redeye-parsers.ts), GET /api/projects/[id]/schedules route, ScheduleList/ScheduleRow/StatusBadge components, SchedulesContent page, ProjectNav GS shortcut, GS keyboard chord. REVIEW: 1 cycle, 0 Major, PASS. DEPLOY: Build PASS, 627/627 unit tests PASS. VERIFY: PASS. MERGE: 5 commits merged cleanly to main, BL-055 marked done.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T07:55:09Z"
     },
     {
       "iteration": 84,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: All BL-001–053 done. Backlog exhausted. Q-008 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T03:00:00Z"
@@ -122,6 +145,7 @@
     "BL-051": 135.25504920000046,
     "BL-052": 141.69885615000055,
     "BL-053": 156.30889500000052,
-    "BL-055": 159.36187110000037
+    "BL-055": 159.36187110000037,
+    "BL-057": 173.69128380000026
   }
 }
