@@ -70,7 +70,10 @@ export default function LivePage({
         setTranscriptStatus({ available: false, source: null, mtime: null, ageSeconds: null });
         return false;
       }
-      const status: TranscriptStatus = await r.json();
+      // The API returns { data: TranscriptStatus } — pull data out for the
+      // common consistent response shape across routes.
+      const json = await r.json();
+      const status: TranscriptStatus = json?.data ?? json;
       setTranscriptStatus(status);
       return status.available;
     } catch {

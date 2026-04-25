@@ -43,7 +43,7 @@ export async function GET(
         mtime: null,
         ageSeconds: null,
       };
-      return NextResponse.json(result);
+      return NextResponse.json({ data: result });
     }
 
     // Try to stat the file to get mtime
@@ -58,7 +58,7 @@ export async function GET(
         mtime: null,
         ageSeconds: null,
       };
-      return NextResponse.json(result);
+      return NextResponse.json({ data: result });
     }
 
     const redeyeFile = path.join(project.path, REDEYE_SESSION_FILE);
@@ -73,7 +73,7 @@ export async function GET(
       ageSeconds,
     };
 
-    return NextResponse.json(result);
+    return NextResponse.json({ data: result });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : String(err) },

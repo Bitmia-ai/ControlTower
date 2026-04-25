@@ -33,11 +33,14 @@ export function AddProjectDialog({ open, onOpenChange, onAdded }: AddProjectDial
         return;
       }
 
+      // Use the canonical realpath returned by the server, not the user's
+      // input string — symlinks would otherwise miss.
+      const registeredPath: string = json.data?.path ?? path;
       const listRes = await fetch("/api/projects");
       const listJson = await listRes.json();
       const projects: Array<{ name: string; path: string; initialized: boolean }> =
         listJson.data ?? [];
-      const newIndex = projects.findIndex((p) => p.path === path);
+      const newIndex = projects.findIndex((p) => p.path === registeredPath);
 
       setName("");
       setPath("");

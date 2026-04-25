@@ -71,8 +71,9 @@ export function tailJsonl(
   }
 
   const readNewLines = () => {
+    let fd: number | null = null;
     try {
-      const fd = fs.openSync(filePath, "r");
+      fd = fs.openSync(filePath, "r");
       const stats = fs.fstatSync(fd);
 
       if (stats.size > position) {
@@ -90,10 +91,12 @@ export function tailJsonl(
           }
         }
       }
-
-      fs.closeSync(fd);
     } catch {
-      // File may not exist yet.
+      // File may not exist yet, or read raced with rotation.
+    } finally {
+      if (fd !== null) {
+        try { fs.closeSync(fd); } catch {}
+      }
     }
   };
 
@@ -102,10 +105,17 @@ export function tailJsonl(
     watcher = fs.watch(filePath, () => readNewLines());
   } catch {
     const pollInterval = setInterval(() => {
+      // Wrap the watch attempt — fs.watch can throw async (race against
+      // file deletion) and an unhandled timer-callback exception terminates
+      // the Node process.
       try {
         fs.accessSync(filePath);
-        watcher = fs.watch(filePath, () => readNewLines());
-        clearInterval(pollInterval);
+        try {
+          watcher = fs.watch(filePath, () => readNewLines());
+          clearInterval(pollInterval);
+        } catch {
+          // Watch failed (race) — keep polling.
+        }
       } catch {
         // Still waiting for file.
       }

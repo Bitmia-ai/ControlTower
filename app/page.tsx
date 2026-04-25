@@ -3,7 +3,7 @@
 // Opt out of static prerendering — all data is fetched client-side anyway.
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import type { ProjectWithStatus } from "@/lib/redeye-types";
 import { ProjectCard } from "@/components/project-card";
 import { AddProjectDialog } from "@/components/add-project-dialog";
@@ -18,6 +18,11 @@ export default function Home() {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  // Track project count via ref so the polling callback's identity stays
+  // stable; otherwise the interval is recreated after every successful fetch.
+  const projectsCountRef = useRef(projects.length);
+  useEffect(() => { projectsCountRef.current = projects.length; }, [projects.length]);
+
   const fetchProjects = useCallback(async () => {
     try {
       setFetchError(null);
@@ -25,15 +30,15 @@ export default function Home() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (json.data) setProjects(json.data);
-    } catch (err) {
+    } catch {
       // Only show error on initial load, not during polling
-      if (projects.length === 0) {
+      if (projectsCountRef.current === 0) {
         setFetchError("Failed to load projects. Check that the server is running.");
       }
     } finally {
       setLoading(false);
     }
-  }, [projects.length]);
+  }, []);
 
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | null = null;

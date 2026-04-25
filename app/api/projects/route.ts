@@ -37,8 +37,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "name and path required" }, { status: 400 });
   }
   try {
-    await addProject(name, path);
-    return NextResponse.json({ data: { name, path } }, { status: 201 });
+    // Return the canonical (realpath-resolved) registered path so callers
+    // — like the Add Project dialog's findIndex — match it correctly.
+    const registered = await addProject(name, path);
+    return NextResponse.json({ data: registered }, { status: 201 });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 400 });
