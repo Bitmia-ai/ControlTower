@@ -3,7 +3,7 @@
   "iteration": 107,
   "started_at": "2026-04-25T21:40:53Z",
   "phase": "TRIAGE",
-  "phase_status": "ready",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
