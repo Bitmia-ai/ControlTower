@@ -315,3 +315,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean Turbopack, 656/656 tests, tagged last-good-deploy-iter91-bl061)
 - **Visual check:** PARTIAL — Playwright MCP browser locked by concurrent Chrome session; source code audit confirms 0 `<kbd>` elements in all components; feature objective fully achieved
 - **Documenter:** running in background
+
+## Iteration 97 — 2026-04-25T19:14:00Z
+- **Built:** BL-066 Redesign home page project cards and improve dashboard visual hierarchy
+- **Review findings:** 0C 0M 0m — clean (0 review cycles, PASS first pass)
+- **Tests:** 15 new unit tests added, 691 total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (no tester entry this iteration)
+- **Deployed:** SUCCESS (production build clean, 691/691 tests, tagged last-good-deploy-iter97-bl066)
+- **Visual check:** PASS — light and dark mode verified via Playwright; eyebrow label, h1, count subtitle, border-b divider, status top borders (green/amber/zinc), monospace paths, phase footer strip, Start/Stop buttons all confirmed
+- **Documenter:** running in background

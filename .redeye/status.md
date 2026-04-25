@@ -1,30 +1,46 @@
-# DEPLOY status — BL-066 (iteration 97)
+# VERIFY status — BL-066 (iteration 97)
 
-## Deploy Result
+## Health Assessment
+
+**Status: HEALTHY**
+**Confidence: HIGH**
+**Phase advanced to: MERGE**
+
+## Deploy Result (from DEPLOY phase)
 
 - Command: `NODE_ENV=production npm run build`
 - Result: SUCCESS (exit 0)
-- TypeScript: clean (no errors, finished in 2.4s)
-- Turbopack compiled in 1928ms
+- Tests: 691/691 pass
 
-## Key Routes Verified
+## Visual Verification
 
-- `/` — home page present
-- `/project/[id]` — project page present
-- All API routes present (start, stop, restart, pause, steer, answer, init, backlog, cost, sessions, stream, etc.)
+- Tool: Playwright MCP browser
+- URL: http://localhost:3200
+- Light mode screenshot: home-page-dark.png (taken in light mode)
+- Dark mode screenshot: home-page-dark-mode.png
 
-## Tests
+### Checklist
 
-- Command: `npx vitest run`
-- Result: 691/691 passed (68 test files)
-- Duration: 3.40s
+| Item | Result |
+|---|---|
+| "Control Tower" eyebrow label (monospace, small, muted) | PASS |
+| "Projects" h1 heading | PASS |
+| Project count subtitle ("3 projects registered") | PASS |
+| border-b divider below header | PASS |
+| Colored top border (3px): green/amber/zinc | PASS |
+| Project name prominently displayed | PASS |
+| Project path in monospace smaller text | PASS |
+| Phase footer section at card bottom | PASS |
+| Start/Stop button in footer | PASS |
+| Dark mode — all elements render correctly | PASS |
+| Console errors (new regressions) | NONE |
 
-## Warnings (non-blocking, pre-existing)
+## User Tester Feedback
 
-- Workspace root lockfile detection warning
-- Middleware deprecation warning
-- NFT list trace warning for next.config.ts/claude-runner.ts
+No entry for this iteration.
 
-## Recommendation
+## Decision
 
-VERIFY — build clean, all 691 tests pass.
+HEALTHY — all spec requirements visually confirmed in both light and dark mode.
+Tagged: last-good-deploy-iter97-bl066
+Next: MERGE BL-066

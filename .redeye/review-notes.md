@@ -50,3 +50,31 @@ M-tier: 5 changed files (components/project-card.tsx, components/project-card.te
 
 0 Critical, 0 Major, 3 Minor (all pre-existing patterns, none requiring action).
 Recommendation: **DEPLOY**
+
+---
+
+## VERIFY Result — Iteration 97
+
+**Agent:** VERIFY (claude-sonnet-4-6)
+**Date:** 2026-04-25T19:14:00Z
+**Verdict:** PASS
+
+### Visual Checklist
+
+| Item | Result |
+|---|---|
+| "Control Tower" eyebrow label (monospace, small, muted) | PASS |
+| "Projects" h1 heading | PASS |
+| Project count subtitle ("3 projects registered") | PASS |
+| border-b divider below header | PASS |
+| Colored top border (3px): green (running), amber (backlog-empty/questions), zinc (idle) | PASS |
+| Project name prominently displayed | PASS |
+| Project path in monospace smaller text | PASS |
+| Phase footer section at card bottom | PASS |
+| Start / Stop button in footer | PASS |
+| Dark mode — all elements render correctly | PASS |
+| Console errors (new regressions) | NONE — 1 pre-existing SSR 500 (known Turbopack prerender issue, already documented in layout.tsx) |
+
+### Outcome
+
+Environment: healthy. Feature fully verified. Tagged `last-good-deploy-iter97-bl066`. Phase advanced to MERGE.

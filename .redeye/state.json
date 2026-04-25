@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 97,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "verify",
+  "phase": "merge",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
@@ -31,11 +31,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-063 — Steer tab fully functional (iteration 94)",
+    "last_commit": "redeye: verify BL-066 — visual check pass",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter94-bl063",
+    "last_good_deploy_tag": "last-good-deploy-iter97-bl066",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 95: backlog exhausted. Q-011 filed. Waiting for CEO direction."
+    "notes": "VERIFY iter 97: BL-066 visual check pass. Both light and dark mode confirmed. Ready for MERGE."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -46,10 +46,11 @@
         "PLAN",
         "BUILD",
         "REVIEW",
-        "DEPLOY"
+        "DEPLOY",
+        "VERIFY"
       ],
-      "outcome": "TRIAGE: env healthy. 676/676 tests pass. Build clean. 4 pending items: BL-065 (Won't Do section, P2), BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab polish, P2). Selected BL-066 (P1) per CEO directive to use designer subagent + frontend skill for home page visual redesign. PLAN: spec docs/specs/BL-066-home-page-redesign.md with precision-instrument design direction. BUILD: ProjectCard redesigned with status top border (green=running, amber=questions pending, zinc=idle), animate-ping dot, phase footer strip with PHASE_COLORS tint, hover-reveal trash, monospace path, inline red-tinted delete confirmation panel. Home page got Control Tower eyebrow + border-b divider. 691/691 tests pass (15 new tests). Build clean.",
-      "next": "REVIEW BL-066",
+      "outcome": "TRIAGE: env healthy. 676/676 tests pass. Build clean. 4 pending items: BL-065 (Won't Do section, P2), BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab polish, P2). Selected BL-066 (P1) per CEO directive to use designer subagent + frontend skill for home page visual redesign. PLAN: spec docs/specs/BL-066-home-page-redesign.md with precision-instrument design direction. BUILD: ProjectCard redesigned with status top border (green=running, amber=questions pending, zinc=idle), animate-ping dot, phase footer strip with PHASE_COLORS tint, hover-reveal trash, monospace path, inline red-tinted delete confirmation panel. Home page got Control Tower eyebrow + border-b divider. 691/691 tests pass (15 new tests). Build clean. VERIFY: visual check pass — all spec elements confirmed in both light and dark mode.",
+      "next": "MERGE BL-066",
       "timestamp": "2026-04-25T11:20:00Z"
     },
     {
@@ -151,7 +152,7 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 94,
+    "last_verify_iteration": 97,
     "last_deploy_iteration": 97,
     "current_iteration": 95,
     "questions_awaiting_ceo": 0,
