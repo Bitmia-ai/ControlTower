@@ -2,6 +2,21 @@
 
 ## CEO Requests
 
+### BL-060: When phase=waiting_for_ceo and CTO has exited, the dashboard should clearly show blocked state on the project card (banner/badge) with CTA to answer the inbox question or hit Start. Today the card looks identical to running, leading to confusion when the user replies and nothing happens. Also: when state is waiting_for_ceo and inbox.md is updated with an answer, the dashboard should auto-start the CTO without manual intervention.
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-059: Dashboard shows running when CTO process is dead. The 60s log-freshness fallback in discoverPid() returns pid=-1 (assume running) when session-cto.jsonl was modified recently — but that just means the last subagent flushed logs, not that the CTO is alive. Fix: trust PID file or process-table lookup over log freshness. Reduce the fallback window to 5s and require BOTH log freshness AND a writable pidfile.
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-058: schedules UI needs to be operative
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### BL-057: Mobile-responsive layout — make the dashboard usable on phones and tablets
 - **Type:** feature
 - **Priority:** P1

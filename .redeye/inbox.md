@@ -2,6 +2,13 @@
 
 ## Questions (Open)
 
+
+## Credentials Needed
+
+_(No credential requests yet.)_
+
+## Answered / Provided
+
 ### Q-010: Backlog fully cleared — what should we build next? (after BL-001–057 complete)
 - **From:** CTO (TRIAGE iter 89)
 - **Context:** All 57 backlog items (BL-001 through BL-057) are now done or won't-do. The most recent item was BL-057 (mobile-responsive layout), which shipped in iteration 88.
@@ -15,12 +22,8 @@
   6. Something else entirely — your call
 - **Default (7-day):** If no response received, proceed with option 1 (performance / Lighthouse audit)
 - **Asked:** 2026-04-25 (iter 89)
+- **Answer:** Already added backlog items
 
-## Credentials Needed
-
-_(No credential requests yet.)_
-
-## Answered / Provided
 
 ### Q-009: Backlog fully cleared — what should we build next? (after BL-001–056 complete)
 - **From:** CTO (TRIAGE iter 87)
