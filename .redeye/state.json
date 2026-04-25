@@ -8,7 +8,7 @@
   "worktree_branch": null,
   "backlog_item": "BL-057",
   "backlog_title": "Mobile-responsive layout — make the dashboard usable on phones and tablets",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-057-mobile-responsive.md",
   "phase_progress": {
     "plan_complete": false,
     "build_complete": false,

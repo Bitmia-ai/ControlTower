@@ -1,25 +1,38 @@
-# TRIAGE Status — Iteration 88
+# PLAN Status — Iteration 88
 
-**Phase:** TRIAGE complete
-**Date:** 2026-04-25T08:23Z
-**Result:** BL-057 selected — mobile-responsive layout (P1)
+**Phase:** PLAN complete
+**Date:** 2026-04-25T08:27Z
+**Result:** BL-057 spec written — 8 sub-tasks, mobile-responsive layout
 
 ---
 
-## Triage Summary
+## Triage
 
-- **Tester reports:** 0 (none pending)
-- **Open CEO questions:** 0 (Q-009 just incorporated)
-- **Overdue schedules:** 0
-- **Env health:** HIGH confidence, healthy
-- **Backlog state:** 1 CEO request pending (BL-057)
+- No `pending-triage` items in Discovered section
+- BL-057 confirmed as highest-priority planned item (only item)
+- No CEO questions needed — mobile-responsive layout is well-defined with no external dependencies
 
-## Action Taken
+## Spec Written
 
-INCORPORATE just ran, adding BL-057 (mobile-responsive layout, P1). TRIAGE selected BL-057 as the next item to plan and build.
+**File:** `docs/specs/BL-057-mobile-responsive.md`
+**Item:** BL-057 — Mobile-responsive layout
 
-No background agent respawn needed (last deploy was iter 86, user_tester already spawned).
+**8 sub-tasks:**
+- T1 (S): Global layout and home page — header, "Add Project" button, project card touch targets
+- T2 (S): Project layout header and mission control page — layout audit, grid stack verification
+- T3 (S): Controls card button layout — flex-wrap, min-h touch targets
+- T4 (S): Sparkline chart responsive width — SVG width="100%" fix
+- T5 (S): Backlog list and detail page — badge flex-wrap, dl grid columns
+- T6 (M): History, schedules, and live pages — phase chip overflow, transcript viewer code blocks
+- T7 (S): Unit tests for responsive behavior — class assertions in vitest
+- T8 (S): Playwright E2E spec — 375×667 and 768×1024 viewport tests
+
+**Architecture decisions:**
+- No new libraries — Tailwind responsive prefixes only
+- Mobile-first column stacking (default 1-col, md: 3-col)
+- Touch targets ≥44×44px (WCAG 2.5.5)
+- Overflow-x containment for transcript cards and phase chip strips
 
 ## Next Phase
 
-**PLAN** — BL-057: Mobile-responsive layout — make the dashboard usable on phones and tablets
+**BUILD** — Implement all 8 sub-tasks in BL-057 spec
