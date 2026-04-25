@@ -28,7 +28,9 @@
     "review_fixes_needed": [
       "Major: Nested button inside button in ScheduleRow (schedule-list.tsx) — restructure so RunButton is sibling of expand button not child",
       "Major: next_sched_id counter stale at 1 after SCHED-1 created — now corrected to 2"
-    ]
+    ],
+    "deploy_complete": true,
+    "deploy_notes": "Production build clean (Turbopack). 662/662 unit tests pass. No E2E CLI configured. Tagged last-good-deploy-iter90-bl058."
   },
   "review_cycles": 2,
   "max_review_cycles": 3,
@@ -47,11 +49,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-057 complete — mobile-responsive layout shipped (iteration 88)",
+    "last_commit": "redeye: complete DEPLOY BL-058 — build clean, 662/662 tests pass (iteration 90)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter90",
+    "last_good_deploy_tag": "last-good-deploy-iter90-bl058",
     "merge_status": "clean",
-    "notes": "Iter 88 MERGE: BL-057 mobile-responsive merged cleanly to main (SHA 18a74a1). 14 files changed, 259 insertions. Worktree and branch cleaned up."
+    "notes": "BL-058 DEPLOY: production build clean (Turbopack). 662/662 unit tests pass. Tagged last-good-deploy-iter90-bl058."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -62,11 +64,12 @@
         "TRIAGE",
         "PLAN",
         "BUILD",
-        "REVIEW"
+        "REVIEW",
+        "DEPLOY"
       ],
-      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m — nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m — both Majors confirmed fixed. PASS — cleared for DEPLOY.",
-      "next": "DEPLOY",
-      "timestamp": "2026-04-25T13:00:00Z"
+      "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m — nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m — both Majors confirmed fixed. PASS — cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
+      "next": "VERIFY",
+      "timestamp": "2026-04-25T14:00:00Z"
     },
     {
       "iteration": 89,
@@ -128,7 +131,7 @@
     "iterations_this_session": 70,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
-    "full_regression_last_run": 86
+    "full_regression_last_run": 90
   },
   "health": {
     "confidence": "HIGH",

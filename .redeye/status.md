@@ -1,24 +1,34 @@
-# Triage Status — Iteration 89
+# DEPLOY Status — BL-058 (Schedules UI Operative) — Iteration 90
 
-**Timestamp:** 2026-04-25T11:10:00Z
-**Phase:** waiting_for_ceo
-**Last item shipped:** BL-057 (mobile-responsive layout, iter 88)
+**Timestamp:** 2026-04-25T14:00:00Z
+**Phase:** DEPLOY
+**Phase status:** complete
 
-## Triage Findings
+## Build
 
-- Steering: no STOP/PAUSE directive
-- Tester reports: none
-- Scheduled tasks: none
-- Inbox: no open CEO answers
-- Active claims: none from other instances
-- Backlog: ALL items BL-001 through BL-057 are done or wont-do
+**Command:** `NODE_ENV=production npm run build`
+**Result:** PASS — compiled successfully in 1814ms (Turbopack)
 
-## Action Taken
+All routes dynamic (ƒ), including new `/api/projects/[id]/schedules/run` and `/project/[id]/schedules`. No prerender errors. One Turbopack NFT warning (pre-existing, unrelated to BL-058).
 
-Backlog fully exhausted. Filed Q-010 asking CEO what to build next, with 6 options and a 7-day default (option 1: performance / Lighthouse audit).
+## Tests
 
-Phase set to: **waiting_for_ceo**
+**Unit/integration:** `npx vitest run`
+**Result:** 662/662 passed (67 test files) — PASS
 
-## Next Step
+**E2E:** No CLI command configured — skipped.
 
-Awaiting CEO response to Q-010 via .redeye/inbox.md Answered section. Will INCORPORATE on next /redeye:start invocation.
+## Regression tier
+
+This is deploy iteration 90; last full regression was iter 86 (4 deploys ago, threshold 3). Full regression overdue per counter but E2E has no configured CLI command. Unit/integration suite treated as regression proxy — all 662 pass.
+
+## Git
+
+**Tag:** `last-good-deploy-iter90-bl058`
+**Branch:** main
+
+## Verdict
+
+**RECOMMEND: VERIFY**
+
+Deploy succeeded. Production build clean. All 662 tests pass. Proceed to VERIFY to confirm schedules UI is operative at http://localhost:3200.
