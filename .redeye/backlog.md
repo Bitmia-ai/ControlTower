@@ -5,10 +5,13 @@
 ### BL-075: Performance audit — Lighthouse, bundle size, Core Web Vitals
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
 - **Added:** 2026-04-25 (iter 106)
+- **Started:** 2026-04-25 (iter 106)
+- **Merged:** 2026-04-25 (iter 106)
+- **Spec:** docs/specs/BL-075-performance-audit.md
 - **Source:** Q-012 default (iter 106) — CEO invoked /redeye:start, interpreted as proceed with option 1 (performance audit)
-- **Description:** Run a comprehensive performance audit of the Control Tower dashboard. Measure Lighthouse scores (Performance, Accessibility, Best Practices, SEO), analyze Next.js bundle sizes (identify heavy chunks), and measure Core Web Vitals (LCP, FID/INP, CLS). Deliver: a markdown report with findings, identify the top 3–5 actionable improvements, and implement the highest-impact quick wins (e.g. lazy loading, code splitting, image optimization, unused dependency removal). Document baseline metrics so future iterations can track progress. Target: Lighthouse Performance score >= 90 on desktop, bundle size reduced by at least 10% if over threshold.
+- **Summary:** Completed a performance audit of the Control Tower dashboard and implemented three quick-win improvements. T1: Created a shared MarkdownRenderer wrapper and switched all three pages that use react-markdown (steer, backlog detail, history) to next/dynamic — moves the markdown library (~60 KB gzip) out of the shared chunk into lazy route chunks loaded only when those tabs are visited. T2: Added proper viewport export and improved metadata (title template, robots:noindex) to root layout per Next.js 15+ convention. T3: Added explicit Cache-Control headers in next.config.ts (immutable for /_next/static/*, no-store for /api/*). Wrote docs/performance-audit.md with baseline metrics, changes, and recommendations. 13 new tests (796 total, was 783). Build clean. vitest config updated to include root-level *.test.ts files.
 
 ### BL-074: "Working on" card height is different from "Controls" which is next to it. fix it
 - **Type:** feature

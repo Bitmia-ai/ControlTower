@@ -1,24 +1,16 @@
 {
   "schema_version": 1,
-  "iteration": 106,
-  "started_at": "2026-04-25T11:04:14Z",
-  "phase": "VERIFY",
-  "phase_status": "complete",
+  "iteration": 107,
+  "started_at": "2026-04-25T21:40:53Z",
+  "phase": "TRIAGE",
+  "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-075",
-  "backlog_title": "Performance audit — Lighthouse, bundle size, Core Web Vitals",
-  "spec_file": "docs/specs/BL-075-performance-audit.md",
-  "phase_progress": {
-    "incorporate": "Q-012 resolved. CEO /redeye:start = proceed with default (option 1). BL-075 (performance audit) added to backlog. Q-012 moved to Answered.",
-    "triage": "Env healthy. 783/783 tests pass. 1 pending item: BL-075 (performance audit, P1). Selected BL-075.",
-    "plan": "Spec written: docs/specs/BL-075-performance-audit.md. 5 tasks: T1 dynamic import react-markdown (3 pages), T2 viewport metadata (layout.tsx), T3 cache headers (next.config.ts), T4 performance audit report (docs/), T5 tests (13 new). Low risk, no new deps.",
-    "build": "T1: MarkdownRenderer wrapper + next/dynamic in steer, backlog detail, history (7 tests). T2: viewport + metadata title template + robots:noindex in layout.tsx (3 tests). T3: headers() in next.config.ts with immutable/no-store rules (3 tests). T4: docs/performance-audit.md written. T5: 13 new tests, vitest include updated. 796/796 tests pass, build clean.",
-    "review": "S-tier (11 files). 0C/0M/0m PASS.",
-    "deploy": "Build clean. 796/796 tests pass. Tagged last-good-deploy-iter106-bl075.",
-    "verify": "All artifacts confirmed: no static ReactMarkdown imports in 3 pages, MarkdownRenderer used in all 3, viewport exported, title template present, robots:noindex, headers() in next.config, performance-audit.md exists. 796/796 tests pass. PASS."
-  },
-  "review_cycles": 1,
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -35,20 +27,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete DEPLOY BL-075 — 796/796 tests, build clean (iteration 106)",
+    "last_commit": "redeye: merge BL-075 — performance audit complete (iteration 106)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
     "merge_status": "clean",
-    "notes": "Iter 106 VERIFY complete. All artifacts confirmed. 796/796 tests pass. Ready for MERGE."
+    "notes": "MERGE iter 106: BL-075 performance audit merged. 796/796 tests pass. Build clean. VERIFY: no static ReactMarkdown imports in changed pages, MarkdownRenderer dynamic import confirmed, viewport exported, title template present, robots:noindex, headers() in next.config, docs/performance-audit.md written. Transitioning to TRIAGE iter 107."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 106,
-      "phases": ["INCORPORATE", "TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "INCORPORATE: Q-012 resolved, BL-075 added. TRIAGE: env healthy, 783/783 tests, selected BL-075. PLAN: spec written. BUILD: 13 new tests (796 total), build clean. REVIEW: S-tier, 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed, 796/796 tests PASS.",
-      "next": "MERGE BL-075",
-      "timestamp": "2026-04-25T22:10:00Z"
+      "phases": ["INCORPORATE", "TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "INCORPORATE: Q-012 resolved, BL-075 added. TRIAGE: env healthy, 783/783 tests, selected BL-075. PLAN: spec written. BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated — 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed. MERGE: BL-075 marked done.",
+      "next": "TRIAGE iter 107",
+      "timestamp": "2026-04-25T21:40:53Z"
     },
     {
       "iteration": 105,
@@ -86,7 +78,7 @@
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 77,
+    "iterations_this_session": 78,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -99,7 +91,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 106,
     "last_deploy_iteration": 106,
-    "current_iteration": 106,
+    "current_iteration": 107,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -126,7 +118,8 @@
     "BL-070": 52.84,
     "BL-067": 0.20593650000006392,
     "BL-065": 51.95,
-    "BL-068": 3.44
+    "BL-068": 3.44,
+    "BL-075": 0
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
