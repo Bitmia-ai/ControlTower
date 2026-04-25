@@ -26,10 +26,11 @@ export function useToast(): ToastContextValue {
   return ctx;
 }
 
-let _idCounter = 0;
 function nextId(): string {
-  _idCounter += 1;
-  return `toast-${Date.now()}-${_idCounter}`;
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `toast-${crypto.randomUUID()}`;
+  }
+  return `toast-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {

@@ -59,6 +59,7 @@ describe("usePhaseNotifications", () => {
     expect(NOTIFIABLE_PHASES.has("REVIEW")).toBe(true);
     expect(NOTIFIABLE_PHASES.has("DEPLOY")).toBe(true);
     expect(NOTIFIABLE_PHASES.has("MERGE")).toBe(true);
+    expect(NOTIFIABLE_PHASES.has("VERIFY")).toBe(true);
     expect(NOTIFIABLE_PHASES.has("STABILIZE")).toBe(true);
     expect(NOTIFIABLE_PHASES.has("TRIAGE")).toBe(false);
     expect(NOTIFIABLE_PHASES.has("PLAN")).toBe(false);
@@ -144,6 +145,29 @@ describe("usePhaseNotifications", () => {
     expect(showToastSpy).toHaveBeenCalledOnce();
     const [message] = showToastSpy.mock.calls[0];
     expect(message).toMatch(/REVIEW/);
+  });
+
+  it("VERIFY transition uses same 'completed' phrasing as MERGE", () => {
+    setupNotification("default");
+
+    const { rerender } = renderHook(
+      ({ phase, title }: { phase: string | null; title: string | null }) =>
+        usePhaseNotifications(phase, title, 1),
+      {
+        wrapper: Wrapper,
+        initialProps: {
+          phase: "DEPLOY" as string | null,
+          title: "Verify it" as string | null,
+        },
+      }
+    );
+
+    rerender({ phase: "VERIFY", title: "Verify it" });
+
+    expect(showToastSpy).toHaveBeenCalledOnce();
+    const [message] = showToastSpy.mock.calls[0];
+    expect(message).toMatch(/completed/i);
+    expect(message).toMatch(/Verify it/);
   });
 
   it("MERGE transition uses 'completed' phrasing", () => {

@@ -13,6 +13,7 @@ export const NOTIFIABLE_PHASES: ReadonlySet<string> = new Set([
   "REVIEW",
   "DEPLOY",
   "MERGE",
+  "VERIFY",
   "STABILIZE",
 ]);
 
@@ -26,6 +27,7 @@ function composeMessage(phase: string, backlogTitle: string | null): string {
     case "DEPLOY":
       return `RedEye entered DEPLOY phase${titleSuffix}`;
     case "MERGE":
+    case "VERIFY":
       return `RedEye completed${backlogTitle ? ` ${backlogTitle}` : " current task"}`;
     case "STABILIZE":
       return `RedEye entered STABILIZE — environment broken${titleSuffix}`;
@@ -122,22 +124,14 @@ export function usePhaseNotifications(
         // toast layer must never break the page
       }
 
-      const N = (globalThis as { Notification?: new (
-        title: string,
-        options?: { body?: string }
-      ) => unknown; } & {
-        Notification?: { permission: NotificationPermission };
+      const N = (globalThis as {
+        Notification?: (new (title: string, options?: { body?: string }) => unknown) & {
+          permission: NotificationPermission;
+        };
       }).Notification;
-      if (
-        N &&
-        (globalThis as { Notification?: { permission: NotificationPermission } })
-          .Notification?.permission === "granted"
-      ) {
+      if (N && N.permission === "granted") {
         try {
-          new (N as new (t: string, o?: { body?: string }) => unknown)(
-            "Control Tower",
-            { body: message }
-          );
+          new N("Control Tower", { body: message });
         } catch {
           // some browsers throw on Notification ctor outside SW context
         }
