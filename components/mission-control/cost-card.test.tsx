@@ -48,7 +48,7 @@ describe("CostCard sparkline integration", () => {
       history: { ok: true, data: { sessions: [] } },
     });
     render(<CostCard projectId={1} running={true} />);
-    await waitFor(() => expect(screen.getByText(/this session/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/^Session$/)).toBeTruthy());
     expect(document.querySelector("svg[data-testid='sparkline']")).toBeNull();
   });
 
@@ -61,7 +61,7 @@ describe("CostCard sparkline integration", () => {
       },
     });
     render(<CostCard projectId={1} running={true} />);
-    await waitFor(() => expect(screen.getByText(/this session/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/^Session$/)).toBeTruthy());
     expect(document.querySelector("svg[data-testid='sparkline']")).toBeNull();
   });
 
@@ -97,10 +97,11 @@ describe("CostCard sparkline integration", () => {
       history: { ok: false, throws: true },
     });
     render(<CostCard projectId={1} running={true} />);
-    await waitFor(() => expect(screen.getByText(/this session/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/^Session$/)).toBeTruthy());
     expect(document.querySelector("svg[data-testid='sparkline']")).toBeNull();
     // Cost scalars still display
-    expect(screen.getByText(/this session/)).toBeTruthy();
+    expect(screen.getByText(/^Session$/)).toBeTruthy();
+    expect(screen.getByText(/^Total$/)).toBeTruthy();
   });
 
   it("renders 'Last 10 sessions' when history returns full 10", async () => {

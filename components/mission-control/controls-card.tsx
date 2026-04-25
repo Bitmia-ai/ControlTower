@@ -144,7 +144,7 @@ export function ControlsCard({
   const forceStopping = pending === "force-stop";
 
   return (
-    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] ${stalled ? "border-t-amber-500" : "border-t-zinc-300 dark:border-t-zinc-700"} rounded-lg p-5 h-full`}>
+    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] ${stalled ? "border-t-amber-500" : "border-t-zinc-300 dark:border-t-zinc-700"} rounded-lg p-4 h-full`}>
       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-4">
         Controls
       </p>
@@ -230,7 +230,7 @@ export function ControlsCard({
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="border-t border-gray-100 dark:border-zinc-800 pt-3 mt-1 flex flex-wrap gap-2">
           <button
             onClick={onSteer}
             className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded-md border border-gray-200 dark:border-zinc-700 transition"

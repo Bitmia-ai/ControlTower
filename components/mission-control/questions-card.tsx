@@ -12,29 +12,31 @@ export function QuestionsCard({ questions, onAnswer }: QuestionsCardProps) {
   const hasPending = pending.length > 0;
   const first = pending[0];
 
+  // BL-067: When empty, collapse to a minimal strip — no eyebrow label, no
+  // card chrome, just a quiet status row that doesn't compete with the hero.
+  if (!hasPending) {
+    return (
+      <div className="flex items-center gap-2 px-4 py-2.5 rounded-md border border-gray-100 dark:border-zinc-800">
+        <span className="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-zinc-700" />
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-gray-400 dark:text-zinc-600">
+          No pending questions
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`border border-t-[3px] rounded-lg p-5 transition-colors ${
-        hasPending
-          ? "border-gray-200 dark:border-zinc-800 border-t-red-500 bg-red-50 dark:bg-red-950/50"
-          : "bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 border-t-zinc-300 dark:border-t-zinc-700"
-      }`}
-    >
+    <div className="border border-t-[3px] rounded-lg p-5 transition-colors border-gray-200 dark:border-zinc-800 border-t-red-500 bg-red-50 dark:bg-red-950/50">
       <div className="flex items-center justify-between mb-3">
         <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500">
           Questions
-          {hasPending && (
-            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-xs font-bold h-4 min-w-[1rem] px-1">
-              {pending.length}
-            </span>
-          )}
+          <span className="ml-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-xs font-bold h-4 min-w-[1rem] px-1">
+            {pending.length}
+          </span>
         </p>
       </div>
 
-      {!hasPending ? (
-        <span className="text-gray-400 dark:text-zinc-600 text-sm">No pending questions</span>
-      ) : (
-        <div className="space-y-3">
+      <div className="space-y-3">
           <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug">{first.question}</p>
           {first.context && (
             <p className="text-xs text-gray-500 dark:text-zinc-500 line-clamp-2">{first.context}</p>
@@ -62,8 +64,7 @@ export function QuestionsCard({ questions, onAnswer }: QuestionsCardProps) {
               </span>
             )}
           </button>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

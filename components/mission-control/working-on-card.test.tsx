@@ -115,6 +115,39 @@ describe("WorkingOnCard — running with phase, no task", () => {
   });
 });
 
+describe("WorkingOnCard — BL-067 hero treatment", () => {
+  it("uses p-6 and min-h-[160px] (hero padding/height)", () => {
+    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-001" });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    const card = container.firstElementChild as HTMLElement | null;
+    expect(card?.className).toContain("p-6");
+    expect(card?.className).toContain("min-h-[160px]");
+  });
+
+  it("applies green wash bg when running=true", () => {
+    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-001" });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    const card = container.firstElementChild as HTMLElement | null;
+    expect(card?.className).toContain("bg-green-50/30");
+  });
+
+  it("does NOT apply green wash bg when running=false", () => {
+    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-001" });
+    const { container } = render(<WorkingOnCard state={state} running={false} />);
+    const card = container.firstElementChild as HTMLElement | null;
+    expect(card?.className).not.toContain("bg-green-50/30");
+    expect(card?.className).toContain("bg-white");
+  });
+
+  it("renders task title with text-lg font-semibold (hero typography)", () => {
+    const state = makeState({ phase: "BUILD", backlog_title: "My Feature", backlog_item: "BL-001" });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    const title = container.querySelector("p.text-lg.font-semibold");
+    expect(title).toBeTruthy();
+    expect(title?.textContent).toContain("My Feature");
+  });
+});
+
 describe("WorkingOnCard — running with task", () => {
   it("renders task title", () => {
     const state = makeState({ phase: "BUILD", backlog_title: "My Feature", backlog_item: "BL-001" });

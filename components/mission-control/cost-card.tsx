@@ -94,25 +94,29 @@ export function CostCard({ projectId, running }: CostCardProps) {
       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">Cost</p>
 
       {loading ? (
-        <div className="flex flex-wrap gap-x-6 gap-y-2">
-          <div className="h-4 w-40 bg-gray-200 dark:bg-zinc-700 rounded animate-pulse" />
-          <div className="h-4 w-32 bg-gray-200 dark:bg-zinc-700 rounded animate-pulse" />
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-gray-200 dark:bg-zinc-700 rounded animate-pulse" />
+          <div className="h-4 w-full bg-gray-200 dark:bg-zinc-700 rounded animate-pulse" />
         </div>
       ) : (
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <div className="flex items-baseline gap-2">
+          {/* BL-067: Stack session/total rows vertically for the 300px right rail. */}
+          <div className="space-y-1">
+            <div className="flex items-baseline justify-between">
+              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500">
+                Session
+              </span>
               <span className="text-base font-semibold text-gray-900 dark:text-zinc-100">
                 {data ? formatCost(data.session) : "—"}
               </span>
-              <span className="text-xs text-gray-500 dark:text-zinc-500">this session (est.)</span>
             </div>
-            <div className="hidden md:block w-px h-4 bg-gray-200 dark:bg-zinc-700 self-center" />
-            <div className="flex items-baseline gap-2">
+            <div className="flex items-baseline justify-between">
+              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500">
+                Total
+              </span>
               <span className="text-sm font-medium text-gray-700 dark:text-zinc-300">
                 {data ? formatCost(data.total) : "—"}
               </span>
-              <span className="text-xs text-gray-500 dark:text-zinc-500">total (est.)</span>
             </div>
           </div>
 

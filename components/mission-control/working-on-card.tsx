@@ -49,8 +49,12 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
     ? "border-t-amber-400"
     : "border-t-zinc-300 dark:border-t-zinc-700";
 
+  // BL-067: Hero treatment — increase padding, min-height, and add subtle
+  // green wash when the loop is actively running.
+  const runningWash = running ? "bg-green-50/30 dark:bg-green-950/10" : "bg-white dark:bg-zinc-900";
+
   return (
-    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] ${topBorder} rounded-lg p-5 h-full`}>
+    <div className={`${runningWash} border border-gray-200 dark:border-zinc-800 border-t-[3px] ${topBorder} rounded-lg p-6 min-h-[160px] h-full`}>
       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
         Working On
       </p>
@@ -112,7 +116,7 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
         <div className="space-y-3">
           <div className="flex items-start gap-2">
             <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-green-500" />
-            <p className="text-base font-medium text-gray-900 dark:text-zinc-100 leading-snug">
+            <p className="text-lg font-semibold text-gray-900 dark:text-zinc-100 leading-snug">
               {projectId !== undefined && state?.backlog_item ? (
                 <BacklogId
                   id={state.backlog_item}

@@ -59,8 +59,8 @@ HealthCard
 ## Sub-tasks
 
 - **T1 (M) [done]:** Restructure `app/project/[id]/page.tsx` — new asymmetric grid, remove section labels, reorganize card positions
-- **T2 (M) [in-progress]:** Update WorkingOnCard (hero padding/font), QuestionsCard (empty strip), ControlsCard (compact rail), CostCard (stacked layout)
-- **T3 (S) [pending]:** Tests + build verification — fix any DOM test assertions, `npx vitest run`, `npm run build`
+- **T2 (M) [done]:** Update WorkingOnCard (hero padding/font), QuestionsCard (empty strip), ControlsCard (compact rail), CostCard (stacked layout)
+- **T3 (S) [done]:** Tests + build verification — fix any DOM test assertions, `npx vitest run`, `npm run build`
 
 ## Test Plan
 
