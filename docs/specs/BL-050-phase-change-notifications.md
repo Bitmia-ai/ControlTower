@@ -116,11 +116,11 @@ Create `usePhaseChangeNotifier(phase, backlog_title, onPhaseChange)`:
 - Callback update across renders: always invokes latest function (ref stability test).
 
 **Acceptance criteria:**
-- [ ] Hook exported from `lib/use-phase-change-notifier.ts`
-- [ ] 5+ unit tests, all passing
-- [ ] TypeScript strict — no `any`
+- [x] Hook exported from `lib/use-phase-change-notifier.ts`
+- [x] 5+ unit tests, all passing
+- [x] TypeScript strict — no `any`
 
-**Status:** pending
+**Status:** done
 
 ---
 
