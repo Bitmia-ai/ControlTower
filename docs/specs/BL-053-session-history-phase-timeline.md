@@ -201,7 +201,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Accessible chip strip aria-label
   - Dark/light mode correct via Tailwind dark: variants
   - All unit tests pass
-- **Status:** in-progress
+- **Status:** done
 
 ### T5 — Refactor `app/project/[id]/history/page.tsx`: add sessions section
 - **Size:** M
@@ -225,7 +225,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Sessions displayed newest-first
   - "Iteration Log" heading present
   - Build clean, all tests pass
-- **Status:** pending
+- **Status:** in-progress
 
 ### T6 — Playwright E2E: session history page renders sessions and phase chips
 - **Size:** S
