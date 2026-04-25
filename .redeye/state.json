@@ -33,21 +33,22 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-055 complete — Schedules tab shipped (iteration 85)",
-    "branch": "main",
+    "last_commit": "redeye: start BUILD (iteration 86)",
+    "branch": "feat/bl-056-tab-redesign",
     "last_good_deploy_tag": "last-good-deploy-iter85",
     "merge_status": "clean",
-    "notes": "Iter 86: TRIAGE complete. BL-056 (designer tab redesign, P2) selected. No open CEO questions, no overdue schedules, env healthy."
+    "notes": "Iter 86: TRIAGE+PLAN complete. BL-056 (designer tab redesign, P2) spec written (6 sub-tasks). Worktree at .worktrees/BL-056 on feat/bl-056-tab-redesign. BUILD in-progress."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 86,
       "phases": [
-        "TRIAGE"
+        "TRIAGE",
+        "PLAN"
       ],
-      "outcome": "TRIAGE: BL-055 done, BL-056 (designer tab redesign backlog/history/live, P2) selected. No CEO questions open, env healthy, no overdue schedules.",
-      "next": "PLAN",
+      "outcome": "TRIAGE: BL-055 done, BL-056 (designer tab redesign backlog/history/live, P2) selected. No CEO questions, env healthy. PLAN: Spec written (6 sub-tasks: T1 backlog redesign, T2 history redesign, T3 live redesign, T4 SectionHeader component, T5 quality gate, T6 E2E smoke). Worktree created at .worktrees/BL-056 on branch feat/bl-056-tab-redesign.",
+      "next": "BUILD",
       "timestamp": "2026-04-25T07:55:09Z"
     },
     {
