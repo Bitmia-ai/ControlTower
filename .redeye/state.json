@@ -8,7 +8,7 @@
   "worktree_branch": null,
   "backlog_item": "BL-073",
   "backlog_title": "steer tab, directives need to be rendered with markdown",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-073-steer-markdown.md",
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
