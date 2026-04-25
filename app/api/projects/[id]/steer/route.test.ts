@@ -143,11 +143,13 @@ describe("POST /api/projects/[id]/steer", () => {
     expect(json.error).toBe("disk full");
   });
 
-  it("returns 500 JSON when body is malformed JSON", async () => {
+  it("returns 400 JSON when body is malformed JSON", async () => {
+    // Was 500 before — readJsonBody now returns 400 (client error) on
+    // parse failure, which is the correct status for invalid input.
     mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
     const [req, ctx] = makePostRequest("0", {}, { malformed: true });
     const res = await POST(req, ctx);
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400);
     const json = await res.json();
     expect(json.error).toBeDefined();
     expect(typeof json.error).toBe("string");

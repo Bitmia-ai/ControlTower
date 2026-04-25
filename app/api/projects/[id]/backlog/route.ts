@@ -4,6 +4,7 @@ import { getNextBacklogId } from "@/lib/backlog-id";
 import { getSessionStatus, startSession } from "@/lib/session-manager";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
+import { readJsonBody } from "@/lib/json-body";
 import fs from "fs/promises";
 
 const MAX_BODY_BYTES = 64 * 1024;
@@ -20,11 +21,9 @@ export async function POST(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const cl = req.headers.get("content-length");
-    if (cl && parseInt(cl, 10) > MAX_BODY_BYTES) {
-      return NextResponse.json({ error: "Request body too large" }, { status: 413 });
-    }
-    const body = await req.json();
+    const r = await readJsonBody<Record<string, unknown>>(req, MAX_BODY_BYTES);
+    if (!r.ok) return r.response;
+    const body = r.data;
     const textRaw: unknown = body?.text;
     if (typeof textRaw !== "string" || textRaw.length === 0) {
       return NextResponse.json({ error: "Missing required field: text" }, { status: 400 });

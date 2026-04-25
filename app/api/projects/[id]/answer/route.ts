@@ -4,6 +4,7 @@ import { getSessionStatus, startSession } from "@/lib/session-manager";
 import { atomicWriteJson } from "@/lib/atomic-write";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { safeRedeyePath } from "@/lib/redeye-files";
+import { readJsonBody } from "@/lib/json-body";
 import fs from "fs/promises";
 
 const QUESTION_ID_RE = /^Q-\d+$/;
@@ -21,13 +22,11 @@ export async function POST(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    // Cap body size before parsing — defends against trivial DoS
-    const cl = req.headers.get("content-length");
-    if (cl && parseInt(cl, 10) > MAX_BODY_BYTES) {
-      return NextResponse.json({ error: "Request body too large" }, { status: 413 });
-    }
-
-    const body = await req.json();
+    // Stream-read with a hard byte cap. A Content-Length-only check is
+    // bypassable via Transfer-Encoding: chunked or a missing header.
+    const r = await readJsonBody<Record<string, unknown>>(req, MAX_BODY_BYTES);
+    if (!r.ok) return r.response;
+    const body = r.data;
     const questionId: unknown = body?.questionId;
     const answerRaw: unknown = body?.answer;
 
