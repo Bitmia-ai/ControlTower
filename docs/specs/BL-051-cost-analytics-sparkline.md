@@ -61,7 +61,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - Entries sorted ascending by mtimeMs (oldest first = left edge of chart)
   - Capped at `limit` most-recent files
   - Unit tests pass
-- **Status:** pending
+- **Status:** done
 
 ### T2 — `GET /api/projects/[id]/cost-history/route.ts`: cost-history endpoint
 - **Size:** S
@@ -74,7 +74,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - Response shape: `{ data: { sessions: Array<{ file: string, cost: number, mtimeMs: number }> } }`
   - Try-catch with structured error response
   - Unit tests pass
-- **Status:** pending
+- **Status:** in-progress
 
 ### T3 — `components/mission-control/sparkline-chart.tsx`: pure SVG sparkline
 - **Size:** M
