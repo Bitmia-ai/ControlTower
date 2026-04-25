@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 81,
   "started_at": "2026-04-25T01:11:15Z",
-  "phase": "VERIFY",
+  "phase": "MERGE",
   "phase_status": "complete",
   "backlog_item": "BL-051",
   "backlog_title": "Cost analytics — add cumulative cost chart to mission control",
@@ -28,10 +28,11 @@
     }
   },
   "git_state": {
-    "last_commit": "chore: mark BL-051 quality gate done — 519 tests pass (BL-051 task 6)",
-    "branch": "feature/BL-051-cost-analytics",
+    "last_commit": "redeye: merge BL-051 — Cost analytics — add cumulative cost chart to mission control",
+    "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter81",
-    "notes": "BL-051 VERIFY complete. Build clean, 519/519 unit tests, full E2E green including sparkline SVG verification. No Critical bugs. Visual check: home page and mission control render correctly; sparkline not visible in live dev server (expected — dev server runs main, feature branch not yet merged; E2E verified in worktree build). Env HEALTHY."
+    "merge_status": "clean",
+    "notes": "BL-051 merged cleanly to main. 6 commits, 10 files changed, 937 insertions. SparklineChart pure SVG component, cost-history lib and API, CostCard extended, 26 new unit tests (519 total), Playwright E2E. BL-051 marked done."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -43,11 +44,12 @@
         "BUILD",
         "REVIEW",
         "DEPLOY",
-        "VERIFY"
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "TRIAGE: BL-051 selected. PLAN: Spec written (6 sub-tasks, no CEO Qs). BUILD: All 6 sub-tasks done, 26 new unit tests (519 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 519/519 unit tests, full E2E regression PASS — sparkline SVG verified in DOM with mocked 5-session data, hidden with 0-session data, all existing flows green. VERIFY: PASS — home page and mission control render correctly, no Critical bugs, no user tester issues, tagged last-good-deploy-iter81. Env: HEALTHY.",
-      "next": "MERGE",
-      "timestamp": "2026-04-25T01:33:00Z"
+      "outcome": "TRIAGE: BL-051 selected. PLAN: Spec written (6 sub-tasks, no CEO Qs). BUILD: All 6 sub-tasks done, 26 new unit tests (519 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS, 519/519 unit tests, full E2E regression PASS — sparkline SVG verified in DOM with mocked 5-session data, hidden with 0-session data, all existing flows green. VERIFY: PASS — home page and mission control render correctly, no Critical bugs, no user tester issues, tagged last-good-deploy-iter81. Env: HEALTHY. MERGE: 6 commits merged cleanly to main, claims cleared, BL-051 marked done.",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T01:41:00Z"
     },
     {
       "iteration": 80,

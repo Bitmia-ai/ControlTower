@@ -29,9 +29,11 @@
 ### BL-051: Cost analytics — add cumulative cost chart to mission control
 - **Type:** feature
 - **Priority:** P2
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 81)
 - **Added:** 2026-04-25 (iter 79)
 - **Spec:** docs/specs/BL-051-cost-analytics-sparkline.md
+- **Summary:** Added a cumulative cost sparkline to the mission control Cost card. Each bar represents one session's cost over the last ten sessions, implemented as a pure SVG component with no new dependencies. The sparkline respects dark and light mode and is hidden when no session history exists.
 - **Planning:** Pure SVG sparkline (no new deps). New `lib/cost-history.ts`, `GET /api/projects/[id]/cost-history`, `SparklineChart` component, and `CostCard` extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed.
 - **Details:**
   - The cost card shows current session + total as numbers, but no trend data
