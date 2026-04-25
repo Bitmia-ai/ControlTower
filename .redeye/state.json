@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 86,
   "started_at": "2026-04-25T07:55:09Z",
-  "phase": "VERIFY",
+  "phase": "MERGE",
   "phase_status": "in-progress",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/BL-056",
   "worktree_branch": "feat/bl-056-tab-redesign",
@@ -14,7 +14,7 @@
     "build_complete": true,
     "review_complete": true,
     "deploy_complete": true,
-    "verify_complete": false
+    "verify_complete": true
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -35,9 +35,9 @@
   "git_state": {
     "last_commit": "redeye: start BUILD (iteration 86)",
     "branch": "feat/bl-056-tab-redesign",
-    "last_good_deploy_tag": "last-good-deploy-iter85",
+    "last_good_deploy_tag": "last-good-deploy-iter86",
     "merge_status": "clean",
-    "notes": "Iter 86: TRIAGE+PLAN+BUILD+REVIEW+DEPLOY complete. BL-056. REVIEW: PASS (0 Critical/0 Major). DEPLOY: build PASS (clean), 646/646 unit tests PASS. VERIFY in-progress."
+    "notes": "Iter 86: TRIAGE+PLAN+BUILD+REVIEW+DEPLOY+VERIFY complete. BL-056. VERIFY: PASS — backlog/history/live tabs all healthy, no JS errors, tagged last-good-deploy-iter86. MERGE in-progress."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -121,8 +121,8 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 85,
-    "last_deploy_iteration": 85,
+    "last_verify_iteration": 86,
+    "last_deploy_iteration": 86,
     "current_iteration": 86,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
