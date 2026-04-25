@@ -3,7 +3,7 @@
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "DEPLOY",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-058",
@@ -30,7 +30,7 @@
       "Major: next_sched_id counter stale at 1 after SCHED-1 created \u2014 now corrected to 2"
     ]
   },
-  "review_cycles": 1,
+  "review_cycles": 2,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
