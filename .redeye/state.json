@@ -2,12 +2,12 @@
   "schema_version": 1,
   "iteration": 93,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "TRIAGE",
-  "phase_status": "in-progress",
+  "phase": "PLAN",
+  "phase_status": "pending",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": null,
-  "backlog_title": null,
+  "backlog_item": "BL-063",
+  "backlog_title": "Add steer tab — fully functional",
   "spec_file": null,
   "phase_progress": {},
   "review_cycles": 0,
@@ -37,35 +37,61 @@
   "iteration_log": [
     {
       "iteration": 92,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-062 full cycle complete. TRIAGE: env healthy, BL-062 selected. PLAN: spec written (5 sub-tasks, root cause CSS grid stretch + sparkline aspect ratio). BUILD: T1 md:items-start + md:min-h-[120px] (page.tsx), T2 sparkline preserveAspectRatio=xMidYMid meet + no fixed height, T3 max-h-[72px] overflow-hidden wrapper (cost-card.tsx), T4 h-full on WorkingOnCard + ControlsCard. T5 657/657 tests pass, build clean. REVIEW: 0C/0M/0m, PASS. DEPLOY: build clean, tagged last-good-deploy-iter92-bl062. VERIFY: all artifact checks pass, 657/657 tests. MERGE: BL-062 marked done in backlog.md, state advanced to TRIAGE iter 93. 2 P1 items pending: BL-063, BL-064.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:55:00Z"
     },
     {
       "iteration": 91,
-      "phases": ["DEPLOY","VERIFY","MERGE"],
+      "phases": [
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "BL-061 full cycle complete. DEPLOY: production build clean (Turbopack), 656/656 tests pass, tagged last-good-deploy-iter91-bl061. VERIFY: 0 <kbd> elements on /project/1 and /, 0 app JS errors, Playwright confirmed. MERGE: BL-061 marked done in backlog.md, state.json advanced to TRIAGE, git_state updated. 3 P1 items pending: BL-062, BL-063, BL-064.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:30:00Z"
     },
     {
       "iteration": 91,
-      "phases": ["VERIFY","TRIAGE","PLAN","BUILD"],
+      "phases": [
+        "VERIFY",
+        "TRIAGE",
+        "PLAN",
+        "BUILD"
+      ],
       "outcome": "VERIFY PASS (662/662 tests, all artifacts confirmed). TRIAGE: BL-058 done, BL-061 selected. PLAN: spec written (remove kbd badges). BUILD: project-nav.tsx and controls-card.tsx stripped of all <kbd> shortcut badges. Tests updated (656/656 pass). Build clean.",
       "next": "REVIEW BL-061",
       "timestamp": "2026-04-25T10:25:10Z"
     },
     {
       "iteration": 90,
-      "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY"],
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY"
+      ],
       "outcome": "BUILD complete: BL-058 T1-T6 implemented. T1: global-error.tsx build failure fixed via ClientProviders (custom ESM ThemeProvider), postinstall patch for Next.js 16.2.4 _global-error prerender bug, force-dynamic on not-found.tsx. T2-T6 were already done. 662/662 tests pass. npm run build passes with no prerender errors. REVIEW cycle 1: 0C/2M/2m — nested button + stale sched counter. Routing back to BUILD. REVIEW cycle 2: 0C/0M/0m — both Majors confirmed fixed. PASS — cleared for DEPLOY. DEPLOY: production build clean, 662/662 tests pass, tagged last-good-deploy-iter90-bl058.",
       "next": "VERIFY",
       "timestamp": "2026-04-25T14:00:00Z"
     },
     {
       "iteration": 89,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: All BL-001–057 done. Backlog exhausted. Q-010 filed (what to build next?). waiting_for_ceo.",
       "next": "waiting_for_ceo",
       "timestamp": "2026-04-25T11:10:00Z"
@@ -122,6 +148,7 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-061": 218.73707190000033
+    "BL-061": 218.73707190000033,
+    "BL-063": 227.1850692000004
   }
 }
