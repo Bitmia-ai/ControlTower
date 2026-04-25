@@ -120,7 +120,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
   - SVG sparkline is visible when mocked history returns >= 2 sessions
   - "Last 5 sessions" label is visible
   - Test passes against `http://localhost:3200`
-- **Status:** in-progress
+- **Status:** done
 
 ### T6 — Unit tests for all new modules (coverage gate)
 - **Size:** S
