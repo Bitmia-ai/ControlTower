@@ -15,6 +15,7 @@ import { useEffect, useRef } from "react";
  *   g b -> navigate("/project/{id}/backlog")
  *   g h -> navigate("/project/{id}/history")
  *   g l -> navigate("/project/{id}/live")
+ *   g s -> navigate("/project/{id}/schedules")
  *
  * Suppression rules:
  *   - event.target is <input> or <textarea>
@@ -90,6 +91,10 @@ export function useKeyboardShortcuts(config: KeyboardShortcutConfig): void {
         }
         if (pendingKey === "l") {
           cfg.navigate(`/project/${cfg.projectId}/live`);
+          return;
+        }
+        if (pendingKey === "s") {
+          cfg.navigate(`/project/${cfg.projectId}/schedules`);
           return;
         }
         // unrecognised chord second-key: cancel silently

@@ -163,6 +163,21 @@ describe("useKeyboardShortcuts", () => {
     expect(navigate).toHaveBeenCalledWith("/project/9/live");
   });
 
+  it("g+s navigates to schedules path", () => {
+    const navigate = vi.fn();
+    renderHook(() =>
+      useKeyboardShortcuts({
+        enabled: true,
+        running: false,
+        projectId: 5,
+        navigate,
+      })
+    );
+    act(() => fire("g"));
+    act(() => fire("s"));
+    expect(navigate).toHaveBeenCalledWith("/project/5/schedules");
+  });
+
   it("g alone does NOT call navigate after 500ms timeout", () => {
     const navigate = vi.fn();
     renderHook(() =>
