@@ -78,7 +78,7 @@ Not shown verbatim. The page shows structured parsed directives (text + optional
   - "Steer" tab appears to the right of "Schedules" in the nav bar.
   - Tab is highlighted when the user is on `/project/[id]/steer`.
   - Tab is not highlighted on any other route.
-- **Status:** pending
+- **Status:** done
 
 ### T3 — Implement SteerContent component and page (M)
 - **File:** `app/project/[id]/steer/page.tsx`

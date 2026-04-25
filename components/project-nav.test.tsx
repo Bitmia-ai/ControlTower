@@ -21,13 +21,14 @@ afterEach(() => {
 });
 
 describe("ProjectNav", () => {
-  it("renders all five nav tabs", () => {
+  it("renders all six nav tabs", () => {
     render(<ProjectNav projectId="1" />);
     expect(screen.getByText("Overview")).toBeTruthy();
     expect(screen.getByText("Backlog")).toBeTruthy();
     expect(screen.getByText("History")).toBeTruthy();
     expect(screen.getByText("Live")).toBeTruthy();
     expect(screen.getByText("Schedules")).toBeTruthy();
+    expect(screen.getByText("Steer")).toBeTruthy();
   });
 
   it("highlights Overview tab when on project root", () => {
@@ -76,6 +77,7 @@ describe("ProjectNav", () => {
     expect(screen.getByText("History").closest("a")?.getAttribute("href")).toBe("/project/42/history");
     expect(screen.getByText("Live").closest("a")?.getAttribute("href")).toBe("/project/42/live");
     expect(screen.getByText("Schedules").closest("a")?.getAttribute("href")).toBe("/project/42/schedules");
+    expect(screen.getByText("Steer").closest("a")?.getAttribute("href")).toBe("/project/42/steer");
   });
 
   it("highlights Schedules tab when on schedules page", () => {
@@ -83,6 +85,20 @@ describe("ProjectNav", () => {
     render(<ProjectNav projectId="1" />);
     const schedulesLink = screen.getByText("Schedules").closest("a");
     expect(schedulesLink?.className).toContain("border-red-600");
+  });
+
+  it("highlights Steer tab when on steer page", () => {
+    vi.mocked(usePathname).mockReturnValue("/project/1/steer");
+    render(<ProjectNav projectId="1" />);
+    const steerLink = screen.getByText("Steer").closest("a");
+    expect(steerLink?.className).toContain("border-red-600");
+  });
+
+  it("does not highlight Steer tab on other pages", () => {
+    vi.mocked(usePathname).mockReturnValue("/project/1/schedules");
+    render(<ProjectNav projectId="1" />);
+    const steerLink = screen.getByText("Steer").closest("a");
+    expect(steerLink?.className).toContain("border-transparent");
   });
 
   it("has overflow-x-auto for responsive scrolling", () => {

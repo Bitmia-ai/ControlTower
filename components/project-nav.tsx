@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "History", path: "/history" },
   { label: "Live", path: "/live" },
   { label: "Schedules", path: "/schedules" },
+  { label: "Steer", path: "/steer" },
 ] as const;
 
 export function ProjectNav({ projectId }: { projectId: string }) {
