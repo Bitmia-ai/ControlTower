@@ -174,7 +174,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - `title` tooltip contains full phase name
   - Dark mode classes included (inherits from `PHASE_COLORS`)
   - Unit tests pass
-- **Status:** in-progress
+- **Status:** done
 
 ### T4 — `components/history/session-history-row.tsx`: session row component
 - **Size:** M
@@ -201,7 +201,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
   - Accessible chip strip aria-label
   - Dark/light mode correct via Tailwind dark: variants
   - All unit tests pass
-- **Status:** pending
+- **Status:** in-progress
 
 ### T5 — Refactor `app/project/[id]/history/page.tsx`: add sessions section
 - **Size:** M
