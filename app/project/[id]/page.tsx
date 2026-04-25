@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, use } from "react";
 import Link from "next/link";
 import type { ProjectDetail, InboxQuestion } from "@/lib/redeye-types";
 import { useTaskTransitionTracker } from "@/lib/use-task-transition-tracker";
+import { usePhaseNotifications } from "@/lib/use-phase-notifications";
 import { WorkingOnCard } from "@/components/mission-control/working-on-card";
 import { HealthCard } from "@/components/mission-control/health-card";
 import { QuestionsCard } from "@/components/mission-control/questions-card";
@@ -75,6 +76,12 @@ export default function ProjectPage({
     }).catch(console.error);
   }, [id]);
   useTaskTransitionTracker(activeId, postCostStart, postCostSnapshot);
+
+  // BL-050: in-app + native notifications when RedEye phase transitions.
+  // Hook is no-op until a real transition is observed (skips first mount).
+  const phaseForNotifications = detail ? (detail.state?.phase ?? null) : undefined;
+  const backlogTitleForNotifications = detail?.state?.backlog_title ?? null;
+  usePhaseNotifications(phaseForNotifications, backlogTitleForNotifications, projectId);
 
   async function handleAction(action: "start" | "stop" | "pause") {
     try {
