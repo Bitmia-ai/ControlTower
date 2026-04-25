@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 94,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "VERIFY",
+  "phase": "MERGE",
   "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
@@ -14,7 +14,8 @@
     "plan": "complete — spec at docs/specs/BL-063-steer-tab.md (5 sub-tasks), all tasks built",
     "build": "complete — all 5 tasks committed to main (GET handler, nav tab, SteerContent page, unit tests, E2E spec)",
     "review": "PASS — 0C/0M/2m. 675/675 tests pass.",
-    "deploy": "PASS — production build clean, /project/[id]/steer in route table, 675/675 tests, tagged last-good-deploy-iter94-bl063"
+    "deploy": "PASS — production build clean, 675/675 tests, tagged last-good-deploy-iter94-bl063",
+    "verify": "PASS — all artifacts present, Steer tab in nav, GET+POST handler, SteerContent, 675/675 tests, build clean"
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -33,70 +34,45 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start DEPLOY BL-063 (iteration 94)",
+    "last_commit": "redeye: complete DEPLOY BL-063 — 675/675 tests, build clean (iteration 94)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter94-bl063",
     "merge_status": "clean",
-    "notes": "DEPLOY PASS. 675/675 tests. Build clean. Route table includes /project/[id]/steer. Advancing to VERIFY."
+    "notes": "VERIFY PASS. Advancing to MERGE."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 94,
-      "phases": [
-        "TRIAGE",
-        "REVIEW",
-        "DEPLOY"
-      ],
-      "outcome": "TRIAGE: env healthy, BL-063 selected. REVIEW: 0C/0M/2m PASS, 675/675 tests. DEPLOY: build clean, /project/[id]/steer route present, 675/675 tests, tagged last-good-deploy-iter94-bl063.",
-      "next": "VERIFY BL-063",
+      "phases": ["TRIAGE", "REVIEW", "DEPLOY", "VERIFY"],
+      "outcome": "TRIAGE: env healthy, BL-063 selected. REVIEW: 0C/0M/2m PASS, 675/675 tests. DEPLOY: build clean, route present, 675/675 tests, tagged last-good-deploy-iter94-bl063. VERIFY: all artifacts present, Steer nav+page+API confirmed.",
+      "next": "MERGE BL-063",
       "timestamp": "2026-04-25T11:02:04Z"
     },
     {
       "iteration": 93,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
       "outcome": "BL-064 through VERIFY. VIEW_H=48->80, 663/663 tests, REVIEW PASS, DEPLOY clean, VERIFY pass.",
       "next": "MERGE BL-064",
       "timestamp": "2026-04-25T10:58:00Z"
     },
     {
       "iteration": 93,
-      "phases": [
-        "TRIAGE"
-      ],
+      "phases": ["TRIAGE"],
       "outcome": "TRIAGE: env healthy. BL-064 selected. BL-063 deferred.",
       "next": "PLAN BL-064",
       "timestamp": "2026-04-25T10:47:00Z"
     },
     {
       "iteration": 92,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "BL-062 full cycle complete. Card sizing fixed.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:55:00Z"
     },
     {
       "iteration": 91,
-      "phases": [
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["DEPLOY", "VERIFY", "MERGE"],
       "outcome": "BL-061 full cycle complete. kbd badges removed.",
       "next": "TRIAGE",
       "timestamp": "2026-04-25T10:30:00Z"
@@ -120,7 +96,7 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 93,
+    "last_verify_iteration": 94,
     "last_deploy_iteration": 94,
     "current_iteration": 94,
     "questions_awaiting_ceo": 0,
@@ -154,7 +130,6 @@
     "BL-053": 156.30889500000052,
     "BL-055": 159.36187110000037,
     "BL-059": 183.8620549500003,
-    "BL-061": 218.73707190000033,
-    "BL-063": 233.82569580000037
+    "BL-061": 218.73707190000033
   }
 }
