@@ -1,23 +1,16 @@
 {
   "schema_version": 1,
-  "iteration": 94,
-  "started_at": "2026-04-25T10:55:00Z",
-  "phase": "MERGE",
-  "phase_status": "in-progress",
+  "iteration": 95,
+  "started_at": "2026-04-25T11:04:14Z",
+  "phase": "TRIAGE",
+  "phase_status": "pending",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-063",
-  "backlog_title": "Steer tab — fully functional",
-  "spec_file": "docs/specs/BL-063-steer-tab.md",
-  "phase_progress": {
-    "triage": "complete — env healthy, BL-063 selected (steer tab, P1)",
-    "plan": "complete — spec at docs/specs/BL-063-steer-tab.md (5 sub-tasks), all tasks built",
-    "build": "complete — all 5 tasks committed to main (GET handler, nav tab, SteerContent page, unit tests, E2E spec)",
-    "review": "PASS — 0C/0M/2m. 675/675 tests pass.",
-    "deploy": "PASS — production build clean, 675/675 tests, tagged last-good-deploy-iter94-bl063",
-    "verify": "PASS — all artifacts present, Steer tab in nav, GET+POST handler, SteerContent, 675/675 tests, build clean"
-  },
-  "review_cycles": 1,
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -34,20 +27,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete DEPLOY BL-063 — 675/675 tests, build clean (iteration 94)",
+    "last_commit": "redeye: merge BL-063 — Steer tab fully functional (iteration 94)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter94-bl063",
     "merge_status": "clean",
-    "notes": "VERIFY PASS. Advancing to MERGE."
+    "notes": "BL-063 MERGE complete. Marked done in backlog.md. State advanced to TRIAGE iter 95. Backlog appears empty of P1 items — both BL-063 and BL-064 are now done."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 94,
-      "phases": ["TRIAGE", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "TRIAGE: env healthy, BL-063 selected. REVIEW: 0C/0M/2m PASS, 675/675 tests. DEPLOY: build clean, route present, 675/675 tests, tagged last-good-deploy-iter94-bl063. VERIFY: all artifacts present, Steer nav+page+API confirmed.",
-      "next": "MERGE BL-063",
-      "timestamp": "2026-04-25T11:02:04Z"
+      "phases": ["TRIAGE", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "BL-063 full cycle complete. TRIAGE: env healthy, BL-063 selected (steer tab, P1). REVIEW: 0C/0M/2m PASS, 675/675 tests. DEPLOY: build clean, /project/[id]/steer in route table, 675/675 tests, tagged last-good-deploy-iter94-bl063. VERIFY: all artifacts confirmed. MERGE: BL-063 marked done in backlog.md.",
+      "next": "TRIAGE iter 95",
+      "timestamp": "2026-04-25T11:04:14Z"
     },
     {
       "iteration": 93,
@@ -85,7 +78,7 @@
     "next_sched_id": 2
   },
   "cost_tracking": {
-    "iterations_this_session": 76,
+    "iterations_this_session": 77,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -98,7 +91,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 94,
     "last_deploy_iteration": 94,
-    "current_iteration": 94,
+    "current_iteration": 95,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -115,7 +108,8 @@
     "BL-058": 1.763799150000068,
     "BL-061": 5.289914549999935,
     "BL-062": 6.174803550000092,
-    "BL-063": 2.621212350000036
+    "BL-063": 2.621212350000036,
+    "BL-064": 6.174803550000092
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,
