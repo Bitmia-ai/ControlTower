@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 82,
   "started_at": "2026-04-25T01:42:00Z",
-  "phase": "VERIFY",
+  "phase": "MERGE",
   "phase_status": "complete",
   "backlog_item": "BL-052",
   "backlog_title": "Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)",
@@ -25,11 +25,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: verify iteration 82 — healthy",
-    "branch": "feature/BL-052-keyboard-shortcuts",
+    "last_commit": "redeye: merge BL-052 — Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)",
+    "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter82",
     "merge_status": "clean",
-    "notes": "BL-052 VERIFY PASS. Home page renders correctly. Kbd hint badges on Start/Stop buttons confirmed present (E2E green). No Critical bugs. No tester reports. Tagged last-good-deploy-iter82. Ready for MERGE."
+    "notes": "BL-052 merged cleanly to main. 6 commits merged. Spec conflict (add/add) resolved by taking feature branch version. Claims cleared. BL-052 marked done."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -43,8 +43,8 @@
         "DEPLOY",
         "VERIFY"
       ],
-      "outcome": "TRIAGE: BL-052 selected. PLAN: Spec written (5 sub-tasks, no CEO Qs). BUILD: All 5 sub-tasks done, 31 new unit tests (550 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS (no global-error prerender failure), 550/550 unit tests PASS. Full E2E regression PASS — kbd hint badges confirmed in DOM: S on Start, X on Stop, P on Pause, B on Add to Backlog, GB/GH/GL on nav tabs; all aria-hidden; Steer dialog suppression confirmed; toast system intact; cost sparkline present; BL-050/051 regressions clean. VERIFY: PASS — home page renders correctly (3 project cards, Start/Stop buttons visible), project detail page shows expected error state (no running agent, consistent with prior iterations), no Critical bugs, no tester reports, tagged last-good-deploy-iter82.",
-      "next": "MERGE",
+      "outcome": "TRIAGE: BL-052 selected. PLAN: Spec written (5 sub-tasks, no CEO Qs). BUILD: All 5 sub-tasks done, 31 new unit tests (550 total). REVIEW: 1 cycle, 0 Critical/0 Major. DEPLOY: Build PASS (no global-error prerender failure), 550/550 unit tests PASS. Full E2E regression PASS — kbd hint badges confirmed in DOM: S on Start, X on Stop, P on Pause, B on Add to Backlog, GB/GH/GL on nav tabs; all aria-hidden; Steer dialog suppression confirmed; toast system intact; cost sparkline present; BL-050/051 regressions clean. VERIFY: PASS — home page renders correctly (3 project cards, Start/Stop buttons visible), project detail page shows expected error state (no running agent, consistent with prior iterations), no Critical bugs, no tester reports, tagged last-good-deploy-iter82. MERGE: 6 commits merged cleanly to main, add/add spec conflict resolved (feature branch wins), claims cleared, BL-052 marked done.",
+      "next": "TRIAGE",
       "timestamp": "2026-04-25T02:13:00Z"
     },
     {

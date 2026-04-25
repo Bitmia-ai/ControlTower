@@ -17,8 +17,10 @@
 ### BL-052: Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
 - **Type:** feature
 - **Priority:** P2
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 82)
 - **Added:** 2026-04-25 (iter 79)
+- **Summary:** Added keyboard shortcuts to the project page — S to start, X to stop, P to pause, B to add to backlog, and G+B/G+H/G+L to navigate tabs. Small keyboard hint badges appear on each button and are suppressed when a dialog is open or a text input is focused. Thirty-one new unit tests and one E2E spec cover the feature.
 - **Details:**
   - Power users have no keyboard shortcuts for frequent actions
   - Add: `S` to Start session (when idle), `X` to gracefully Stop (when running), `B` to navigate to Backlog, `H` to navigate to History, `L` to navigate to Live tab
