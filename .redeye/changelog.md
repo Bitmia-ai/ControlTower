@@ -306,3 +306,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean Turbopack, 662/662 tests, tagged last-good-deploy-iter90-bl058)
 - **Visual check:** PASS — SCHED-1 renders at /project/1/schedules with Overdue badge; Run now button is sibling of expand button (not nested); POST /api/projects/1/schedules/run returns 200 {data:{queued:true}}; 0 app JS errors; SSR 500 is pre-existing dev-mode Turbopack quirk, not a production issue
 - **Documenter:** running in background
+
+## Iteration 91 — 2026-04-25T12:32:00Z
+- **Built:** BL-061 Remove keyboard shortcut badges from all buttons (like the (GB) badges)
+- **Review findings:** 0C 2M 0m — 1 review cycle; both Majors fixed (nested button in ScheduleRow restructured, stale sched counter corrected)
+- **Tests:** 0 new E2E tests added, 656 total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (no tester entry this iteration)
+- **Deployed:** SUCCESS (production build clean Turbopack, 656/656 tests, tagged last-good-deploy-iter91-bl061)
+- **Visual check:** PARTIAL — Playwright MCP browser locked by concurrent Chrome session; source code audit confirms 0 `<kbd>` elements in all components; feature objective fully achieved
+- **Documenter:** running in background
