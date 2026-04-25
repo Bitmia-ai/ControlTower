@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useState, useCallback, useRef, use } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ProjectDetail, ChangelogEntry } from "@/lib/redeye-types";
@@ -70,14 +70,18 @@ export default function HistoryPage({
   const [sessions, setSessions] = useState<SessionHistoryEntry[] | null>(null);
   const [sessionsError, setSessionsError] = useState<string | null>(null);
 
-  const fetchDetail = useCallback(async () => {
+  // Track whether we have ever successfully loaded detail, without making
+  // `detail` a useCallback dependency (which would create an infinite re-fetch
+  // loop: setDetail → new detail ref → new fetchDetail → useEffect → setSessions(null) → …).
+  const hasDetailRef = useRef(false);
+
+  const fetchDetail = useCallback(async (isRetry = false) => {
     try {
       setFetchError(null);
       setSessionsError(null);
-      // Clear sessions on retry so the loading skeleton renders instead of
-      // momentarily flashing the "no sessions" empty state from a previous
-      // failed fetch.
-      setSessions(null);
+      // Clear sessions on explicit retry so the loading skeleton renders
+      // instead of momentarily flashing the stale "no sessions" empty state.
+      if (isRetry) setSessions(null);
 
       const [detailRes, sessionsRes] = await Promise.all([
         fetch(`/api/projects/${id}`).catch((e) => {
@@ -88,7 +92,10 @@ export default function HistoryPage({
 
       if (!detailRes.ok) throw new Error(`HTTP ${detailRes.status}`);
       const detailJson = await detailRes.json();
-      if (detailJson.data) setDetail(detailJson.data);
+      if (detailJson.data) {
+        setDetail(detailJson.data);
+        hasDetailRef.current = true;
+      }
 
       if (sessionsRes && sessionsRes.ok) {
         try {
@@ -103,13 +110,13 @@ export default function HistoryPage({
         setSessions([]);
       }
     } catch {
-      if (!detail) {
+      if (!hasDetailRef.current) {
         setFetchError("Failed to load history.");
       }
     } finally {
       setLoading(false);
     }
-  }, [id, detail]);
+  }, [id]);
 
   useEffect(() => {
     fetchDetail();
@@ -128,7 +135,7 @@ export default function HistoryPage({
         {sessionsNewestFirst === null ? (
           <SessionsSkeleton />
         ) : sessionsError && sessionsNewestFirst.length === 0 ? (
-          <FetchError message={sessionsError} onRetry={fetchDetail} />
+          <FetchError message={sessionsError} onRetry={() => fetchDetail(true)} />
         ) : sessionsNewestFirst.length === 0 ? (
           <EmptyState
             title="No sessions found"
@@ -152,7 +159,7 @@ export default function HistoryPage({
             Loading history…
           </div>
         ) : fetchError && !detail ? (
-          <FetchError message={fetchError} onRetry={fetchDetail} />
+          <FetchError message={fetchError} onRetry={() => fetchDetail(true)} />
         ) : changelog.length === 0 ? (
           <EmptyState
             icon={<span>~</span>}
