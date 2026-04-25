@@ -3,7 +3,7 @@
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "VERIFY",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-058",
@@ -49,7 +49,7 @@
   "git_state": {
     "last_commit": "redeye: merge BL-057 complete \u2014 mobile-responsive layout shipped (iteration 88)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter88",
+    "last_good_deploy_tag": "last-good-deploy-iter90",
     "merge_status": "clean",
     "notes": "Iter 88 MERGE: BL-057 mobile-responsive merged cleanly to main (SHA 18a74a1). 14 files changed, 259 insertions. Worktree and branch cleaned up."
   },
@@ -136,8 +136,8 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 88,
-    "last_deploy_iteration": 88,
+    "last_verify_iteration": 90,
+    "last_deploy_iteration": 90,
     "current_iteration": 90,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,

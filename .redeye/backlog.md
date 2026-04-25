@@ -2,20 +2,46 @@
 
 ## CEO Requests
 
-### BL-060: When phase=waiting_for_ceo and CTO has exited, the dashboard should clearly show blocked state on the project card (banner/badge) with CTA to answer the inbox question or hit Start. Today the card looks identical to running, leading to confusion when the user replies and nothing happens. Also: when state is waiting_for_ceo and inbox.md is updated with an answer, the dashboard should auto-start the CTO without manual intervention.
+### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
 - **Type:** feature
 - **Priority:** P1
 - **Status:** pending
+
+### BL-063: we need a steer tab added. make it fully funcitonal
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-061: remove the keyboard shortcuts from all buttons like (GB)
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
+### BL-060: When phase=waiting_for_ceo and CTO has exited, the dashboard should clearly show blocked state on the project card (banner/badge) with CTA to answer the inbox question or hit Start. Today the card looks identical to running, leading to confusion when the user replies and nothing happens. Also: when state is waiting_for_ceo and inbox.md is updated with an answer, the dashboard should auto-start the CTO without manual intervention.
+- **Type:** feature
+- **Priority:** P1
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 90)
+- **Summary:** Fixed false-positive "running" status and added auto-resume on inbox answer. Reduced log-freshness fallback window and added blocked-state badge to project card.
 
 ### BL-059: Dashboard shows running when CTO process is dead. The 60s log-freshness fallback in discoverPid() returns pid=-1 (assume running) when session-cto.jsonl was modified recently — but that just means the last subagent flushed logs, not that the CTO is alive. Fix: trust PID file or process-table lookup over log freshness. Reduce the fallback window to 5s and require BOTH log freshness AND a writable pidfile.
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 90)
+- **Summary:** Fixed discoverPid() to trust PID file and process-table lookup over log freshness. Reduced fallback window to 5s, requires BOTH log freshness AND writable pidfile.
 
 ### BL-058: schedules UI needs to be operative
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 90)
+- **Summary:** Fixed global-error.tsx build failure (ClientProviders with custom ESM ThemeProvider, postinstall patch for Next.js 16.2.4 _global-error prerender bug). Added POST /api/projects/[id]/schedules/run endpoint, Run now button in ScheduleRow (sibling of expand button, not nested), SCHED-1 sample schedule, projectId threaded through schedules page, unit tests for all new code. 662/662 tests pass, npm run build clean.
 
 ### BL-057: Mobile-responsive layout — make the dashboard usable on phones and tablets
 - **Type:** feature
