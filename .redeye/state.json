@@ -8,7 +8,7 @@
   "worktree_branch": null,
   "backlog_item": "BL-070",
   "backlog_title": "we need to be able to add schedules from the schedule tab",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-070-add-schedule.md",
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
