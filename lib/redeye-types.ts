@@ -35,6 +35,10 @@ export interface RedEyeState {
   item_costs?: Record<string, number>;
   /** Session cost at task start, keyed by BL-xxx. Used for delta calculation. */
   item_cost_starts?: Record<string, number>;
+  /** Absolute path to the worktree where the active task is being built. Null when no worktree. */
+  worktree_path?: string | null;
+  /** Branch name of the active worktree (e.g. "redeye/BL-013"). Null when no worktree. */
+  worktree_branch?: string | null;
 }
 
 export type Phase =

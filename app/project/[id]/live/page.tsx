@@ -8,6 +8,15 @@ import { EmptyState } from "@/components/empty-state";
 import { isNearBottom } from "@/lib/scroll-utils";
 
 const BOTTOM_THRESHOLD_PX = 80;
+// Cap the in-memory event array to prevent the tab OOMing on multi-hour
+// sessions. With ~5–20 events/s, 5000 events ≈ several minutes of context;
+// older events scroll out of the viewport anyway.
+const MAX_EVENTS_IN_MEMORY = 5000;
+function bounded(events: ClaudeStreamEvent[]): ClaudeStreamEvent[] {
+  return events.length > MAX_EVENTS_IN_MEMORY
+    ? events.slice(events.length - MAX_EVENTS_IN_MEMORY)
+    : events;
+}
 
 interface TranscriptStatus {
   available: boolean;
@@ -97,14 +106,14 @@ export default function LivePage({
         const parsed = JSON.parse(e.data);
         // Handle session boundary sentinel
         if (parsed.type === "__session_boundary__") {
-          setEvents((prev) => [
+          setEvents((prev) => bounded([
             ...prev,
             { type: "__session_boundary__", content: "— New session —" } as unknown as ClaudeStreamEvent,
-          ]);
+          ]));
           return;
         }
         const event: ClaudeStreamEvent = parsed;
-        setEvents((prev) => [...prev, event]);
+        setEvents((prev) => bounded([...prev, event]));
       } catch {
         // ignore malformed messages
       }
@@ -121,12 +130,13 @@ export default function LivePage({
     if (transcriptStatus === null) return; // still loading
 
     if (transcriptStatus.available) {
-      // Only open a new connection if we don't already have one
-      if (!esRef.current || esRef.current.readyState === EventSource.CLOSED) {
+      // Only open a new connection if we don't already have one. Don't gate
+      // on readyState — close() is async and readyState lags, which made
+      // flapping availability accumulate orphaned EventSource objects.
+      if (!esRef.current) {
         connect();
       }
     } else {
-      // Close connection when no transcript is available
       if (esRef.current) {
         esRef.current.close();
         esRef.current = null;
@@ -135,7 +145,10 @@ export default function LivePage({
     }
 
     return () => {
-      esRef.current?.close();
+      if (esRef.current) {
+        esRef.current.close();
+        esRef.current = null;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcriptStatus?.available, connect]);

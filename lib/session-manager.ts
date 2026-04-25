@@ -9,6 +9,10 @@ const STALL_THRESHOLD_MS = 10 * 60 * 1000; // 10 minutes
 
 const sessions = new Map<string, Map<SessionRole, number>>();
 const autoRestartEnabled = new Set<string>(); // "projectPath:role" keys
+// Pending respawn timers per session key — cleared on stop/explicit start to
+// prevent the double-spawn race where a Stop+Start during the 5s respawn
+// window leaves the original timer to fire AFTER the manual start.
+const pendingRespawn = new Map<string, ReturnType<typeof setTimeout>>();
 
 function sessionKey(projectPath: string, role: SessionRole): string {
   return `${path.resolve(projectPath)}:${role}`;
@@ -249,12 +253,15 @@ function spawnAndWatch(
       clearInterval(checkInterval);
       clearStallInterval();
       clearPid(projectPath, role);
-      // Re-spawn after a short delay
-      setTimeout(() => {
+      // Re-spawn after a short delay. Track the timer so an explicit
+      // Stop+Start during the window can cancel it and avoid double-spawn.
+      const t = setTimeout(() => {
+        pendingRespawn.delete(key);
         if (autoRestartEnabled.has(key)) {
           spawnAndWatch(projectPath, role, prompt, model);
         }
       }, 5000);
+      pendingRespawn.set(key, t);
     }
   }, 10_000);
 
@@ -353,8 +360,15 @@ export async function startSession(
     documenter: "sonnet",
   };
 
-  // Enable auto-restart for this session
-  autoRestartEnabled.add(sessionKey(projectPath, role));
+  // Enable auto-restart for this session and cancel any pending respawn
+  // timer (defends against double-spawn if the user clicks Stop+Start fast).
+  const key = sessionKey(projectPath, role);
+  const pending = pendingRespawn.get(key);
+  if (pending) {
+    clearTimeout(pending);
+    pendingRespawn.delete(key);
+  }
+  autoRestartEnabled.add(key);
 
   return spawnAndWatch(projectPath, role, prompts[role], models[role]);
 }
@@ -363,7 +377,13 @@ export async function stopSession(
   projectPath: string,
   role: SessionRole
 ): Promise<void> {
-  autoRestartEnabled.delete(sessionKey(projectPath, role));
+  const key = sessionKey(projectPath, role);
+  autoRestartEnabled.delete(key);
+  const pending = pendingRespawn.get(key);
+  if (pending) {
+    clearTimeout(pending);
+    pendingRespawn.delete(key);
+  }
 
   const pid = discoverPid(projectPath, role);
   if (pid === null || !isProcessRunning(pid)) {

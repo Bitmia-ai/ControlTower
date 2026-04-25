@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
-import { readSteering } from "@/lib/redeye-files";
+import { readSteering, safeRedeyePath } from "@/lib/redeye-files";
+import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import fs from "fs/promises";
-import path from "path";
+
+const MAX_BODY_BYTES = 64 * 1024;
 
 export async function GET(
   _req: NextRequest,
@@ -38,17 +40,31 @@ export async function POST(
   }
 
   try {
+    const cl = req.headers.get("content-length");
+    if (cl && parseInt(cl, 10) > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: "Request body too large" }, { status: 413 });
+    }
     const body = await req.json();
-    const directive: string = body?.directive;
-    if (!directive || typeof directive !== "string") {
+    const directiveRaw: unknown = body?.directive;
+    if (typeof directiveRaw !== "string" || directiveRaw.length === 0) {
       return NextResponse.json({ error: "Missing required field: directive" }, { status: 400 });
     }
+    const directive = sanitizeMarkdownInput(directiveRaw, { maxLen: 500 });
+    if (directive.length === 0) {
+      return NextResponse.json({ error: "Directive empty after sanitization" }, { status: 400 });
+    }
 
-    const steeringPath = path.join(project.path, ".redeye", "steering.md");
-    let content = await fs.readFile(steeringPath, "utf-8");
+    const steeringPath = safeRedeyePath(project.path, "steering.md");
+    let content: string;
+    try {
+      content = await fs.readFile(steeringPath, "utf-8");
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
+      content = "# Steering\n\n## Directives\n";
+    }
 
     const timestamp = new Date().toISOString().split("T")[0];
-    const newDirective = `- ${directive.trim()} (${timestamp})\n`;
+    const newDirective = `- ${directive} (${timestamp})\n`;
 
     const directivesHeader = "## Directives";
     const idx = content.indexOf(directivesHeader);

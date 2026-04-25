@@ -16,8 +16,22 @@ import {
   parseSteering,
 } from "./redeye-parsers";
 
-/** Resolve a path inside projectPath/.redeye/ and reject path traversal. */
-function safeRedeyePath(projectPath: string, filename: string): string {
+/**
+ * Resolve a path inside projectPath/.redeye/ and reject path traversal.
+ * Exported so other route handlers can use the same guard instead of
+ * reinventing path.join() and risking a future traversal vector.
+ *
+ * Note: this guards against `..` in the constructed path. It does NOT
+ * `realpath` the result — symlinks inside .redeye/ are not followed and
+ * not validated. Add a separate `realpath` step on read paths if you
+ * want to defend against symlink-based exfiltration; current trust model
+ * assumes the project's `.redeye/` is owned by the user.
+ */
+export function safeRedeyePath(projectPath: string, filename: string): string {
+  // Disallow traversal characters in the filename itself
+  if (filename.includes("..") || filename.includes("/") || filename.includes("\\")) {
+    throw new Error(`Invalid filename: ${filename}`);
+  }
   const projectResolved = path.resolve(projectPath);
   const filePath = path.resolve(projectResolved, ".redeye", filename);
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
+import { safeRedeyePath } from "@/lib/redeye-files";
 import fs from "fs/promises";
-import path from "path";
 
 export async function POST(
   req: NextRequest,
@@ -15,8 +15,14 @@ export async function POST(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const steeringPath = path.join(project.path, ".redeye", "steering.md");
-    let content = await fs.readFile(steeringPath, "utf-8");
+    const steeringPath = safeRedeyePath(project.path, "steering.md");
+    let content: string;
+    try {
+      content = await fs.readFile(steeringPath, "utf-8");
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
+      content = "# Steering\n\n## Directives\n";
+    }
 
     const newDirective = `PAUSE — CEO directed pause at ${new Date().toISOString()}\n`;
 

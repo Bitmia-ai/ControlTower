@@ -12,11 +12,14 @@
 // Returns: { data: { blId: string, cost_usd: number, recorded: boolean } }
 
 import { NextRequest, NextResponse } from "next/server";
-import path from "path";
 import fs from "fs/promises";
 import { getProjectByIndex } from "@/lib/projects";
+import { safeRedeyePath } from "@/lib/redeye-files";
+import { atomicWriteJson } from "@/lib/atomic-write";
 import { sumCurrentSessionCost } from "@/lib/cost-calculator";
 import type { RedEyeState } from "@/lib/redeye-types";
+
+const BL_ID_RE = /^BL-\d+$/;
 
 export async function POST(
   req: NextRequest,
@@ -38,14 +41,13 @@ export async function POST(
   }
 
   const blId = (body as Record<string, unknown>)?.blId;
-  if (!blId || typeof blId !== "string") {
-    return NextResponse.json({ error: "Missing required field: blId" }, { status: 400 });
+  if (typeof blId !== "string" || !BL_ID_RE.test(blId)) {
+    return NextResponse.json({ error: "blId must match BL-<number>" }, { status: 400 });
   }
 
   // Read state.json first so we can check for a start baseline before
   // deciding whether to skip on zero current cost.
-  const stateFilePath = path.join(project.path, ".redeye", "state.json");
-  const tmpPath = stateFilePath + ".tmp." + process.pid;
+  const stateFilePath = safeRedeyePath(project.path, "state.json");
 
   let state: RedEyeState;
   try {
@@ -84,10 +86,8 @@ export async function POST(
   }
 
   try {
-    await fs.writeFile(tmpPath, JSON.stringify(state, null, 2), "utf-8");
-    await fs.rename(tmpPath, stateFilePath);
+    await atomicWriteJson(stateFilePath, JSON.stringify(state, null, 2));
   } catch {
-    try { await fs.unlink(tmpPath); } catch { /* ignore */ }
     return NextResponse.json({ error: "Could not write state.json" }, { status: 500 });
   }
 

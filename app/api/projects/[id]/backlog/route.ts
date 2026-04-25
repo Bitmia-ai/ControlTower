@@ -2,34 +2,50 @@ import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
 import { getNextBacklogId } from "@/lib/backlog-id";
 import { getSessionStatus, startSession } from "@/lib/session-manager";
+import { safeRedeyePath } from "@/lib/redeye-files";
+import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import fs from "fs/promises";
-import path from "path";
+
+const MAX_BODY_BYTES = 64 * 1024;
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const index = parseInt(id, 10);
-  const project = await getProjectByIndex(index);
-  if (!project) {
-    return NextResponse.json({ error: "Project not found" }, { status: 404 });
-  }
-
-  const body = await req.json();
-  const text: string = body?.text;
-  if (!text || typeof text !== "string") {
-    return NextResponse.json({ error: "Missing required field: text" }, { status: 400 });
-  }
-
   try {
+    const { id } = await params;
+    const index = parseInt(id, 10);
+    const project = await getProjectByIndex(index);
+    if (!project) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    const cl = req.headers.get("content-length");
+    if (cl && parseInt(cl, 10) > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: "Request body too large" }, { status: 413 });
+    }
+    const body = await req.json();
+    const textRaw: unknown = body?.text;
+    if (typeof textRaw !== "string" || textRaw.length === 0) {
+      return NextResponse.json({ error: "Missing required field: text" }, { status: 400 });
+    }
+    const text = sanitizeMarkdownInput(textRaw, { maxLen: 500 });
+    if (text.length === 0) {
+      return NextResponse.json({ error: "Text empty after sanitization" }, { status: 400 });
+    }
+
     const itemId = await getNextBacklogId(project.path);
-    const backlogPath = path.join(project.path, ".redeye", "backlog.md");
-    let content = await fs.readFile(backlogPath, "utf-8");
+    const backlogPath = safeRedeyePath(project.path, "backlog.md");
+    let content: string;
+    try {
+      content = await fs.readFile(backlogPath, "utf-8");
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
+      content = "# Backlog\n\n## CEO Requests\n";
+    }
 
-    const newItem = `\n### ${itemId}: ${text.trim()}\n- **Type:** feature\n- **Priority:** P1\n- **Status:** pending\n`;
+    const newItem = `\n### ${itemId}: ${text}\n- **Type:** feature\n- **Priority:** P1\n- **Status:** pending\n`;
 
-    // Insert after ## CEO Requests header
     const ceoHeader = "## CEO Requests";
     const ceoIdx = content.indexOf(ceoHeader);
     if (ceoIdx !== -1) {
@@ -42,7 +58,6 @@ export async function POST(
 
     await fs.writeFile(backlogPath, content, "utf-8");
 
-    // Auto-resume the CTO loop if it had stopped on empty backlog.
     let resumed = false;
     try {
       const session = getSessionStatus(project.path);

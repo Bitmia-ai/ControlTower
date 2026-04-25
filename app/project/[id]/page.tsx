@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useRef, useState, useCallback, use } from "react";
 import Link from "next/link";
 import type { ProjectDetail, InboxQuestion } from "@/lib/redeye-types";
 import { useTaskTransitionTracker } from "@/lib/use-task-transition-tracker";
@@ -36,6 +36,13 @@ export default function ProjectPage({
   const [steerOpen, setSteerOpen] = useState(false);
   const [backlogOpen, setBacklogOpen] = useState(false);
 
+  // Hold the latest detail in a ref so the fetch callback's identity is
+  // stable across renders. Otherwise the polling interval re-creates after
+  // every successful fetch (callback identity changes when `detail` updates),
+  // leaving small uncovered windows in the timer schedule.
+  const detailRef = useRef(detail);
+  useEffect(() => { detailRef.current = detail; }, [detail]);
+
   const fetchDetail = useCallback(async () => {
     try {
       setFetchError(null);
@@ -44,13 +51,13 @@ export default function ProjectPage({
       const json = await res.json();
       if (json.data) setDetail(json.data);
     } catch {
-      if (!detail) {
+      if (!detailRef.current) {
         setFetchError("Failed to load project details.");
       }
     } finally {
       setLoading(false);
     }
-  }, [id, detail]);
+  }, [id]);
 
   useEffect(() => {
     fetchDetail();

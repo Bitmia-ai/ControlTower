@@ -4,8 +4,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
+import { safeRedeyePath } from "@/lib/redeye-files";
 import fs from "fs/promises";
-import path from "path";
 
 export async function POST(
   req: NextRequest,
@@ -19,7 +19,7 @@ export async function POST(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const steeringPath = path.join(project.path, ".redeye", "steering.md");
+    const steeringPath = safeRedeyePath(project.path, "steering.md");
     let content: string;
     try {
       content = await fs.readFile(steeringPath, "utf-8");

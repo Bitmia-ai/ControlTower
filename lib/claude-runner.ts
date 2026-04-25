@@ -123,9 +123,13 @@ export function spawnClaudeSession(
     prompt,
   ];
 
+  // Merge stderr into the same fd as stdout. Previously we used "pipe" which
+  // had no consumer, so after ~64 KB of stderr the pipe buffer filled and
+  // claude blocked, looking like a stall. Writing stderr to the log fd
+  // captures it and avoids the deadlock.
   const proc = spawn(CLAUDE_BIN, args, {
     cwd: projectPath,
-    stdio: ["pipe", logFd, "pipe"],
+    stdio: ["pipe", logFd, logFd],
     detached: true,
   });
 

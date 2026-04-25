@@ -1,36 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
 import { getSessionStatus, startSession } from "@/lib/session-manager";
+import { atomicWriteJson } from "@/lib/atomic-write";
+import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
+import { safeRedeyePath } from "@/lib/redeye-files";
 import fs from "fs/promises";
-import path from "path";
+
+const QUESTION_ID_RE = /^Q-\d+$/;
+const MAX_BODY_BYTES = 64 * 1024;
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const index = parseInt(id, 10);
-  const project = await getProjectByIndex(index);
-  if (!project) {
-    return NextResponse.json({ error: "Project not found" }, { status: 404 });
-  }
-
-  const body = await req.json();
-  const questionId: string = body?.questionId;
-  const answer: string = body?.answer;
-
-  if (!questionId || typeof questionId !== "string") {
-    return NextResponse.json({ error: "Missing required field: questionId" }, { status: 400 });
-  }
-  if (!answer || typeof answer !== "string") {
-    return NextResponse.json({ error: "Missing required field: answer" }, { status: 400 });
-  }
-
   try {
-    const inboxPath = path.join(project.path, ".redeye", "inbox.md");
+    const { id } = await params;
+    const index = parseInt(id, 10);
+    const project = await getProjectByIndex(index);
+    if (!project) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    // Cap body size before parsing — defends against trivial DoS
+    const cl = req.headers.get("content-length");
+    if (cl && parseInt(cl, 10) > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: "Request body too large" }, { status: 413 });
+    }
+
+    const body = await req.json();
+    const questionId: unknown = body?.questionId;
+    const answerRaw: unknown = body?.answer;
+
+    if (typeof questionId !== "string" || !QUESTION_ID_RE.test(questionId)) {
+      return NextResponse.json(
+        { error: "questionId must match Q-<number>" },
+        { status: 400 }
+      );
+    }
+    if (typeof answerRaw !== "string" || answerRaw.length === 0) {
+      return NextResponse.json({ error: "Missing required field: answer" }, { status: 400 });
+    }
+    if (answerRaw.length > 4096) {
+      return NextResponse.json({ error: "Answer too long (max 4096 chars)" }, { status: 400 });
+    }
+    // Strip newlines and markdown markers so a malicious answer can't forge
+    // headers, bullet items, or backlog entries that RedEye would later read
+    // as authoritative instructions (prompt-injection trust boundary).
+    const answer = sanitizeMarkdownInput(answerRaw);
+
+    const inboxPath = safeRedeyePath(project.path, "inbox.md");
     let content = await fs.readFile(inboxPath, "utf-8");
 
-    // Find the question block and add the answer
+    // Build the question pattern from the validated questionId. Since
+    // questionId is now guaranteed to match Q-<number>, no escape needed.
     const questionPattern = new RegExp(
       `(### ${questionId}[:\\s][^]*?)(?=\\n### |\\n## |$)`
     );
@@ -42,7 +64,6 @@ export async function POST(
 
     const questionBlock = match[1];
 
-    // If already has an Answer field, update it; otherwise append
     if (questionBlock.includes("**Answer:**")) {
       content = content.replace(
         questionPattern,
@@ -55,14 +76,11 @@ export async function POST(
       );
     }
 
-    // Move from Open to Answered section if it's in Open
     if (content.includes("## Questions (Open)") && content.includes("## Answered / Provided")) {
       const openSection = content.match(/## Questions \(Open\)([\s\S]*?)(?=## Answered)/);
       if (openSection && openSection[1].includes(questionId)) {
-        // Remove from Open
         const updatedQuestion = content.match(questionPattern)?.[1] || "";
         content = content.replace(questionPattern, "");
-        // Add to Answered
         content = content.replace(
           "## Answered / Provided",
           `## Answered / Provided\n\n${updatedQuestion.trim()}\n`
@@ -72,22 +90,20 @@ export async function POST(
 
     await fs.writeFile(inboxPath, content, "utf-8");
 
-    // Update state.json health counters immediately
-    const statePath = path.join(project.path, ".redeye", "state.json");
+    // Update state.json health counters atomically.
+    const statePath = safeRedeyePath(project.path, "state.json");
     try {
       const stateRaw = await fs.readFile(statePath, "utf-8");
       const state = JSON.parse(stateRaw);
       if (state.health && state.health.questions_awaiting_ceo > 0) {
         state.health.questions_awaiting_ceo -= 1;
       }
-      await fs.writeFile(statePath, JSON.stringify(state, null, 2), "utf-8");
+      await atomicWriteJson(statePath, JSON.stringify(state, null, 2));
     } catch (stateErr) {
       console.error("[POST /answer] Failed to update state.json health counters:", stateErr);
     }
 
-    // Auto-resume the CTO loop if it had stopped waiting for this answer.
-    // Without this, the user replies but nothing happens until they manually
-    // hit Start — confusing UX (see BL-060).
+    // Auto-resume the CTO loop if it had stopped waiting on this answer.
     let resumed = false;
     try {
       const session = getSessionStatus(project.path);

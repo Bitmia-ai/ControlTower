@@ -123,9 +123,9 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
 
           <div className="flex items-center gap-2 flex-wrap">
             {state?.phase && <PhaseBadge phase={state.phase} running={running} />}
-            {(state as unknown as Record<string, unknown>)?.worktree_branch ? (
+            {state?.worktree_branch ? (
               <span className="text-xs text-gray-400 dark:text-zinc-500 font-mono">
-                {String((state as unknown as Record<string, unknown>).worktree_branch)}
+                {state.worktree_branch}
               </span>
             ) : null}
           </div>

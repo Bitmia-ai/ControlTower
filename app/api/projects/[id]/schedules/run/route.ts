@@ -4,8 +4,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
 import { getSessionStatus, startSession } from "@/lib/session-manager";
+import { safeRedeyePath } from "@/lib/redeye-files";
 import fs from "fs/promises";
-import path from "path";
 
 export async function POST(
   req: NextRequest,
@@ -37,7 +37,7 @@ export async function POST(
     }
 
     // Append steering directive
-    const steeringPath = path.join(project.path, ".redeye", "steering.md");
+    const steeringPath = safeRedeyePath(project.path, "steering.md");
     let content: string;
     try {
       content = await fs.readFile(steeringPath, "utf-8");
