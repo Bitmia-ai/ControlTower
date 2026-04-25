@@ -3,7 +3,7 @@
   "iteration": 106,
   "started_at": "2026-04-25T11:04:14Z",
   "phase": "BUILD",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-075",
@@ -12,8 +12,8 @@
   "phase_progress": {
     "incorporate": "Q-012 resolved. CEO /redeye:start = proceed with default (option 1). BL-075 (performance audit) added to backlog. Q-012 moved to Answered.",
     "triage": "Env healthy. 783/783 tests pass. 1 pending item: BL-075 (performance audit, P1). Selected BL-075.",
-    "plan": "Spec written: docs/specs/BL-075-performance-audit.md. 5 tasks: T1 dynamic import react-markdown (3 pages), T2 viewport metadata (layout.tsx), T3 cache headers (next.config.ts), T4 performance audit report (docs/), T5 tests (6-8 new). Low risk, no new deps.",
-    "build": "in-progress"
+    "plan": "Spec written: docs/specs/BL-075-performance-audit.md. 5 tasks: T1 dynamic import react-markdown (3 pages), T2 viewport metadata (layout.tsx), T3 cache headers (next.config.ts), T4 performance audit report (docs/), T5 tests (13 new). Low risk, no new deps.",
+    "build": "T1: MarkdownRenderer wrapper + next/dynamic in steer, backlog detail, history (7 tests). T2: viewport + metadata title template + robots:noindex in layout.tsx (3 tests). T3: headers() in next.config.ts with immutable/no-store rules (3 tests). T4: docs/performance-audit.md written. T5: 13 new tests, vitest include updated to cover root-level *.test.ts. 796/796 tests pass (was 783, +13). Build clean."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -32,20 +32,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: plan BL-075 — performance audit spec",
+    "last_commit": "feat: BL-075 performance audit — dynamic markdown, viewport meta, cache headers",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter105-bl068",
     "merge_status": "clean",
-    "notes": "Iter 106 BUILD in-progress. Implementing T1-T5 for BL-075."
+    "notes": "Iter 106 BUILD complete. 796/796 tests pass (+13 new). Build clean. Ready for REVIEW."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 106,
       "phases": ["INCORPORATE", "TRIAGE", "PLAN", "BUILD"],
-      "outcome": "BUILD in-progress",
+      "outcome": "INCORPORATE: Q-012 resolved, BL-075 added. TRIAGE: env healthy, 783/783 tests, selected BL-075. PLAN: spec written (5 S-tier tasks). BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated. 796/796 tests pass, build clean.",
       "next": "REVIEW BL-075",
-      "timestamp": "2026-04-25T21:45:00Z"
+      "timestamp": "2026-04-25T21:55:00Z"
     },
     {
       "iteration": 105,
