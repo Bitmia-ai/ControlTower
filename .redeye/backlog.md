@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### BL-071: Apply the same design styles form the main page to all the other pages and tabs. use the design subagent and frond end skill
+- **Type:** feature
+- **Priority:** P1
+- **Status:** in-progress
+
 ### BL-070: we need to be able to add schedules form the schedule tab
 - **Type:** feature
 - **Priority:** P1

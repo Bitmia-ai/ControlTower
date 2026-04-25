@@ -1,46 +1,28 @@
-# VERIFY status — BL-066 (iteration 97)
+# RedEye Status
 
-## Health Assessment
+**Updated:** 2026-04-25 (iter 98 TRIAGE)
+**Phase:** plan
+**Phase Status:** ready
+**Iteration:** 98
 
-**Status: HEALTHY**
-**Confidence: HIGH**
-**Phase advanced to: MERGE**
+## Last Action
 
-## Deploy Result (from DEPLOY phase)
+TRIAGE iter 98 complete. Selected BL-071 for planning.
 
-- Command: `NODE_ENV=production npm run build`
-- Result: SUCCESS (exit 0)
-- Tests: 691/691 pass
+- 691/691 tests pass. Build clean. No tester reports. No CEO questions pending.
+- Found 3 new CEO P1 Requests: BL-069, BL-070, BL-071.
+- Selected BL-071 (highest-priority: most recent CEO directive, extends home page design to all pages).
+- BL-071 set to in-progress in backlog.md.
+- state.json: phase=plan, backlog_item=BL-071, iteration_log entry added for TRIAGE iter 98.
 
-## Visual Verification
+## Selected Item
 
-- Tool: Playwright MCP browser
-- URL: http://localhost:3200
-- Light mode screenshot: home-page-dark.png (taken in light mode)
-- Dark mode screenshot: home-page-dark-mode.png
+**BL-071** (P1): Apply the same design styles from the main page to all the other pages and tabs. Use the design subagent and frontend skill.
 
-### Checklist
+## Remaining Queue
 
-| Item | Result |
-|---|---|
-| "Control Tower" eyebrow label (monospace, small, muted) | PASS |
-| "Projects" h1 heading | PASS |
-| Project count subtitle ("3 projects registered") | PASS |
-| border-b divider below header | PASS |
-| Colored top border (3px): green/amber/zinc | PASS |
-| Project name prominently displayed | PASS |
-| Project path in monospace smaller text | PASS |
-| Phase footer section at card bottom | PASS |
-| Start/Stop button in footer | PASS |
-| Dark mode — all elements render correctly | PASS |
-| Console errors (new regressions) | NONE |
-
-## User Tester Feedback
-
-No entry for this iteration.
-
-## Decision
-
-HEALTHY — all spec requirements visually confirmed in both light and dark mode.
-Tagged: last-good-deploy-iter97-bl066
-Next: MERGE BL-066
+- BL-069 (P1): Steer tab directives editable/deletable
+- BL-070 (P1): Add schedules from the schedule tab
+- BL-067 (P1): Redesign mission control page layout and cards
+- BL-065 (P2): Add Won't Do section to backlog page
+- BL-068 (P2): Polish Live tab visual design
