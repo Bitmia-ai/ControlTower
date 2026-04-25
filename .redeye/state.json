@@ -2,13 +2,13 @@
   "schema_version": 1,
   "iteration": 101,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "plan",
+  "phase": "review",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-072",
   "backlog_title": "Steer tab — edit/delete directives",
-  "spec_file": null,
+  "spec_file": "docs/specs/BL-072-edit-delete-directives.md",
   "phase_progress": {},
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -35,6 +35,16 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 101,
+      "phases": [
+        "PLAN",
+        "BUILD"
+      ],
+      "outcome": "PLAN: spec docs/specs/BL-072-edit-delete-directives.md — add applyDirectiveEdit/applyDirectiveDelete pure helpers in lib/redeye-parsers.ts that mutate steering.md by parsed-array index, then add PATCH+DELETE handlers to /api/projects/[id]/steer using sanitizeMarkdownInput (500 cap) and a 4KB body cap, then refactor DirectiveRow into a stateful component (view/editing/confirm-delete) with hover-revealed pencil+trash icons. BUILD: 39 new tests across lib (13), api route (16), UI (10). 731/731 tests pass. Build clean. Helpers preserve leading indentation, subsection headers, and surrounding lines byte-for-byte; RangeError -> 404, ENOENT -> 404. CSRF inherited from middleware.ts. Best-effort commitAndPush so TRIAGE's sync-from-main does not wipe the change.",
+      "next": "REVIEW BL-072",
+      "timestamp": "2026-04-25T22:08:00Z"
+    },
     {
       "iteration": 100,
       "phases": [
