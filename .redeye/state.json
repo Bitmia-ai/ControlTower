@@ -2,20 +2,15 @@
   "schema_version": 1,
   "iteration": 93,
   "started_at": "2026-04-25T10:55:00Z",
-  "phase": "MERGE",
-  "phase_status": "in-progress",
+  "phase": "TRIAGE",
+  "phase_status": "pending",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-063",
-  "backlog_title": "we need a steer tab added. make it fully functional",
-  "spec_file": "docs/specs/BL-063-steer-tab.md",
-  "phase_progress": {
-    "build": "T1: VIEW_H=80, height attr=80, removed width=100%, removed max-h-[72px] from container. T2: updated 3 test files. 657/657 tests pass. Build clean.",
-    "review": "Cycle 1: 0C/0M/0m \u2014 PASS. Fix is minimal and correct: VIEW_H=80, fixed height attr prevents horizontal stretch, max-h clamp removed, 3 test files updated. Build and tests clean.",
-    "deploy": "Production build clean (Turbopack). 663/663 tests pass. Tagged last-good-deploy-iter93-bl064.",
-    "verify": "663/663 tests pass. VIEW_H=80 confirmed, height attr set, max-h removed. Build artifacts clean. Backlog BL-064 marked done."
-  },
-  "review_cycles": 1,
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -32,11 +27,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-062 \u2014 Fix inconsistent card sizes on main project screen (iteration 92)",
+    "last_commit": "redeye: merge BL-064 \u2014 Fix cost plot aspect ratio (iteration 93)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter93-bl064",
     "merge_status": "clean",
-    "notes": "BL-064 selected for iteration 93. Cost plot aspect ratio fix."
+    "notes": "BL-064 MERGE complete. Marked done in backlog.md. State advanced to TRIAGE iter 94. 1 P1 item pending: BL-063 (steer tab)."
   },
   "blocked_items": [],
   "iteration_log": [
