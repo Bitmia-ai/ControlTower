@@ -1,4 +1,4 @@
-# Triage Status — Iteration 76
+# Triage Status — Iteration 78
 
 **Date:** 2026-04-25
 **Phase:** TRIAGE
@@ -13,7 +13,7 @@
 - **Feedback:** No user tester feedback entries.
 - **Backlog:** All BL-001 through BL-048 done or wont-do. Zero planned items.
 - **Active claims:** None (claims object empty).
-- **Documenter:** Idle. No documenter commits in recent git log (last 5 commits all TRIAGE hold iterations).
+- **Documenter:** Idle. No documenter commits in recent git log (all recent commits are TRIAGE hold iterations).
 - **Background agents:** User tester remains respawn-pending (no new deploy since iter 63).
 
 ## Health
