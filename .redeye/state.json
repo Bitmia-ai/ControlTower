@@ -1,27 +1,23 @@
 {
   "schema_version": 1,
-  "iteration": 80,
-  "started_at": "2026-04-25T01:00:00Z",
-  "phase": "MERGE",
+  "iteration": 81,
+  "started_at": "2026-04-25T01:11:15Z",
+  "phase": "TRIAGE",
   "phase_status": "complete",
-  "merge_status": "clean",
-  "backlog_item": "BL-050",
-  "backlog_title": "Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)",
-  "spec_file": "docs/specs/BL-050-phase-change-notifications.md",
+  "backlog_item": "BL-051",
+  "backlog_title": "Cost analytics — add cumulative cost chart to mission control",
   "phase_progress": {
-    "plan": "Spec written. 6 sub-tasks (T1 S, T2 M, T3 M, T4 S, T5 S, T6 S). No new CEO questions. Architecture: usePhaseChangeNotifier hook (mirrors useTaskTransitionTracker pattern), usePhaseNotifications hook, ToastProvider/ToastContainer components (no new deps), wired into layout.tsx and mission-control page.tsx. Worktree to be created for feature branch.",
-    "deploy": "Build PASS (no /_global-error error this run — known pre-existing issue documented). 493/493 unit tests pass. Full E2E regression: home, mission-control, backlog, backlog-item-detail, history, live — all pages green. Toast alert region confirmed present in DOM on all pages. Visual screenshot clean.",
-    "merge": "BL-050 merged cleanly to main. 9 commits, no code conflicts. .redeye/ tracking files retained from pre-merge main. Claims cleared. Backlog item marked done with Summary authored."
+    "triage": "Iteration 81: No tester reports, no overdue schedules, no open CEO questions, no STOP/PAUSE. BL-050 confirmed merged (iter 80, 493/493 tests). Env HEALTHY. Routing to PLAN on BL-051 (cost analytics sparkline, P2)."
   },
-  "review_cycles": 2,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
     "user_tester": {
       "status": "respawn-pending",
-      "heartbeat": "2026-04-25T01:00:00Z",
+      "heartbeat": "2026-04-25T01:11:15Z",
       "bugs_this_cycle": 0,
-      "persona_index": 3
+      "persona_index": 4
     },
     "documenter": {
       "status": "idle",
@@ -30,13 +26,22 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-050 — Add in-app notification toast when RedEye phase changes",
+    "last_commit": "redeye: update status.md — MERGE complete BL-050",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter80",
-    "notes": "BL-050 merged cleanly. 9 commits from feature/BL-050-phase-notifications. Worktree teardown pending by CTO."
+    "notes": "BL-050 merged cleanly. Iteration 81 begins. Routing to PLAN BL-051."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 81,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "No tester reports, no overdue schedules, no open CEO questions, steering empty (no STOP/PAUSE). Env HEALTHY. Selected BL-051 (cost analytics sparkline chart, P2). Routing to PLAN.",
+      "next": "PLAN",
+      "timestamp": "2026-04-25T01:11:15Z"
+    },
     {
       "iteration": 80,
       "phases": [
@@ -91,7 +96,7 @@
     "next_sched_id": 1
   },
   "cost_tracking": {
-    "iterations_this_session": 60,
+    "iterations_this_session": 61,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 80
@@ -104,7 +109,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 80,
     "last_deploy_iteration": 80,
-    "current_iteration": 80,
+    "current_iteration": 81,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -124,6 +129,7 @@
     "BL-024": 88.12103009999997,
     "BL-026": 98.03656575000008,
     "BL-049": 124.89217890000009,
-    "BL-050": 126.25882920000019
+    "BL-050": 126.25882920000019,
+    "BL-051": 135.25504920000046
   }
 }
