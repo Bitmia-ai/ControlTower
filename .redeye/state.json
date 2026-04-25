@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 83,
   "started_at": "2026-04-25T02:15:00Z",
-  "phase": "VERIFY",
+  "phase": "MERGE",
   "phase_status": "complete",
   "backlog_item": "BL-053",
   "backlog_title": "Improve session history page — show phase timeline and cost per session",
@@ -35,7 +35,7 @@
     "branch": "feat/bl-053-session-history-phase-timeline",
     "last_good_deploy_tag": "last-good-deploy-iter83",
     "merge_status": "clean",
-    "notes": "BL-053 VERIFY complete. Visual check PASS — sessions section with cost badges and phase chips confirmed on both ControlTower (18 sessions) and haze (10 sessions, 5 with phase chips). Tagged last-good-deploy-iter83. Env: HEALTHY."
+    "notes": "BL-053 MERGE complete. 11 commits merged to main via branch -f fast-forward. Claims cleared, BL-053 marked done. Sessions section with cost badges and phase chips shipped."
   },
   "blocked_items": [],
   "iteration_log": [

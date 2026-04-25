@@ -1,9 +1,3 @@
 {
-  "claims": {
-    "BL-053": {
-      "instance": "main",
-      "iteration": 83,
-      "claimed_at": "2026-04-25T02:15:00Z"
-    }
-  }
+  "claims": {}
 }

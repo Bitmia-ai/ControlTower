@@ -5,8 +5,11 @@
 ### BL-053: Improve session history page — show phase timeline and cost per session
 - **Type:** feature
 - **Priority:** P2
-- **Status:** planned
+- **Status:** done
+- **Completed:** 2026-04-25 (iter 83)
 - **Added:** 2026-04-25 (iter 79)
+- **Spec:** docs/specs/BL-053-session-history-phase-timeline.md
+- **Summary:** The history page now shows a Sessions section above the Iteration Log, with one row per JSONL transcript file. Each row displays the session date, approximate duration, a cost badge, and a strip of phase chips (TRI, PLN, BLD, REV, DEP, VER) extracted from the transcript. A pre-existing infinite render loop in the sessions section was also found and fixed during this cycle.
 - **Details:**
   - The history page at /project/[id]/history shows a flat session list with start/end times
   - Enrich each session row with: total cost for that session, number of phases completed, and a mini phase timeline (PLAN → BUILD → REVIEW → DEPLOY chips)
