@@ -3,7 +3,7 @@
   "iteration": 90,
   "started_at": "2026-04-25T09:05:06Z",
   "phase": "PLAN",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": "BL-061",
@@ -33,7 +33,8 @@
     "deploy_notes": "Production build clean (Turbopack). 662/662 unit tests pass. No E2E CLI configured. Tagged last-good-deploy-iter90-bl058.",
     "verify_complete": true,
     "verify_notes": "662/662 tests pass. Tags exist (last-good-deploy-iter90-bl058). schedules/run route present. SCHED-1 in schedules.md. 0 tester bugs. VISUAL VERIFY: SCHED-1 renders at /project/1/schedules with Overdue badge; Run now button is sibling of expand button (not nested); POST /api/projects/1/schedules/run returns 200 {data:{queued:true,scheduleId:SCHED-1}}; 0 app JS errors. Screenshot: .playwright-mcp/page-2026-04-25T10-18-58-995Z.png. PASS.",
-    "triage_notes": "BL-058 done. Env healthy. 4 P1 items pending (BL-061, BL-062, BL-063, BL-064). Selected BL-061 (oldest P1): remove kbd shortcut badges from nav buttons."
+    "triage_notes": "BL-058 done. Env healthy. 4 P1 items pending (BL-061, BL-062, BL-063, BL-064). Selected BL-061 (oldest P1): remove kbd shortcut badges from nav buttons.",
+    "plan_notes": "BL-061: remove kbd badges from project-nav.tsx and controls-card.tsx. 6 sub-tasks (T1-T6)."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
