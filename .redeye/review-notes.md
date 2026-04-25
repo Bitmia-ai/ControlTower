@@ -142,3 +142,37 @@ All new elements have correct `dark:` variants. No missing dark-mode classes fou
 **PASS — 0 Critical / 0 Major / 2 Minor**
 
 Both minor findings are non-actionable (spec-intentional or out-of-scope). Recommend DEPLOY.
+
+---
+
+# Review Notes: BL-065 — Won't Do Section
+
+**Reviewer:** REVIEW agent (claude-sonnet-4-6)
+**Date:** 2026-04-25 (iter 104)
+**Review cycle:** 3 (final)
+**Verdict:** PASS
+
+## Change Size
+
+S-tier: 3 files changed (page.tsx, page.test.tsx, state.json). 2 prior fix cycles corrected data plumbing and bucket logic.
+
+## Build & Test Results
+
+- `npm run build`: clean (1 pre-existing Turbopack workspace-root warning)
+- `npx vitest run`: 779/779 pass (70 test files)
+
+## Findings
+
+0 Critical / 0 Major / 0 Minor
+
+All sanity checks pass:
+- `computeBuckets` wontDoItems: `status === "wontdo"` (not section)
+- `plannedItems` excludes `status !== "wontdo"`
+- `doneItems` no longer incorrectly filters by section
+- Test uses items with status=wontdo in two different sections proving section-independence
+
+## VERIFY Result
+
+Won't Do section visible with 4 items (BL-069, BL-054, BL-030, BL-029). REASON eyebrow renders with rationale text for each item. Section collapsed by default. Wont-do items absent from planned section. Screenshot: bl065-verify-wontdo-section.png.
+
+**Recommendation: DEPLOY + MERGE**

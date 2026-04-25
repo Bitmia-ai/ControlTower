@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "iteration": 104,
+  "iteration": 105,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "review",
+  "phase": "triage",
   "phase_status": "ready",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": "BL-065",
-  "backlog_title": "Add Won't Do section at the end of the backlog page",
-  "spec_file": "docs/specs/BL-065-wont-do-section.md",
+  "backlog_item": null,
+  "backlog_title": null,
+  "spec_file": null,
   "phase_progress": {},
-  "review_cycles": 2,
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -39,11 +39,15 @@
       "iteration": 104,
       "phases": [
         "PLAN",
-        "BUILD"
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "PLAN: spec docs/specs/BL-065-wont-do-section.md — wont-do items already render in a collapsed section at the bottom of the backlog page; what was missing was the **Reason:** rationale that agents leave when rejecting items. Plan: extend BacklogItem with optional reason field, extract it in parseBacklog, render it inline beneath the title in WontDoItemRow. BUILD: T1 — added reason?: string to BacklogItem type, parseBacklog now picks Reason via existing pickField helper, 3 new parser tests (extracts on wont-do, undefined when absent, does not coerce from Summary). T2 — exported WontDoItemRow, added p element with data-testid=wontdo-reason rendering the rationale (mono uppercase Reason eyebrow + body text, mt-1 leading-snug), 3 new component tests (renders when present, omitted when absent, strikethrough title preserved). T3 — 779/779 tests pass (was 773, +6). Build clean.",
-      "next": "REVIEW BL-065",
-      "timestamp": "2026-04-25T22:50:00Z"
+      "outcome": "PLAN: spec docs/specs/BL-065-wont-do-section.md — wont-do items already render in a collapsed section at the bottom of the backlog page; what was missing was the **Reason:** rationale that agents leave when rejecting items. Plan: extend BacklogItem with optional reason field, extract it in parseBacklog, render it inline beneath the title in WontDoItemRow. BUILD: T1 — added reason?: string to BacklogItem type, parseBacklog now picks Reason via existing pickField helper, 3 new parser tests (extracts on wont-do, undefined when absent, does not coerce from Summary). T2 — exported WontDoItemRow, added p element with data-testid=wontdo-reason rendering the rationale (mono uppercase Reason eyebrow + body text, mt-1 leading-snug), 3 new component tests (renders when present, omitted when absent, strikethrough title preserved). T3 — 779/779 tests pass (was 773, +6). Build clean. REVIEW: S-tier (3 files). 2 fix cycles — Cycle 1: wontDoItems not plumbed through readProjectDetail. Cycle 2: computeBuckets filtered by section instead of status. Final review 0C/0M/0m. DEPLOY: build clean, 779/779 tests pass. VERIFY: Won't Do section visible with 4 items (BL-069, BL-054, BL-030, BL-029). Section collapsed by default, expands correctly. Each item shows REASON eyebrow with rationale. Wont-do items absent from planned section. Screenshot taken. MERGE: BL-065 marked done. Cost delta ~$51.95 (total $317.31).",
+      "next": "TRIAGE iter 105",
+      "timestamp": "2026-04-25T23:05:00Z"
     },
     {
       "iteration": 103,
@@ -267,9 +271,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 103,
-    "last_deploy_iteration": 103,
-    "current_iteration": 104,
+    "last_verify_iteration": 104,
+    "last_deploy_iteration": 104,
+    "current_iteration": 105,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -294,7 +298,8 @@
     "BL-073": 1.54,
     "BL-072": 3.46,
     "BL-070": 52.84,
-    "BL-067": 0.20593650000006392
+    "BL-067": 0.20593650000006392,
+    "BL-065": 51.95
   },
   "item_cost_starts": {
     "BL-046": 73.40777850000002,

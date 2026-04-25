@@ -76,9 +76,11 @@
 ### BL-065: Add Won't Do section at the end of the backlog page
 - **Type:** feature
 - **Priority:** P2
-- **Status:** in-progress
+- **Status:** done
 - **Started:** 2026-04-25 (iter 104)
-- **Description:** Currently wont-do items are invisible in the backlog UI — they vanish from upNext (correctly, after the wont-do parser fix) but there is no place that lists them. Add a collapsed-by-default "Won't Do" section at the bottom of the backlog page that lists every item with status=wontdo. For each item, show the title, BL-id, and any details/rationale present on the entry (the agents typically leave a short note explaining why the item was rejected — that note must be rendered, not hidden). Section header should show the count and be expandable. Goal: nothing silently disappears, and the CEO can audit why specific things were dropped.
+- **Merged:** 2026-04-25 (iter 104)
+- **Spec:** docs/specs/BL-065-wont-do-section.md
+- **Summary:** Added Won't Do section to the backlog page. Extended readProjectDetail to include wontDoItems (filtered by status=wontdo). parseBacklog extracts **Reason:** field. computeBuckets now filters by status (not section) so items from any markdown section are correctly bucketed. WontDoItemRow renders strikethrough title + monospace Reason eyebrow + rationale. Section collapsed by default, positioned after Done. 6 new tests (779 total). Required 2 fix cycles to correct data plumbing and bucket logic.
 
 ### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
 - **Type:** feature
