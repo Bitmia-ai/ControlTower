@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { execFileSync } from "child_process";
 import type { SessionRole, SessionInfo, SessionStatus } from "./redeye-types";
 import { spawnClaudeSession, runClaudeCommand } from "./claude-runner";
 import { resolveTranscriptFile } from "./transcript-file-resolver";
@@ -46,10 +47,86 @@ function isProcessRunning(pid: number): boolean {
   }
 }
 
+/**
+ * Resolve the working directory of a running process. Cross-platform:
+ * /proc on Linux, lsof on macOS/BSD. Returns null if unreadable.
+ */
+function pidCwd(pid: number): string | null {
+  if (!Number.isInteger(pid) || pid <= 0) return null;
+  if (process.platform === "linux") {
+    try {
+      return fs.readlinkSync(`/proc/${pid}/cwd`);
+    } catch {
+      return null;
+    }
+  }
+  try {
+    const out = execFileSync(
+      "lsof",
+      ["-a", "-p", String(pid), "-d", "cwd", "-Fn"],
+      { encoding: "utf-8", stdio: ["ignore", "pipe", "ignore"] }
+    );
+    for (const line of out.split("\n")) {
+      if (line.startsWith("n")) return line.slice(1);
+    }
+  } catch {}
+  return null;
+}
+
+/**
+ * Process-table fallback for an orphan CTO Claude session whose PID we lost.
+ *
+ * In-memory map and pidfile can both miss a real process when:
+ *  - Next.js dev server hot-reloads → in-memory state wiped
+ *  - RedEye's start-loop.sh overwrites session-cto.pid with $PPID (its shell)
+ *  - ralph-loop respawns claude across iterations with a new PID
+ *
+ * Scans `ps` for a `claude --print … --plugin-dir … redeye … -p Run /redeye:start`
+ * process whose cwd matches the project, and returns its PID.
+ */
+function findOrphanCtoPid(projectPath: string): number | null {
+  const targetPath = path.resolve(projectPath);
+  let psOut: string;
+  try {
+    psOut = execFileSync("ps", ["-eo", "pid=,args="], {
+      encoding: "utf-8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+  } catch {
+    return null;
+  }
+  const candidates: number[] = [];
+  for (const line of psOut.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (
+      !trimmed.includes("claude") ||
+      !trimmed.includes("--print") ||
+      !trimmed.includes("--plugin-dir") ||
+      !trimmed.includes("redeye") ||
+      !trimmed.includes("/redeye:start")
+    ) {
+      continue;
+    }
+    const m = trimmed.match(/^(\d+)\s/);
+    if (!m) continue;
+    const pid = parseInt(m[1], 10);
+    if (Number.isFinite(pid) && pid > 0) candidates.push(pid);
+  }
+  for (const pid of candidates) {
+    const cwd = pidCwd(pid);
+    if (cwd && path.resolve(cwd) === targetPath) return pid;
+  }
+  return null;
+}
+
 function discoverPid(projectPath: string, role: SessionRole): number | null {
-  // Source of truth: in-memory map (this server's spawns) and the on-disk
-  // pidfile (which the RedEye stop-hook keeps fresh on every iteration).
-  // Both must point to a live process or we treat the session as stopped.
+  // Source of truth (in order):
+  //   1. In-memory map (this server's spawns)
+  //   2. Pidfile on disk (kept fresh by RedEye's stop-hook each iteration)
+  //   3. Process-table scan (catches orphans from hot-reload, ralph-loop respawn,
+  //      or stale pidfile written by start-loop.sh's $PPID)
+  //
   // We deliberately do NOT use log-freshness as a "running" signal — log
   // mtime can stay fresh for ~60 s after the CTO process exits because the
   // last subagent writes flush late, which produced false-positive "running"
@@ -61,13 +138,33 @@ function discoverPid(projectPath: string, role: SessionRole): number | null {
   try {
     const pid = parseInt(fs.readFileSync(pidFile, "utf-8").trim(), 10);
     if (!isNaN(pid) && isProcessRunning(pid)) {
-      const key = path.resolve(projectPath);
-      if (!sessions.has(key)) sessions.set(key, new Map());
-      sessions.get(key)!.set(role, pid);
-      return pid;
+      // Verify the pid actually belongs to a CTO for THIS project — start-loop.sh
+      // writes $PPID which can be any unrelated process if the file goes stale.
+      const cwd = pidCwd(pid);
+      if (cwd && path.resolve(cwd) === path.resolve(projectPath)) {
+        const key = path.resolve(projectPath);
+        if (!sessions.has(key)) sessions.set(key, new Map());
+        sessions.get(key)!.set(role, pid);
+        return pid;
+      }
     }
     try { fs.unlinkSync(pidFile); } catch {}
   } catch {}
+
+  // Process-table fallback (only for CTO — other roles spawn rarely)
+  if (role === "cto") {
+    const orphan = findOrphanCtoPid(projectPath);
+    if (orphan !== null) {
+      const key = path.resolve(projectPath);
+      if (!sessions.has(key)) sessions.set(key, new Map());
+      sessions.get(key)!.set(role, orphan);
+      // Persist so next call doesn't pay the ps+lsof cost
+      try {
+        fs.writeFileSync(pidFile, String(orphan));
+      } catch {}
+      return orphan;
+    }
+  }
 
   return null;
 }
