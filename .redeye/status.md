@@ -1,25 +1,35 @@
-# Plan Status — BL-062
+# MERGE Status — BL-062
 
 **Date:** 2026-04-25
-**Iteration:** 92
-**Phase:** PLAN — COMPLETE
+**Iteration:** 92 -> 93
+**Phase:** MERGE complete -> TRIAGE
 
-## Summary
+## Result
 
-TRIAGE: No pending-triage items found. BL-062 confirmed highest-priority P1 (oldest of three pending: BL-062, BL-063, BL-064).
+BL-062 (Fix inconsistent card sizes on main project screen) merged successfully. No worktree to merge — all work was committed directly to main throughout the TRIAGE/PLAN/BUILD/REVIEW/DEPLOY/VERIFY cycle.
 
-PLAN: Spec written at docs/specs/BL-062-card-sizing.md. Root cause of inconsistent card sizes: CSS Grid default `align-items: stretch` makes all cards in a row equal height, causing blank voids in shorter cards. Secondary issue: sparkline SVG uses `preserveAspectRatio="none"` + fixed height, horizontally distorting the chart on wide containers.
+## Commits Merged
 
-Fix: 5 sub-tasks, all S-tier. No new dependencies, no API changes.
+All BL-062 work was on main. Key commits in this cycle:
+- `feat: fix inconsistent card sizes — proportional sparkline + grid items-start (BL-062)`
+- `feat: sparkline uses xMidYMid meet, no fixed height (BL-062 task 2)`
+- `feat: cap sparkline container height at 72px in CostCard (BL-062 task 3)`
+- `feat: h-full on row-1 cards to fill min-h wrapper (BL-062 task 4)`
+- `feat: verify tests + prod build pass (BL-062 task 5)`
+- `redeye: complete VERIFY BL-062 — PASS, 657/657 tests, build clean (iteration 92)`
 
-## Sub-tasks
+## Files Changed (BL-062)
 
-- T1 (S): Add `items-start` to grid + `min-h-[120px]` on row-1 wrappers — pending
-- T2 (S): Fix sparkline `preserveAspectRatio` to `xMidYMid meet`, remove fixed height — pending
-- T3 (S): Add `max-h-[72px]` cap on sparkline container in CostCard — pending
-- T4 (S): Audit/verify all card internals at min-height boundary — pending
-- T5 (S): Full test suite + build verification — pending
+- `app/project/[id]/page.tsx` — grid `md:items-start` + `md:min-h-[120px]` wrappers
+- `components/mission-control/sparkline-chart.tsx` — `preserveAspectRatio=xMidYMid meet`, no fixed height
+- `components/mission-control/cost-card.tsx` — `max-h-[72px] overflow-hidden` sparkline wrapper
+- `components/mission-control/working-on-card.tsx` — `h-full` on root div
+- `components/mission-control/controls-card.tsx` — `h-full` on root div
+- `e2e/card-sizing.spec.ts` — new E2E tests (4 cases)
+- Tests updated: `sparkline-chart.test.tsx`, `cost-card.test.tsx`
 
-## Next Phase
+## State
 
-BUILD — implement T1 through T5.
+- BL-062: **done** in backlog.md (Summary authored and appended)
+- State.json: iteration 93, phase TRIAGE, backlog_item null
+- Next: 2 P1 items pending — BL-063 (steer tab), BL-064 (cost plot scaling)

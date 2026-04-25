@@ -15,8 +15,10 @@
 ### BL-062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
+- **Merged:** 2026-04-25 (iter 92)
 - **Spec:** docs/specs/BL-062-card-sizing.md
+- **Summary:** Fixed inconsistent card heights on the project mission-control screen by switching the grid to top-aligned items, adding a minimum height to row-1 card wrappers, making the sparkline scale proportionally, and capping its container at 72px. All 657 tests pass and the production build is clean.
 
 ### BL-061: remove the keyboard shortcuts from all buttons like (GB)
 - **Type:** feature
