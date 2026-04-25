@@ -168,67 +168,73 @@ function ScheduleRow({
           : "border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
       }`}
     >
-      <button
-        type="button"
-        aria-expanded={expanded}
-        aria-label={`${expanded ? "Collapse" : "Expand"} schedule ${entry.id}: ${entry.title}`}
-        onClick={() => setExpanded((e) => !e)}
-        className="w-full text-left px-4 py-3 flex flex-wrap items-start gap-3 min-h-[44px]"
-      >
-        {/* Expand chevron */}
-        <svg
-          className={`mt-0.5 flex-shrink-0 h-4 w-4 text-gray-400 dark:text-zinc-500 transition-transform ${
-            expanded ? "rotate-90" : ""
-          }`}
-          viewBox="0 0 16 16"
-          fill="none"
-          aria-hidden="true"
+      {/* Header row: expand button (left/center) + action buttons (right).
+          RunButton is a sibling of the expand button, not nested inside it,
+          to avoid the invalid nested <button> HTML structure. */}
+      <div className="flex items-start gap-2 px-4 py-3 min-h-[44px]">
+        {/* Expand button — takes up all remaining space */}
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={`${expanded ? "Collapse" : "Expand"} schedule ${entry.id}: ${entry.title}`}
+          onClick={() => setExpanded((e) => !e)}
+          className="flex-1 text-left flex items-start gap-3 min-w-0"
         >
-          <path
-            d="M6 4l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+          {/* Expand chevron */}
+          <svg
+            className={`mt-0.5 flex-shrink-0 h-4 w-4 text-gray-400 dark:text-zinc-500 transition-transform ${
+              expanded ? "rotate-90" : ""
+            }`}
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 4l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
 
-        {/* Main content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <span className="font-mono text-xs text-gray-500 dark:text-zinc-500">
-              {entry.id}
-            </span>
-            <span className="text-sm font-medium text-gray-900 dark:text-zinc-100 truncate">
-              {entry.title}
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-zinc-400">
-            <span className="inline-flex items-center gap-1">
-              <span className="text-gray-400 dark:text-zinc-600">freq</span>
-              <span className="font-mono bg-gray-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-gray-700 dark:text-zinc-300">
-                {entry.frequency || "—"}
+          {/* Main content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <span className="font-mono text-xs text-gray-500 dark:text-zinc-500">
+                {entry.id}
               </span>
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <span>Last run:</span>
-              <span>{lastRunLabel}</span>
-            </span>
-            <span
-              className={`inline-flex items-center gap-1 ${
-                entry.isOverdue
-                  ? "text-red-600 dark:text-red-400 font-medium"
-                  : ""
-              }`}
-            >
-              <span>Next:</span>
-              <span>{nextDueLabel}</span>
-            </span>
-          </div>
-        </div>
+              <span className="text-sm font-medium text-gray-900 dark:text-zinc-100 truncate">
+                {entry.title}
+              </span>
+            </div>
 
-        {/* Status badge + roles + run button */}
+            <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-zinc-400">
+              <span className="inline-flex items-center gap-1">
+                <span className="text-gray-400 dark:text-zinc-600">freq</span>
+                <span className="font-mono bg-gray-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-gray-700 dark:text-zinc-300">
+                  {entry.frequency || "—"}
+                </span>
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span>Last run:</span>
+                <span>{lastRunLabel}</span>
+              </span>
+              <span
+                className={`inline-flex items-center gap-1 ${
+                  entry.isOverdue
+                    ? "text-red-600 dark:text-red-400 font-medium"
+                    : ""
+                }`}
+              >
+                <span>Next:</span>
+                <span>{nextDueLabel}</span>
+              </span>
+            </div>
+          </div>
+        </button>
+
+        {/* Status badge + roles + run button — siblings of the expand button */}
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
           <StatusBadge entry={entry} />
           {entry.assignedTo && (
@@ -238,7 +244,7 @@ function ScheduleRow({
           )}
           <RunButton scheduleId={entry.id} projectId={projectId} />
         </div>
-      </button>
+      </div>
 
       {/* Expanded steps */}
       {expanded && entry.steps.length > 0 && (
