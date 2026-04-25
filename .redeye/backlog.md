@@ -2,6 +2,14 @@
 
 ## CEO Requests
 
+### BL-075: Performance audit — Lighthouse, bundle size, Core Web Vitals
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+- **Added:** 2026-04-25 (iter 106)
+- **Source:** Q-012 default (iter 106) — CEO invoked /redeye:start, interpreted as proceed with option 1 (performance audit)
+- **Description:** Run a comprehensive performance audit of the Control Tower dashboard. Measure Lighthouse scores (Performance, Accessibility, Best Practices, SEO), analyze Next.js bundle sizes (identify heavy chunks), and measure Core Web Vitals (LCP, FID/INP, CLS). Deliver: a markdown report with findings, identify the top 3–5 actionable improvements, and implement the highest-impact quick wins (e.g. lazy loading, code splitting, image optimization, unused dependency removal). Document baseline metrics so future iterations can track progress. Target: Lighthouse Performance score >= 90 on desktop, bundle size reduced by at least 10% if over threshold.
+
 ### BL-074: "Working on" card height is different from "Controls" which is next to it. fix it
 - **Type:** feature
 - **Priority:** P1
