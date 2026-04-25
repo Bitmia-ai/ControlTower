@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 106,
   "started_at": "2026-04-25T11:04:14Z",
-  "phase": "waiting_for_ceo",
-  "phase_status": "ready",
+  "phase": "INCORPORATE",
+  "phase_status": "in-progress",
   "worktree_path": null,
   "worktree_branch": null,
   "backlog_item": null,
@@ -36,6 +36,13 @@
   "blocked_items": [],
   "iteration_log": [
     {
+      "iteration": 106,
+      "phases": ["INCORPORATE"],
+      "outcome": "in-progress",
+      "next": "TRIAGE",
+      "timestamp": "2026-04-25T21:21:49Z"
+    },
+    {
       "iteration": 105,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "TRIAGE: env healthy. 779/779 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. No new CEO requests. Only remaining pending item: BL-068 (Live tab visual polish, P2). Selected BL-068. PLAN: spec docs/specs/BL-068-live-tab-polish.md — applies precision-instrument design system (BL-066/BL-071 lineage) to Live tab. T1: standard page header (Control Tower eyebrow + Live h1 + subtitle + border-b) above sticky toolbar; refresh toolbar border-b token to gray-200/zinc-800. T2: restyle five card types in transcript-viewer with shared CARD-LABEL token (font-mono text-[10px] uppercase tracking-[0.18em]) and border-l-2 identity rails — indigo for tool calls, cyan for results, violet (muted) for thinking, red for assistant text, zinc for session result + fallback. Replace unicode caret glyphs with rotating ChevronRight from lucide. BUILD: T1 page.tsx adds header + updates toolbar token. T2 transcript-viewer.tsx: ToolUseCard indigo rail + CARD-LABEL 'tool call' eyebrow, ToolResultCard cyan rail + 'result' eyebrow, ThinkingCard muted violet rail with italic body, AssistantTextCard CARD-LABEL 'Claude' + larger 15px body + shadow-sm, ResultCard CARD-LABEL 'Session Result' + tabular-nums numbers, fallback row + session boundary token alignment. 4 new tests pin the CARD-LABEL token classes and accent rails on the four interactive card types. 783/783 tests pass (was 779, +4). Build clean. REVIEW: M-tier (6 files). 0C/0M/0m PASS — CARD-LABEL consistent across all 5 card types + boundary + fallback; dark: variants present on all border-l colors; collapse/expand/auto-scroll preserved; ChevronRight rotate-90 correct; no functionality regression. DEPLOY: build clean, 783/783 tests pass. VERIFY: page header (Control Tower eyebrow + Live h1 + border-b) confirmed, CARD-LABEL tokens visible in transcript cards, border-l identity rails (indigo tool calls, cyan results) visible, ChevronRight arrows render correctly, dark mode confirmed with correct dark: variants. MERGE: BL-068 marked done. Cost delta ~$3.44 (total $320.75). Backlog now fully exhausted — filed Q-012 asking CEO for next direction. Phase set to waiting_for_ceo iter 106.",
@@ -43,228 +50,25 @@
       "timestamp": "2026-04-25T23:20:00Z"
     },
     {
-      "iteration": 105,
-      "phases": ["TRIAGE"],
-      "outcome": "TRIAGE: env healthy. 779/779 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. No new CEO requests. Only remaining pending item: BL-068 (Live tab visual polish, P2). Selected BL-068.",
-      "next": "PLAN BL-068",
-      "timestamp": "2026-04-25T23:07:00Z"
-    },
-    {
       "iteration": 104,
-      "phases": [
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "PLAN: spec docs/specs/BL-065-wont-do-section.md — wont-do items already render in a collapsed section at the bottom of the backlog page; what was missing was the **Reason:** rationale that agents leave when rejecting items. Plan: extend BacklogItem with optional reason field, extract it in parseBacklog, render it inline beneath the title in WontDoItemRow. BUILD: T1 — added reason?: string to BacklogItem type, parseBacklog now picks Reason via existing pickField helper, 3 new parser tests (extracts on wont-do, undefined when absent, does not coerce from Summary). T2 — exported WontDoItemRow, added p element with data-testid=wontdo-reason rendering the rationale (mono uppercase Reason eyebrow + body text, mt-1 leading-snug), 3 new component tests (renders when present, omitted when absent, strikethrough title preserved). T3 — 779/779 tests pass (was 773, +6). Build clean. REVIEW: S-tier (3 files). 2 fix cycles — Cycle 1: wontDoItems not plumbed through readProjectDetail. Cycle 2: computeBuckets filtered by section instead of status. Final review 0C/0M/0m. DEPLOY: build clean, 779/779 tests pass. VERIFY: Won't Do section visible with 4 items (BL-069, BL-054, BL-030, BL-029). Section collapsed by default, expands correctly. Each item shows REASON eyebrow with rationale. Wont-do items absent from planned section. Screenshot taken. MERGE: BL-065 marked done. Cost delta ~$51.95 (total $317.31).",
       "next": "TRIAGE iter 105",
       "timestamp": "2026-04-25T23:05:00Z"
     },
     {
       "iteration": 103,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "TRIAGE: selected BL-067 (mission control redesign, P1). PLAN: spec docs/specs/BL-067-mission-control-redesign.md. BUILD: T1 — restructured app/project/[id]/page.tsx into asymmetric 2-col layout (lg:grid-cols-[1fr_300px]) with mission feed left (WorkingOn hero, Questions, Shipped+UpNext sub-grid) and control panel right (Controls, Cost, Health). Removed Backlog/Telemetry section labels. T2 — WorkingOnCard hero (p-6, min-h-[160px], text-lg font-semibold task title, green-50/30 wash when running); QuestionsCard collapses to compact strip when empty (px-4 py-2.5 rounded-md, no eyebrow); ControlsCard p-4 + border-t separator; CostCard stacked Session/Total rows. T3 — 11 new tests. 773/773 tests pass (was 762, +11). Build clean. REVIEW: M-tier (11 files). 0C/0M/0m — grid layout correct, dark mode variants present on all new elements, green wash opacity appropriate, separator classes correct, CostCard readable at 300px. DEPLOY: build clean, 773/773 tests pass. VERIFY: asymmetric two-column layout confirmed in both dark and light mode. WorkingOn hero, Questions compact strip, Controls+Cost+Health right rail correct. No Backlog/Telemetry section labels visible. MERGE: BL-067 marked done. Cost delta ~$0.09 (total $310.39).",
       "next": "TRIAGE iter 104",
       "timestamp": "2026-04-25T22:50:00Z"
     },
     {
       "iteration": 102,
-      "phases": [
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "PLAN: spec docs/specs/BL-070-add-schedule.md — add POST /api/projects/[id]/schedules accepting { name, frequency, description?, steps[] }, sanitize each field via sanitizeMarkdownInput, scan max SCHED-N from schedules.md and assign next, append a parser-compatible block (Last run = epoch so it lands as Never run/overdue), best-effort commitAndPush. New AddScheduleDialog modal mirrors AddBacklogDialog pattern; wired into Schedules page header + EmptyState action. BUILD: T1 POST handler + 16 route tests (id pick, ENOENT seed, validation, sanitization, commit). T2 AddScheduleDialog + 8 unit tests. T3 page header button + dialog state + 2 page tests + EmptyState action wired. 762/762 tests pass (was 731, +31 new). Build clean. REVIEW: M-tier (8 files). 0C/0M/0m — sanitizeMarkdownInput applied to all user fields (name/frequency/steps each), path traversal guard in schedulesPath(), readJsonBody 16KB cap + Content-Type:application/json enforcement, description accepted but silently dropped from file (correct). DEPLOY: build clean, 762/762 tests pass. VERIFY: dialog opens from header button, submit disabled until all 3 fields filled, SCHED-2 Test Schedule appeared in list after submit, count updated to 2. Screenshot taken. MERGE: BL-070 marked done. Cost delta ~$52.84. Transitioned to triage iter 103.",
       "next": "TRIAGE iter 103",
       "timestamp": "2026-04-25T22:30:00Z"
-    },
-    {
-      "iteration": 101,
-      "phases": [
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "PLAN: spec docs/specs/BL-072-edit-delete-directives.md — add applyDirectiveEdit/applyDirectiveDelete pure helpers in lib/redeye-parsers.ts that mutate steering.md by parsed-array index, then add PATCH+DELETE handlers to /api/projects/[id]/steer using sanitizeMarkdownInput (500 cap) and a 4KB body cap, then refactor DirectiveRow into a stateful component (view/editing/confirm-delete) with hover-revealed pencil+trash icons. BUILD: 39 new tests across lib (13), api route (16), UI (10). 731/731 tests pass. Build clean. Helpers preserve leading indentation, subsection headers, and surrounding lines byte-for-byte; RangeError -> 404, ENOENT -> 404. CSRF inherited from middleware.ts. REVIEW: 0C/0M/0m PASS — index validation (non-negative integer), text empty-after-sanitize check, 4KB body cap, ENOENT→404, RangeError→404, section boundary logic matches parseSteering exactly. DEPLOY: build clean, 731/731 tests pass. VERIFY: edit pre-fills source markdown, save updates directive in view mode. Delete shows confirm panel, confirm removes directive. Screenshot taken. MERGE: BL-072 marked done. Cost delta ~$3.46.",
-      "next": "TRIAGE iter 102",
-      "timestamp": "2026-04-25T22:15:00Z"
-    },
-    {
-      "iteration": 100,
-      "phases": [
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "PLAN: spec docs/specs/BL-073-steer-markdown.md — replace plain-text directive renderer with react-markdown + remark-gfm (already installed; same pattern as backlog detail page). BUILD: app/project/[id]/steer/page.tsx DirectiveRow now renders directive text inside a Tailwind Typography prose container (prose-sm prose-zinc dark:prose-invert with tightened spacing tokens) wrapped around ReactMarkdown with remarkGfm. Date-extraction regex switched from `.` to `[\\s\\S]` so multi-line markdown still gets the trailing date stripped (avoids `s` flag). Input textarea unchanged (plain text). Added test asserting bold/code/link/list rendering. 692/692 tests pass, build clean. REVIEW: 0C/0M/0m — XSS safe (react-markdown uses React element tree, no raw HTML injection), dark:prose-invert present, regex multiline correct, tests cover all markdown node types. DEPLOY: build clean, 692/692 tests pass. VERIFY: screenshot confirms real directive rows render as formatted HTML (bold/code), not raw markdown syntax. Dark mode active and correct. MERGE: BL-073 marked done. Cost delta ~$1.54. Transitioned to triage iter 101.",
-      "next": "TRIAGE iter 101",
-      "timestamp": "2026-04-25T23:00:00Z"
-    },
-    {
-      "iteration": 99,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "TRIAGE: env healthy. 691/691 tests pass. Build clean. No tester reports. No open inbox questions. Steering: no STOP/PAUSE. Pending P1 CEO Requests: BL-074 (Working On card height mismatch vs Controls card), BL-073 (steer directives markdown rendering), BL-072 (edit/delete steer directives), BL-070 (add schedules from tab), BL-069 (superseded by BL-072), BL-067 (mission control redesign). P2: BL-068 (live tab polish), BL-065 (Won't Do section). Selected BL-074 (P1, most recent CEO request — targeted card height fix). PLAN: spec docs/specs/BL-074-card-height-fix.md — wrap WorkingOn + Controls in a nested two-col grid (no items-start) so both stretch to row height; outer grid keeps items-start for later rows. BUILD: nested grid added in app/project/[id]/page.tsx; both card root divs already had h-full so they now fill the row height. 691/691 tests pass, build clean. REVIEW: 0C/0M/0m PASS — fix is correct, nested grid removes items-start constraint so h-full works, no regressions. DEPLOY: build clean, 691/691 tests pass. VERIFY: screenshot confirms WorkingOn and Controls cards are same height in top row. MERGE: BL-074 marked done. BL-074 cost delta ~$1.97. Transitioned to triage iter 100.",
-      "next": "TRIAGE iter 100",
-      "timestamp": "2026-04-25T22:30:00Z"
-    },
-    {
-      "iteration": 98,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "DEPLOY+VERIFY: build clean (Next.js 16, Turbopack). 691/691 tests pass. VERIFY visual check PASS — all 6 pages confirmed: home (eyebrow + status-border cards), mission control (eyebrow + h1 + pulsing dot + Running pill + colored card top borders + monospace section labels), backlog (eyebrow + Backlog h1 + item count + border-b), history (eyebrow + History h1 + subtitle), schedules (eyebrow + Schedules h1 + amber border on overdue row), steer (eyebrow + Steer h1 + CURRENT DIRECTIVES mono label). MERGE: BL-071 marked done. Item cost recorded: $50.40. Transitioned to triage iter 99.",
-      "next": "TRIAGE iter 99",
-      "timestamp": "2026-04-25T22:00:00Z"
-    },
-    {
-      "iteration": 98,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW"
-      ],
-      "outcome": "BUILD: BL-071 design system propagation complete. T1: mission control cards switched border-l-4 → border-t-[3px] with status-driven colors (green/amber/red/zinc); section labels upgraded to font-mono CARD-LABEL token; project layout gained Control Tower eyebrow + project header with pulsing dot + Running/Idle pill above ProjectNav. T2: backlog/history/schedules/steer pages got standard eyebrow + h1 + subtitle headers with border-b dividers. T3: backlog list rows use border-l-2 (green for in-progress, transparent for spacing), backlog detail page got Control Tower — Backlog eyebrow + breadcrumb, all dt/h3 labels upgraded; SectionHeader component upgraded to mono CARD-LABEL. T4: ScheduleRow gained border-t-[3px] (amber=overdue, green=on-schedule, zinc=never-run); steer DirectiveRow + Current Directives label upgraded. Updated 2 test expectations (Scheduled Tasks→Schedules, Steer the Team→Steer headings). 691/691 tests pass, clean build.",
-      "next": "DEPLOY BL-071",
-      "timestamp": "2026-04-25T21:40:00Z"
-    },
-    {
-      "iteration": 98,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "TRIAGE: env healthy. 691/691 tests pass. Build clean. No tester reports. Found 3 new CEO P1 Requests: BL-069 (steer directives editable/deletable), BL-070 (add schedules from tab), BL-071 (apply home page design styles to all pages/tabs). Also pending: BL-067 (mission control redesign, P1), BL-065/BL-068 (P2). Selected BL-071 (P1, most recent CEO directive, extends home page redesign to all pages using designer subagent + frontend skill).",
-      "next": "PLAN BL-071",
-      "timestamp": "2026-04-25T21:20:00Z"
-    },
-    {
-      "iteration": 97,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "TRIAGE: env healthy. 676/676 tests pass. Build clean. 4 pending items: BL-065 (Won't Do section, P2), BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab polish, P2). Selected BL-066 (P1) per CEO directive to use designer subagent + frontend skill for home page visual redesign. PLAN: spec docs/specs/BL-066-home-page-redesign.md with precision-instrument design direction. BUILD: ProjectCard redesigned with status top border (green=running, amber=questions pending, zinc=idle), animate-ping dot, phase footer strip with PHASE_COLORS tint, hover-reveal trash, monospace path, inline red-tinted delete confirmation panel. Home page got Control Tower eyebrow + border-b divider. 691/691 tests pass (15 new tests). Build clean. VERIFY: visual check pass — all spec elements confirmed in both light and dark mode. MERGE: BL-066 marked done, state transitioned to triage.",
-      "next": "TRIAGE iter 98",
-      "timestamp": "2026-04-25T11:25:00Z"
-    },
-    {
-      "iteration": 96,
-      "phases": [
-        "INCORPORATE"
-      ],
-      "outcome": "INCORPORATE: CEO answered Q-011 with 'use the front end skill and the designer subagent to further improve the UX of the dashboard as well as the design'. Created 3 new comprehensive UX/design backlog items: BL-066 (home page redesign, P1), BL-067 (mission control redesign, P1), BL-068 (live tab visual polish, P2). BL-065 (Won't Do section) already in backlog as pending P2. Updated phase to triage, ready for next cycle.",
-      "next": "TRIAGE iter 97",
-      "timestamp": "2026-04-25T11:15:00Z"
-    },
-    {
-      "iteration": 95,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "TRIAGE: env healthy. All 64 backlog items (BL-001–BL-064) done or wont-do. Backlog exhausted. Filed Q-011 asking CEO for next direction. Phase set to waiting_for_ceo.",
-      "next": "INCORPORATE (when CEO answers Q-011)",
-      "timestamp": "2026-04-25T11:10:00Z"
-    },
-    {
-      "iteration": 94,
-      "phases": [
-        "TRIAGE",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-063 full cycle complete. TRIAGE: env healthy, BL-063 selected (steer tab, P1). REVIEW: 0C/0M/2m PASS, 675/675 tests. DEPLOY: build clean, /project/[id]/steer in route table, 675/675 tests, tagged last-good-deploy-iter94-bl063. VERIFY: all artifacts confirmed. MERGE: BL-063 marked done in backlog.md.",
-      "next": "TRIAGE iter 95",
-      "timestamp": "2026-04-25T11:04:14Z"
-    },
-    {
-      "iteration": 93,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY"
-      ],
-      "outcome": "BL-064 through VERIFY. VIEW_H=48->80, 663/663 tests, REVIEW PASS, DEPLOY clean, VERIFY pass.",
-      "next": "MERGE BL-064",
-      "timestamp": "2026-04-25T10:58:00Z"
-    },
-    {
-      "iteration": 93,
-      "phases": [
-        "TRIAGE"
-      ],
-      "outcome": "TRIAGE: env healthy. BL-064 selected. BL-063 deferred.",
-      "next": "PLAN BL-064",
-      "timestamp": "2026-04-25T10:47:00Z"
-    },
-    {
-      "iteration": 92,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-062 full cycle complete. Card sizing fixed.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T10:55:00Z"
-    },
-    {
-      "iteration": 91,
-      "phases": [
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "BL-061 full cycle complete. kbd badges removed.",
-      "next": "TRIAGE",
-      "timestamp": "2026-04-25T10:30:00Z"
     }
   ],
   "counters": {
