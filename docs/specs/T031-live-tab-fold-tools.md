@@ -1,4 +1,4 @@
-# BL-031 — Live Tab Transcript Viewer: Fold Tool/Terminal Output by Default
+# T031 — Live Tab Transcript Viewer: Fold Tool/Terminal Output by Default
 
 **Type:** feature
 **Priority:** P1
@@ -24,7 +24,7 @@ CEO wants the Live tab to look like a **conversation transcript**: Claude's mess
 - No changes to SSE stream protocol or transcript normalizer (data shape stays the same).
 - No reordering or pairing logic that mutates transcript order — purely presentational.
 - No truncation / virtualization (separate concern; defer).
-- Auto-scroll UX fix is BL-032 — out of scope here.
+- Auto-scroll UX fix is T032 — out of scope here.
 
 ## Architecture Decisions
 
@@ -49,7 +49,7 @@ The transcript is strictly ordered: a `tool_use` assistant block is immediately 
 
 ### AD-4: No change to stream-utils, normalizer, or SSE route
 
-BL-013 delivered a working transcript pipeline. This BL is a pure frontend/presentational change.
+T013 delivered a working transcript pipeline. This BL is a pure frontend/presentational change.
 
 ### AD-5: Keep ResultCard (session result) expanded
 

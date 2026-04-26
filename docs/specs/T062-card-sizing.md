@@ -1,4 +1,4 @@
-# BL-062 — Fix Inconsistent Card Sizes on Mission Control
+# T062 — Fix Inconsistent Card Sizes on Mission Control
 
 **Status:** planned  
 **Priority:** P1  
@@ -9,7 +9,7 @@
 ## 1. Problem Statement
 
 The mission control page at `/project/[id]` renders 7 cards in a 3-column CSS Grid
-(post BL-045 redesign). The cards have **content-driven heights** and the grid
+(post T045 redesign). The cards have **content-driven heights** and the grid
 default stretches each cell to the row's tallest item. This produces visually
 inconsistent card heights in every paired row:
 

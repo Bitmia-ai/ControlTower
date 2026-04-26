@@ -1,4 +1,4 @@
-# BL-017: Cost card leaves empty column in mission control grid
+# T017: Cost card leaves empty column in mission control grid
 
 **Type:** bug
 **Priority:** P2

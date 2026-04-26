@@ -1,8 +1,8 @@
-# BL-067: Mission Control Page Redesign
+# T067: Mission Control Page Redesign
 
 ## Problem
 
-BL-071 applied precision-instrument tokens (border-t, eyebrow labels) to mission control cards. BL-067 goes deeper: the 3-column equal grid is unbalanced, WorkingOn lacks hero weight, Questions takes full width even when empty, and the Telemetry/Backlog section label rows add noise.
+T071 applied precision-instrument tokens (border-t, eyebrow labels) to mission control cards. T067 goes deeper: the 3-column equal grid is unbalanced, WorkingOn lacks hero weight, Questions takes full width even when empty, and the Telemetry/Backlog section label rows add noise.
 
 ## Design Direction — Asymmetric Two-Column Command Layout
 

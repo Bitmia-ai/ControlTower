@@ -1,4 +1,4 @@
-# BL-018: Project Cards on Home Page Don't Show Current Phase or Active Task
+# T018: Project Cards on Home Page Don't Show Current Phase or Active Task
 
 ## Problem
 
@@ -138,6 +138,6 @@ Cover:
 
 ## Out of Scope
 
-- BL-017 (cost card grid layout) — separate bug, separate PR.
-- BL-019 (cost invariant fix) — separate bug.
+- T017 (cost card grid layout) — separate bug, separate PR.
+- T019 (cost invariant fix) — separate bug.
 - Real-time push updates (SSE) for home page cards — the 10 s poll is sufficient for now.

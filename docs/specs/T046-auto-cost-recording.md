@@ -1,8 +1,8 @@
-# BL-046: Per-task Cost Auto-recorded as End-minus-Start Delta
+# T046: Per-task Cost Auto-recorded as End-minus-Start Delta
 
 ## Overview
 
-Currently BL-042 added a "Record now" manual button on the backlog item detail page to capture cost for completed tasks. The CEO wants cost recorded **automatically** when a task completes — no manual action required. The recorded cost must be a delta (cost at task end minus cost at task start) so it reflects only the work done on that item, not the entire session total.
+Currently T042 added a "Record now" manual button on the backlog item detail page to capture cost for completed tasks. The CEO wants cost recorded **automatically** when a task completes — no manual action required. The recorded cost must be a delta (cost at task end minus cost at task start) so it reflects only the work done on that item, not the entire session total.
 
 ## Background
 
@@ -27,7 +27,7 @@ cost_for_task = cost_at_task_end − cost_at_task_start
 
 The mission control page (`app/project/[id]/page.tsx`) polls `GET /api/projects/[id]` every **5 seconds** using `setInterval(fetchDetail, 5_000)`. The response includes `state.backlog_item` (the active BL ID) via `ProjectDetail.state`. This is the natural place to detect task transitions.
 
-The home page has no polling today (BL-023 is still planned). It is **out of scope** for this feature — the mission control page is where the detection happens.
+The home page has no polling today (T023 is still planned). It is **out of scope** for this feature — the mission control page is where the detection happens.
 
 ### Why option (d) — polling-based transition detection — is correct
 
@@ -85,11 +85,11 @@ If the dashboard navigates away and comes back, the `prevActiveId` ref is reset.
 
 ### AD-8: Scope of the "Record now" button
 
-The existing "Record now" button in `app/project/[id]/backlog/[taskId]/page.tsx` (BL-042) POSTs to `cost-snapshot` directly. After this change, `cost-snapshot` still works without a start record (AD-4 fallback). The "Record now" button can remain as-is for older items without a start record. No changes to the backlog detail page are required.
+The existing "Record now" button in `app/project/[id]/backlog/[taskId]/page.tsx` (T042) POSTs to `cost-snapshot` directly. After this change, `cost-snapshot` still works without a start record (AD-4 fallback). The "Record now" button can remain as-is for older items without a start record. No changes to the backlog detail page are required.
 
 ### AD-9: No home-page changes
 
-BL-023 (home-page polling) is not yet shipped. Adding delta logic to a page that doesn't poll would be premature. Mission control is the only place where real-time task-transition detection makes sense today.
+T023 (home-page polling) is not yet shipped. Adding delta logic to a page that doesn't poll would be premature. Mission control is the only place where real-time task-transition detection makes sense today.
 
 ## Sub-tasks
 
@@ -193,10 +193,10 @@ BL-023 (home-page polling) is not yet shipped. Adding delta logic to a page that
 - **Test strategy:**
   - Unit test in `app/project/[id]/page.test.tsx` (new file, or extend if it exists). Use `vi.fn()` to mock `fetch`. Simulate poll responses with changing `backlog_item` values and assert the correct POSTs fire.
   - Cases:
-    1. Initial load with `backlog_item: "BL-005"` → cost-start POST fires for BL-005; no snapshot.
-    2. Second poll same `backlog_item: "BL-005"` → no new POST.
-    3. Third poll with `backlog_item: "BL-006"` → snapshot POST for BL-005; start POST for BL-006.
-    4. Fourth poll with `backlog_item: null` → snapshot POST for BL-006; no start.
+    1. Initial load with `backlog_item: "T005"` → cost-start POST fires for T005; no snapshot.
+    2. Second poll same `backlog_item: "T005"` → no new POST.
+    3. Third poll with `backlog_item: "T006"` → snapshot POST for T005; start POST for T006.
+    4. Fourth poll with `backlog_item: null` → snapshot POST for T006; no start.
     5. First load with `backlog_item: null` → no POST at all.
 - **Acceptance criteria:**
   - Cost-start fires exactly once per new active task (idempotent by T2's guard).

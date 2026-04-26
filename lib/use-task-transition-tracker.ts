@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Tracks the active backlog-item ID across renders and fires side-effect
+ * Tracks the active task ID across renders and fires side-effect
  * callbacks when it transitions.
  *
  * Semantics (T046):

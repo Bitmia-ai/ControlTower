@@ -196,7 +196,7 @@ export function OnboardingWizard({
                 What should RedEye build first?
               </h2>
               <p className="text-sm text-gray-500 dark:text-zinc-500 mb-5">
-                Add the initial tasks for your backlog. Press Enter or click Add after each one.
+                Add the initial tasks. Press Enter or click Add after each one.
               </p>
               <div className="flex gap-2 mb-4">
                 <input

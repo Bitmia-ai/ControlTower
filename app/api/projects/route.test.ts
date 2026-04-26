@@ -43,7 +43,7 @@ describe("GET /api/projects", () => {
     expect(json.data).toEqual([]);
   });
 
-  it("includes phase and currentTask when state.json has active backlog item", async () => {
+  it("includes phase and currentTask when state.json has active task", async () => {
     mockListProjects.mockResolvedValue([{ name: "haze", path: "/projects/haze" }]);
     mockIsInitialized.mockResolvedValue(true);
     mockReadState.mockResolvedValue({

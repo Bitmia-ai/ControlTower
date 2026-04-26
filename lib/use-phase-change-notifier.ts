@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react";
  *   - First observation (previous is `undefined`): record baseline. Do NOT fire.
  *     This prevents false-positive notifications when the user opens the page.
  *   - Same phase on re-render: nothing fires.
- *   - X -> Y where Y is non-null and X !== Y: fires `onPhaseChange(Y, backlogTitle)`.
+ *   - X -> Y where Y is non-null and X !== Y: fires `onPhaseChange(Y, taskTitle)`.
  *   - X -> null/undefined: nothing fires (no notification for "no phase").
  *
  * Mirrors the `useTaskTransitionTracker` pattern. Callback is held in a ref
@@ -18,16 +18,16 @@ import { useEffect, useRef } from "react";
  */
 export function usePhaseChangeNotifier(
   phase: string | null | undefined,
-  backlogTitle: string | null,
-  onPhaseChange: (newPhase: string, backlogTitle: string | null) => void
+  taskTitle: string | null,
+  onPhaseChange: (newPhase: string, taskTitle: string | null) => void
 ) {
   const prevRef = useRef<string | null | undefined>(undefined);
   const onPhaseChangeRef = useRef(onPhaseChange);
   onPhaseChangeRef.current = onPhaseChange;
 
   // Keep latest title in a ref so the effect dep array stays narrow.
-  const titleRef = useRef(backlogTitle);
-  titleRef.current = backlogTitle;
+  const titleRef = useRef(taskTitle);
+  titleRef.current = taskTitle;
 
   useEffect(() => {
     // Skip until we have first observed a defined phase.

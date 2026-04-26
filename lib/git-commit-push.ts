@@ -10,7 +10,7 @@
  * history. Only writes that genuinely fail to commit signal back as
  * { committed: false }.
  *
- * Used by: /api/projects/[id]/{steer,pause,stop,backlog,answer}/route.ts
+ * Used by: /api/projects/[id]/{steer,pause,stop,tasks,answer}/route.ts
  */
 
 import { spawn } from "child_process";

@@ -1,4 +1,4 @@
-# BL-040 — Live Tab: Inter-Round Messages and Thought Blocks Not Showing
+# T040 — Live Tab: Inter-Round Messages and Thought Blocks Not Showing
 
 **Type:** bug / feature  
 **Priority:** P1  
@@ -83,7 +83,7 @@ In practice, most turns produce an assistant envelope that contains **only a thi
 4. **`assistant/text`** — a white/zinc-900 card with `text-gray-900 dark:text-white` text and `whitespace-pre-wrap`. This renders correctly in theory, but in practice the CEO still does not see it. Likely cause: inter-round text messages in real sessions are often very short (one line like "Calling tool…") and may be scrolled past when surrounded by many tool cards.
 5. **`user` (non-tool-result)** — fallback case: small uppercase `event.type` label + grey body text. Used for the initial user prompt message. Rendered very subtly and inconsistently labeled.
 
-The BL-031 goal was "Claude's text and thoughts unfolded and prominent." The text card is technically unfolded but the thinking card is styled too subtly. The CEO's report confirms that thoughts are invisible in practice.
+The T031 goal was "Claude's text and thoughts unfolded and prominent." The text card is technically unfolded but the thinking card is styled too subtly. The CEO's report confirms that thoughts are invisible in practice.
 
 ## Architecture Decisions
 

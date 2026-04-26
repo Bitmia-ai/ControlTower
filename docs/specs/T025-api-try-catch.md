@@ -1,4 +1,4 @@
-# BL-025 — Wrap API Route Handlers in try-catch
+# T025 — Wrap API Route Handlers in try-catch
 
 **Type:** tech-debt  
 **Priority:** P1  
@@ -30,7 +30,7 @@ Affected files identified by audit:
 
 4. **req.json() error:** For routes that call `req.json()` before validation (steer), include the json parse inside the try-catch so malformed request bodies also return a structured 500 rather than crashing.
 
-5. **Test strategy:** Each sub-task includes a unit test (vitest) that mocks the relevant dependency to throw and asserts the handler returns `{ status: 500, body: { error: <string> } }`. These tests also serve BL-022's goal of covering API routes.
+5. **Test strategy:** Each sub-task includes a unit test (vitest) that mocks the relevant dependency to throw and asserts the handler returns `{ status: 500, body: { error: <string> } }`. These tests also serve T022's goal of covering API routes.
 
 ## Sub-tasks
 

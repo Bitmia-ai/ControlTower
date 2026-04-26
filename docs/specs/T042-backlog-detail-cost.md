@@ -1,8 +1,8 @@
-# BL-042: Backlog Detail Cost (est.) Always Shows "Not recorded" — Fix It
+# T042: Backlog Detail Cost (est.) Always Shows "Not recorded" — Fix It
 
 ## Overview
 
-The backlog detail page (`/project/[id]/backlog/[taskId]`) displays a "Cost (est.)" row for items with `status === "done"`, but the value is always "Not recorded". The UI plumbing is correct — it reads `item_costs[taskId]` from `state.json`. The problem is that `item_costs` is never populated during the normal RedEye phase cycle. The `cost-snapshot` API exists but was only called manually once (for BL-038); it is not wired into the VERIFY phase automatically.
+The backlog detail page (`/project/[id]/backlog/[taskId]`) displays a "Cost (est.)" row for items with `status === "done"`, but the value is always "Not recorded". The UI plumbing is correct — it reads `item_costs[taskId]` from `state.json`. The problem is that `item_costs` is never populated during the normal RedEye phase cycle. The `cost-snapshot` API exists but was only called manually once (for T038); it is not wired into the VERIFY phase automatically.
 
 The fix has two parts:
 1. **Root cause (new items):** Wire the cost-snapshot call into the Control Tower VERIFY UI so the CTO can capture cost at completion time without a manual API call.
@@ -31,11 +31,11 @@ page.tsx
 
 ```json
 "item_costs": {
-  "BL-038": 44.71138350000003
+  "T038": 44.71138350000003
 }
 ```
 
-This was written manually during BL-038's VERIFY phase by calling `POST /api/projects/[id]/cost-snapshot`. All other completed items (BL-001 through BL-037, BL-039, BL-043) have no entry and display "Not recorded".
+This was written manually during T038's VERIFY phase by calling `POST /api/projects/[id]/cost-snapshot`. All other completed items (T001 through T037, T039, T043) have no entry and display "Not recorded".
 
 ### Why `cost-snapshot` is not called automatically
 
@@ -49,7 +49,7 @@ The `POST /api/projects/[id]/cost-snapshot` route calls `sumCurrentSessionCost()
 
 The cost-snapshot captures the **total cost of the current transcript file** at the moment it is called. This is a session-level figure, not a per-item delta. For a typical session where only one backlog item is completed, this approximation is good. For multi-item sessions it over-counts, but it is the best available data without per-item tracing.
 
-This is acceptable per the original BL-020 design: "Cost (est.)" is explicitly labeled as an estimate.
+This is acceptable per the original T020 design: "Cost (est.)" is explicitly labeled as an estimate.
 
 ### Per-item cost sourcing options
 
@@ -79,9 +79,9 @@ The `POST /api/projects/[id]/cost-snapshot` route already exists and is correct.
 
 Automatic capture on status-change would require either a webhook from the RedEye plugin (cross-repo) or polling `backlog.md` in the dashboard (fragile). The manual button is simpler and reliable. A follow-up steering directive to the CTO can standardize calling it at VERIFY time.
 
-### AD-4: Historical items — show "Not recorded (pre-BL-042)" for very old items
+### AD-4: Historical items — show "Not recorded (pre-T042)" for very old items
 
-Items completed before BL-020 shipped the cost infrastructure genuinely have no recoverable cost. Items completed after BL-020 but before BL-042 (which added the UI button) could have cost captured retroactively by clicking the button on their detail page — but only if the session transcript is still accessible. The button will be shown for all `done` items with no cost entry and will gracefully handle a `cost_usd: 0` return by showing "Not recorded" (already the fallback).
+Items completed before T020 shipped the cost infrastructure genuinely have no recoverable cost. Items completed after T020 but before T042 (which added the UI button) could have cost captured retroactively by clicking the button on their detail page — but only if the session transcript is still accessible. The button will be shown for all `done` items with no cost entry and will gracefully handle a `cost_usd: 0` return by showing "Not recorded" (already the fallback).
 
 ### AD-5: Keep the "Not recorded" fallback
 
@@ -153,11 +153,11 @@ The display logic `item.cost_usd !== undefined && item.cost_usd > 0` stays. If t
 - **Dependencies:** T1, T2, T3
 - **Agent:** Dev (generic)
 - **Verification approach:** Playwright MCP against `http://localhost:3200`
-  1. Navigate to a done backlog item's detail page (e.g. BL-039)
+  1. Navigate to a done backlog item's detail page (e.g. T039)
   2. Verify "Not recorded" + "Record now" button are visible
   3. Click "Record now"
   4. Verify cost field updates (either shows `$X.XX` or remains "Not recorded" if transcript not available — either is acceptable)
-  5. Navigate to BL-038 detail page → verify `$44.71` is shown and no "Record now" button present
+  5. Navigate to T038 detail page → verify `$44.71` is shown and no "Record now" button present
   6. Screenshot for record
 - **Note:** This is Playwright MCP verification at VERIFY time, not an automated test file.
 - **Acceptance criteria:** Steps 1–6 pass visually
@@ -188,4 +188,4 @@ The display logic `item.cost_usd !== undefined && item.cost_usd > 0` stays. If t
 
 - **Unit (vitest):** T2 adds a new test file (`page.test.tsx`) with 4 cases. T3 adds 1 case to the existing `cost-snapshot/route.test.ts`. Full suite must remain green.
 - **E2E (Playwright MCP):** T4 verifies button appearance and cost capture interactively at VERIFY time.
-- **No integration test changes** — the route-level tests in `backlog/[taskId]/route.test.ts` (13 tests, BL-022) are unaffected.
+- **No integration test changes** — the route-level tests in `backlog/[taskId]/route.test.ts` (13 tests, T022) are unaffected.

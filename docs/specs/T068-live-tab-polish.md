@@ -1,4 +1,4 @@
-# BL-068: Polish Live Tab Visual Design
+# T068: Polish Live Tab Visual Design
 
 ## Problem
 
@@ -7,7 +7,7 @@ to monitor the autonomous loop. But it lags behind the rest of the app
 visually:
 
 - **No standard page header** — every other page (Backlog, History, Schedules,
-  Steer) gained the precision-instrument header in BL-071 (Control Tower
+  Steer) gained the precision-instrument header in T071 (Control Tower
   eyebrow + h1 + subtitle + `border-b`); Live still drops users straight into
   the toolbar.
 - **Card types are inconsistent.** ToolUseCard and ToolResultCard share the
@@ -17,7 +17,7 @@ visually:
 - **No mono `CARD-LABEL` token.** The "tool call", "result", "Claude",
   "Thinking…" labels mix font weights and casing styles — none of them use
   the `font-mono uppercase tracking-[0.18em] text-[11px]` eyebrow established
-  in BL-071.
+  in T071.
 - **AssistantTextCard label** — `Claude` is rendered as a plain red word; in
   the design system it should be a mono eyebrow.
 - **`ResultCard` (session result)** has an uppercase tracking label but uses

@@ -19,7 +19,7 @@ describe("parseTasks", () => {
     expect(parseTasks("")).toEqual([]);
   });
 
-  it("returns empty array when no BL- items exist", () => {
+  it("returns empty array when no T items exist", () => {
     const content = `# Backlog\n\n## CEO Requests\n_(empty)_\n\n## Discovered\n\n## Triaged\n`;
     expect(parseTasks(content)).toEqual([]);
   });

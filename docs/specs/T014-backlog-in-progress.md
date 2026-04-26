@@ -1,4 +1,4 @@
-# BL-014: Backlog page should show currently active task as "In Progress" at the top
+# T014: Backlog page should show currently active task as "In Progress" at the top
 
 **Status:** done  
 **Priority:** P0  
@@ -45,7 +45,7 @@ When `activeItem` is present, render a dedicated card above the section groups w
   2. If found, mutate a copy of that item: set `status = "in-progress"`.
   3. Replace the original in the backlog array with the mutated copy.
   4. Add `activeItem: BacklogItem | null` to the returned object (point to the mutated copy, or `null`).
-- **Test strategy:** Unit test in `lib/__tests__/redeye-files.test.ts` — mock `readState` returning a state with `backlog_item: "BL-014"` and `readBacklog` returning items including `BL-014` with status `planned`; assert `activeItem.status === "in-progress"` and that the item in `upNext` also has status `in-progress`.
+- **Test strategy:** Unit test in `lib/__tests__/redeye-files.test.ts` — mock `readState` returning a state with `backlog_item: "T014"` and `readBacklog` returning items including `T014` with status `planned`; assert `activeItem.status === "in-progress"` and that the item in `upNext` also has status `in-progress`.
 - **Acceptance criteria:**
   - `activeItem` is non-null when `state.backlog_item` matches an item in the backlog.
   - `activeItem.status` equals `"in-progress"`.

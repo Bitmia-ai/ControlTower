@@ -1,4 +1,4 @@
-# BL-011: Enforce BL-xxx ID Counter at Write Level — Prevent Duplicate IDs
+# T011: Enforce BL-xxx ID Counter at Write Level — Prevent Duplicate IDs
 
 ## Overview
 
@@ -22,7 +22,7 @@ The highest-risk path is path #1: the POST endpoint delegates ID assignment to a
 
 ## Architecture Decisions
 
-1. **Introduce `lib/backlog-id.ts`** — a new module exporting `getNextBacklogId(projectPath: string): Promise<string>`. It reads `state.json` for `counters.next_bl_id` and scans `backlog.md` for the maximum numeric suffix of all `BL-\d+` IDs, takes `max(counter - 1, max_found) + 1`, writes the updated counter back to `state.json`, and returns the formatted ID (e.g. `"BL-012"`).
+1. **Introduce `lib/backlog-id.ts`** — a new module exporting `getNextBacklogId(projectPath: string): Promise<string>`. It reads `state.json` for `counters.next_bl_id` and scans `backlog.md` for the maximum numeric suffix of all `BL-\d+` IDs, takes `max(counter - 1, max_found) + 1`, writes the updated counter back to `state.json`, and returns the formatted ID (e.g. `"T012"`).
 
 2. **Atomic counter update** — `getNextBacklogId` writes `state.json` before returning the ID. This is not a true filesystem lock but is safe for the single-process Next.js API server. A file-level advisory lock (via a `.lock` file) would be overkill for the current scale and is explicitly out of scope.
 
@@ -45,7 +45,7 @@ The highest-risk path is path #1: the POST endpoint delegates ID assignment to a
   - Function exported from `lib/redeye-files.ts` as `scanMaxBacklogId(projectPath: string): Promise<number>`
   - Reads `.redeye/backlog.md` using existing `safeRedeyePath` pattern
   - Returns 0 if file missing or no `BL-\d+` matches
-  - Returns the highest numeric suffix found (e.g. 11 for `BL-011`)
+  - Returns the highest numeric suffix found (e.g. 11 for `T011`)
   - All unit tests pass (`npx vitest run`)
 - **Status:** done
 

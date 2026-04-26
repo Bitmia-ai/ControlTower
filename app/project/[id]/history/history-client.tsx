@@ -17,7 +17,7 @@ const MarkdownRenderer = dynamic(
 );
 import type { ProjectDetail, ChangelogEntry } from "@/lib/redeye-types";
 import type { SessionHistoryEntry } from "@/lib/cost-history";
-import { linkifyBacklogIds } from "@/components/task-id";
+import { linkifyTaskIds } from "@/components/task-id";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { SessionHistoryRow } from "@/components/history/session-history-row";
@@ -33,14 +33,14 @@ function TimelineEntry({ entry, projectId }: { entry: ChangelogEntry; projectId:
 
       <div className="pb-8 flex-1 min-w-0">
         <p className="text-sm font-medium text-gray-900 dark:text-zinc-100 leading-snug">
-          {linkifyBacklogIds(entry.title, projectId)}
+          {linkifyTaskIds(entry.title, projectId)}
         </p>
         {entry.details && (
           <div className="text-sm text-gray-600 dark:text-zinc-400 mt-1 leading-relaxed prose prose-zinc dark:prose-invert prose-sm max-w-none">
             <MarkdownRenderer
               components={{
-                p: ({ children }) => <p>{typeof children === "string" ? linkifyBacklogIds(children, projectId) : children}</p>,
-                li: ({ children }) => <li>{typeof children === "string" ? linkifyBacklogIds(children, projectId) : children}</li>,
+                p: ({ children }) => <p>{typeof children === "string" ? linkifyTaskIds(children, projectId) : children}</p>,
+                li: ({ children }) => <li>{typeof children === "string" ? linkifyTaskIds(children, projectId) : children}</li>,
               }}
             >
               {entry.details}

@@ -1,9 +1,9 @@
-# BL-058: Schedules UI Needs to Be Operative
+# T058: Schedules UI Needs to Be Operative
 
 ## Background
 
-BL-055 shipped a read-only Schedules tab that displays scheduled tasks from
-`.redeye/schedules.md`. The CEO's feedback (BL-058) is that the UI needs to be
+T055 shipped a read-only Schedules tab that displays scheduled tasks from
+`.redeye/schedules.md`. The CEO's feedback (T058) is that the UI needs to be
 "operative" — i.e. users should be able to interact with schedules, not just
 view them.
 
@@ -120,4 +120,4 @@ so the "Run now" button can call the correct endpoint.
 - [ ] "Run now" button visible on each schedule row
 - [ ] Clicking "Run now" POSTs to the run endpoint and shows success feedback
 - [ ] The run endpoint writes a steering directive and auto-starts the CTO if stopped
-- [ ] BL-059 and BL-060 marked as done in backlog.md
+- [ ] T059 and T060 marked as done in backlog.md

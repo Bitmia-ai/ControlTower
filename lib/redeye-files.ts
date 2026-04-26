@@ -118,8 +118,8 @@ export async function isInitialized(projectPath: string): Promise<boolean> {
 }
 
 /**
- * Scan `.redeye/backlog.md` and return the highest numeric suffix found in any
- * `BL-\d+` pattern.  Returns 0 if the file is missing or contains no matches.
+ * Scan `.redeye/tasks.md` and return the highest numeric suffix found in any
+ * `T\d+` pattern.  Returns 0 if the file is missing or contains no matches.
  *
  * NOTE: This reads the raw text, so it will match T<N> wherever it appears
  * (headers, inline references, etc.).  That is intentional — we want the true
@@ -145,7 +145,7 @@ export async function readProjectDetail(
   projectPath: string,
   project: ProjectWithStatus
 ): Promise<ProjectDetail> {
-  const [state, backlogRaw, inbox, changelog, steering] = await Promise.all([
+  const [state, tasksRaw, inbox, changelog, steering] = await Promise.all([
     readState(projectPath),
     readTasks(projectPath),
     readInbox(projectPath),
@@ -153,11 +153,11 @@ export async function readProjectDetail(
     readSteering(projectPath),
   ]);
 
-  // Enrich the backlog: if state.task_id matches an item, override its
+  // Enrich the tasks: if state.task_id matches an item, override its
   // status to "in-progress" ephemerally (not written back to disk).
   const activeId = state?.task_id ?? null;
   let activeItem: TaskItem | null = null;
-  const backlog = backlogRaw.map((item) => {
+  const tasks = tasksRaw.map((item) => {
     if (activeId && item.id === activeId) {
       const enriched = { ...item, status: "in-progress" as const };
       activeItem = enriched;
@@ -170,14 +170,14 @@ export async function readProjectDetail(
     ? `${state.task_id ?? ""} ${state.task_title}`.trim()
     : null;
   const pendingQuestions = inbox.filter((q) => !q.answered);
-  const upNext = backlog.filter(
+  const upNext = tasks.filter(
     (item) =>
       item.status === "planned" ||
       item.status === "pending" ||
       item.status === "in-progress"
   );
   const itemCosts = state?.item_costs ?? {};
-  const recentlyShipped = backlog
+  const recentlyShipped = tasks
     .filter((item) => item.status === "done")
     .map((item) => {
       const cost = itemCosts[item.id];
@@ -186,7 +186,7 @@ export async function readProjectDetail(
   // parseTasks normalizes both "wont-do" and "won't do" raw values to the
   // single canonical status "wontdo"; section is also "wontdo". Source on
   // status so a section-misplaced item still surfaces.
-  const wontDoItems = backlog.filter((item) => item.status === "wontdo");
+  const wontDoItems = tasks.filter((item) => item.status === "wontdo");
   const recentChangelog = changelog.slice(0, 5);
 
   return {

@@ -1,4 +1,4 @@
-# BL-016: Make phase badge more prominent and dynamic
+# T016: Make phase badge more prominent and dynamic
 
 **Status:** done
 **Priority:** P1

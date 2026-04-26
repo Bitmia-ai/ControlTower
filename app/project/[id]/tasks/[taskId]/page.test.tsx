@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, act, cleanup, waitFor } from "@testing-library/react";
-import BacklogItemPage from "./task-detail-client";
+import TaskDetailClient from "./task-detail-client";
 import type { TaskItem } from "@/lib/redeye-types";
 
 // Mocks that need to be defined before component import isn't necessary
@@ -50,7 +50,7 @@ function makeResponse(body: unknown, status = 200): Response {
 function makeItem(overrides: Partial<TaskItem> = {}): TaskItem {
   return {
     id: "T042",
-    title: "Test backlog item",
+    title: "Test task",
     status: "done",
     section: "triaged",
     ...overrides,
@@ -62,7 +62,7 @@ function makeParams(id: string, taskId: string) {
   return Promise.resolve({ id, taskId });
 }
 
-describe("BacklogItemPage — cost row + Record now button", () => {
+describe("TaskDetailClient — cost row + Record now button", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
   });
@@ -79,7 +79,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     );
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "T042")} />);
+      render(<TaskDetailClient params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -99,7 +99,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(makeResponse({ data: item }));
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "T042")} />);
+      render(<TaskDetailClient params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -136,7 +136,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     );
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "T042")} />);
+      render(<TaskDetailClient params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -180,7 +180,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     );
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "T042")} />);
+      render(<TaskDetailClient params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -204,7 +204,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(makeResponse({ data: item }));
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "T042")} />);
+      render(<TaskDetailClient params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {

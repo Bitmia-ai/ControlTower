@@ -1,4 +1,4 @@
-# BL-024 — Add aria-labels to all interactive buttons and controls
+# T024 — Add aria-labels to all interactive buttons and controls
 
 **Status:** planned  
 **Priority:** P2  

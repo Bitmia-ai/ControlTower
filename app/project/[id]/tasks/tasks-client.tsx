@@ -39,7 +39,7 @@ export function parseTaskIdNumber(id: string): number {
 }
 
 /**
- * Compute the three buckets (planned / done / wontdo) from a flat list of all backlog items.
+ * Compute the three buckets (planned / done / wontdo) from a flat list of all tasks.
  * Exported so tests can verify the filtering + sort logic without rendering the page.
  */
 export function computeBuckets(
@@ -276,7 +276,7 @@ export function WontDoItemRow({
   );
 }
 
-export default function BacklogPageClient({
+export default function TasksPageClient({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -288,7 +288,7 @@ export default function BacklogPageClient({
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [backlogSectionOpen, setBacklogSectionOpen] = useState(true);
+  const [backlogSubsectionOpen, setBacklogSubsectionOpen] = useState(true);
   const [doneOpen, setDoneOpen] = useState(false);
   const [wontDoOpen, setWontDoOpen] = useState(false);
 
@@ -301,7 +301,7 @@ export default function BacklogPageClient({
       if (json.data) setDetail(json.data);
     } catch {
       if (!detail) {
-        setFetchError("Failed to load backlog.");
+        setFetchError("Failed to load tasks.");
       }
     } finally {
       setLoading(false);
@@ -347,7 +347,7 @@ export default function BacklogPageClient({
               Control Tower
             </p>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
-              Backlog
+              Tasks
             </h1>
             <p className="text-sm text-gray-500 dark:text-zinc-500 mt-1">
               {totalCount} {totalCount === 1 ? "item" : "items"}
@@ -364,14 +364,14 @@ export default function BacklogPageClient({
 
       {loading && !detail ? (
         <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">
-          Loading backlog…
+          Loading tasks…
         </div>
       ) : fetchError && !detail ? (
         <FetchError message={fetchError} onRetry={fetchDetail} />
       ) : allItems.length === 0 ? (
         <EmptyState
           icon={<span>~</span>}
-          title="No backlog items yet"
+          title="No tasks yet"
           subtitle="Add items to track work for this project."
           action={{ label: "+ Add Item", onClick: () => setAddDialogOpen(true) }}
         />
@@ -385,8 +385,8 @@ export default function BacklogPageClient({
             <CollapsibleSection
               label="Backlog"
               count={sortedBacklog.length}
-              open={backlogSectionOpen}
-              onToggle={() => setBacklogSectionOpen((o) => !o)}
+              open={backlogSubsectionOpen}
+              onToggle={() => setBacklogSubsectionOpen((o) => !o)}
             >
               <TaskSection items={sortedBacklog} projectId={projectId} />
             </CollapsibleSection>

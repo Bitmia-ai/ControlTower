@@ -62,7 +62,7 @@ describe("GET /api/projects/[id]", () => {
     mockSessionStatus.mockReturnValue({ cto: { status: "idle" } });
     mockIsInit.mockResolvedValue(true);
     mockResolveTranscript.mockReturnValue(null);
-    mockReadDetail.mockResolvedValue({ project: { name: "t" }, backlog: [] });
+    mockReadDetail.mockResolvedValue({ project: { name: "t" }, tasks: [] });
     const [req, ctx] = makeGet("0");
     const res = await GET(req, ctx);
     expect(res.status).toBe(200);
@@ -77,7 +77,7 @@ describe("GET /api/projects/[id]", () => {
     mockResolveTranscript.mockReturnValue("/fake/transcript.jsonl");
     mockReadDetail.mockImplementation(async (_path: string, project: unknown) => ({
       project,
-      backlog: [],
+      tasks: [],
     }));
     const [req, ctx] = makeGet("0");
     const res = await GET(req, ctx);
@@ -93,7 +93,7 @@ describe("GET /api/projects/[id]", () => {
     mockResolveTranscript.mockReturnValue(null);
     mockReadDetail.mockImplementation(async (_path: string, project: unknown) => ({
       project,
-      backlog: [],
+      tasks: [],
     }));
     const [req, ctx] = makeGet("0");
     const res = await GET(req, ctx);

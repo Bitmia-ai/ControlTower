@@ -1,4 +1,4 @@
-# BL-023 — Home Page Auto-Refresh Polling
+# T023 — Home Page Auto-Refresh Polling
 
 **Status:** planned  
 **Priority:** P2  

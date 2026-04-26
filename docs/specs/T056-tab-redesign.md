@@ -1,4 +1,4 @@
-# BL-056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
+# T056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
 
 **Status:** planned  
 **Priority:** P2  
@@ -10,10 +10,10 @@
 
 ## Problem
 
-The backlog, history, and live tabs were built incrementally and lack visual polish. Compared to the mission-control page (redesigned in BL-045), these tabs look bare:
+The backlog, history, and live tabs were built incrementally and lack visual polish. Compared to the mission-control page (redesigned in T045), these tabs look bare:
 
 - **Backlog tab** (`app/project/[id]/backlog/page.tsx`): flat list of cards with minimal differentiation. Priority badges, status chips, and section headers lack hierarchy. The "Currently Working On" card blends into the list.
-- **History tab** (`app/project/[id]/history/page.tsx`): the Sessions section and Iteration Log are stylistically mismatched. No clear visual boundary between sections. Phase chips and cost badges from BL-053 look functional but not polished.
+- **History tab** (`app/project/[id]/history/page.tsx`): the Sessions section and Iteration Log are stylistically mismatched. No clear visual boundary between sections. Phase chips and cost badges from T053 look functional but not polished.
 - **Live tab** (`app/project/[id]/live/page.tsx`): the toolbar (Expand/Collapse all, auto-scroll button) is minimal. The `TranscriptViewer` cards have basic styling. The empty/no-transcript states are plain.
 
 The CEO requested these tabs be redesigned using the designer sub-agent and frontend skill, matching the polish of the mission-control page.
@@ -125,7 +125,7 @@ Tests:
 ## Scope Exclusions
 
 - No changes to the mission-control (Overview) tab
-- No changes to the Schedules tab (shipped in BL-055)
+- No changes to the Schedules tab (shipped in T055)
 - No new API endpoints
 - No new data fetching logic
 - Editing of backlog items in-page (deferred to a future backlog item)
@@ -135,9 +135,9 @@ Tests:
 
 ## Test Baseline
 
-Current: 627 unit tests passing (as of iter 85 BL-055 merge).
+Current: 627 unit tests passing (as of iter 85 T055 merge).
 
-Expected after BL-056: 640+ unit tests (13+ new across T1–T4 and T6).
+Expected after T056: 640+ unit tests (13+ new across T1–T4 and T6).
 
 ---
 

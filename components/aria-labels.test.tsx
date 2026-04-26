@@ -48,7 +48,7 @@ describe("AddTaskDialog aria-labels (T024)", () => {
     );
     const input = screen.getByLabelText("Task title") as HTMLInputElement;
     expect(input.tagName).toBe("INPUT");
-    expect(input.id).toBe("backlog-title");
+    expect(input.id).toBe("task-title");
   });
 });
 

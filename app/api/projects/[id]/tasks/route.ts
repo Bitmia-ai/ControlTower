@@ -50,10 +50,10 @@ export async function POST(
     }
 
     const itemId = await getNextTaskId(project.path);
-    const backlogPath = safeRedeyePath(project.path, "tasks.md");
+    const tasksPath = safeRedeyePath(project.path, "tasks.md");
     let content: string;
     try {
-      content = await fs.readFile(backlogPath, "utf-8");
+      content = await fs.readFile(tasksPath, "utf-8");
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
       content = "# Tasks\n\n## CEO Requests\n";
@@ -72,7 +72,7 @@ export async function POST(
       content += "\n" + newItem;
     }
 
-    await fs.writeFile(backlogPath, content, "utf-8");
+    await fs.writeFile(tasksPath, content, "utf-8");
 
     // Commit + push so TRIAGE's CEO Requests sync-from-main doesn't drop
     // this item on the next iteration. Best-effort.
@@ -90,13 +90,13 @@ export async function POST(
         resumed = true;
       }
     } catch (sessionErr) {
-      console.error("[POST /backlog] Failed to auto-resume CTO:", sessionErr);
+      console.error("[POST /tasks] Failed to auto-resume CTO:", sessionErr);
     }
 
     return NextResponse.json({ data: { success: true, id: itemId, resumed, committed, pushed } });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to add backlog item" },
+      { error: err instanceof Error ? err.message : "Failed to add task" },
       { status: 500 }
     );
   }

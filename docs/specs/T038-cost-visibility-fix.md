@@ -1,4 +1,4 @@
-# BL-038: Cost Visibility Bug — Detail Page Cost Field Not Rendering
+# T038: Cost Visibility Bug — Detail Page Cost Field Not Rendering
 
 **Status:** pending
 **Priority:** P1
@@ -32,19 +32,19 @@ The condition `item.cost_usd !== undefined && item.cost_usd > 0` is logically so
    ```
    This is correct — but only works when `state.item_costs` is populated.
 
-2. `item_costs` is written exclusively by `POST /api/projects/[id]/cost-snapshot` (`app/api/projects/[id]/cost-snapshot/route.ts`). This endpoint was shipped in BL-020 but **is never called automatically** when an item transitions to `done`. It requires an explicit POST call.
+2. `item_costs` is written exclusively by `POST /api/projects/[id]/cost-snapshot` (`app/api/projects/[id]/cost-snapshot/route.ts`). This endpoint was shipped in T020 but **is never called automatically** when an item transitions to `done`. It requires an explicit POST call.
 
 3. The live `state.json` has **no `item_costs` field at all** (confirmed: `python3 -c "import json; s=json.load(open('.redeye/state.json')); print(s.get('item_costs', 'KEY NOT FOUND'))"`  → `KEY NOT FOUND`).
 
 4. Because `item_costs` is absent, `state?.item_costs?.[taskId]` always evaluates to `undefined`. `enriched` is always the bare item without `cost_usd`. The detail page condition fails silently.
 
-### Why BL-027 Did Not Fix This
+### Why T027 Did Not Fix This
 
-BL-027 spec (AD-4) stated: "The detail page already renders cost when `item.cost_usd > 0`. No modification needed." This was incorrect — the spec assumed `item_costs` was populated, but the cost-snapshot mechanism was never wired to run automatically at item completion. The BL-027 BUILD focused solely on the list-page badge.
+T027 spec (AD-4) stated: "The detail page already renders cost when `item.cost_usd > 0`. No modification needed." This was incorrect — the spec assumed `item_costs` was populated, but the cost-snapshot mechanism was never wired to run automatically at item completion. The T027 BUILD focused solely on the list-page badge.
 
 ### Why No Items Have Cost Data
 
-All backlog items (BL-001 through BL-037) were completed before or after BL-020 shipped the snapshot mechanism, but no code path ever calls `POST /api/projects/[id]/cost-snapshot` at item completion time. The snapshot API exists as a manual/external call only.
+All backlog items (T001 through T037) were completed before or after T020 shipped the snapshot mechanism, but no code path ever calls `POST /api/projects/[id]/cost-snapshot` at item completion time. The snapshot API exists as a manual/external call only.
 
 ### Fix Strategy
 
@@ -134,7 +134,7 @@ The backlog list page (`app/project/[id]/backlog/page.tsx`) uses the same `item.
 - **Size:** S
 - **Dependencies:** T1
 - **Agent:** QA Lead
-- **Description:** After deploy, navigate to any completed backlog item detail page (e.g. `/project/0/backlog/BL-020`). Confirm `Cost (est.)` label is visible. Since no actual cost data exists in state.json yet, it should show "Not recorded". Screenshot both light and dark mode. If a future item completes after T2 is shipped, verify `$X.XX` displays.
+- **Description:** After deploy, navigate to any completed backlog item detail page (e.g. `/project/0/backlog/T020`). Confirm `Cost (est.)` label is visible. Since no actual cost data exists in state.json yet, it should show "Not recorded". Screenshot both light and dark mode. If a future item completes after T2 is shipped, verify `$X.XX` displays.
 - **Test strategy:** Playwright MCP browser screenshot.
 - **Acceptance criteria:**
   - `Cost (est.)` label visible for at least one done item in Playwright screenshot

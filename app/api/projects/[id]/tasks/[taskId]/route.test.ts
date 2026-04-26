@@ -64,7 +64,7 @@ const SAMPLE_BACKLOG = `# Tasks
 ## Done
 `;
 
-describe("GET /api/projects/[id]/backlog/[taskId]", () => {
+describe("GET /api/projects/[id]/tasks/[taskId]", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -110,7 +110,7 @@ describe("GET /api/projects/[id]/backlog/[taskId]", () => {
   });
 });
 
-describe("PATCH /api/projects/[id]/backlog/[taskId]", () => {
+describe("PATCH /api/projects/[id]/tasks/[taskId]", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockReadFile.mockResolvedValue(SAMPLE_BACKLOG);
@@ -156,7 +156,7 @@ describe("PATCH /api/projects/[id]/backlog/[taskId]", () => {
     expect(written).toMatch(/### T001:[^\n]*\n- \*\*Priority:\*\* P3/);
   });
 
-  it("returns 404 when backlog file is missing (ENOENT)", async () => {
+  it("returns 404 when tasks file is missing (ENOENT)", async () => {
     mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
     const err = Object.assign(new Error("ENOENT"), { code: "ENOENT" });
     mockReadFile.mockRejectedValue(err);
@@ -167,7 +167,7 @@ describe("PATCH /api/projects/[id]/backlog/[taskId]", () => {
     expect(res.status).toBe(404);
   });
 
-  it("returns 404 when item not found in backlog", async () => {
+  it("returns 404 when task not found", async () => {
     mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
     mockReadTasks.mockResolvedValue([
       { id: "T001", title: "First item", priority: "P1" },
@@ -180,7 +180,7 @@ describe("PATCH /api/projects/[id]/backlog/[taskId]", () => {
   });
 });
 
-describe("DELETE /api/projects/[id]/backlog/[taskId]", () => {
+describe("DELETE /api/projects/[id]/tasks/[taskId]", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockReadFile.mockResolvedValue(SAMPLE_BACKLOG);
@@ -193,7 +193,7 @@ describe("DELETE /api/projects/[id]/backlog/[taskId]", () => {
     expect(res.status).toBe(404);
   });
 
-  it("returns 200 and writes updated backlog without the item", async () => {
+  it("returns 200 and writes updated tasks file without the item", async () => {
     mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
     const res = await DELETE(makeReq("DELETE", "0", "T001"), makeCtx("0", "T001"));
     expect(res.status).toBe(200);
@@ -205,7 +205,7 @@ describe("DELETE /api/projects/[id]/backlog/[taskId]", () => {
     expect(written).toContain("### T002:");
   });
 
-  it("returns 404 when backlog file is missing (ENOENT)", async () => {
+  it("returns 404 when tasks file is missing (ENOENT)", async () => {
     mockGetProject.mockResolvedValue({ name: "t", path: "/t" });
     const err = Object.assign(new Error("ENOENT"), { code: "ENOENT" });
     mockReadFile.mockRejectedValue(err);

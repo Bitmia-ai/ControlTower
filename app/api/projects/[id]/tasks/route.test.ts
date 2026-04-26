@@ -39,10 +39,10 @@ function makeRequest(id: string, body: unknown): [NextRequest, { params: Promise
   return [req, { params: Promise.resolve({ id }) }];
 }
 
-describe("POST /api/projects/[id]/backlog", () => {
+describe("POST /api/projects/[id]/tasks", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Default: backlog.md exists with a CEO Requests header
+    // Default: tasks.md exists with a CEO Requests header
     mockReadFile.mockResolvedValue("# Tasks\n\n## CEO Requests\n\n## Done\n");
     mockWriteFile.mockResolvedValue(undefined);
   });

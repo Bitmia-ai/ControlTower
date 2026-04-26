@@ -1,4 +1,4 @@
-# BL-051: Cost analytics — add cumulative cost chart to mission control
+# T051: Cost analytics — add cumulative cost chart to mission control
 
 **Status:** planned  
 **Priority:** P2  
@@ -67,7 +67,7 @@ The SVG uses `viewBox="0 0 200 48"` with `width="100%"` so it scales to any cont
 - **Size:** S
 - **Dependencies:** T1
 - **Agent type:** Dev (sonnet)
-- **Description:** New Next.js App Router route handler. Resolves project by `[id]` index, calls `getSessionCostHistory`, returns `{ data: { sessions: [...] } }`. Wraps in try-catch per BL-025 pattern, returning `{ error }` + 500 on failure. Returns 404 if project not found.
+- **Description:** New Next.js App Router route handler. Resolves project by `[id]` index, calls `getSessionCostHistory`, returns `{ data: { sessions: [...] } }`. Wraps in try-catch per T025 pattern, returning `{ error }` + 500 on failure. Returns 404 if project not found.
 - **Test strategy:** Unit test with mocked `getProjectByIndex` and `getSessionCostHistory`. Cases: project not found → 404; empty sessions → 200 with empty array; happy path → 200 with correct payload; thrown error → 500.
 - **Acceptance criteria:**
   - Route file at `app/api/projects/[id]/cost-history/route.ts`

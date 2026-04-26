@@ -1,12 +1,12 @@
-# BL-043: Force Stop as Dropdown on the Stop Button
+# T043: Force Stop as Dropdown on the Stop Button
 
 ## Overview
 
-BL-037 shipped Force Stop as a standalone button below the Stop/Pause row in the Controls card. The CEO flagged this as bad UX — Force Stop should be a dropdown option nested under the existing Stop button, not a separate button. This spec replaces the standalone Force Stop button with a split-button pattern: the main Stop button retains its existing graceful-stop behavior, and a chevron caret on the right opens a dropdown containing the "Force Stop" option.
+T037 shipped Force Stop as a standalone button below the Stop/Pause row in the Controls card. The CEO flagged this as bad UX — Force Stop should be a dropdown option nested under the existing Stop button, not a separate button. This spec replaces the standalone Force Stop button with a split-button pattern: the main Stop button retains its existing graceful-stop behavior, and a chevron caret on the right opens a dropdown containing the "Force Stop" option.
 
 ## Background
 
-### What BL-037 shipped
+### What T037 shipped
 
 - A standalone "Force Stop" button rendered in its own row below the Stop/Pause row, visible whenever `running === true`.
 - Shift+click confirmation: first click shows an inline warning; Shift+click (or second click after warning) executes the hard kill.
@@ -23,7 +23,7 @@ The project has `@radix-ui/react-dialog`, `@radix-ui/react-label`, and `@radix-u
 
 ### Shift+click in a dropdown menu item
 
-Shift+click does not work ergonomically inside a dropdown — the user clicks the chevron, the menu opens, then they must hold Shift and click the item. This is unintuitive. The replacement confirmation UX is an inline confirmation row that appears in the dropdown after the first click: clicking "Force Stop" once shows "Confirm? Click again to hard-kill." with a 4-second auto-dismiss. A second click within that window executes the hard kill. This preserves the intent of BL-037's confirmation requirement while being appropriate for a menu context.
+Shift+click does not work ergonomically inside a dropdown — the user clicks the chevron, the menu opens, then they must hold Shift and click the item. This is unintuitive. The replacement confirmation UX is an inline confirmation row that appears in the dropdown after the first click: clicking "Force Stop" once shows "Confirm? Click again to hard-kill." with a 4-second auto-dismiss. A second click within that window executes the hard kill. This preserves the intent of T037's confirmation requirement while being appropriate for a menu context.
 
 ## Architecture Decisions
 
@@ -45,7 +45,7 @@ The `forceStopPrompt` state, its associated timer ref, and the standalone `<butt
 
 ### AD-5: "Force Stopping…" pending state displayed on the chevron button
 
-When `pending === "force-stop"`, the chevron button label area shows a brief "..." indicator and all buttons are disabled — same behavior as BL-037. The 3-second pending timer is unchanged.
+When `pending === "force-stop"`, the chevron button label area shows a brief "..." indicator and all buttons are disabled — same behavior as T037. The 3-second pending timer is unchanged.
 
 ### AD-6: Dropdown only visible when running; chevron is hidden when not running
 
@@ -166,7 +166,7 @@ When the user clicks the main Stop action, if the dropdown is open, close it bef
 - `app/api/projects/[id]/force-stop/route.ts` — API is unchanged; still called via `onForceStop` prop
 - `app/project/[id]/page.tsx` — `onForceStop={handleForceStop}` wiring already exists; no changes
 - `lib/session-manager.ts` — `stopSession()` unchanged
-- `components/project-card.tsx` — Force Stop scoped to mission control only (per BL-037 AD-6)
+- `components/project-card.tsx` — Force Stop scoped to mission control only (per T037 AD-6)
 
 ## Test Strategy Summary
 

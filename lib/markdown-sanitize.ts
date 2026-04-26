@@ -4,8 +4,8 @@
  * User input that flows from API routes into `.redeye/*.md` files MUST be
  * sanitized before write. RedEye's autonomous CTO reads these files as
  * authoritative instructions; an unsanitized newline lets a user (or a
- * compromised browser tab — see CSRF risk) forge `## Headers`, `### BL-NNN`
- * backlog items, or steering directives that the agent will then act on.
+ * compromised browser tab — see CSRF risk) forge `## Headers`, `### TXXX`
+ * tasks, or steering directives that the agent will then act on.
  *
  * This is the prompt-injection trust boundary for Control Tower.
  *
@@ -33,7 +33,7 @@ export function sanitizeMarkdownInput(input: string, opts: { maxLen?: number } =
 }
 
 /**
- * Sanitize a multi-line markdown value (e.g. backlog item description that
+ * Sanitize a multi-line markdown value (e.g. task description that
  * intentionally contains paragraphs). Preserves newlines but neutralizes
  * structural markers at line start: `#` → `\#`, `###` → `\###`, etc.
  */

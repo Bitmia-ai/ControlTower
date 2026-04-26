@@ -34,7 +34,7 @@ describe("WorkingOnCard — idle state", () => {
 });
 
 describe("WorkingOnCard — task list empty stop state", () => {
-  it("renders backlog-empty message when !running, phase=HARDEN, upNextCount=0", () => {
+  it("renders no-tasks message when !running, phase=HARDEN, upNextCount=0", () => {
     const state = makeState({ phase: "HARDEN", task_title: null });
     const { container } = render(
       <WorkingOnCard state={state} running={false} upNextCount={0} />

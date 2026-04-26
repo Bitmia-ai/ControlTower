@@ -1,4 +1,4 @@
-# BL-049 — Expand E2E Test Coverage
+# T049 — Expand E2E Test Coverage
 
 **Type:** test
 **Priority:** P1
@@ -52,9 +52,9 @@ Both specs follow the existing Playwright route-interception pattern from
 Write `e2e/backlog-crud.spec.ts` with:
 - Mock `GET /api/projects/0` returning a minimal project detail (running: false)
 - Mock `GET /api/projects/0/backlog` returning empty initial list
-- Mock `POST /api/projects/0/backlog` returning `{ data: { success: true, id: "BL-001" } }`
+- Mock `POST /api/projects/0/backlog` returning `{ data: { success: true, id: "T001" } }`
   and also update the GET stub to return the new item on subsequent calls
-- Mock `GET /api/projects/0/backlog/BL-001` returning a minimal item
+- Mock `GET /api/projects/0/backlog/T001` returning a minimal item
 - Mock `GET /api/projects/0/cost` returning `{ data: { session: 0, total: 0 } }`
 - Mock `GET /api/projects/0/stream` returning empty SSE
 - Test flow:

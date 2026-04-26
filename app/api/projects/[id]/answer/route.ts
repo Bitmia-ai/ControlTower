@@ -44,7 +44,7 @@ export async function POST(
       return NextResponse.json({ error: "Answer too long (max 4096 chars)" }, { status: 400 });
     }
     // Strip newlines and markdown markers so a malicious answer can't forge
-    // headers, bullet items, or backlog entries that RedEye would later read
+    // headers, bullet items, or tasks that RedEye would later read
     // as authoritative instructions (prompt-injection trust boundary).
     const answer = sanitizeMarkdownInput(answerRaw);
 

@@ -1,4 +1,4 @@
-# BL-013: Live tab should tail Claude transcript files
+# T013: Live tab should tail Claude transcript files
 
 **Status:** planned
 **Priority:** P0 (bug)

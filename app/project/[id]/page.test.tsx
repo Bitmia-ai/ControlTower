@@ -122,7 +122,7 @@ describe("ProjectPage phase notifications integration", () => {
   it("T052: enabled=false (dialog open) suppresses shortcut actions", () => {
     const onStop = vi.fn();
     const onStart = vi.fn();
-    const onAddBacklog = vi.fn();
+    const onAddTask = vi.fn();
     function Wired({ dialogOpen }: { dialogOpen: boolean }) {
       useKeyboardShortcuts({
         enabled: !dialogOpen,
@@ -130,7 +130,7 @@ describe("ProjectPage phase notifications integration", () => {
         projectId: 1,
         onStop,
         onStart,
-        onAddBacklog,
+        onAddTask,
       });
       return <div />;
     }
@@ -141,7 +141,7 @@ describe("ProjectPage phase notifications integration", () => {
     fireEvent.keyDown(document, { key: "b" });
     expect(onStop).not.toHaveBeenCalled();
     expect(onStart).not.toHaveBeenCalled();
-    expect(onAddBacklog).not.toHaveBeenCalled();
+    expect(onAddTask).not.toHaveBeenCalled();
   });
 
   it("phase undefined -> BUILD does NOT toast (first observation only)", () => {

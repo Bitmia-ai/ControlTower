@@ -37,7 +37,7 @@ export function ProjectCard({ project, index, onToggle, onDelete }: ProjectCardP
 
   const questionCount = project.questionCount ?? 0;
   const currentTask = project.currentTask;
-  const backlogEmpty = !project.running && project.phase === "HARDEN";
+  const noTasks = !project.running && project.phase === "HARDEN";
 
   // Status border: running > attention (questions) > idle
   let statusBorder = "border-t-zinc-300 dark:border-t-zinc-700";
@@ -52,19 +52,19 @@ export function ProjectCard({ project, index, onToggle, onDelete }: ProjectCardP
 
   // Phase footer styling: tinted from PHASE_COLORS, fall back to neutral
   const phaseColor = project.phase ? PHASE_COLORS[project.phase] : undefined;
-  const phaseLabel = backlogEmpty
-    ? "Backlog empty"
+  const phaseLabel = noTasks
+    ? "No tasks"
     : project.phase
       ? PHASE_LABELS[project.phase] ?? project.phase
       : "Idle";
-  const phaseFooterClass = backlogEmpty
+  const phaseFooterClass = noTasks
     ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300"
     : phaseColor
       ? `${phaseColor.bg} ${phaseColor.text}`
       : "bg-gray-50 dark:bg-zinc-800/60 text-gray-600 dark:text-zinc-400";
   const phaseDotClass = project.running
     ? "bg-green-500"
-    : backlogEmpty
+    : noTasks
       ? "bg-amber-500"
       : "bg-gray-400 dark:bg-zinc-500";
 

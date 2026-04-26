@@ -1,4 +1,4 @@
-# BL-020: Show Cost Per Completed Backlog Item in Recently Shipped Card
+# T020: Show Cost Per Completed Backlog Item in Recently Shipped Card
 
 **Status:** done  
 **Priority:** P2  
@@ -8,7 +8,7 @@
 
 ## Problem
 
-The Recently Shipped card on mission control shows completed backlog items (via `ShippedCard`) but has no cost data attached. BL-015 (AD-5) explicitly deferred per-item cost attribution. Now that the cost infrastructure exists (`cost-calculator.ts`, `/api/projects/[id]/cost`), we can close the loop.
+The Recently Shipped card on mission control shows completed backlog items (via `ShippedCard`) but has no cost data attached. T015 (AD-5) explicitly deferred per-item cost attribution. Now that the cost infrastructure exists (`cost-calculator.ts`, `/api/projects/[id]/cost`), we can close the loop.
 
 The challenge: transcript files are not structured by backlog item. We cannot reliably map individual JSONL lines to the item that was being worked on. The viable approach is to capture the **session-cumulative cost snapshot** at the moment an item transitions to `done` and store it in `state.json` alongside the item ID.
 
@@ -23,16 +23,16 @@ Cost per item is stored as a flat map in `state.json` under a new top-level key 
 ```json
 {
   "item_costs": {
-    "BL-015": 1.42,
-    "BL-016": 0.38,
-    "BL-019": 0.21
+    "T015": 1.42,
+    "T016": 0.38,
+    "T019": 0.21
   }
 }
 ```
 
 Rationale:
 - `state.json` is already the authoritative mutable store for RedEye runtime data.
-- `backlog.md` is agent-managed text — we do not embed cost there (per BL-015 AD-5).
+- `backlog.md` is agent-managed text — we do not embed cost there (per T015 AD-5).
 - A sidecar file (e.g., `.redeye/item-costs.json`) adds a new file that all readers must know about; `state.json` is simpler.
 - The map is append-only in practice. Old entries remain (historical record).
 
@@ -63,7 +63,7 @@ This keeps all enrichment server-side. No API shape changes are needed for `Proj
 `ShippedCard` receives `BacklogItem[]` that may now carry `cost_usd`. When present and greater than 0, render a subtle secondary label to the right:
 
 ```
-✓  BL-015 · Add cost tracking   $1.42
+✓  T015 · Add cost tracking   $1.42
 ```
 
 Formatting: `$X.XX` (two decimal places). If `cost_usd` is 0 or absent, the badge is omitted (not shown as "$0.00" — zero likely means the snapshot was not captured). Use `text-xs text-gray-400 dark:text-zinc-500 font-mono` for the cost value, positioned with `ml-auto shrink-0`.
@@ -117,8 +117,8 @@ grid showing `$X.XX`.
 - **Description:** New route at `app/api/projects/[id]/cost-snapshot/route.ts`. Accepts JSON body `{ blId: string }`. Reads `state.json`, calls `sumCurrentSessionCost(projectPath)`, writes result into `state.item_costs[blId]`, saves `state.json` atomically (write to tmp then rename), returns `{ data: { blId, cost_usd } }`. Initialises `item_costs` map if absent.
 - **Test strategy:** Unit test with mocked fs and cost utility. Verify idempotent (calling twice overwrites with latest value). Verify 400 when `blId` missing. Verify 404 when project not found.
 - **Acceptance criteria:**
-  - `POST /api/projects/0/cost-snapshot` with `{ blId: "BL-020" }` returns `{ data: { blId: "BL-020", cost_usd: <number> } }` with HTTP 200
-  - Writes to `state.json["item_costs"]["BL-020"]`
+  - `POST /api/projects/0/cost-snapshot` with `{ blId: "T020" }` returns `{ data: { blId: "T020", cost_usd: <number> } }` with HTTP 200
+  - Writes to `state.json["item_costs"]["T020"]`
   - Returns 400 if `blId` is missing from body
   - Returns 404 if project not found
   - Does not corrupt other `state.json` fields
@@ -187,7 +187,7 @@ grid showing `$X.XX`.
 
 ## Out of Scope (This Iteration)
 
-- Retroactive cost capture for items completed before BL-020 ships (no badge for old items)
+- Retroactive cost capture for items completed before T020 ships (no badge for old items)
 - Cost attribution in the changelog render path of `ShippedCard`
 - Per-phase cost breakdown
 - Real-time cost streaming in the shipped card (5s poll cadence is sufficient)
@@ -196,4 +196,4 @@ grid showing `$X.XX`.
 
 ## Questions Posted
 
-None — sufficient context to proceed with defaults from BL-015 architecture.
+None — sufficient context to proceed with defaults from T015 architecture.

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import BacklogPageClient from "./tasks-client";
+import TasksPageClient from "./tasks-client";
 
 export const metadata: Metadata = {
   title: "Tasks",
@@ -10,5 +10,5 @@ export default function TasksPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  return <BacklogPageClient params={params} />;
+  return <TasksPageClient params={params} />;
 }

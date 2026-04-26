@@ -41,7 +41,7 @@ describe("ShippedCard — empty state", () => {
   });
 });
 
-describe("ShippedCard — backlog item rendering without cost", () => {
+describe("ShippedCard — task rendering without cost", () => {
   it("renders item id and title", () => {
     const item = makeItem();
     const { container } = render(<ShippedCard items={[item]} />);

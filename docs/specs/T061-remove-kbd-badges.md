@@ -1,4 +1,4 @@
-# BL-061: Remove keyboard shortcut badges from navigation buttons
+# T061: Remove keyboard shortcut badges from navigation buttons
 
 ## Goal
 

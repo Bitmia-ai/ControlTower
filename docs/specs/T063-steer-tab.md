@@ -1,4 +1,4 @@
-# BL-063: Steer Tab — Add Fully Functional Steering Directive UI
+# T063: Steer Tab — Add Fully Functional Steering Directive UI
 
 **Status:** planned  
 **Priority:** P1  
@@ -27,7 +27,7 @@ No new library function is needed — `readSteering` is already implemented and 
 
 ### 3. Nav addition: `components/project-nav.tsx`
 
-Add `{ label: "Steer", path: "/steer" }` to the `NAV_ITEMS` array. No keyboard shortcut is added (BL-061 removed all shortcut badges; consistent with current state).
+Add `{ label: "Steer", path: "/steer" }` to the `NAV_ITEMS` array. No keyboard shortcut is added (T061 removed all shortcut badges; consistent with current state).
 
 ### 4. `SteerPage` component layout
 

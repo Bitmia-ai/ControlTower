@@ -1,4 +1,4 @@
-# BL-057: Mobile-Responsive Layout
+# T057: Mobile-Responsive Layout
 
 **Status:** planned  
 **Priority:** P1  

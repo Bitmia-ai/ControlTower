@@ -5,24 +5,24 @@ import { PHASE_LABELS } from "@/lib/redeye-types";
 export function PhaseBadge({
   phase,
   running,
-  backlogEmpty,
+  noTasks,
 }: {
   phase?: string;
   running: boolean;
-  backlogEmpty?: boolean;
+  noTasks?: boolean;
 }) {
-  const showBacklogEmpty = !running && backlogEmpty;
-  const label = showBacklogEmpty
-    ? "Backlog empty"
+  const showNoTasks = !running && noTasks;
+  const label = showNoTasks
+    ? "No tasks"
     : phase
       ? PHASE_LABELS[phase] ?? phase
       : "Idle";
   const dotColor = running
     ? "bg-green-500"
-    : showBacklogEmpty
+    : showNoTasks
       ? "bg-amber-500"
       : "bg-gray-400 dark:bg-zinc-500";
-  const textColor = showBacklogEmpty
+  const textColor = showNoTasks
     ? "text-amber-600 dark:text-amber-400"
     : "text-gray-500 dark:text-zinc-400";
   return (

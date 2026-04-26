@@ -34,7 +34,7 @@ export default function MissionControlClient({
   // Dialog state
   const [answerOpen, setAnswerOpen] = useState(false);
   const [steerOpen, setSteerOpen] = useState(false);
-  const [backlogOpen, setBacklogOpen] = useState(false);
+  const [addTaskOpen, setAddTaskOpen] = useState(false);
 
   // Hold the latest detail in a ref so the fetch callback's identity is
   // stable across renders. Otherwise the polling interval re-creates after
@@ -88,8 +88,8 @@ export default function MissionControlClient({
   // T050: in-app + native notifications when RedEye phase transitions.
   // Hook is no-op until a real transition is observed (skips first mount).
   const phaseForNotifications = detail ? (detail.state?.phase ?? null) : undefined;
-  const backlogTitleForNotifications = detail?.state?.task_title ?? null;
-  usePhaseNotifications(phaseForNotifications, backlogTitleForNotifications, projectId);
+  const taskTitleForNotifications = detail?.state?.task_title ?? null;
+  usePhaseNotifications(phaseForNotifications, taskTitleForNotifications, projectId);
 
   async function handleAction(action: "start" | "stop" | "pause") {
     try {
@@ -128,13 +128,13 @@ export default function MissionControlClient({
   // T052: global keyboard shortcuts for mission-control actions.
   // Disabled while any dialog is open to avoid double-handling key events.
   useKeyboardShortcuts({
-    enabled: !answerOpen && !steerOpen && !backlogOpen,
+    enabled: !answerOpen && !steerOpen && !addTaskOpen,
     running,
     projectId,
     onStart: () => handleAction("start"),
     onStop: () => handleAction("stop"),
     onPause: () => handleAction("pause"),
-    onAddBacklog: () => setBacklogOpen(true),
+    onAddTask: () => setAddTaskOpen(true),
     navigate: (path) => {
       window.location.href = path;
     },
@@ -200,7 +200,7 @@ export default function MissionControlClient({
               onStop={() => handleAction("stop")}
               onPause={() => handleAction("pause")}
               onSteer={() => setSteerOpen(true)}
-              onAddBacklog={() => setBacklogOpen(true)}
+              onAddTask={() => setAddTaskOpen(true)}
               onRestart={handleRestart}
               onForceStop={handleForceStop}
             />
@@ -234,8 +234,8 @@ export default function MissionControlClient({
 
       <AddTaskDialog
         projectId={projectId}
-        open={backlogOpen}
-        onOpenChange={setBacklogOpen}
+        open={addTaskOpen}
+        onOpenChange={setAddTaskOpen}
         onAdded={fetchDetail}
       />
     </main>

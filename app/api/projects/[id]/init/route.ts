@@ -54,7 +54,7 @@ export async function POST(
     const fields: Record<string, string | undefined> = {};
     try {
       fields.VISION_TEXT = safeFieldOrThrow("vision", body.vision);
-      fields.FIRST_BACKLOG_ITEM = safeFieldOrThrow("firstTask", body.firstTask);
+      fields.FIRST_TASK = safeFieldOrThrow("firstTask", body.firstTask);
       fields.DEPLOY_COMMAND = safeFieldOrThrow("deployCommand", body.deployCommand);
       fields.TEST_COMMAND = safeFieldOrThrow("testCommand", body.testCommand);
       fields.APP_URL = safeFieldOrThrow("appUrl", body.appUrl);

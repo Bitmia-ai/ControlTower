@@ -1,6 +1,6 @@
-// GET /api/projects/[id]/backlog/[taskId] — return full backlog item by ID
-// PATCH /api/projects/[id]/backlog/[taskId] — update title, priority, and/or details
-// DELETE /api/projects/[id]/backlog/[taskId] — remove a backlog item
+// GET /api/projects/[id]/tasks/[taskId] — return full task by ID
+// PATCH /api/projects/[id]/tasks/[taskId] — update title, priority, and/or details
+// DELETE /api/projects/[id]/tasks/[taskId] — remove a task
 
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   ]);
   const item = items.find((i) => i.id === taskId);
   if (!item) {
-    return NextResponse.json({ error: "Backlog item not found" }, { status: 404 });
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
 
   // Enrich with cost_usd from state.item_costs if present
@@ -60,14 +60,14 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       details?: string;
     };
 
-  const backlogPath = safeRedeyePath(project.path, "tasks.md");
+  const tasksPath = safeRedeyePath(project.path, "tasks.md");
 
   let content: string;
   try {
-    content = await fs.readFile(backlogPath, "utf-8");
+    content = await fs.readFile(tasksPath, "utf-8");
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-      return NextResponse.json({ error: "Backlog file not found" }, { status: 404 });
+      return NextResponse.json({ error: "Tasks file not found" }, { status: 404 });
     }
     throw err;
   }
@@ -76,7 +76,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const items = await readTasks(project.path);
   const item = items.find((i) => i.id === taskId);
   if (!item) {
-    return NextResponse.json({ error: "Backlog item not found" }, { status: 404 });
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
 
   const escapedId = taskId.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -123,7 +123,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     }
   }
 
-  await fs.writeFile(backlogPath, content, "utf-8");
+  await fs.writeFile(tasksPath, content, "utf-8");
 
   // Return the updated item, enriched with cost_usd from state if present
   const [updatedItems, state] = await Promise.all([
@@ -137,7 +137,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     return NextResponse.json({ data: enrichedUpdated });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to update backlog item" },
+      { error: err instanceof Error ? err.message : "Failed to update task" },
       { status: 500 }
     );
   }
@@ -155,19 +155,19 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-  const backlogPath = safeRedeyePath(project.path, "tasks.md");
+  const tasksPath = safeRedeyePath(project.path, "tasks.md");
 
   let content: string;
   try {
-    content = await fs.readFile(backlogPath, "utf-8");
+    content = await fs.readFile(tasksPath, "utf-8");
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-      return NextResponse.json({ error: "Backlog file not found" }, { status: 404 });
+      return NextResponse.json({ error: "Tasks file not found" }, { status: 404 });
     }
     throw err;
   }
 
-  // Remove the ### BL-XXX: ... block (up to, but not including, the next ###)
+  // Remove the ### TXXX: ... block (up to, but not including, the next ###)
   const escapedId = taskId.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   const blockRegex = new RegExp(
     `\\n### ${escapedId}:[^\\n]*(?:\\n(?!###)[^\\n]*)*`,
@@ -176,15 +176,15 @@ export async function DELETE(req: NextRequest, { params }: Params) {
   const updated = content.replace(blockRegex, "");
 
   if (updated === content) {
-    return NextResponse.json({ error: "Backlog item not found" }, { status: 404 });
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
 
-    await fs.writeFile(backlogPath, updated, "utf-8");
+    await fs.writeFile(tasksPath, updated, "utf-8");
 
     return NextResponse.json({ data: { success: true } });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to delete backlog item" },
+      { error: err instanceof Error ? err.message : "Failed to delete task" },
       { status: 500 }
     );
   }

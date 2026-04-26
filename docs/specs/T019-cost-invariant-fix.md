@@ -1,4 +1,4 @@
-# BL-019: Fix cost invariant — session cost can exceed total when cliDir unreadable
+# T019: Fix cost invariant — session cost can exceed total when cliDir unreadable
 
 **Type:** bug  
 **Priority:** P1  

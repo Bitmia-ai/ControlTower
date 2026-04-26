@@ -1,5 +1,5 @@
 /**
- * lib/backlog-id.ts
+ * lib/task-id.ts
  *
  * Centralised T<N> ID allocation.
  *
@@ -21,7 +21,7 @@ import type { RedEyeState } from "./redeye-types";
  *
  * Algorithm:
  *   1. Read `counters.next_task_id` from `state.json` (0 if file missing).
- *   2. Scan `backlog.md` for the highest numeric BL suffix found.
+ *   2. Scan `tasks.md` for the highest numeric T suffix found.
  *   3. nextId = max(stateCounter - 1, scanMax) + 1
  *   4. Write `nextId + 1` back to `state.json` as the new `counters.next_task_id`.
  *   5. Return `"T" + String(nextId).padStart(3, "0")`.
@@ -34,7 +34,7 @@ export async function getNextTaskId(projectPath: string): Promise<string> {
 
   const stateCounter: number = state?.counters?.next_task_id ?? 0;
   // stateCounter is the *next* ID the counter believes should be used.
-  // scanMax is the highest ID already present in backlog.md.
+  // scanMax is the highest ID already present in tasks.md.
   // We treat (stateCounter - 1) as the last allocated counter value and
   // scanMax as the last allocated scan value, then take the max and add 1.
   const lastAllocated = Math.max(stateCounter - 1, scanMax);

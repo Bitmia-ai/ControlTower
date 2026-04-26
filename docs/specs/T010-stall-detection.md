@@ -1,4 +1,4 @@
-# BL-010: Detect and recover from stalled sessions
+# T010: Detect and recover from stalled sessions
 
 **Status:** done  
 **Priority:** P1  

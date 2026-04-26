@@ -1,4 +1,4 @@
-# BL-048 — Live Tab: User Boxes Collapsible and Collapsed by Default
+# T048 — Live Tab: User Boxes Collapsible and Collapsed by Default
 
 **Type:** bug / UX
 **Priority:** P1
@@ -21,7 +21,7 @@ In the Live tab (`/project/[id]/live`), `TranscriptViewer` renders four event ty
 | `assistant/thinking` | `ThinkingCard` | Violet box, collapsible |
 | `assistant/text` | `AssistantTextCard` | White/zinc card, red left border, always open |
 | `user/tool_result` | `ToolResultCard` | Grey box, cyan label, collapsible |
-| `user` (no subtype) | suppressed | Not rendered (BL-040) |
+| `user` (no subtype) | suppressed | Not rendered (T040) |
 
 The CEO's "User boxes" refers to `ToolResultCard` — the grey cards rendered for `user/tool_result` events. These show the output of tool calls (stdout/stderr from Bash, file content from Read, grep output, etc.) and can contain hundreds of lines.
 
@@ -106,7 +106,7 @@ The `forceExpanded` prop mechanism and the event rendering pipeline are correct.
 ### AD-5: Both test files are in scope
 
 Two test files cover `TranscriptViewer`:
-- `components/transcript-viewer.test.tsx` — BL-040 tests (ThinkingCard, AssistantTextCard, etc.)
+- `components/transcript-viewer.test.tsx` — T040 tests (ThinkingCard, AssistantTextCard, etc.)
 - `components/__tests__/transcript-viewer.test.tsx` — additional ToolResultCard and findPrecedingToolName tests
 
 New tests should be added to `components/__tests__/transcript-viewer.test.tsx` to match the existing pattern for ToolResultCard tests.
@@ -166,7 +166,7 @@ New tests should be added to `components/__tests__/transcript-viewer.test.tsx` t
 
 | File | Reason |
 |---|---|
-| `components/transcript-viewer.test.tsx` | BL-040 tests are unaffected; no changes needed |
+| `components/transcript-viewer.test.tsx` | T040 tests are unaffected; no changes needed |
 | `app/project/[id]/live/page.tsx` | `forceExpanded` state management is correct; no changes needed |
 | `lib/redeye-types.ts` | No type changes needed |
 | `lib/transcript-normalizer.ts` | Not involved |

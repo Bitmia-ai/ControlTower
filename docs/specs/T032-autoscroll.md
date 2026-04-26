@@ -1,4 +1,4 @@
-# BL-032 — Live tab auto-scroll UX: pause on user scroll-up, resume at bottom
+# T032 — Live tab auto-scroll UX: pause on user scroll-up, resume at bottom
 
 **Priority:** P1 (CEO Request)
 **Type:** feature / UX bug
@@ -82,7 +82,7 @@ This is the standard behavior of modern log viewers (Chrome DevTools console, Di
 - **Build-time note (iter 45):** Playwright visual capture against a live
   transcript was not possible in this environment — `/api/projects/:id/transcript-status`
   returns 404 for every project (pre-existing routing issue, unrelated to
-  BL-032), so the Live page stays in its "No active session" empty state.
+  T032), so the Live page stays in its "No active session" empty state.
   Compensating verification: `lib/scroll-utils.integration.test.tsx` mounts
   a harness that mirrors the exact sticky-bottom wiring from
   `app/project/[id]/live/page.tsx` (window scroll listener, `isAtBottomRef`,

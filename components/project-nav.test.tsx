@@ -38,21 +38,21 @@ describe("ProjectNav", () => {
     expect(overviewLink?.className).toContain("border-red-600");
   });
 
-  it("highlights Backlog tab when on backlog page", () => {
+  it("highlights Tasks tab when on tasks page", () => {
     vi.mocked(usePathname).mockReturnValue("/project/1/tasks");
     render(<ProjectNav projectId="1" />);
-    const backlogLink = screen.getByText("Tasks").closest("a");
-    expect(backlogLink?.className).toContain("border-red-600");
+    const tasksLink = screen.getByText("Tasks").closest("a");
+    expect(tasksLink?.className).toContain("border-red-600");
 
     const overviewLink = screen.getByText("Overview").closest("a");
     expect(overviewLink?.className).toContain("border-transparent");
   });
 
-  it("highlights Backlog tab on backlog detail page", () => {
+  it("highlights Tasks tab on task detail page", () => {
     vi.mocked(usePathname).mockReturnValue("/project/1/tasks/T001");
     render(<ProjectNav projectId="1" />);
-    const backlogLink = screen.getByText("Tasks").closest("a");
-    expect(backlogLink?.className).toContain("border-red-600");
+    const tasksLink = screen.getByText("Tasks").closest("a");
+    expect(tasksLink?.className).toContain("border-red-600");
   });
 
   it("highlights History tab when on history page", () => {

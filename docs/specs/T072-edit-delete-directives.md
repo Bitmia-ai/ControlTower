@@ -1,4 +1,4 @@
-# BL-072 — Edit and Delete Steer Directives
+# T072 — Edit and Delete Steer Directives
 
 **Status:** done
 **Priority:** P1
@@ -6,7 +6,7 @@
 
 ## Problem
 
-The Steer tab currently shows directives as read-only rows (with markdown rendering from BL-073). The CEO wants to edit or delete individual directives directly from the dashboard so stale or incorrect directives don't accumulate in `.redeye/steering.md`.
+The Steer tab currently shows directives as read-only rows (with markdown rendering from T073). The CEO wants to edit or delete individual directives directly from the dashboard so stale or incorrect directives don't accumulate in `.redeye/steering.md`.
 
 ## Goal
 

@@ -9,10 +9,10 @@ import { useEffect, useRef } from "react";
  *   s -> onStart (only when !running)
  *   x -> onStop  (only when running)
  *   p -> onPause (only when running)
- *   b -> onAddBacklog (always)
+ *   b -> onAddTask (always)
  *
  * Two-key chords (vim-style "g" prefix, 500ms window):
- *   g b -> navigate("/project/{id}/backlog")
+ *   g b -> navigate("/project/{id}/tasks")
  *   g h -> navigate("/project/{id}/history")
  *   g l -> navigate("/project/{id}/live")
  *   g s -> navigate("/project/{id}/schedules")
@@ -33,7 +33,7 @@ export interface KeyboardShortcutConfig {
   onStart?: () => void;
   onStop?: () => void;
   onPause?: () => void;
-  onAddBacklog?: () => void;
+  onAddTask?: () => void;
   navigate?: (path: string) => void;
 }
 
@@ -82,7 +82,7 @@ export function useKeyboardShortcuts(config: KeyboardShortcutConfig): void {
         clearChord();
         if (!cfg.navigate) return;
         if (pendingKey === "b") {
-          cfg.navigate(`/project/${cfg.projectId}/backlog`);
+          cfg.navigate(`/project/${cfg.projectId}/tasks`);
           return;
         }
         if (pendingKey === "h") {
@@ -112,7 +112,7 @@ export function useKeyboardShortcuts(config: KeyboardShortcutConfig): void {
           if (cfg.running) cfg.onPause?.();
           return;
         case "b":
-          cfg.onAddBacklog?.();
+          cfg.onAddTask?.();
           return;
         case "g":
           chordPending = true;

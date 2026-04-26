@@ -1,4 +1,4 @@
-# BL-026 — Collapsible LLM Summary for Completed Backlog Items
+# T026 — Collapsible LLM Summary for Completed Backlog Items
 
 ## Current State
 
@@ -6,7 +6,7 @@
 
 Completed backlog items in `.redeye/backlog.md` carry a `- **Summary:**` field
 as a single-line bullet immediately after the `- **Status:** done` line. Example
-from BL-048:
+from T048:
 
 ```
 - **Summary:** User message boxes in the Live tab transcript are now collapsible
@@ -15,8 +15,8 @@ from BL-048:
   scroll position.
 ```
 
-All recent done items (BL-040 through BL-048) have this field. Older items
-(BL-001 through BL-039) may have it or not. The field is a **single-line value**
+All recent done items (T040 through T048) have this field. Older items
+(T001 through T039) may have it or not. The field is a **single-line value**
 after the `**Summary:**` marker — multi-line wrapping in the raw file is not used.
 
 ### Parser Status — NOT parsed
@@ -162,7 +162,7 @@ changelog entries are `ChangelogEntry` objects which have no summary.
 
 **Test strategy:**
 - `npx vitest run` — all tests pass (target: 430+ passing)
-- Playwright: navigate to a done backlog item with a known summary (e.g. BL-048),
+- Playwright: navigate to a done backlog item with a known summary (e.g. T048),
   assert `data-testid="summary-section"` is visible and contains expected text fragment
 
 **Acceptance criteria:**

@@ -1,4 +1,4 @@
-# BL-064 — Cost Plot Scaling Fix
+# T064 — Cost Plot Scaling Fix
 
 **Status:** planned  
 **Priority:** P1  

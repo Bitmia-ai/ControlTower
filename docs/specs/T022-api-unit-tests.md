@@ -1,4 +1,4 @@
-# BL-022: Add Unit Tests for Critical API Routes
+# T022: Add Unit Tests for Critical API Routes
 
 **Priority:** P1
 **Type:** test
@@ -7,7 +7,7 @@
 
 ## Context
 
-BL-022 was filed during the HARDEN phase (iter 37) to add unit tests to all untested API routes. Since then, significant test coverage has been added across multiple iterations. Current coverage audit (as of iter 48):
+T022 was filed during the HARDEN phase (iter 37) to add unit tests to all untested API routes. Since then, significant test coverage has been added across multiple iterations. Current coverage audit (as of iter 48):
 
 **Already tested:**
 - `GET /api/projects` — route.test.ts

@@ -1,4 +1,4 @@
-# BL-041: Done Tasks in a Separate Section in the Backlog Page — Redesign
+# T041: Done Tasks in a Separate Section in the Backlog Page — Redesign
 
 ## Overview
 
@@ -23,7 +23,7 @@ Done items (`status === "done"`) are scattered across all four section buckets a
 ### Key data shape
 
 `BacklogItem` has:
-- `id: string` — e.g. `"BL-041"`
+- `id: string` — e.g. `"T041"`
 - `title: string`
 - `status: "pending" | "planned" | "in-progress" | "done" | "blocked" | "pending-triage"`
 - `section: "ceo" | "discovered" | "triaged" | "wontdo"`
@@ -76,7 +76,7 @@ Won't Do items remain as a separate collapsible section (also collapsed by defau
 - **Size:** M
 - **Dependencies:** none
 - **Agent:** Designer (Gemini via `gemini-worker` skill)
-- **Output:** A self-contained HTML file saved as `BL-041-backlog-done-section.html` under `docs/mockups/`
+- **Output:** A self-contained HTML file saved as `T041-backlog-done-section.html` under `docs/mockups/`
 - **Design brief:**
   - The page has three visible sections when the Done section is collapsed:
     - "Currently Working On" hero card (existing green-border card — do not redesign)
@@ -153,7 +153,7 @@ Won't Do items remain as a separate collapsible section (also collapsed by defau
 - **Test cases:**
   1. Given `allItems` with a mix of planned and done items: `doneItems` contains only `status === "done"` items
   2. `plannedItems` contains no done items
-  3. `doneItems` sorted descending by BL ID numeric value (BL-041 before BL-039)
+  3. `doneItems` sorted descending by BL ID numeric value (T041 before T039)
   4. Active item excluded from both `plannedItems` and `doneItems`
   5. `CollapsibleSection` renders header with correct count badge
   6. `CollapsibleSection` renders children when `open=true`, hides when `open=false`

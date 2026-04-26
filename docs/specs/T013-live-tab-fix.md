@@ -1,9 +1,9 @@
-# BL-013 (Reopened) — Live Tab EventSource Must Connect for CLI Sessions
+# T013 (Reopened) — Live Tab EventSource Must Connect for CLI Sessions
 
 **Status:** done
 **Priority:** P0 (CEO reopened)
 **Iteration:** 40
-**Prior specs:** earlier BL-013 plans exist under docs/specs (kept for history)
+**Prior specs:** earlier T013 plans exist under docs/specs (kept for history)
 
 ## Problem
 

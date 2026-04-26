@@ -12,7 +12,7 @@ interface SectionHeaderProps {
 }
 
 /**
- * Shared section header used across backlog, history, and live tabs.
+ * Shared section header used across tasks, history, and live tabs.
  * Renders a small-caps label with optional icon and count badge,
  * matching the design of mission-control section headers.
  */

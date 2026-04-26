@@ -1,5 +1,5 @@
 // POST /api/projects/[id]/cost-start
-// Records the session cost at the moment a backlog item becomes active.
+// Records the session cost at the moment a task becomes active.
 // Later used by cost-snapshot to compute per-task delta (end - start).
 // Body: { taskId: string }
 // Returns:

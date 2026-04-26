@@ -181,8 +181,8 @@ describe("ControlsCard", () => {
   });
 
   it("renders Add Task button with correct accessible label and fires click handler", async () => {
-    const onAddBacklog = vi.fn();
-    render(<ControlsCard running={false} onAddBacklog={onAddBacklog} />);
+    const onAddTask = vi.fn();
+    render(<ControlsCard running={false} onAddTask={onAddTask} />);
 
     const btn = screen.getByRole("button", { name: /Add task/i });
     expect(btn).toBeTruthy();
@@ -192,7 +192,7 @@ describe("ControlsCard", () => {
       fireEvent.click(btn);
     });
 
-    expect(onAddBacklog).toHaveBeenCalledTimes(1);
+    expect(onAddTask).toHaveBeenCalledTimes(1);
   });
 
   it("T067 — uses p-4 (compact rail padding)", () => {
@@ -202,7 +202,7 @@ describe("ControlsCard", () => {
     expect(card?.className).not.toContain("p-5");
   });
 
-  it("T067 — renders separator border-t between stop/pause and steer/backlog rows", () => {
+  it("T067 — renders separator border-t between stop/pause and steer/tasks rows", () => {
     const { container } = render(<ControlsCard running={true} />);
     // Steer/Add-Task row gains border-t separator
     const steerBtn = screen.getByRole("button", { name: /^Steer$/ });

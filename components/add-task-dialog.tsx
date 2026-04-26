@@ -3,7 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
-interface AddBacklogDialogProps {
+interface AddTaskDialogProps {
   projectId: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -15,7 +15,7 @@ export function AddTaskDialog({
   open,
   onOpenChange,
   onAdded,
-}: AddBacklogDialogProps) {
+}: AddTaskDialogProps) {
   const [text, setText] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<"P0" | "P1" | "P2">("P1");
@@ -33,7 +33,7 @@ export function AddTaskDialog({
       if (showDetails && description.trim()) body.description = description;
       if (showDetails) body.priority = priority;
 
-      const res = await fetch(`/api/projects/${projectId}/backlog`, {
+      const res = await fetch(`/api/projects/${projectId}/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -71,7 +71,7 @@ export function AddTaskDialog({
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Quick-add text field */}
             <input
-              id="backlog-title"
+              id="task-title"
               type="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -94,7 +94,7 @@ export function AddTaskDialog({
             {showDetails && (
               <div className="flex flex-col gap-3">
                 <textarea
-                  id="backlog-description"
+                  id="task-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Optional description…"
@@ -104,13 +104,13 @@ export function AddTaskDialog({
                 />
                 <div className="flex flex-col gap-1.5">
                   <label
-                    htmlFor="backlog-priority"
+                    htmlFor="task-priority"
                     className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
                   >
                     Priority
                   </label>
                   <select
-                    id="backlog-priority"
+                    id="task-priority"
                     value={priority}
                     onChange={(e) =>
                       setPriority(e.target.value as "P0" | "P1" | "P2")

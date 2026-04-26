@@ -1,4 +1,4 @@
-# BL-047 — Update Dashboard Logo
+# T047 — Update Dashboard Logo
 
 **Status:** planned  
 **Priority:** P1  
@@ -75,7 +75,7 @@ and inner `<span>` keeps them tight.
 ## Favicon
 
 `app/favicon.ico` is the default Next.js favicon (blue-and-white N). It is not changed
-in this iteration. Replacing it is out of scope for BL-047 — would require generating a
+in this iteration. Replacing it is out of scope for T047 — would require generating a
 new icon asset (e.g. a red square or monogram). If needed, file a follow-up backlog item.
 
 ---

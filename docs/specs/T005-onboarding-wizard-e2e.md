@@ -1,4 +1,4 @@
-# BL-005: Verify onboarding wizard end-to-end
+# T005: Verify onboarding wizard end-to-end
 
 **Type:** test
 **Priority:** P1
@@ -39,7 +39,7 @@ Keeps all Playwright specs in the `e2e/` directory alongside existing specs.
 
 **AD-4: Do not test the init script itself.**
 The shell script (`init-project.sh`) is out of scope; the test mocks the API
-response. Integration of the shell script is covered by BL-001 manual smoke tests.
+response. Integration of the shell script is covered by T001 manual smoke tests.
 
 ---
 

@@ -106,7 +106,7 @@ export function parseTasks(content: string): TaskItem[] {
     }
   }
 
-  // Deduplicate by id — if the same BL-xxx appears in multiple sections,
+  // Deduplicate by id — if the same TXXX appears in multiple sections,
   // keep the last occurrence (later sections are more specific/updated).
   const seen = new Map<string, number>();
   for (let i = 0; i < items.length; i++) {

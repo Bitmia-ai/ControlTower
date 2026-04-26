@@ -31,7 +31,7 @@ export interface RedEyeState {
     next_task_id: number;
     next_q_id: number;
   };
-  /** Cost in USD per completed backlog item, keyed by T<N>. Append-only. */
+  /** Cost in USD per completed task, keyed by T<N>. Append-only. */
   item_costs?: Record<string, number>;
   /** Session cost at task start, keyed by T<N>. Used for delta calculation. */
   item_cost_starts?: Record<string, number>;
@@ -154,7 +154,7 @@ export interface ProjectDetail {
   /**
    * Items the team has decided not to ship. Carried separately because
    * upNext (planned/pending/in-progress) and recentlyShipped (done) both
-   * exclude wont-do, so without a dedicated bucket the backlog page would
+   * exclude wont-do, so without a dedicated bucket the tasks page would
    * never render its Won't Do section.
    */
   wontDoItems: TaskItem[];

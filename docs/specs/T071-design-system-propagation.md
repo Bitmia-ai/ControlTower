@@ -1,10 +1,10 @@
-# BL-071: Apply Precision Instrument Design System Across All Pages
+# T071: Apply Precision Instrument Design System Across All Pages
 
 ## Problem
 
-BL-066 shipped the "Precision Instrument" aesthetic on the home page (3px status borders, animate-ping dots, phase footer strips, eyebrow typography). The remaining pages — mission control, backlog, history, schedules, steer — still use the old mixed styling with `border-l-4` left borders, non-monospace labels, and no consistent page header pattern.
+T066 shipped the "Precision Instrument" aesthetic on the home page (3px status borders, animate-ping dots, phase footer strips, eyebrow typography). The remaining pages — mission control, backlog, history, schedules, steer — still use the old mixed styling with `border-l-4` left borders, non-monospace labels, and no consistent page header pattern.
 
-## Design Tokens (established by BL-066, propagated here)
+## Design Tokens (established by T066, propagated here)
 
 ```
 EYEBROW:    font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500

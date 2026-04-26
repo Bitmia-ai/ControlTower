@@ -1,4 +1,4 @@
-# BL-009: Support both dark and light mode properly
+# T009: Support both dark and light mode properly
 
 **Type:** feature
 **Priority:** P0
@@ -8,7 +8,7 @@
 
 ## Background
 
-The CEO flagged BL-009 as NOT DONE. A prior iteration implemented the theme infrastructure
+The CEO flagged T009 as NOT DONE. A prior iteration implemented the theme infrastructure
 (next-themes, ThemeProvider, ThemeToggle, CSS variables, dark: variants on all components) and the
 build is clean with all 166 tests passing. However, the feature was never visually verified with
 Playwright screenshots, and one minor light-mode token gap remains in `project-card.tsx`. This

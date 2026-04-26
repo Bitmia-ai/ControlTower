@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import type { TaskItem } from "@/lib/redeye-types";
 
 // Dynamic import moves react-markdown out of the shared chunk into a lazy
-// route chunk that is only fetched when the backlog detail page is visited.
+// route chunk that is only fetched when the task detail page is visited.
 const MarkdownRenderer = dynamic(
   () => import("@/components/markdown-renderer"),
   {
@@ -91,7 +91,7 @@ export default function TaskDetailClient({
       }
     } catch {
       if (!item) {
-        setFetchError("Failed to load backlog item.");
+        setFetchError("Failed to load task.");
       }
     } finally {
       setLoading(false);
@@ -125,7 +125,7 @@ export default function TaskDetailClient({
       });
       const json = await res.json();
       if (!res.ok) {
-        console.error("Failed to save backlog item:", json.error);
+        console.error("Failed to save task:", json.error);
         return;
       }
       if (json.data) {
@@ -187,14 +187,14 @@ export default function TaskDetailClient({
         className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition inline-flex items-center gap-1 mb-3"
       >
         <span>&larr;</span>
-        <span>Backlog</span>
+        <span>Tasks</span>
       </Link>
 
       <header className="pt-2 pb-5 mb-6 border-b border-gray-200 dark:border-zinc-800">
         <div className="flex items-end justify-between gap-4">
           <div className="min-w-0">
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-1">
-              Control Tower &mdash; Backlog
+              Control Tower &mdash; Tasks
             </p>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 leading-tight">
               {loading ? "Loading…" : item?.title ?? taskId}
@@ -214,12 +214,12 @@ export default function TaskDetailClient({
         <FetchError message={fetchError} onRetry={fetchItem} />
       ) : notFound || !item ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
-          <p className="text-gray-500 dark:text-zinc-600 text-sm">Backlog item not found.</p>
+          <p className="text-gray-500 dark:text-zinc-600 text-sm">Task not found.</p>
           <Link
             href={`/project/${id}/tasks`}
             className="text-xs text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition"
           >
-            Return to Backlog
+            Return to Tasks
           </Link>
         </div>
       ) : editing ? (

@@ -1,5 +1,5 @@
 // POST /api/projects/[id]/cost-snapshot
-// Captures cost for a completed backlog item.
+// Captures cost for a completed task.
 //
 // If `state.item_cost_starts[taskId]` is present (set by cost-start when the task
 // became active), the recorded cost is the DELTA: current_session_cost − start.

@@ -1,4 +1,4 @@
-# BL-018 — Project cards on home page don't show current phase or active task
+# T018 — Project cards on home page don't show current phase or active task
 
 **Status:** done  
 **Priority:** P2  
@@ -29,7 +29,7 @@
 
 4. **Remove the unsafe cast in `ProjectCard`** — `currentTask` is now a typed field on `ProjectWithStatus`, so the cast `(project as ProjectWithStatus & { currentTask?: ... })` can be deleted.
 
-5. **Pass `phase` down to `PhaseBadge`** — `PhaseBadge` already handles `phase={undefined}` (shows "Idle"), so no API changes needed in that component. When `phase` is set and `running` is true, the existing shimmer animation from BL-016 activates automatically.
+5. **Pass `phase` down to `PhaseBadge`** — `PhaseBadge` already handles `phase={undefined}` (shows "Idle"), so no API changes needed in that component. When `phase` is set and `running` is true, the existing shimmer animation from T016 activates automatically.
 
 6. **Guard against uninitialized projects** — if `state.json` is absent (project not initialized), `readState` returns `null`; `phase` and `currentTask` should remain `undefined`/`null`.
 
@@ -127,4 +127,4 @@ ProjectCard
 
 - Auto-refresh / polling of the home page (separate feature).
 - Showing iteration count or cost on the card.
-- BL-017 (cost card grid layout) — separate item.
+- T017 (cost card grid layout) — separate item.

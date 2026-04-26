@@ -1,4 +1,4 @@
-# BL-001: Smoke Test All Pages Using Playwright Browser
+# T001: Smoke Test All Pages Using Playwright Browser
 
 **Type:** test
 **Priority:** P0
@@ -71,9 +71,9 @@ Test project: **haze** (index 0 in the project list).
 - **Agent:** QA Lead
 - **Test Strategy:**
   1. Click the Backlog tab
-  2. Verify backlog items (BL-001, BL-002, etc.) render in a list
+  2. Verify backlog items (T001, T002, etc.) render in a list
   3. Take screenshot: `screenshots/T3-backlog-list.png`
-  4. Click on a BL-xxx link (e.g., BL-001)
+  4. Click on a BL-xxx link (e.g., T001)
   5. Verify detail page opens at `/project/{id}/backlog/{taskId}`
   6. Take screenshot: `screenshots/T3-backlog-detail.png`
 - **Acceptance Criteria:**
@@ -101,7 +101,7 @@ Test project: **haze** (index 0 in the project list).
 - **Agent:** QA Lead
 - **Test Strategy:**
   1. Click the Live tab
-  2. Verify empty state message renders (fixed in BL-002)
+  2. Verify empty state message renders (fixed in T002)
   3. Take screenshot: `screenshots/T5-live-empty.png`
 - **Acceptance Criteria:**
   - Live tab shows "No active session" empty state

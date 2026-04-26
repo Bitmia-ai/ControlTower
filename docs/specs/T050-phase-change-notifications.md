@@ -1,4 +1,4 @@
-# BL-050: In-app Notification Toast for RedEye Phase Changes
+# T050: In-app Notification Toast for RedEye Phase Changes
 
 ## Overview
 
@@ -293,8 +293,8 @@ Final quality pass:
 **Acceptance criteria:**
 - [x] All existing tests continue to pass (no regressions) — 492/492 unit tests pass
 - [x] New test files cover all hooks and toast component (8 + 11 + 7 + 4 = 30 new tests)
-- [ ] Build passes — PRE-EXISTING failure on `/_global-error` prerender confirmed present on `main` before this branch; unrelated to BL-050
-- [x] No TypeScript errors in BL-050 source files (pre-existing TS errors in `lib/stream-utils.test.ts` are unrelated)
+- [ ] Build passes — PRE-EXISTING failure on `/_global-error` prerender confirmed present on `main` before this branch; unrelated to T050
+- [x] No TypeScript errors in T050 source files (pre-existing TS errors in `lib/stream-utils.test.ts` are unrelated)
 
 **Status:** done
 

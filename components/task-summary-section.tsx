@@ -13,7 +13,7 @@ const PREVIEW_CHARS = 120;
 /**
  * Collapsible summary block (T026).
  *
- * Renders a green-accented section with the LLM-authored summary of a backlog
+ * Renders a green-accented section with the LLM-authored summary of a task
  * item. Expanded by default for done items; collapsed otherwise so non-done
  * items don't dominate the page.
  */
@@ -46,7 +46,7 @@ export function TaskSummarySection({
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            aria-controls="backlog-summary-body"
+            aria-controls="task-summary-body"
             aria-label={open ? "Collapse summary" : "Expand summary"}
             className="text-gray-400 hover:text-gray-600 dark:text-zinc-500 dark:hover:text-zinc-300 transition"
           >
@@ -65,7 +65,7 @@ export function TaskSummarySection({
           </button>
         </div>
 
-        <div id="backlog-summary-body">
+        <div id="task-summary-body">
           {open ? (
             <p
               data-testid="summary-full"

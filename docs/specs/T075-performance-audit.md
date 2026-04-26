@@ -1,4 +1,4 @@
-# BL-075: Performance Audit — Bundle Size, Core Web Vitals, and Quick Wins
+# T075: Performance Audit — Bundle Size, Core Web Vitals, and Quick Wins
 
 **Status:** planned  
 **Priority:** P1  
@@ -66,7 +66,7 @@ Note: `remark-gfm` is still imported statically as it's tiny and needed to pass 
 
 ### T2 — Add viewport metadata and SEO basics to root layout (S)
 
-**Why:** Next.js 15+ recommends exporting `viewport` separately from `metadata`. Currently the root layout has no explicit viewport config, which means the browser-default (desktop zoom on mobile) applies. While Control Tower is primarily desktop, the mobile-responsive work (BL-057) deserves the correct viewport tag.
+**Why:** Next.js 15+ recommends exporting `viewport` separately from `metadata`. Currently the root layout has no explicit viewport config, which means the browser-default (desktop zoom on mobile) applies. While Control Tower is primarily desktop, the mobile-responsive work (T057) deserves the correct viewport tag.
 
 **File to change:** `app/layout.tsx`
 

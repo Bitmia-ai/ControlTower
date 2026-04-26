@@ -1,4 +1,4 @@
-# BL-053: Improve session history page — show phase timeline and cost per session
+# T053: Improve session history page — show phase timeline and cost per session
 
 **Status:** planned  
 **Priority:** P2  
@@ -144,7 +144,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
 - **Size:** S
 - **Dependencies:** T1
 - **Agent type:** Dev (sonnet)
-- **Description:** New App Router route handler at `app/api/projects/[id]/session-history/route.ts`. Resolves project by `[id]` index, reads optional `?limit` query param (parseInt, default 50), calls `getSessionHistory(project.path, limit)`, returns `{ data: { sessions: SessionHistoryEntry[] } }`. Wraps in try-catch per BL-025 pattern. Returns 404 if project not found.
+- **Description:** New App Router route handler at `app/api/projects/[id]/session-history/route.ts`. Resolves project by `[id]` index, reads optional `?limit` query param (parseInt, default 50), calls `getSessionHistory(project.path, limit)`, returns `{ data: { sessions: SessionHistoryEntry[] } }`. Wraps in try-catch per T025 pattern. Returns 404 if project not found.
 - **Test strategy:** Unit test `app/api/projects/[id]/session-history/route.test.ts`:
   - Project not found → 404
   - Empty sessions → 200 `{ data: { sessions: [] } }`
@@ -253,7 +253,7 @@ Phase extraction is regex-based on raw text. Date formatting uses `Intl.DateTime
 - **Description:** Quality gate. Run `npx vitest run` and `npm run build`. Fix any TypeScript errors. No new implementation — verification only.
 - **Test strategy:** `npx vitest run` must exit 0; `npm run build` must exit 0.
 - **Acceptance criteria:**
-  - All tests pass (550+ from BL-052 baseline)
+  - All tests pass (550+ from T052 baseline)
   - No new TypeScript errors introduced
   - Build exits 0
 - **Status:** done

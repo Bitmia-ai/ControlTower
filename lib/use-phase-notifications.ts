@@ -17,8 +17,8 @@ export const NOTIFIABLE_PHASES: ReadonlySet<string> = new Set([
   "STABILIZE",
 ]);
 
-function composeMessage(phase: string, backlogTitle: string | null): string {
-  const titleSuffix = backlogTitle ? ` — ${backlogTitle}` : "";
+function composeMessage(phase: string, taskTitle: string | null): string {
+  const titleSuffix = taskTitle ? ` — ${taskTitle}` : "";
   switch (phase) {
     case "BUILD":
       return `RedEye entered BUILD phase${titleSuffix}`;
@@ -28,7 +28,7 @@ function composeMessage(phase: string, backlogTitle: string | null): string {
       return `RedEye entered DEPLOY phase${titleSuffix}`;
     case "MERGE":
     case "VERIFY":
-      return `RedEye completed${backlogTitle ? ` ${backlogTitle}` : " current task"}`;
+      return `RedEye completed${taskTitle ? ` ${taskTitle}` : " current task"}`;
     case "STABILIZE":
       return `RedEye entered STABILIZE — environment broken${titleSuffix}`;
     default:
@@ -55,7 +55,7 @@ interface PhaseNotificationsApi {
  */
 export function usePhaseNotifications(
   phase: string | null | undefined,
-  backlogTitle: string | null,
+  taskTitle: string | null,
   projectId: number
 ): PhaseNotificationsApi {
   const { showToast } = useToast();
@@ -140,7 +140,7 @@ export function usePhaseNotifications(
     [projectId, showToast]
   );
 
-  usePhaseChangeNotifier(phase, backlogTitle, handlePhaseChange);
+  usePhaseChangeNotifier(phase, taskTitle, handlePhaseChange);
 
   return { notificationsEnabled, requestPermission };
 }

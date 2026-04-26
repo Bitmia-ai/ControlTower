@@ -1,4 +1,4 @@
-# BL-052: Add Keyboard Shortcuts for Common Actions (Start, Stop, Backlog Navigation)
+# T052: Add Keyboard Shortcuts for Common Actions (Start, Stop, Backlog Navigation)
 
 ## Overview
 
@@ -273,7 +273,7 @@ The `enabled` flag is derived from the existing dialog-open state booleans (`ans
 supplements the AD-2 element-level suppression with a React-state level guard.
 
 **Test strategy:** Integration test in `app/project/[id]/page.test.tsx` (file already exists
-from BL-050):
+from T050):
 - Mock `GET /api/projects/${id}` to return a running project.
 - `fireEvent.keyDown(document, { key: "x" })` → assert the Stop API endpoint was called.
 - Mock to return an idle project.
@@ -301,7 +301,7 @@ from BL-050):
 
 1. Run `npx vitest run` — all tests must pass (expect ~15+ new tests on top of existing 519).
 2. Run `NODE_ENV=production npm run build` — must complete without error.
-3. Verify TypeScript: no new errors in BL-052 source files.
+3. Verify TypeScript: no new errors in T052 source files.
 4. Spot-check key badge rendering does not break button accessible names (aria-hidden confirmed).
 5. Verify chord timeout clears on navigation (no dangling timers after route change).
 

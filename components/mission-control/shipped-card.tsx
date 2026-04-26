@@ -38,19 +38,19 @@ export function ShippedCard({ items, changelog = [], projectId }: ShippedCardPro
         <ul className="space-y-2">
           {hasChangelog
             ? (shippedItems as ChangelogEntry[]).map((entry, i) => {
-                const blMatch = entry.details?.match(/\*\*Built:\*\*\s*(BL-\d+)/);
-                const blId = blMatch ? blMatch[1] : null;
+                const idMatch = entry.details?.match(/\*\*Built:\*\*\s*(T\d+)/);
+                const taskId = idMatch ? idMatch[1] : null;
                 return (
                   <li key={i} className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-500 text-sm shrink-0">✓</span>
                     <div className="min-w-0">
                       <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug">
-                        {projectId !== undefined && blId ? (
-                          <TaskId id={blId} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
-                        ) : blId ? (
-                          <span className="text-gray-500 dark:text-zinc-500 font-mono">{blId}</span>
+                        {projectId !== undefined && taskId ? (
+                          <TaskId id={taskId} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
+                        ) : taskId ? (
+                          <span className="text-gray-500 dark:text-zinc-500 font-mono">{taskId}</span>
                         ) : null}
-                        {blId && " · "}
+                        {taskId && " · "}
                         {entry.title}
                       </p>
                       {entry.date && (

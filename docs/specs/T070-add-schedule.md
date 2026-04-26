@@ -1,4 +1,4 @@
-# BL-070 — Add Schedule Creation from the Schedules Tab
+# T070 — Add Schedule Creation from the Schedules Tab
 
 **Status:** done
 **Priority:** P1

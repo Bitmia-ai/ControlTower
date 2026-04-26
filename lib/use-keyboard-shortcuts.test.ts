@@ -98,27 +98,27 @@ describe("useKeyboardShortcuts", () => {
     expect(onPause).toHaveBeenCalledTimes(1);
   });
 
-  it("b fires onAddBacklog regardless of running", () => {
-    const onAddBacklog = vi.fn();
+  it("b fires onAddTask regardless of running", () => {
+    const onAddTask = vi.fn();
     const { rerender } = renderHook(
       ({ running }: { running: boolean }) =>
         useKeyboardShortcuts({
           enabled: true,
           running,
           projectId: 1,
-          onAddBacklog,
+          onAddTask,
         }),
       { initialProps: { running: false } }
     );
     act(() => fire("b"));
-    expect(onAddBacklog).toHaveBeenCalledTimes(1);
+    expect(onAddTask).toHaveBeenCalledTimes(1);
 
     rerender({ running: true });
     act(() => fire("b"));
-    expect(onAddBacklog).toHaveBeenCalledTimes(2);
+    expect(onAddTask).toHaveBeenCalledTimes(2);
   });
 
-  it("g+b navigates to backlog path", () => {
+  it("g+b navigates to tasks path", () => {
     const navigate = vi.fn();
     renderHook(() =>
       useKeyboardShortcuts({
@@ -130,7 +130,7 @@ describe("useKeyboardShortcuts", () => {
     );
     act(() => fire("g"));
     act(() => fire("b"));
-    expect(navigate).toHaveBeenCalledWith("/project/42/backlog");
+    expect(navigate).toHaveBeenCalledWith("/project/42/tasks");
   });
 
   it("g+h navigates to history path", () => {
@@ -198,21 +198,21 @@ describe("useKeyboardShortcuts", () => {
 
   it("g+unrecognised key cancels chord silently", () => {
     const navigate = vi.fn();
-    const onAddBacklog = vi.fn();
+    const onAddTask = vi.fn();
     renderHook(() =>
       useKeyboardShortcuts({
         enabled: true,
         running: false,
         projectId: 1,
         navigate,
-        onAddBacklog,
+        onAddTask,
       })
     );
     act(() => fire("g"));
     act(() => fire("z"));
     expect(navigate).not.toHaveBeenCalled();
     act(() => fire("b"));
-    expect(onAddBacklog).toHaveBeenCalledTimes(1);
+    expect(onAddTask).toHaveBeenCalledTimes(1);
     expect(navigate).not.toHaveBeenCalled();
   });
 
@@ -295,7 +295,7 @@ describe("useKeyboardShortcuts", () => {
 
   it("enabled=false suppresses all shortcuts", () => {
     const onStart = vi.fn();
-    const onAddBacklog = vi.fn();
+    const onAddTask = vi.fn();
     const navigate = vi.fn();
     renderHook(() =>
       useKeyboardShortcuts({
@@ -303,7 +303,7 @@ describe("useKeyboardShortcuts", () => {
         running: false,
         projectId: 1,
         onStart,
-        onAddBacklog,
+        onAddTask,
         navigate,
       })
     );
@@ -312,7 +312,7 @@ describe("useKeyboardShortcuts", () => {
     act(() => fire("g"));
     act(() => fire("b"));
     expect(onStart).not.toHaveBeenCalled();
-    expect(onAddBacklog).not.toHaveBeenCalled();
+    expect(onAddTask).not.toHaveBeenCalled();
     expect(navigate).not.toHaveBeenCalled();
   });
 

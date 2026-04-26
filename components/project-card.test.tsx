@@ -18,12 +18,12 @@ const baseProject: ProjectWithStatus = {
   sessionStatus: { cto: { status: "running" } },
 } as unknown as ProjectWithStatus;
 
-describe("ProjectCard backlog-empty label", () => {
+describe("ProjectCard no-tasks label", () => {
   afterEach(() => {
     cleanup();
   });
 
-  it("shows 'Backlog empty' label with amber dot when !running and phase=HARDEN", () => {
+  it("shows 'No tasks' label with amber dot when !running and phase=HARDEN", () => {
     const project: ProjectWithStatus = {
       ...baseProject,
       running: false,
@@ -32,11 +32,11 @@ describe("ProjectCard backlog-empty label", () => {
     const { container } = render(
       <ProjectCard project={project} index={0} onToggle={vi.fn()} />
     );
-    expect(container.textContent).toContain("Backlog empty");
+    expect(container.textContent).toContain("No tasks");
     expect(container.querySelector(".bg-amber-500")).toBeTruthy();
   });
 
-  it("does not show 'Backlog empty' when !running and phase=BUILD", () => {
+  it("does not show 'No tasks' when !running and phase=BUILD", () => {
     const project: ProjectWithStatus = {
       ...baseProject,
       running: false,
@@ -45,7 +45,7 @@ describe("ProjectCard backlog-empty label", () => {
     const { container } = render(
       <ProjectCard project={project} index={0} onToggle={vi.fn()} />
     );
-    expect(container.textContent).not.toContain("Backlog empty");
+    expect(container.textContent).not.toContain("No tasks");
   });
 });
 

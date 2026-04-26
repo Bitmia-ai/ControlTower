@@ -1,6 +1,6 @@
-# BL-034 / BL-035 / BL-036 — Stop & Pause Controls Fix
+# T034 / T035 / T036 — Stop & Pause Controls Fix
 
-**Spec covers:** BL-034 (Stop broken in mission control), BL-035 (Pause broken), BL-036 (Stop broken on home project cards). All three share the same root cause and same fix surface — grouped into one spec per CTO direction.
+**Spec covers:** T034 (Stop broken in mission control), T035 (Pause broken), T036 (Stop broken on home project cards). All three share the same root cause and same fix surface — grouped into one spec per CTO direction.
 
 **Priority:** P1 (CEO requests, core session control)
 
@@ -17,7 +17,7 @@ Clicking Stop or Pause from the browser has no observable effect on the running 
 2. **Pause** — `POST /api/projects/[id]/pause` already writes a directive to `.redeye/steering.md`, but writes `PAUSE ({timestamp})` which does not match the format `/redeye:pause` uses (`PAUSE — CEO directed pause at {ISO}`). The CTO's steering-parser keys off the canonical phrase. Result: directive ignored, no visible effect.
    Secondary issue: the UI gives no feedback that the directive was written (no toast, no visible state change), reinforcing the "button does nothing" perception.
 
-3. **Home card Stop (BL-036)** — exact same `/stop` route; fixed by the Stop fix.
+3. **Home card Stop (T036)** — exact same `/stop` route; fixed by the Stop fix.
 
 ---
 
@@ -31,7 +31,7 @@ Clicking Stop or Pause from the browser has no observable effect on the running 
 
 4. **UI feedback.** Both Stop and Pause should show a transient toast/inline confirmation ("Stop directive written — team will finish current phase") so the user sees something happened immediately, even though `running` state does not flip for several minutes. Out of scope for this spec if toast infra doesn't exist — acceptable fallback: a brief disabled+label-swap on the clicked button ("Stopping…" / "Pausing…") for ~3 s.
 
-5. **BL-036 is subsumed** by the Stop fix — the home card's Stop button calls the same `/stop` route. No separate code path change needed; just verify in tests.
+5. **T036 is subsumed** by the Stop fix — the home card's Stop button calls the same `/stop` route. No separate code path change needed; just verify in tests.
 
 6. **No session-manager changes required** for the user-facing fix. This keeps blast radius small and isolates the behavior change to two API route files plus a tiny UI tweak.
 
@@ -75,7 +75,7 @@ Clicking Stop or Pause from the browser has no observable effect on the running 
 - **Acceptance:**
   - Click Stop → button shows `Stopping…`, disabled for 3 s, then reverts.
   - Click Pause → `Pausing…` for 3 s.
-  - Home-card Stop (BL-036) also shows `Stopping…` feedback.
+  - Home-card Stop (T036) also shows `Stopping…` feedback.
   - No console errors.
 - **Status:** done
 
@@ -84,7 +84,7 @@ Clicking Stop or Pause from the browser has no observable effect on the running 
 - **Dependencies:** ST-1, ST-2, ST-3
 - **Agent:** QA Lead (sonnet) during DEPLOY smoke
 - **Files:** new screenshot under `screenshots/`, note in deploy report
-- **Test strategy:** Playwright MCP: navigate to haze project, click Stop → verify `.redeye/steering.md` now contains `STOP — CEO directed stop at` via API or direct file read, screenshot UI showing "Stopping…" feedback. Repeat for Pause. Repeat Stop from home card (BL-036).
+- **Test strategy:** Playwright MCP: navigate to haze project, click Stop → verify `.redeye/steering.md` now contains `STOP — CEO directed stop at` via API or direct file read, screenshot UI showing "Stopping…" feedback. Repeat for Pause. Repeat Stop from home card (T036).
 - **Acceptance:**
   - Screenshots show button feedback.
   - `.redeye/steering.md` has both STOP and PAUSE canonical strings after the test.
@@ -101,7 +101,7 @@ Clicking Stop or Pause from the browser has no observable effect on the running 
 
 ## Rollout
 
-Single commit cycle: BUILD implements ST-1–3 with tests, REVIEW checks contract alignment with `/redeye:stop` & `/redeye:pause`, DEPLOY runs full `npx vitest run` + build + smoke. Mark BL-034, BL-035, BL-036 done together at VERIFY.
+Single commit cycle: BUILD implements ST-1–3 with tests, REVIEW checks contract alignment with `/redeye:stop` & `/redeye:pause`, DEPLOY runs full `npx vitest run` + build + smoke. Mark T034, T035, T036 done together at VERIFY.
 
 ## Risks
 
