@@ -3,7 +3,7 @@
   "iteration": 108,
   "started_at": "2026-04-26T05:50:47Z",
   "phase": "build",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T077",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T-77",
   "worktree_branch": "redeye/T-77",
@@ -46,6 +46,15 @@
       "sub_task_sizes": "S+XS+S",
       "questions_posted": 0,
       "notes": "T077 planned. 3 sub-tasks: T1 per-page metadata.title (8 pages, ~10 tests, S), T2 turbopack root config (XS), T3 chunk analysis + docs update (S). No CEO questions needed."
+    },
+    "build": {
+      "sub_tasks_completed": 3,
+      "tests_before": 795,
+      "tests_after": 804,
+      "new_tests": 9,
+      "files_modified": ["app/page.tsx", "app/home-client.tsx (new)", "app/project/[id]/page.tsx + *-client.tsx (x7)", "next.config.ts", "next.config.test.ts", "docs/lighthouse-report-baseline.md (new)", "docs/performance-audit.md"],
+      "build_clean": true,
+      "notes": "T1: per-page metadata via server wrapper pattern — 8 pages × metadata.title. T2: turbopack.root config added. T3: chunk analysis written, 228KB = React core + Turbopack runtime (not reducible). 804/804 tests pass, build clean."
     }
   },
   "review_cycles": 0,
@@ -79,9 +88,9 @@
         "INCORPORATE",
         "TRIAGE"
       ],
-      "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077 (Lighthouse baseline + per-page titles + chunk investigation). PLAN: spec written (3 sub-tasks: per-page metadata, turbopack config, chunk docs).",
-      "next": "BUILD T077",
-      "timestamp": "2026-04-26T05:56:00Z"
+      "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077. PLAN: spec written (3 sub-tasks). BUILD: T1 per-page metadata (server wrappers, 7 tests), T2 turbopack.root config (2 tests), T3 chunk analysis + docs — 9 new tests, 804 total. Build clean.",
+      "next": "REVIEW",
+      "timestamp": "2026-04-26T05:58:00Z"
     },
     {
       "iteration": 107,
