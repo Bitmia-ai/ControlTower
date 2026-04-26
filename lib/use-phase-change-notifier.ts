@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  * Detects RedEye phase transitions across renders and fires `onPhaseChange`
  * for genuine transitions only.
  *
- * Semantics (BL-050):
+ * Semantics (T050):
  *   - First observation (previous is `undefined`): record baseline. Do NOT fire.
  *     This prevents false-positive notifications when the user opens the page.
  *   - Same phase on re-render: nothing fires.

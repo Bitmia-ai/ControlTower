@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * BL-052: Global keyboard shortcuts for mission-control.
+ * T052: Global keyboard shortcuts for mission-control.
  *
  * Single-key shortcuts:
  *   s -> onStart (only when !running)

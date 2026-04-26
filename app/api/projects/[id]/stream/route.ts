@@ -1,6 +1,6 @@
 // GET /api/projects/[id]/stream — SSE stream of the session transcript
 //
-// Priority (BL-013 AD-1):
+// Priority (T013 AD-1):
 //   1. .redeye/session-cto.jsonl   — Control Tower session, if fresh (< 60s)
 //   2. ~/.claude/projects/{enc}/*.jsonl — most-recent CLI transcript by mtime
 //   3. null                         — keepalive-only; client shows "waiting" state
@@ -8,7 +8,7 @@
 // Both `.redeye/session-cto.jsonl` and the CLI transcripts use the Claude native
 // envelope format ({type:"assistant"|"user"|"system", message:{...}}) so BOTH
 // must be piped through `normalizeTranscriptLine` to produce ClaudeStreamEvent
-// objects that TranscriptViewer can render (BL-013 reopened — bug #1).
+// objects that TranscriptViewer can render (T013 reopened — bug #1).
 
 import { NextRequest } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";

@@ -1,5 +1,5 @@
 /**
- * E2E tests for mission-control card sizing (BL-062)
+ * E2E tests for mission-control card sizing (T062)
  *
  * Verifies:
  *   1. The grid uses md:items-start so cards no longer stretch to equal-height.
@@ -25,8 +25,8 @@ const MINIMAL_PROJECT_DETAIL = {
       iteration: 10,
       phase: "TRIAGE",
       phase_status: "complete",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: {
         confidence: "HIGH",
         env_status: "healthy",
@@ -94,7 +94,7 @@ async function setupMocks(page: import("@playwright/test").Page) {
   });
 }
 
-test.describe("Mission control card sizing (BL-062)", () => {
+test.describe("Mission control card sizing (T062)", () => {
   test("row-1 wrappers have min-height floor of at least 120px on desktop", async ({
     page,
   }) => {

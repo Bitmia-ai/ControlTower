@@ -1,5 +1,5 @@
 /**
- * E2E test for the Cost analytics sparkline (BL-051)
+ * E2E test for the Cost analytics sparkline (T051)
  *
  * Verifies that when the cost-history endpoint returns 2+ sessions,
  * the SVG sparkline and "Last N sessions" label render in the DOM.
@@ -23,8 +23,8 @@ const MINIMAL_PROJECT_DETAIL = {
       iteration: 10,
       phase: "TRIAGE",
       phase_status: "complete",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: {
         confidence: "HIGH",
         env_status: "healthy",
@@ -43,7 +43,7 @@ const MINIMAL_PROJECT_DETAIL = {
   },
 };
 
-test.describe("Cost analytics sparkline (BL-051)", () => {
+test.describe("Cost analytics sparkline (T051)", () => {
   test("renders sparkline SVG when cost-history returns 5 sessions", async ({ page }) => {
     // Mock project detail
     await page.route("**/api/projects/0", async (route) => {

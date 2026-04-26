@@ -12,7 +12,7 @@ export interface TokenUsage {
 
 /**
  * Sonnet pricing per million tokens (USD).
- * Hardcoded per BL-015 AD-1.
+ * Hardcoded per T015 AD-1.
  */
 const PRICE_PER_M = {
   input: 3.0,

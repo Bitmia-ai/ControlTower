@@ -30,10 +30,10 @@ describe("useTaskTransitionTracker", () => {
     const onSnapshot = vi.fn();
     renderHook(({ id }: { id: string | null | undefined }) =>
       useTaskTransitionTracker(id, onStart, onSnapshot),
-    { initialProps: { id: "BL-005" as string | null | undefined } });
+    { initialProps: { id: "T005" as string | null | undefined } });
 
     expect(onStart).toHaveBeenCalledOnce();
-    expect(onStart).toHaveBeenCalledWith("BL-005");
+    expect(onStart).toHaveBeenCalledWith("T005");
     expect(onSnapshot).not.toHaveBeenCalled();
   });
 
@@ -43,12 +43,12 @@ describe("useTaskTransitionTracker", () => {
     const { rerender } = renderHook(
       ({ id }: { id: string | null | undefined }) =>
         useTaskTransitionTracker(id, onStart, onSnapshot),
-      { initialProps: { id: "BL-005" as string | null | undefined } }
+      { initialProps: { id: "T005" as string | null | undefined } }
     );
     onStart.mockClear();
     onSnapshot.mockClear();
 
-    rerender({ id: "BL-005" });
+    rerender({ id: "T005" });
 
     expect(onStart).not.toHaveBeenCalled();
     expect(onSnapshot).not.toHaveBeenCalled();
@@ -60,17 +60,17 @@ describe("useTaskTransitionTracker", () => {
     const { rerender } = renderHook(
       ({ id }: { id: string | null | undefined }) =>
         useTaskTransitionTracker(id, onStart, onSnapshot),
-      { initialProps: { id: "BL-005" as string | null | undefined } }
+      { initialProps: { id: "T005" as string | null | undefined } }
     );
     onStart.mockClear();
     onSnapshot.mockClear();
 
-    rerender({ id: "BL-006" });
+    rerender({ id: "T006" });
 
     expect(onSnapshot).toHaveBeenCalledOnce();
-    expect(onSnapshot).toHaveBeenCalledWith("BL-005");
+    expect(onSnapshot).toHaveBeenCalledWith("T005");
     expect(onStart).toHaveBeenCalledOnce();
-    expect(onStart).toHaveBeenCalledWith("BL-006");
+    expect(onStart).toHaveBeenCalledWith("T006");
   });
 
   it("X -> null transition: fires snapshot for X, no start", () => {
@@ -79,7 +79,7 @@ describe("useTaskTransitionTracker", () => {
     const { rerender } = renderHook(
       ({ id }: { id: string | null | undefined }) =>
         useTaskTransitionTracker(id, onStart, onSnapshot),
-      { initialProps: { id: "BL-006" as string | null | undefined } }
+      { initialProps: { id: "T006" as string | null | undefined } }
     );
     onStart.mockClear();
     onSnapshot.mockClear();
@@ -87,7 +87,7 @@ describe("useTaskTransitionTracker", () => {
     rerender({ id: null });
 
     expect(onSnapshot).toHaveBeenCalledOnce();
-    expect(onSnapshot).toHaveBeenCalledWith("BL-006");
+    expect(onSnapshot).toHaveBeenCalledWith("T006");
     expect(onStart).not.toHaveBeenCalled();
   });
 
@@ -102,14 +102,14 @@ describe("useTaskTransitionTracker", () => {
     onStart.mockClear();
     onSnapshot.mockClear();
 
-    rerender({ id: "BL-007" });
+    rerender({ id: "T007" });
 
     expect(onStart).toHaveBeenCalledOnce();
-    expect(onStart).toHaveBeenCalledWith("BL-007");
+    expect(onStart).toHaveBeenCalledWith("T007");
     expect(onSnapshot).not.toHaveBeenCalled();
   });
 
-  it("full lifecycle: undefined -> BL-005 -> BL-005 -> BL-006 -> null", () => {
+  it("full lifecycle: undefined -> T005 -> T005 -> T006 -> null", () => {
     const onStart = vi.fn();
     const onSnapshot = vi.fn();
     const { rerender } = renderHook(
@@ -121,28 +121,28 @@ describe("useTaskTransitionTracker", () => {
     expect(onStart).not.toHaveBeenCalled();
     expect(onSnapshot).not.toHaveBeenCalled();
 
-    rerender({ id: "BL-005" });
-    // first observation: start BL-005
+    rerender({ id: "T005" });
+    // first observation: start T005
     expect(onStart).toHaveBeenCalledTimes(1);
-    expect(onStart).toHaveBeenLastCalledWith("BL-005");
+    expect(onStart).toHaveBeenLastCalledWith("T005");
     expect(onSnapshot).not.toHaveBeenCalled();
 
-    rerender({ id: "BL-005" });
+    rerender({ id: "T005" });
     // same -> nothing new
     expect(onStart).toHaveBeenCalledTimes(1);
     expect(onSnapshot).not.toHaveBeenCalled();
 
-    rerender({ id: "BL-006" });
-    // transition -> snapshot BL-005, start BL-006
+    rerender({ id: "T006" });
+    // transition -> snapshot T005, start T006
     expect(onSnapshot).toHaveBeenCalledTimes(1);
-    expect(onSnapshot).toHaveBeenLastCalledWith("BL-005");
+    expect(onSnapshot).toHaveBeenLastCalledWith("T005");
     expect(onStart).toHaveBeenCalledTimes(2);
-    expect(onStart).toHaveBeenLastCalledWith("BL-006");
+    expect(onStart).toHaveBeenLastCalledWith("T006");
 
     rerender({ id: null });
-    // end -> snapshot BL-006, no new start
+    // end -> snapshot T006, no new start
     expect(onSnapshot).toHaveBeenCalledTimes(2);
-    expect(onSnapshot).toHaveBeenLastCalledWith("BL-006");
+    expect(onSnapshot).toHaveBeenLastCalledWith("T006");
     expect(onStart).toHaveBeenCalledTimes(2);
   });
 });

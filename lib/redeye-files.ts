@@ -121,16 +121,16 @@ export async function isInitialized(projectPath: string): Promise<boolean> {
  * Scan `.redeye/backlog.md` and return the highest numeric suffix found in any
  * `BL-\d+` pattern.  Returns 0 if the file is missing or contains no matches.
  *
- * NOTE: This reads the raw text, so it will match BL-xxx wherever it appears
+ * NOTE: This reads the raw text, so it will match T<N> wherever it appears
  * (headers, inline references, etc.).  That is intentional — we want the true
  * maximum ID present in the file regardless of formatting.
  */
-export async function scanMaxBacklogId(projectPath: string): Promise<number> {
+export async function scanMaxTaskId(projectPath: string): Promise<number> {
   const filePath = safeRedeyePath(projectPath, "tasks.md");
   const content = await readFileOrNull(filePath);
   if (!content) return 0;
 
-  const regex = /BL-(\d+)/g;
+  const regex = /T(\d+)/g;
   let max = 0;
   let match: RegExpExecArray | null;
   // eslint-disable-next-line no-cond-assign

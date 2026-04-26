@@ -6,7 +6,7 @@
 // This reflects only the work done on this task, not the cumulative session total.
 //
 // If no start record exists (e.g. older "Record now" manual use), the raw
-// current session cost is recorded instead — preserving pre-BL-046 behaviour.
+// current session cost is recorded instead — preserving pre-T046 behaviour.
 //
 // Body: { taskId: string }
 // Returns: { data: { taskId: string, cost_usd: number, recorded: boolean } }
@@ -20,7 +20,7 @@ import { sumCurrentSessionCost } from "@/lib/cost-calculator";
 import { readJsonBody } from "@/lib/json-body";
 import type { RedEyeState } from "@/lib/redeye-types";
 
-const TASK_ID_RE = /^BL-\d+$/;
+const TASK_ID_RE = /^T\d+$/;
 const MAX_BODY_BYTES = 1024;
 
 export async function POST(
@@ -39,7 +39,7 @@ export async function POST(
   if (!r.ok) return r.response;
   const taskId = r.data?.taskId;
   if (typeof taskId !== "string" || !TASK_ID_RE.test(taskId)) {
-    return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+    return NextResponse.json({ error: "taskId must match T<number>" }, { status: 400 });
   }
 
   // Read state.json first so we can check for a start baseline before

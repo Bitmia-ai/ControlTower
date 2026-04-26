@@ -1,5 +1,5 @@
 /**
- * E2E tests for the Cost card (BL-049)
+ * E2E tests for the Cost card (T049)
  *
  * Verifies the cost card renders on the mission control page, displays
  * non-negative values, and upholds the sessionCost <= totalCost invariant.
@@ -23,8 +23,8 @@ const MINIMAL_PROJECT_DETAIL = {
       iteration: 10,
       phase: "TRIAGE",
       phase_status: "complete",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: {
         confidence: "HIGH",
         env_status: "healthy",
@@ -43,7 +43,7 @@ const MINIMAL_PROJECT_DETAIL = {
   },
 };
 
-test.describe("Cost card (BL-049)", () => {
+test.describe("Cost card (T049)", () => {
   test("renders cost card with non-negative values and upholds session <= total invariant", async ({
     page,
   }) => {

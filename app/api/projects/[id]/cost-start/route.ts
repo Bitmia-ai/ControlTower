@@ -15,7 +15,7 @@ import { sumCurrentSessionCost } from "@/lib/cost-calculator";
 import { readJsonBody } from "@/lib/json-body";
 import type { RedEyeState } from "@/lib/redeye-types";
 
-const TASK_ID_RE = /^BL-\d+$/;
+const TASK_ID_RE = /^T\d+$/;
 const MAX_BODY_BYTES = 1024;
 
 export async function POST(
@@ -34,7 +34,7 @@ export async function POST(
   if (!r.ok) return r.response;
   const taskId = r.data?.taskId;
   if (typeof taskId !== "string" || !TASK_ID_RE.test(taskId)) {
-    return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+    return NextResponse.json({ error: "taskId must match T<number>" }, { status: 400 });
   }
 
   const stateFilePath = safeRedeyePath(project.path, "state.json");

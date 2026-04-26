@@ -48,7 +48,7 @@ describe("GET /api/projects", () => {
     mockIsInitialized.mockResolvedValue(true);
     mockReadState.mockResolvedValue({
       phase: "BUILD",
-      task_id: "BL-018",
+      task_id: "T018",
       task_title: "Home status fix",
     });
     mockGetSessionStatus.mockReturnValue(stoppedSession());
@@ -58,7 +58,7 @@ describe("GET /api/projects", () => {
     const project = json.data[0];
 
     expect(project.phase).toBe("BUILD");
-    expect(project.currentTask).toBe("BL-018 Home status fix");
+    expect(project.currentTask).toBe("T018 Home status fix");
   });
 
   it("sets currentTask to null when task_title is missing", async () => {

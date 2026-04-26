@@ -1,5 +1,5 @@
 /**
- * E2E tests for mobile-responsive layout (BL-057)
+ * E2E tests for mobile-responsive layout (T057)
  *
  * Verifies the dashboard works correctly at phone (375x667) and tablet
  * (768x1024) viewports. The key acceptance criterion is that no page
@@ -14,7 +14,7 @@ import { test, expect } from "@playwright/test";
 const PAGES = [
   { name: "home", path: "/" },
   { name: "mission-control", path: "/project/0" },
-  { name: "backlog", path: "/project/0/backlog" },
+  { name: "tasks", path: "/project/0/tasks" },
   { name: "history", path: "/project/0/history" },
   { name: "live", path: "/project/0/live" },
   { name: "schedules", path: "/project/0/schedules" },

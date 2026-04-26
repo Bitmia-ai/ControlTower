@@ -225,18 +225,18 @@ describe("parseTaskIdNumber", () => {
   });
 });
 
-describe("WontDoItemRow — reason rendering (BL-065)", () => {
+describe("WontDoItemRow — reason rendering (T065)", () => {
   it("renders the reason text when item.reason is present", () => {
     const item = makeItem({
       id: "T099",
       title: "Rejected feature",
       status: "wontdo",
       section: "wontdo",
-      reason: "Superseded by BL-100 which covers the same requirement.",
+      reason: "Superseded by T100 which covers the same requirement.",
     });
     const { container } = render(<WontDoItemRow item={item} projectId={0} />);
     expect(container.textContent).toContain(
-      "Superseded by BL-100 which covers the same requirement."
+      "Superseded by T100 which covers the same requirement."
     );
     const reasonEl = container.querySelector("[data-testid=wontdo-reason]");
     expect(reasonEl).not.toBeNull();

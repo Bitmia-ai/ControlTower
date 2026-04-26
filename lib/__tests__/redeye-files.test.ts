@@ -111,13 +111,13 @@ describe("readProjectDetail — activeItem enrichment", () => {
 
   it("sets activeItem and overrides status to in-progress when task_id matches", async () => {
     const items: TaskItem[] = [
-      { id: "BL-001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
-      { id: "BL-014", title: "Active task", status: "planned", section: "triaged", priority: "P0", type: "bug" },
-      { id: "BL-003", title: "Gamma task", status: "planned", section: "discovered", priority: "P2", type: "chore" },
+      { id: "T001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T014", title: "Active task", status: "planned", section: "triaged", priority: "P0", type: "bug" },
+      { id: "T003", title: "Gamma task", status: "planned", section: "discovered", priority: "P2", type: "chore" },
     ];
 
     setupFsMock(
-      JSON.stringify(makeState("BL-014")),
+      JSON.stringify(makeState("T014")),
       makeBacklogMd(items)
     );
 
@@ -125,18 +125,18 @@ describe("readProjectDetail — activeItem enrichment", () => {
 
     // activeItem must be non-null and status must be in-progress
     expect(detail.activeItem).not.toBeNull();
-    expect(detail.activeItem?.id).toBe("BL-014");
+    expect(detail.activeItem?.id).toBe("T014");
     expect(detail.activeItem?.status).toBe("in-progress");
 
     // The same item inside upNext must also have status in-progress
-    const upNextActive = detail.upNext.find((i) => i.id === "BL-014");
+    const upNextActive = detail.upNext.find((i) => i.id === "T014");
     expect(upNextActive).toBeDefined();
     expect(upNextActive?.status).toBe("in-progress");
   });
 
   it("returns activeItem = null when state.task_id is null", async () => {
     const items: TaskItem[] = [
-      { id: "BL-001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
     ];
 
     setupFsMock(
@@ -148,16 +148,16 @@ describe("readProjectDetail — activeItem enrichment", () => {
 
     expect(detail.activeItem).toBeNull();
     // Original statuses should be unchanged
-    expect(detail.upNext.find((i) => i.id === "BL-001")?.status).toBe("planned");
+    expect(detail.upNext.find((i) => i.id === "T001")?.status).toBe("planned");
   });
 
   it("returns activeItem = null when task_id does not match any item (stale state)", async () => {
     const items: TaskItem[] = [
-      { id: "BL-001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
     ];
 
     setupFsMock(
-      JSON.stringify(makeState("BL-999")), // stale — BL-999 not in backlog
+      JSON.stringify(makeState("T999")), // stale — T999 not in backlog
       makeBacklogMd(items)
     );
 
@@ -171,11 +171,11 @@ describe("readProjectDetail — activeItem enrichment", () => {
 
   it("does not mutate the original backlog item object", async () => {
     const items: TaskItem[] = [
-      { id: "BL-014", title: "Active task", status: "planned", section: "triaged", priority: "P0", type: "bug" },
+      { id: "T014", title: "Active task", status: "planned", section: "triaged", priority: "P0", type: "bug" },
     ];
 
     setupFsMock(
-      JSON.stringify(makeState("BL-014")),
+      JSON.stringify(makeState("T014")),
       makeBacklogMd(items)
     );
 
@@ -189,18 +189,18 @@ describe("readProjectDetail — activeItem enrichment", () => {
 
   it("active item does not appear twice (upNext contains it with correct in-progress status)", async () => {
     const items: TaskItem[] = [
-      { id: "BL-014", title: "Active task", status: "planned", section: "ceo", priority: "P0", type: "bug" },
-      { id: "BL-002", title: "Another task", status: "planned", section: "triaged", priority: "P2", type: "feature" },
+      { id: "T014", title: "Active task", status: "planned", section: "ceo", priority: "P0", type: "bug" },
+      { id: "T002", title: "Another task", status: "planned", section: "triaged", priority: "P2", type: "feature" },
     ];
 
     setupFsMock(
-      JSON.stringify(makeState("BL-014")),
+      JSON.stringify(makeState("T014")),
       makeBacklogMd(items)
     );
 
     const detail = await readProjectDetail("/tmp/test-project", mockProject);
 
-    const activesInUpNext = detail.upNext.filter((i) => i.id === "BL-014");
+    const activesInUpNext = detail.upNext.filter((i) => i.id === "T014");
     expect(activesInUpNext).toHaveLength(1);
     expect(activesInUpNext[0].status).toBe("in-progress");
   });
@@ -220,18 +220,18 @@ describe("readProjectDetail — cost_usd enrichment", () => {
 
   it("attaches cost_usd to recentlyShipped items when item_costs match", async () => {
     const items: TaskItem[] = [
-      { id: "BL-015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
-      { id: "BL-016", title: "Dark mode", status: "done", section: "triaged", priority: "P2", type: "feature" },
+      { id: "T015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T016", title: "Dark mode", status: "done", section: "triaged", priority: "P2", type: "feature" },
     ];
 
-    const state = makeStateWithCosts({ "BL-015": 1.42, "BL-016": 0.38 });
+    const state = makeStateWithCosts({ "T015": 1.42, "T016": 0.38 });
 
     setupFsMock(JSON.stringify(state), makeBacklogMd(items));
 
     const detail = await readProjectDetail("/tmp/test-project", mockProject);
 
-    const bl015 = detail.recentlyShipped.find((i) => i.id === "BL-015");
-    const bl016 = detail.recentlyShipped.find((i) => i.id === "BL-016");
+    const bl015 = detail.recentlyShipped.find((i) => i.id === "T015");
+    const bl016 = detail.recentlyShipped.find((i) => i.id === "T016");
 
     expect(bl015?.cost_usd).toBeCloseTo(1.42);
     expect(bl016?.cost_usd).toBeCloseTo(0.38);
@@ -239,19 +239,19 @@ describe("readProjectDetail — cost_usd enrichment", () => {
 
   it("leaves cost_usd undefined for items without matching entry", async () => {
     const items: TaskItem[] = [
-      { id: "BL-015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
-      { id: "BL-016", title: "Dark mode", status: "done", section: "triaged", priority: "P2", type: "feature" },
+      { id: "T015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T016", title: "Dark mode", status: "done", section: "triaged", priority: "P2", type: "feature" },
     ];
 
-    // Only BL-015 has a cost entry
-    const state = makeStateWithCosts({ "BL-015": 1.42 });
+    // Only T015 has a cost entry
+    const state = makeStateWithCosts({ "T015": 1.42 });
 
     setupFsMock(JSON.stringify(state), makeBacklogMd(items));
 
     const detail = await readProjectDetail("/tmp/test-project", mockProject);
 
-    const bl015 = detail.recentlyShipped.find((i) => i.id === "BL-015");
-    const bl016 = detail.recentlyShipped.find((i) => i.id === "BL-016");
+    const bl015 = detail.recentlyShipped.find((i) => i.id === "T015");
+    const bl016 = detail.recentlyShipped.find((i) => i.id === "T016");
 
     expect(bl015?.cost_usd).toBeCloseTo(1.42);
     expect(bl016?.cost_usd).toBeUndefined();
@@ -259,7 +259,7 @@ describe("readProjectDetail — cost_usd enrichment", () => {
 
   it("works when item_costs is absent from state", async () => {
     const items: TaskItem[] = [
-      { id: "BL-015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
     ];
 
     // State has no item_costs field
@@ -269,17 +269,17 @@ describe("readProjectDetail — cost_usd enrichment", () => {
 
     const detail = await readProjectDetail("/tmp/test-project", mockProject);
 
-    const bl015 = detail.recentlyShipped.find((i) => i.id === "BL-015");
+    const bl015 = detail.recentlyShipped.find((i) => i.id === "T015");
     expect(bl015?.cost_usd).toBeUndefined();
   });
 
   it("does not attach cost_usd to non-done items", async () => {
     const items: TaskItem[] = [
-      { id: "BL-015", title: "In progress", status: "in-progress", section: "triaged", priority: "P1", type: "feature" },
-      { id: "BL-016", title: "Planned", status: "planned", section: "triaged", priority: "P2", type: "feature" },
+      { id: "T015", title: "In progress", status: "in-progress", section: "triaged", priority: "P1", type: "feature" },
+      { id: "T016", title: "Planned", status: "planned", section: "triaged", priority: "P2", type: "feature" },
     ];
 
-    const state = makeStateWithCosts({ "BL-015": 1.42, "BL-016": 0.38 });
+    const state = makeStateWithCosts({ "T015": 1.42, "T016": 0.38 });
 
     setupFsMock(JSON.stringify(state), makeBacklogMd(items));
 

@@ -127,7 +127,7 @@ describe("TranscriptViewer forceExpanded prop", () => {
   });
 });
 
-describe("useOpenState lifecycle (BL-048)", () => {
+describe("useOpenState lifecycle (T048)", () => {
   function thinking(content: string): ClaudeStreamEvent {
     return { type: "assistant", subtype: "thinking", content };
   }
@@ -291,7 +291,7 @@ describe("TranscriptViewer non-tool events", () => {
     expect(screen.getByText("Claude explains something important")).toBeTruthy();
   });
 
-  it("suppresses plain user messages (no tool_result subtype) — BL-040 T3", () => {
+  it("suppresses plain user messages (no tool_result subtype) — T040 T3", () => {
     // The harness-injected initial user prompt should not pollute the Live tab.
     // Only user/tool_result events render via ToolResultCard.
     const events: ClaudeStreamEvent[] = [{ type: "user", content: "plain user msg" }];

@@ -25,11 +25,11 @@ describe("parseTasks", () => {
   });
 
   it("parses a single CEO request", () => {
-    const content = `# Backlog\n\n## CEO Requests\n\n### BL-001: Core CLI with colored output\n- **Type:** feature\n- **Priority:** critical\n- **Status:** pending\n`;
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: Core CLI with colored output\n- **Type:** feature\n- **Priority:** critical\n- **Status:** pending\n`;
     const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({
-      id: "BL-001",
+      id: "T001",
       title: "Core CLI with colored output",
       type: "feature",
       priority: "critical",
@@ -43,12 +43,12 @@ describe("parseTasks", () => {
 
 ## CEO Requests
 
-### BL-001: First feature
+### T001: First feature
 - **Type:** feature
 - **Priority:** P0 (must be done first, everything else depends on it)
 - **Status:** complete
 
-### BL-002: Second feature
+### T002: Second feature
 - **Type:** refactor
 - **Priority:** P0
 - **Status:** done
@@ -57,7 +57,7 @@ describe("parseTasks", () => {
 
 ## Triaged
 
-### BL-007: Add unit tests
+### T007: Add unit tests
 - **Type:** tech-debt
 - **Priority:** P1 (medium)
 - **Status:** planned
@@ -65,13 +65,13 @@ describe("parseTasks", () => {
     const items = parseTasks(content);
     expect(items).toHaveLength(3);
 
-    expect(items[0]).toMatchObject({ id: "BL-001", section: "ceo", status: "done" });
-    expect(items[1]).toMatchObject({ id: "BL-002", section: "ceo", status: "done" });
-    expect(items[2]).toMatchObject({ id: "BL-007", section: "triaged", status: "planned" });
+    expect(items[0]).toMatchObject({ id: "T001", section: "ceo", status: "done" });
+    expect(items[1]).toMatchObject({ id: "T002", section: "ceo", status: "done" });
+    expect(items[2]).toMatchObject({ id: "T007", section: "triaged", status: "planned" });
   });
 
   it("handles items with missing optional fields", () => {
-    const content = `# Backlog\n\n## CEO Requests\n\n### BL-005: Minimal item\n- **Status:** pending\n`;
+    const content = `# Backlog\n\n## CEO Requests\n\n### T005: Minimal item\n- **Status:** pending\n`;
     const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].type).toBeUndefined();
@@ -84,13 +84,13 @@ describe("parseTasks", () => {
 
 ## CEO Requests
 
-### BL-001: Done item
+### T001: Done item
 - **Status:** complete
 
-### BL-002: In progress item
+### T002: In progress item
 - **Status:** in-progress
 
-### BL-003: Blocked item
+### T003: Blocked item
 - **Status:** blocked
 `;
     const items = parseTasks(content);
@@ -100,7 +100,7 @@ describe("parseTasks", () => {
   });
 
   it("defaults status to pending when field is missing", () => {
-    const content = `# Backlog\n\n## Discovered\n\n### BL-003: No status field\n- **Type:** test\n`;
+    const content = `# Backlog\n\n## Discovered\n\n### T003: No status field\n- **Type:** test\n`;
     const items = parseTasks(content);
     expect(items[0].status).toBe("pending");
   });
@@ -110,26 +110,26 @@ describe("parseTasks", () => {
 
 ## CEO Requests
 
-### BL-001: Original title
+### T001: Original title
 - **Status:** pending
 - **Type:** feature
 
 ## Triaged
 
-### BL-001: Updated title
+### T001: Updated title
 - **Status:** planned
 - **Type:** feature
 `;
     const items = parseTasks(content);
     expect(items).toHaveLength(1);
-    expect(items[0].id).toBe("BL-001");
+    expect(items[0].id).toBe("T001");
     expect(items[0].title).toBe("Updated title");
     expect(items[0].status).toBe("planned");
     expect(items[0].section).toBe("triaged");
   });
 
   it("parses Won't Do section", () => {
-    const content = `# Backlog\n\n## CEO Requests\n\n## Won't Do\n\n### BL-010: Rejected idea\n- **Status:** done\n`;
+    const content = `# Backlog\n\n## CEO Requests\n\n## Won't Do\n\n### T010: Rejected idea\n- **Status:** done\n`;
     const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].section).toBe("wontdo");
@@ -141,18 +141,18 @@ describe("parseTasks", () => {
   it("normalizes wont-do status (any spelling) to wontdo, not pending", () => {
     const content =
       `# Backlog\n\n## Triaged\n\n` +
-      `### BL-001: hyphen form\n- **Status:** wont-do\n\n` +
-      `### BL-002: smushed form\n- **Status:** wontdo\n\n` +
-      `### BL-003: apostrophe form\n- **Status:** Won't Do\n`;
+      `### T001: hyphen form\n- **Status:** wont-do\n\n` +
+      `### T002: smushed form\n- **Status:** wontdo\n\n` +
+      `### T003: apostrophe form\n- **Status:** Won't Do\n`;
     const items = parseTasks(content);
     expect(items).toHaveLength(3);
     expect(items.map((i) => i.status)).toEqual(["wontdo", "wontdo", "wontdo"]);
   });
 
-  // ---- Summary field (BL-026) ----
+  // ---- Summary field (T026) ----
 
   it("parses Summary field on a done item", () => {
-    const content = `# Backlog\n\n## Triaged\n\n### BL-048: Live tab collapsibles\n- **Type:** feature\n- **Status:** done\n- **Summary:** User message boxes are now collapsible by default to reduce noise.\n`;
+    const content = `# Backlog\n\n## Triaged\n\n### T048: Live tab collapsibles\n- **Type:** feature\n- **Status:** done\n- **Summary:** User message boxes are now collapsible by default to reduce noise.\n`;
     const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].summary).toBe(
@@ -161,13 +161,13 @@ describe("parseTasks", () => {
   });
 
   it("leaves summary undefined when field is missing", () => {
-    const content = `# Backlog\n\n## CEO Requests\n\n### BL-001: No summary\n- **Type:** feature\n- **Status:** pending\n`;
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: No summary\n- **Type:** feature\n- **Status:** pending\n`;
     const items = parseTasks(content);
     expect(items[0].summary).toBeUndefined();
   });
 
   it("preserves multi-word summary text verbatim", () => {
-    const content = `# Backlog\n\n## Triaged\n\n### BL-040: Thinking events\n- **Status:** done\n- **Summary:** Added violet ThinkingCard with 80-char preview and red AssistantTextCard.\n`;
+    const content = `# Backlog\n\n## Triaged\n\n### T040: Thinking events\n- **Status:** done\n- **Summary:** Added violet ThinkingCard with 80-char preview and red AssistantTextCard.\n`;
     const items = parseTasks(content);
     expect(items[0].summary).toBe(
       "Added violet ThinkingCard with 80-char preview and red AssistantTextCard."
@@ -175,38 +175,38 @@ describe("parseTasks", () => {
   });
 
   it("does not affect existing fields when Summary is present", () => {
-    const content = `# Backlog\n\n## Triaged\n\n### BL-044: Add to Backlog button\n- **Type:** feature\n- **Priority:** P2\n- **Status:** done\n- **Summary:** Redesigned with PlusCircle icon and indigo accent.\n- **Spec:** docs/specs/BL-044.md\n`;
+    const content = `# Backlog\n\n## Triaged\n\n### T044: Add to Backlog button\n- **Type:** feature\n- **Priority:** P2\n- **Status:** done\n- **Summary:** Redesigned with PlusCircle icon and indigo accent.\n- **Spec:** docs/specs/T044.md\n`;
     const items = parseTasks(content);
     expect(items[0]).toMatchObject({
-      id: "BL-044",
+      id: "T044",
       type: "feature",
       priority: "P2",
       status: "done",
       summary: "Redesigned with PlusCircle icon and indigo accent.",
-      spec: "docs/specs/BL-044.md",
+      spec: "docs/specs/T044.md",
     });
   });
 
-  it("extracts the Reason field on wont-do items (BL-065)", () => {
-    const content = `# Backlog\n\n## Won't Do\n\n### BL-099: Some rejected idea\n- **Type:** feature\n- **Priority:** P1\n- **Status:** wont-do\n- **Reason:** Superseded by BL-100 which covers the same requirement.\n`;
+  it("extracts the Reason field on wont-do items (T065)", () => {
+    const content = `# Backlog\n\n## Won't Do\n\n### T099: Some rejected idea\n- **Type:** feature\n- **Priority:** P1\n- **Status:** wont-do\n- **Reason:** Superseded by T100 which covers the same requirement.\n`;
     const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({
-      id: "BL-099",
+      id: "T099",
       status: "wontdo",
       section: "wontdo",
-      reason: "Superseded by BL-100 which covers the same requirement.",
+      reason: "Superseded by T100 which covers the same requirement.",
     });
   });
 
-  it("returns reason: undefined when the field is absent (BL-065)", () => {
-    const content = `# Backlog\n\n## CEO Requests\n\n### BL-100: Active item\n- **Type:** feature\n- **Status:** pending\n`;
+  it("returns reason: undefined when the field is absent (T065)", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T100: Active item\n- **Type:** feature\n- **Status:** pending\n`;
     const items = parseTasks(content);
     expect(items[0].reason).toBeUndefined();
   });
 
-  it("does not coerce Reason from other fields (BL-065)", () => {
-    const content = `# Backlog\n\n## Triaged\n\n### BL-101: Done with summary\n- **Type:** feature\n- **Status:** done\n- **Summary:** A summary text, not a reason.\n`;
+  it("does not coerce Reason from other fields (T065)", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### T101: Done with summary\n- **Type:** feature\n- **Status:** done\n- **Summary:** A summary text, not a reason.\n`;
     const items = parseTasks(content);
     expect(items[0].summary).toBe("A summary text, not a reason.");
     expect(items[0].reason).toBeUndefined();
@@ -318,11 +318,11 @@ describe("parseInbox", () => {
 
 ### Q-006: Feature flag
 - **Question:** Enable dark mode by default?
-- **Context:** Working on BL-004 UI polish
+- **Context:** Working on T004 UI polish
 - **Default:** yes
 `;
     const questions = parseInbox(content);
-    expect(questions[0].context).toBe("Working on BL-004 UI polish");
+    expect(questions[0].context).toBe("Working on T004 UI polish");
   });
 });
 
@@ -347,7 +347,7 @@ describe("parseChangelog", () => {
 
 ## Iteration 4 — 2026-04-23
 
-- **Built:** BL-001 — Rename all ziggy-autopilot references to redeye
+- **Built:** T001 — Rename all ziggy-autopilot references to redeye
 - **Review findings:** 0C 0M 1m — fixed
 - **Deployed:** PASS
 `;
@@ -367,21 +367,21 @@ describe("parseChangelog", () => {
 
 ## Iteration 16 — 2026-04-22
 
-- **Built:** BL-005 — Verify pages
+- **Built:** T005 — Verify pages
 - **Deployed:** PASS
 
 ---
 
 ## Iteration 12 — 2026-04-22
 
-- **Built:** BL-004 — Polish UI
+- **Built:** T004 — Polish UI
 - **Deployed:** PASS
 
 ---
 
 ## Iteration 9 — 2026-04-22
 
-- **Built:** BL-003 — Remove PWA
+- **Built:** T003 — Remove PWA
 - **Deployed:** PASS
 `;
     const entries = parseChangelog(content);
@@ -392,15 +392,15 @@ describe("parseChangelog", () => {
   });
 
   it("handles iterations without a date", () => {
-    const content = `# Changelog\n\n## Iteration 1\n\n- **Built:** BL-001\n`;
+    const content = `# Changelog\n\n## Iteration 1\n\n- **Built:** T001\n`;
     const entries = parseChangelog(content);
     expect(entries).toHaveLength(1);
     expect(entries[0].date).toBeUndefined();
-    expect(entries[0].title).toBe("BL-001");
+    expect(entries[0].title).toBe("T001");
   });
 
   it("strips leading --- from entry details", () => {
-    const content = `# Changelog\n\n---\n\n## Iteration 5 — 2026-01-01\n\n- **Built:** BL-005\n`;
+    const content = `# Changelog\n\n---\n\n## Iteration 5 — 2026-01-01\n\n- **Built:** T005\n`;
     const entries = parseChangelog(content);
     expect(entries[0].details).not.toMatch(/^---/);
     expect(entries[0].details).toContain("Built:");

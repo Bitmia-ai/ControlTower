@@ -239,11 +239,11 @@ export function ControlsCard({
           </button>
           <button
             onClick={onAddBacklog}
-            aria-label="Add item to backlog"
+            aria-label="Add task"
             className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md border border-indigo-200 dark:border-indigo-800 transition"
           >
             <PlusCircle size={14} />
-            Add to Backlog
+            Add Task
           </button>
         </div>
 

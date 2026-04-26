@@ -197,7 +197,7 @@ describe("POST /api/projects/[id]/cost-snapshot", () => {
     expect(to).toMatch(/state\.json$/);
   });
 
-  // ─── BL-046: delta math when item_cost_starts[taskId] exists ──────────────
+  // ─── T046: delta math when item_cost_starts[taskId] exists ──────────────
 
   it("stores delta (current - start) when item_cost_starts[taskId] exists", async () => {
     const stateWithStart = {

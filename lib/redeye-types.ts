@@ -37,7 +37,7 @@ export interface RedEyeState {
   item_cost_starts?: Record<string, number>;
   /** Absolute path to the worktree where the active task is being built. Null when no worktree. */
   worktree_path?: string | null;
-  /** Branch name of the active worktree (e.g. "redeye/BL-013"). Null when no worktree. */
+  /** Branch name of the active worktree (e.g. "redeye/T013"). Null when no worktree. */
   worktree_branch?: string | null;
 }
 

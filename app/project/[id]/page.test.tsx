@@ -1,5 +1,5 @@
 /**
- * Integration test for BL-050: phase-change toast wiring.
+ * Integration test for T050: phase-change toast wiring.
  * Verifies that when the mission-control polling loop reports a new phase,
  * the toast appears in the DOM via the global ToastProvider.
  */
@@ -84,10 +84,10 @@ describe("ProjectPage phase notifications integration", () => {
     expect(screen.queryByText(/entered PLAN/)).toBeFalsy();
   });
 
-  // BL-052: keyboard-shortcuts wiring integration tests.
+  // T052: keyboard-shortcuts wiring integration tests.
   // Mirrors the wiring in ProjectPage: calls useKeyboardShortcuts with the same
   // arg shape so changes to the page's shortcut wiring are caught here.
-  it("BL-052: 'x' keydown triggers onStop when running and enabled", () => {
+  it("T052: 'x' keydown triggers onStop when running and enabled", () => {
     const onStop = vi.fn();
     function Wired() {
       useKeyboardShortcuts({
@@ -103,7 +103,7 @@ describe("ProjectPage phase notifications integration", () => {
     expect(onStop).toHaveBeenCalledTimes(1);
   });
 
-  it("BL-052: 's' keydown triggers onStart when idle and enabled", () => {
+  it("T052: 's' keydown triggers onStart when idle and enabled", () => {
     const onStart = vi.fn();
     function Wired() {
       useKeyboardShortcuts({
@@ -119,7 +119,7 @@ describe("ProjectPage phase notifications integration", () => {
     expect(onStart).toHaveBeenCalledTimes(1);
   });
 
-  it("BL-052: enabled=false (dialog open) suppresses shortcut actions", () => {
+  it("T052: enabled=false (dialog open) suppresses shortcut actions", () => {
     const onStop = vi.fn();
     const onStart = vi.fn();
     const onAddBacklog = vi.fn();

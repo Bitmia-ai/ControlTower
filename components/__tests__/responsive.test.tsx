@@ -1,5 +1,5 @@
 /**
- * BL-057: Mobile-responsive layout — class-assertion smoke tests.
+ * T057: Mobile-responsive layout — class-assertion smoke tests.
  *
  * These tests guard against regressions in the responsive Tailwind classes
  * that ensure the dashboard works on mobile (≥320px) and tablet (≥768px)
@@ -50,7 +50,7 @@ const baseProject: ProjectWithStatus = {
   sessionStatus: { cto: { status: "stopped" } },
 } as unknown as ProjectWithStatus;
 
-describe("BL-057 responsive classes", () => {
+describe("T057 responsive classes", () => {
   it("ProjectCard Start/Stop button has min-h-[44px] for touch target", () => {
     const { container } = render(
       <ProjectCard project={baseProject} index={0} onToggle={vi.fn()} />

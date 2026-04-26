@@ -26,7 +26,7 @@ afterEach(() => {
 
 function makeItem(overrides: Partial<TaskItem> = {}): TaskItem {
   return {
-    id: "BL-015",
+    id: "T015",
     title: "Add cost tracking",
     status: "done",
     section: "triaged",
@@ -45,7 +45,7 @@ describe("ShippedCard — backlog item rendering without cost", () => {
   it("renders item id and title", () => {
     const item = makeItem();
     const { container } = render(<ShippedCard items={[item]} />);
-    expect(container.textContent).toContain("BL-015");
+    expect(container.textContent).toContain("T015");
     expect(container.textContent).toContain("Add cost tracking");
   });
 
@@ -77,13 +77,13 @@ describe("ShippedCard — cost badge rendering", () => {
 
   it("renders cost badge for only items that have cost_usd > 0", () => {
     const items: TaskItem[] = [
-      makeItem({ id: "BL-015", title: "With cost", cost_usd: 1.42 }),
-      makeItem({ id: "BL-016", title: "Without cost", cost_usd: undefined }),
+      makeItem({ id: "T015", title: "With cost", cost_usd: 1.42 }),
+      makeItem({ id: "T016", title: "Without cost", cost_usd: undefined }),
     ];
     const { container } = render(<ShippedCard items={items} />);
-    // BL-015 should show $1.42
+    // T015 should show $1.42
     expect(container.textContent).toContain("$1.42");
-    // BL-016 should not introduce a separate $ sign
+    // T016 should not introduce a separate $ sign
     // Count $ signs — should be exactly 1
     const dollarCount = (container.textContent?.match(/\$/g) ?? []).length;
     expect(dollarCount).toBe(1);
@@ -100,15 +100,15 @@ describe("ShippedCard — cost badge rendering", () => {
   });
 });
 
-describe("ShippedCard — summary snippet (BL-026)", () => {
+describe("ShippedCard — summary snippet (T026)", () => {
   it("renders a short summary verbatim beneath the title", () => {
     const item = makeItem({
-      id: "BL-100",
+      id: "T100",
       title: "Short summary item",
       summary: "All tests pass; visual verified.",
     });
     render(<ShippedCard items={[item]} />);
-    const snippet = screen.getByTestId("shipped-summary-BL-100");
+    const snippet = screen.getByTestId("shipped-summary-T100");
     expect(snippet.textContent).toBe("All tests pass; visual verified.");
     expect(snippet.textContent).not.toMatch(/…$/);
   });
@@ -117,12 +117,12 @@ describe("ShippedCard — summary snippet (BL-026)", () => {
     const longText =
       "User message boxes in the Live tab transcript are now collapsible and collapsed by default, reducing visual noise considerably across long sessions.";
     const item = makeItem({
-      id: "BL-101",
+      id: "T101",
       title: "Long summary item",
       summary: longText,
     });
     render(<ShippedCard items={[item]} />);
-    const snippet = screen.getByTestId("shipped-summary-BL-101");
+    const snippet = screen.getByTestId("shipped-summary-T101");
     expect(snippet.textContent).toMatch(/…$/);
     // Snippet body without ellipsis should be ≤80 chars
     expect((snippet.textContent ?? "").length).toBeLessThanOrEqual(81);
@@ -131,39 +131,39 @@ describe("ShippedCard — summary snippet (BL-026)", () => {
   });
 
   it("does not render a snippet when item has no summary", () => {
-    const item = makeItem({ id: "BL-102", summary: undefined });
+    const item = makeItem({ id: "T102", summary: undefined });
     render(<ShippedCard items={[item]} />);
-    expect(screen.queryByTestId("shipped-summary-BL-102")).toBeNull();
+    expect(screen.queryByTestId("shipped-summary-T102")).toBeNull();
   });
 
   it("renders snippets for multiple items independently", () => {
     const items: TaskItem[] = [
-      makeItem({ id: "BL-103", title: "First", summary: "First summary text." }),
-      makeItem({ id: "BL-104", title: "Second", summary: undefined }),
-      makeItem({ id: "BL-105", title: "Third", summary: "Third summary text." }),
+      makeItem({ id: "T103", title: "First", summary: "First summary text." }),
+      makeItem({ id: "T104", title: "Second", summary: undefined }),
+      makeItem({ id: "T105", title: "Third", summary: "Third summary text." }),
     ];
     render(<ShippedCard items={items} />);
-    expect(screen.getByTestId("shipped-summary-BL-103")).toBeTruthy();
-    expect(screen.queryByTestId("shipped-summary-BL-104")).toBeNull();
-    expect(screen.getByTestId("shipped-summary-BL-105")).toBeTruthy();
+    expect(screen.getByTestId("shipped-summary-T103")).toBeTruthy();
+    expect(screen.queryByTestId("shipped-summary-T104")).toBeNull();
+    expect(screen.getByTestId("shipped-summary-T105")).toBeTruthy();
   });
 
   it("does not render summary snippets in the changelog branch", () => {
     const entries = [
-      { title: "Shipped feature", details: "**Built:** BL-106", date: "2026-04-24" },
+      { title: "Shipped feature", details: "**Built:** T106", date: "2026-04-24" },
     ];
     const items: TaskItem[] = [
-      makeItem({ id: "BL-106", summary: "Should be ignored under changelog mode." }),
+      makeItem({ id: "T106", summary: "Should be ignored under changelog mode." }),
     ];
     render(<ShippedCard items={items} changelog={entries} />);
-    expect(screen.queryByTestId("shipped-summary-BL-106")).toBeNull();
+    expect(screen.queryByTestId("shipped-summary-T106")).toBeNull();
   });
 });
 
 describe("ShippedCard — changelog path is unaffected", () => {
   it("renders changelog entries when changelog prop provided", () => {
     const entries = [
-      { title: "Shipped feature", details: "**Built:** BL-015", date: "2026-04-24" },
+      { title: "Shipped feature", details: "**Built:** T015", date: "2026-04-24" },
     ];
     const { container } = render(
       <ShippedCard items={[]} changelog={entries} />
@@ -173,7 +173,7 @@ describe("ShippedCard — changelog path is unaffected", () => {
 
   it("does not render cost badge in changelog render path", () => {
     const entries = [
-      { title: "Shipped feature", details: "**Built:** BL-015", date: "2026-04-24" },
+      { title: "Shipped feature", details: "**Built:** T015", date: "2026-04-24" },
     ];
     // Pass items with cost_usd — they should be ignored when changelog is present
     const items: TaskItem[] = [makeItem({ cost_usd: 5.0 })];

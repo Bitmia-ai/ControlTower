@@ -1,7 +1,7 @@
 /**
  * lib/backlog-id.ts
  *
- * Centralised BL-xxx ID allocation.
+ * Centralised T<N> ID allocation.
  *
  * SINGLE-PROCESS ASSUMPTION: This utility is designed for a single-process
  * Next.js API server. It is NOT safe for concurrent multi-process usage
@@ -12,24 +12,24 @@
 
 import fs from "fs/promises";
 import path from "path";
-import { readState, scanMaxBacklogId } from "./redeye-files";
+import { readState, scanMaxTaskId } from "./redeye-files";
 import { atomicWriteJson } from "./atomic-write";
 import type { RedEyeState } from "./redeye-types";
 
 /**
- * Compute and atomically allocate the next BL-xxx ID for the given project.
+ * Compute and atomically allocate the next T<N> ID for the given project.
  *
  * Algorithm:
  *   1. Read `counters.next_task_id` from `state.json` (0 if file missing).
  *   2. Scan `backlog.md` for the highest numeric BL suffix found.
  *   3. nextId = max(stateCounter - 1, scanMax) + 1
  *   4. Write `nextId + 1` back to `state.json` as the new `counters.next_task_id`.
- *   5. Return `"BL-" + String(nextId).padStart(3, "0")`.
+ *   5. Return `"T" + String(nextId).padStart(3, "0")`.
  */
 export async function getNextTaskId(projectPath: string): Promise<string> {
   const [state, scanMax] = await Promise.all([
     readState(projectPath),
-    scanMaxBacklogId(projectPath),
+    scanMaxTaskId(projectPath),
   ]);
 
   const stateCounter: number = state?.counters?.next_task_id ?? 0;
@@ -41,19 +41,19 @@ export async function getNextTaskId(projectPath: string): Promise<string> {
   const nextId = lastAllocated + 1;
 
   // Write updated counter back atomically (full JSON rewrite).
-  await writeNextBlId(projectPath, state, nextId + 1);
+  await writeNextTaskId(projectPath, state, nextId + 1);
 
-  return "BL-" + String(nextId).padStart(3, "0");
+  return "T" + String(nextId).padStart(3, "0");
 }
 
 // ---------------------------------------------------------------------------
 // Private helpers
 // ---------------------------------------------------------------------------
 
-async function writeNextBlId(
+async function writeNextTaskId(
   projectPath: string,
   existingState: RedEyeState | null,
-  newNextBlId: number
+  newNextTaskId: number
 ): Promise<void> {
   const redeyeDir = path.resolve(projectPath, ".redeye");
   const stateFilePath = path.join(redeyeDir, "state.json");
@@ -67,7 +67,7 @@ async function writeNextBlId(
       ...existing,
       counters: {
         ...(existing.counters as Record<string, unknown>),
-        next_task_id: newNextBlId,
+        next_task_id: newNextTaskId,
       },
     };
   } else {
@@ -76,7 +76,7 @@ async function writeNextBlId(
     updated = {
       schema_version: 1,
       counters: {
-        next_task_id: newNextBlId,
+        next_task_id: newNextTaskId,
         next_q_id: 1,
       },
     };

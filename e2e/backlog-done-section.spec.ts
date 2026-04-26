@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * BL-041 — Done tasks in a separate collapsible section on the backlog page.
+ * T041 — Done tasks in a separate collapsible section on the tasks page.
  *
  * Verifies:
  *   - Done section header is visible and collapsed by default (count badge shown,
@@ -10,23 +10,23 @@ import { test, expect } from "@playwright/test";
  *   - Clicking again collapses it.
  *   - Won't Do section follows the same pattern.
  *
- * These tests run against the haze project (/project/1/backlog) on localhost:3200.
+ * These tests run against the haze project (/project/1/tasks) on localhost:3200.
  */
-test.describe("Backlog Done/Won't Do collapsible sections (BL-041)", () => {
-  test("backlog page loads without console errors", async ({ page }) => {
+test.describe("Backlog Done/Won't Do collapsible sections (T041)", () => {
+  test("tasks page loads without console errors", async ({ page }) => {
     const errors: string[] = [];
     page.on("console", (msg) => {
       if (msg.type() === "error") errors.push(msg.text());
     });
 
-    await page.goto("http://localhost:3200/project/1/backlog");
+    await page.goto("http://localhost:3200/project/1/tasks");
     await page.waitForLoadState("networkidle");
 
     expect(errors).toHaveLength(0);
   });
 
   test("Done section header is visible and collapsed by default", async ({ page }) => {
-    await page.goto("http://localhost:3200/project/1/backlog");
+    await page.goto("http://localhost:3200/project/1/tasks");
     await page.waitForLoadState("networkidle");
 
     // Find the Done toggle button — it has aria-label starting with "Show done"
@@ -38,7 +38,7 @@ test.describe("Backlog Done/Won't Do collapsible sections (BL-041)", () => {
   });
 
   test("clicking Done header expands and collapses the section", async ({ page }) => {
-    await page.goto("http://localhost:3200/project/1/backlog");
+    await page.goto("http://localhost:3200/project/1/tasks");
     await page.waitForLoadState("networkidle");
 
     const doneToggle = page.getByRole("button", { name: /show done items/i });

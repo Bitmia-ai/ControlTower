@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  * Tracks the active backlog-item ID across renders and fires side-effect
  * callbacks when it transitions.
  *
- * Semantics (BL-046):
+ * Semantics (T046):
  *   - First observation (previous is `undefined`): if the new id is non-null,
  *     fire `onStart(newId)` to record a baseline for the already-running task.
  *     No snapshot fires on first observation.

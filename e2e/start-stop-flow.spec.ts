@@ -1,5 +1,5 @@
 /**
- * E2E tests for Start/Stop flow (BL-003)
+ * E2E tests for Start/Stop flow (T003)
  *
  * Uses Playwright route interception to mock the start/stop/project APIs,
  * avoiding real Claude process spawning.
@@ -20,11 +20,11 @@ const PROJECT_DETAIL_STOPPED = {
       iteration: 10,
       phase: "TRIAGE",
       phase_status: "pending",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: { confidence: "HIGH", env_status: "healthy", iterations_since_last_deploy: 0, questions_awaiting_ceo: 0, blocked_items_count: 0 },
     },
-    backlog: [],
+    tasks: [],
     questions: [],
   },
 };
@@ -41,8 +41,8 @@ const PROJECT_DETAIL_RUNNING = {
       ...PROJECT_DETAIL_STOPPED.data.state,
       phase: "BUILD",
       phase_status: "pending",
-      backlog_item: "BL-007",
-      backlog_title: "Add widget support",
+      task_id: "T007",
+      task_title: "Add widget support",
     },
   },
 };

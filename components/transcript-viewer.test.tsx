@@ -187,7 +187,7 @@ describe("TranscriptViewer — session boundary separator", () => {
   });
 });
 
-describe("TranscriptViewer — aria-labels on toggles (BL-024)", () => {
+describe("TranscriptViewer — aria-labels on toggles (T024)", () => {
   it("ToolUseCard exposes dynamic aria-label and aria-expanded that toggle on click", () => {
     const event: ClaudeStreamEvent = {
       type: "assistant",
@@ -239,7 +239,7 @@ describe("TranscriptViewer — aria-labels on toggles (BL-024)", () => {
   });
 });
 
-describe("TranscriptViewer — BL-068 precision-instrument design tokens", () => {
+describe("TranscriptViewer — T068 precision-instrument design tokens", () => {
   it("ToolUseCard renders a CARD-LABEL eyebrow ('tool call') with mono uppercase tracking and an indigo left rail", () => {
     const event: ClaudeStreamEvent = {
       type: "assistant",

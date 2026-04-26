@@ -217,7 +217,7 @@ async function readFirstLineTimestamp(filePath: string, fallback: number): Promi
  *
  * Returns `[]` if the CLI projects directory is unreadable. Never throws.
  *
- * KNOWN PERFORMANCE ISSUE (BL-053 review m-1, accepted):
+ * KNOWN PERFORMANCE ISSUE (T053 review m-1, accepted):
  * Each transcript file is opened and streamed three times per call:
  *   1) `sumTranscriptFileCost` — full scan for token usage
  *   2) `extractSessionPhases` — full scan for phase markers

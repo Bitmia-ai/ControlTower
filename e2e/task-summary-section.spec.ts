@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * BL-026 — Collapsible LLM summary on completed backlog items.
+ * T026 — Collapsible LLM summary on completed backlog items.
  *
  * Verifies:
  *   - On a done backlog item with a Summary field, the green-accented
@@ -11,13 +11,13 @@ import { test, expect } from "@playwright/test";
  *     snippet for done items.
  *
  * Tests run against the ControlTower dashboard on localhost:3200, project 0
- * (ControlTower itself, since BL-040/BL-044/BL-048 etc. carry summaries).
+ * (ControlTower itself, since T040/T044/T048 etc. carry summaries).
  */
 
-test.describe("Backlog Summary section (BL-026)", () => {
+test.describe("Tasks Summary section (T026)", () => {
   test("done item detail page shows expanded Summary section", async ({ page }) => {
-    // BL-048 is known to have a Summary line in backlog.md
-    await page.goto("http://localhost:3200/project/0/backlog/BL-048");
+    // T048 is known to have a Summary line in backlog.md
+    await page.goto("http://localhost:3200/project/0/tasks/T048");
     await page.waitForLoadState("networkidle");
 
     const summary = page.getByTestId("summary-section");
@@ -35,7 +35,7 @@ test.describe("Backlog Summary section (BL-026)", () => {
   });
 
   test("chevron toggle collapses the Summary section", async ({ page }) => {
-    await page.goto("http://localhost:3200/project/0/backlog/BL-048");
+    await page.goto("http://localhost:3200/project/0/tasks/T048");
     await page.waitForLoadState("networkidle");
 
     const summary = page.getByTestId("summary-section");
@@ -57,7 +57,7 @@ test.describe("Backlog Summary section (BL-026)", () => {
     await page.waitForLoadState("networkidle");
 
     // The card lists recently shipped backlog items; at least one of the
-    // recent ones (BL-040/041/043/044/048) carries a Summary line.
+    // recent ones (T040/041/043/044/048) carries a Summary line.
     const card = page.locator("text=Recently Shipped").locator("..");
     await expect(card).toBeVisible();
 

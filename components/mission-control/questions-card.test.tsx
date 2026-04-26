@@ -18,7 +18,7 @@ function makeQuestion(overrides: Partial<InboxQuestion> = {}): InboxQuestion {
   } as InboxQuestion;
 }
 
-describe("QuestionsCard — empty state (BL-067 strip)", () => {
+describe("QuestionsCard — empty state (T067 strip)", () => {
   it("renders compact strip (not full card) when no pending questions", () => {
     const { container } = render(<QuestionsCard questions={[]} />);
     // Strip uses px-4 py-2.5 rounded-md, not p-5 rounded-lg

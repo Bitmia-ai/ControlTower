@@ -33,13 +33,13 @@ describe("WorkingOnCard — idle state", () => {
   });
 });
 
-describe("WorkingOnCard — backlog empty stop state", () => {
+describe("WorkingOnCard — task list empty stop state", () => {
   it("renders backlog-empty message when !running, phase=HARDEN, upNextCount=0", () => {
     const state = makeState({ phase: "HARDEN", task_title: null });
     const { container } = render(
       <WorkingOnCard state={state} running={false} upNextCount={0} />
     );
-    expect(container.textContent).toContain("RedEye stopped — backlog empty.");
+    expect(container.textContent).toContain("RedEye stopped — task list empty.");
     expect(container.textContent).toContain("Add tasks to resume.");
     const amberDot = container.querySelector(".bg-amber-500");
     expect(amberDot).toBeTruthy();
@@ -51,7 +51,7 @@ describe("WorkingOnCard — backlog empty stop state", () => {
       <WorkingOnCard state={state} running={false} upNextCount={1} />
     );
     expect(container.textContent).toContain("RedEye is idle");
-    expect(container.textContent).not.toContain("backlog empty");
+    expect(container.textContent).not.toContain("task list empty");
   });
 
   it("renders plain idle when !running, phase=BUILD, upNextCount=0", () => {
@@ -60,7 +60,7 @@ describe("WorkingOnCard — backlog empty stop state", () => {
       <WorkingOnCard state={state} running={false} upNextCount={0} />
     );
     expect(container.textContent).toContain("RedEye is idle");
-    expect(container.textContent).not.toContain("backlog empty");
+    expect(container.textContent).not.toContain("task list empty");
   });
 });
 
@@ -115,9 +115,9 @@ describe("WorkingOnCard — running with phase, no task", () => {
   });
 });
 
-describe("WorkingOnCard — BL-067 hero treatment", () => {
+describe("WorkingOnCard — T067 hero treatment", () => {
   it("uses p-6 and min-h-[160px] (hero padding/height)", () => {
-    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "T001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).toContain("p-6");
@@ -125,14 +125,14 @@ describe("WorkingOnCard — BL-067 hero treatment", () => {
   });
 
   it("applies green wash bg when running=true", () => {
-    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "T001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).toContain("bg-green-50/30");
   });
 
   it("does NOT apply green wash bg when running=false", () => {
-    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "T001" });
     const { container } = render(<WorkingOnCard state={state} running={false} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).not.toContain("bg-green-50/30");
@@ -140,7 +140,7 @@ describe("WorkingOnCard — BL-067 hero treatment", () => {
   });
 
   it("renders task title with text-lg font-semibold (hero typography)", () => {
-    const state = makeState({ phase: "BUILD", task_title: "My Feature", task_id: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "My Feature", task_id: "T001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const title = container.querySelector("p.text-lg.font-semibold");
     expect(title).toBeTruthy();
@@ -150,20 +150,20 @@ describe("WorkingOnCard — BL-067 hero treatment", () => {
 
 describe("WorkingOnCard — running with task", () => {
   it("renders task title", () => {
-    const state = makeState({ phase: "BUILD", task_title: "My Feature", task_id: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "My Feature", task_id: "T001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     expect(container.textContent).toContain("My Feature");
   });
 
   it("renders phase badge with shimmer when running=true and has task", () => {
-    const state = makeState({ phase: "DEPLOY", task_title: "Ship it", task_id: "BL-002" });
+    const state = makeState({ phase: "DEPLOY", task_title: "Ship it", task_id: "T002" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector(".phase-badge-shimmer");
     expect(badge).toBeTruthy();
   });
 
   it("badge has larger padding px-3 py-1", () => {
-    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-003" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "T003" });
     const { container } = render(<WorkingOnCard state={state} running={false} />);
     const badge = container.querySelector("[class*='px-3'][class*='py-1']");
     expect(badge).toBeTruthy();

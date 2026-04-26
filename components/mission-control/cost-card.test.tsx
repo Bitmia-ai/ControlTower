@@ -84,7 +84,7 @@ describe("CostCard sparkline integration", () => {
       expect(document.querySelector("svg[data-testid='sparkline']")).not.toBeNull();
     });
     expect(screen.getByText("Last 3 sessions")).toBeTruthy();
-    // BL-064: sparkline SVG has fixed height to prevent horizontal stretching.
+    // T064: sparkline SVG has fixed height to prevent horizontal stretching.
     const svg = document.querySelector("svg[data-testid='sparkline']") as SVGElement | null;
     expect(svg?.getAttribute("height")).toBe("80");
     const wrapper = svg?.parentElement;

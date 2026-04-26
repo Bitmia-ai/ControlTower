@@ -10,13 +10,13 @@ import fs from "fs/promises";
 
 type Params = { params: Promise<{ id: string; taskId: string }> };
 
-const TASK_ID_RE = /^BL-\d+$/;
+const TASK_ID_RE = /^T\d+$/;
 const MAX_BODY_BYTES = 64 * 1024;
 
 export async function GET(req: NextRequest, { params }: Params) {
   const { id, taskId } = await params;
   if (!TASK_ID_RE.test(taskId)) {
-    return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+    return NextResponse.json({ error: "taskId must match T<number>" }, { status: 400 });
   }
   const index = parseInt(id, 10);
   const project = await getProjectByIndex(index);
@@ -44,7 +44,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   try {
     const { id, taskId } = await params;
     if (!TASK_ID_RE.test(taskId)) {
-      return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+      return NextResponse.json({ error: "taskId must match T<number>" }, { status: 400 });
     }
     const index = parseInt(id, 10);
     const project = await getProjectByIndex(index);
@@ -147,7 +147,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
   try {
     const { id, taskId } = await params;
     if (!TASK_ID_RE.test(taskId)) {
-      return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
+      return NextResponse.json({ error: "taskId must match T<number>" }, { status: 400 });
     }
     const index = parseInt(id, 10);
     const project = await getProjectByIndex(index);

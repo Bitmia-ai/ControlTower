@@ -1,5 +1,5 @@
 /**
- * E2E tests for Backlog CRUD flow (BL-049)
+ * E2E tests for Backlog CRUD flow (T049)
  *
  * Tests adding a backlog item via the AddBacklogDialog, verifying it appears
  * in the list, navigating to the detail page, and confirming fields render.
@@ -34,8 +34,8 @@ interface MinimalProjectDetail {
       iteration: number;
       phase: string;
       phase_status: string;
-      backlog_item: null;
-      backlog_title: null;
+      task_id: null;
+      task_title: null;
       health: {
         confidence: string;
         env_status: string;
@@ -68,8 +68,8 @@ const MINIMAL_PROJECT_DETAIL: MinimalProjectDetail = {
       iteration: 10,
       phase: "TRIAGE",
       phase_status: "complete",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: {
         confidence: "HIGH",
         env_status: "healthy",
@@ -90,7 +90,7 @@ const MINIMAL_PROJECT_DETAIL: MinimalProjectDetail = {
 
 const NEW_ITEM_DETAIL = {
   data: {
-    id: "BL-001",
+    id: "T001",
     title: "My new test task",
     type: "feature",
     priority: "P1",
@@ -101,7 +101,7 @@ const NEW_ITEM_DETAIL = {
   },
 };
 
-test.describe("Backlog CRUD (BL-049)", () => {
+test.describe("Backlog CRUD (T049)", () => {
   test("add a task via dialog, verify it appears in list, navigate to detail", async ({
     page,
   }) => {
@@ -114,7 +114,7 @@ test.describe("Backlog CRUD (BL-049)", () => {
         if (itemAdded) {
           detail.data.upNext = [
             {
-              id: "BL-001",
+              id: "T001",
               title: "My new test task",
               type: "feature",
               priority: "P1",
@@ -134,7 +134,7 @@ test.describe("Backlog CRUD (BL-049)", () => {
       }
     });
 
-    // Mock cost API (mission control uses it; backlog page itself does not)
+    // Mock cost API (mission control uses it; tasks page itself does not)
     await page.route("**/api/projects/0/cost", async (route) => {
       await route.fulfill({
         status: 200,
@@ -144,13 +144,13 @@ test.describe("Backlog CRUD (BL-049)", () => {
     });
 
     // Mock POST backlog — set flag so subsequent GET returns the new item
-    await page.route("**/api/projects/0/backlog", async (route) => {
+    await page.route("**/api/projects/0/tasks", async (route) => {
       if (route.request().method() === "POST") {
         itemAdded = true;
         await route.fulfill({
           status: 200,
           contentType: "application/json",
-          body: JSON.stringify({ data: { success: true, id: "BL-001" } }),
+          body: JSON.stringify({ data: { success: true, id: "T001" } }),
         });
       } else {
         await route.continue();
@@ -158,7 +158,7 @@ test.describe("Backlog CRUD (BL-049)", () => {
     });
 
     // Mock backlog item detail page
-    await page.route("**/api/projects/0/backlog/BL-001", async (route) => {
+    await page.route("**/api/projects/0/tasks/T001", async (route) => {
       await route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -175,8 +175,8 @@ test.describe("Backlog CRUD (BL-049)", () => {
       });
     });
 
-    // 1. Navigate to backlog page
-    await page.goto("/project/0/backlog", { waitUntil: "domcontentloaded" });
+    // 1. Navigate to tasks page
+    await page.goto("/project/0/tasks", { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(300);
 
     // 2. Click the "Add Item" button to open dialog
@@ -208,7 +208,7 @@ test.describe("Backlog CRUD (BL-049)", () => {
     await itemLink.click();
 
     // 9. Verify we land on the detail page
-    await page.waitForURL(/\/project\/0\/backlog\/BL-001/, { timeout: 5000 });
+    await page.waitForURL(/\/project\/0\/tasks\/T001/, { timeout: 5000 });
 
     // 10. Verify the title is displayed on the detail page
     await expect(page.getByText("My new test task")).toBeVisible({ timeout: 5000 });

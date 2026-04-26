@@ -1,5 +1,5 @@
 /**
- * E2E tests for the Steer tab (BL-063)
+ * E2E tests for the Steer tab (T063)
  *
  * Verifies the Steer tab appears in the project nav, the form is interactive,
  * submitting a directive POSTs to the API, and the directive list refreshes.
@@ -24,8 +24,8 @@ const MINIMAL_PROJECT_DETAIL = {
       iteration: 10,
       phase: "TRIAGE",
       phase_status: "complete",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: {
         confidence: "HIGH",
         env_status: "healthy",
@@ -44,7 +44,7 @@ const MINIMAL_PROJECT_DETAIL = {
   },
 };
 
-test.describe("Steer tab (BL-063)", () => {
+test.describe("Steer tab (T063)", () => {
   test("renders Steer tab, submits a directive, refreshes the list", async ({
     page,
   }) => {

@@ -1,5 +1,5 @@
 /**
- * E2E tests for BL-050 — phase-change toast notifications.
+ * E2E tests for T050 — phase-change toast notifications.
  *
  * Verifies that when the mission-control polling loop reports a new phase,
  * an in-app toast appears in the DOM. Uses Playwright route interception
@@ -8,7 +8,7 @@
 
 import { test, expect } from "@playwright/test";
 
-function detail(phase: string, backlog_title: string | null) {
+function detail(phase: string, task_title: string | null) {
   return {
     data: {
       project: {
@@ -23,8 +23,8 @@ function detail(phase: string, backlog_title: string | null) {
         iteration: 10,
         phase,
         phase_status: "in-progress",
-        backlog_item: "BL-100",
-        backlog_title,
+        task_id: "T100",
+        task_title,
         health: {
           confidence: "HIGH",
           env_status: "healthy",
@@ -44,7 +44,7 @@ function detail(phase: string, backlog_title: string | null) {
   };
 }
 
-test.describe("Phase-change toast notifications (BL-050)", () => {
+test.describe("Phase-change toast notifications (T050)", () => {
   test("toast appears when phase transitions PLAN -> BUILD via polling", async ({
     page,
   }) => {

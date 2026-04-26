@@ -1,5 +1,5 @@
 /**
- * E2E tests for dark/light mode (BL-009 T2)
+ * E2E tests for dark/light mode (T009 T2)
  *
  * Screenshots both color schemes across key pages.
  * App must be running at http://localhost:3200.
@@ -12,7 +12,7 @@ import * as path from "path";
 const PAGES = [
   { name: "home", path: "/" },
   { name: "mission-control", path: "/project/0" },
-  { name: "backlog", path: "/project/0/backlog" },
+  { name: "tasks", path: "/project/0/tasks" },
   { name: "history", path: "/project/0/history" },
   { name: "live", path: "/project/0/live" },
 ];

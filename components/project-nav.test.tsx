@@ -39,7 +39,7 @@ describe("ProjectNav", () => {
   });
 
   it("highlights Backlog tab when on backlog page", () => {
-    vi.mocked(usePathname).mockReturnValue("/project/1/backlog");
+    vi.mocked(usePathname).mockReturnValue("/project/1/tasks");
     render(<ProjectNav projectId="1" />);
     const backlogLink = screen.getByText("Tasks").closest("a");
     expect(backlogLink?.className).toContain("border-red-600");
@@ -49,7 +49,7 @@ describe("ProjectNav", () => {
   });
 
   it("highlights Backlog tab on backlog detail page", () => {
-    vi.mocked(usePathname).mockReturnValue("/project/1/backlog/BL-001");
+    vi.mocked(usePathname).mockReturnValue("/project/1/tasks/T001");
     render(<ProjectNav projectId="1" />);
     const backlogLink = screen.getByText("Tasks").closest("a");
     expect(backlogLink?.className).toContain("border-red-600");
@@ -73,7 +73,7 @@ describe("ProjectNav", () => {
     vi.mocked(usePathname).mockReturnValue("/project/42");
     render(<ProjectNav projectId="42" />);
     expect(screen.getByText("Overview").closest("a")?.getAttribute("href")).toBe("/project/42");
-    expect(screen.getByText("Tasks").closest("a")?.getAttribute("href")).toBe("/project/42/backlog");
+    expect(screen.getByText("Tasks").closest("a")?.getAttribute("href")).toBe("/project/42/tasks");
     expect(screen.getByText("History").closest("a")?.getAttribute("href")).toBe("/project/42/history");
     expect(screen.getByText("Live").closest("a")?.getAttribute("href")).toBe("/project/42/live");
     expect(screen.getByText("Schedules").closest("a")?.getAttribute("href")).toBe("/project/42/schedules");

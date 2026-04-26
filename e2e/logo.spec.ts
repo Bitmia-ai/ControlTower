@@ -1,5 +1,5 @@
 /**
- * E2E tests for the Control Tower split-weight logo mark (BL-047)
+ * E2E tests for the Control Tower split-weight logo mark (T047)
  *
  * Verifies the logo appears in the root layout header on every page,
  * is a link pointing to '/', and clicking it from a sub-page navigates home.
@@ -26,7 +26,7 @@ test.describe("Control Tower logo mark", () => {
   });
 
   test("clicking the logo from a sub-page navigates back to /", async ({ page }) => {
-    await page.goto("/project/0/backlog", { waitUntil: "domcontentloaded" });
+    await page.goto("/project/0/tasks", { waitUntil: "domcontentloaded" });
     const logoLink = page.getByRole("link", { name: /control tower/i });
     await logoLink.click();
     await page.waitForURL("**/", { timeout: 5000 });

@@ -180,13 +180,13 @@ describe("ControlsCard", () => {
     expect(onStop).toHaveBeenCalledTimes(1);
   });
 
-  it("renders Add to Backlog button with correct accessible label and fires click handler", async () => {
+  it("renders Add Task button with correct accessible label and fires click handler", async () => {
     const onAddBacklog = vi.fn();
     render(<ControlsCard running={false} onAddBacklog={onAddBacklog} />);
 
-    const btn = screen.getByRole("button", { name: /Add item to backlog/i });
+    const btn = screen.getByRole("button", { name: /Add task/i });
     expect(btn).toBeTruthy();
-    expect(btn.textContent).toContain("Add to Backlog");
+    expect(btn.textContent).toContain("Add Task");
 
     await act(async () => {
       fireEvent.click(btn);
@@ -195,16 +195,16 @@ describe("ControlsCard", () => {
     expect(onAddBacklog).toHaveBeenCalledTimes(1);
   });
 
-  it("BL-067 — uses p-4 (compact rail padding)", () => {
+  it("T067 — uses p-4 (compact rail padding)", () => {
     const { container } = render(<ControlsCard running={true} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).toContain("p-4");
     expect(card?.className).not.toContain("p-5");
   });
 
-  it("BL-067 — renders separator border-t between stop/pause and steer/backlog rows", () => {
+  it("T067 — renders separator border-t between stop/pause and steer/backlog rows", () => {
     const { container } = render(<ControlsCard running={true} />);
-    // Steer/Add-to-Backlog row gains border-t separator
+    // Steer/Add-Task row gains border-t separator
     const steerBtn = screen.getByRole("button", { name: /^Steer$/ });
     const row = steerBtn.parentElement as HTMLElement | null;
     expect(row?.className).toContain("border-t");

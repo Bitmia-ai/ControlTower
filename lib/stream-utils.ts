@@ -7,7 +7,7 @@ export interface TailJsonlOptions {
    * If set, instead of starting at the current end of file, start
    * `lookbackBytes` before the end and replay those bytes' worth of lines
    * immediately. This lets a mid-session consumer see the recent transcript
-   * (BL-013 reopened — bug #3). Partial leading lines are dropped so we never
+   * (T013 reopened — bug #3). Partial leading lines are dropped so we never
    * emit a truncated JSON fragment.
    */
   lookbackBytes?: number;
@@ -151,7 +151,7 @@ export interface SSEStreamOptions {
 
   /**
    * If set, replay the last `lookbackBytes` of the tailed file on connection
-   * so mid-session consumers see recent transcript (BL-013 reopened — bug #3).
+   * so mid-session consumers see recent transcript (T013 reopened — bug #3).
    */
   lookbackBytes?: number;
 }

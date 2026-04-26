@@ -100,7 +100,7 @@ export function CostCard({ projectId, running }: CostCardProps) {
         </div>
       ) : (
         <div className="space-y-3">
-          {/* BL-067: Stack session/total rows vertically for the 300px right rail. */}
+          {/* T067: Stack session/total rows vertically for the 300px right rail. */}
           <div className="space-y-1">
             <div className="flex items-baseline justify-between">
               <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500">

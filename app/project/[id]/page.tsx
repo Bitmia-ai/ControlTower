@@ -65,7 +65,7 @@ export default function ProjectPage({
     return () => clearInterval(interval);
   }, [fetchDetail]);
 
-  // BL-046: record per-task cost baseline on task start, delta on task end.
+  // T046: record per-task cost baseline on task start, delta on task end.
   // Both POSTs are fire-and-forget — they must not block the UI. Server-side
   // idempotency (cost-start AD-7 guard) prevents duplicate baselines.
   const activeId = detail ? (detail.state?.task_id ?? null) : undefined;
@@ -85,7 +85,7 @@ export default function ProjectPage({
   }, [id]);
   useTaskTransitionTracker(activeId, postCostStart, postCostSnapshot);
 
-  // BL-050: in-app + native notifications when RedEye phase transitions.
+  // T050: in-app + native notifications when RedEye phase transitions.
   // Hook is no-op until a real transition is observed (skips first mount).
   const phaseForNotifications = detail ? (detail.state?.phase ?? null) : undefined;
   const backlogTitleForNotifications = detail?.state?.task_title ?? null;
@@ -125,7 +125,7 @@ export default function ProjectPage({
   const stalled =
     detail?.project?.sessionStatus?.cto?.status === "stalled";
 
-  // BL-052: global keyboard shortcuts for mission-control actions.
+  // T052: global keyboard shortcuts for mission-control actions.
   // Disabled while any dialog is open to avoid double-handling key events.
   useKeyboardShortcuts({
     enabled: !answerOpen && !steerOpen && !backlogOpen,
@@ -164,7 +164,7 @@ export default function ProjectPage({
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 lg:items-start">
           {/*
-            BL-067: Asymmetric two-column command layout.
+            T067: Asymmetric two-column command layout.
             Left column = mission feed (WorkingOn hero, Questions, Shipped+UpNext).
             Right rail = control panel (Controls, Cost, Health) — fixed 300px.
           */}

@@ -62,7 +62,7 @@ export function AddTaskDialog({
         <Dialog.Overlay className="fixed inset-0 bg-black/70 z-40" />
         <Dialog.Content className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-2xl">
           <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-1">
-            Add to Backlog
+            Add Task
           </Dialog.Title>
           <Dialog.Description className="text-sm text-gray-500 dark:text-zinc-400 mb-5">
             Add a new item to the CEO request queue.

@@ -1,5 +1,5 @@
 /**
- * E2E tests for onboarding wizard (BL-005)
+ * E2E tests for onboarding wizard (T005)
  *
  * Uses Playwright route interception to mock API calls,
  * testing the Add Project → Onboarding Wizard flow.
@@ -47,7 +47,7 @@ test.describe("Onboarding wizard", () => {
               running: false,
             },
             state: null,
-            backlog: [],
+            tasks: [],
             questions: [],
           },
         }),

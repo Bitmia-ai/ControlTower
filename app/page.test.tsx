@@ -27,7 +27,7 @@ function dispatchVisibilityChange() {
   document.dispatchEvent(new Event("visibilitychange"));
 }
 
-describe("Home page header (BL-066)", () => {
+describe("Home page header (T066)", () => {
   beforeEach(() => {
     setVisibility("visible");
     // @ts-expect-error mock fetch

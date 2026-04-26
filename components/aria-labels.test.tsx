@@ -16,7 +16,7 @@ afterEach(() => {
   cleanup();
 });
 
-describe("AddProjectDialog aria-labels (BL-024)", () => {
+describe("AddProjectDialog aria-labels (T024)", () => {
   it("Name input is labelled by the visible 'Name' label via htmlFor/id", () => {
     render(
       <AddProjectDialog open={true} onOpenChange={vi.fn()} onAdded={vi.fn()} />
@@ -36,7 +36,7 @@ describe("AddProjectDialog aria-labels (BL-024)", () => {
   });
 });
 
-describe("AddTaskDialog aria-labels (BL-024)", () => {
+describe("AddTaskDialog aria-labels (T024)", () => {
   it("title input is reachable via its 'Task title' aria-label", () => {
     render(
       <AddTaskDialog
@@ -52,7 +52,7 @@ describe("AddTaskDialog aria-labels (BL-024)", () => {
   });
 });
 
-describe("SteerDialog aria-label (BL-024)", () => {
+describe("SteerDialog aria-label (T024)", () => {
   it("textarea is reachable via 'Steering directive' aria-label", () => {
     render(
       <SteerDialog
@@ -67,7 +67,7 @@ describe("SteerDialog aria-label (BL-024)", () => {
   });
 });
 
-describe("AnswerModal aria-label (BL-024)", () => {
+describe("AnswerModal aria-label (T024)", () => {
   it("textarea is reachable via 'Your answer' aria-label", () => {
     const question: InboxQuestion = {
       id: "Q-001",
@@ -88,7 +88,7 @@ describe("AnswerModal aria-label (BL-024)", () => {
   });
 });
 
-describe("OnboardingWizard Edit buttons aria-labels (BL-024)", () => {
+describe("OnboardingWizard Edit buttons aria-labels (T024)", () => {
   it("review-step Edit buttons each have a distinct aria-label", () => {
     // Render then walk to the review step. We mount the wizard, then click
     // through each Next button until we reach Review.

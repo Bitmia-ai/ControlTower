@@ -1,6 +1,6 @@
 // POST /api/projects/[id]/stop — writes a graceful STOP directive to .redeye/steering.md.
 // Aligns with the `/redeye:stop` slash command: no process kill; CTO finishes current
-// phase then exits at the next boundary. See docs/specs/BL-034-stop-pause-fix.md.
+// phase then exits at the next boundary. See docs/specs/T034-stop-pause-fix.md.
 
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";

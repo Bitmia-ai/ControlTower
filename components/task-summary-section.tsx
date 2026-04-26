@@ -11,7 +11,7 @@ interface SummarySectionProps {
 const PREVIEW_CHARS = 120;
 
 /**
- * Collapsible summary block (BL-026).
+ * Collapsible summary block (T026).
  *
  * Renders a green-accented section with the LLM-authored summary of a backlog
  * item. Expanded by default for done items; collapsed otherwise so non-done

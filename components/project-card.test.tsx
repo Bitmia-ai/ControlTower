@@ -49,7 +49,7 @@ describe("ProjectCard backlog-empty label", () => {
   });
 });
 
-describe("ProjectCard delete button aria-label (BL-024)", () => {
+describe("ProjectCard delete button aria-label (T024)", () => {
   afterEach(() => {
     cleanup();
   });
@@ -91,7 +91,7 @@ describe("ProjectCard Stop feedback", () => {
   });
 });
 
-describe("ProjectCard precision instrument redesign (BL-066)", () => {
+describe("ProjectCard precision instrument redesign (T066)", () => {
   afterEach(() => {
     cleanup();
   });

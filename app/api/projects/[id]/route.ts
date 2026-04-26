@@ -8,7 +8,7 @@ import { readProjectDetail, isInitialized } from "@/lib/redeye-files";
 import { getSessionStatus } from "@/lib/session-manager";
 import { resolveTranscriptFile } from "@/lib/transcript-file-resolver";
 
-// BL-013: the Live tab polls /transcript-status for its gating decision, but
+// T013: the Live tab polls /transcript-status for its gating decision, but
 // this detail endpoint also exposes `hasTranscript` as a convenience for
 // home-page cards and other consumers that don't want a second round-trip.
 
@@ -26,7 +26,7 @@ export async function GET(
   try {
     const sessionStatus = getSessionStatus(project.path);
     const initialized = await isInitialized(project.path);
-    // BL-013: hasTranscript lets the Live tab connect to the SSE stream
+    // T013: hasTranscript lets the Live tab connect to the SSE stream
     // whenever a recent transcript file exists, independent of whether the
     // session was spawned by Control Tower (`running`) or the user's CLI.
     const hasTranscript = resolveTranscriptFile(project.path) !== null;

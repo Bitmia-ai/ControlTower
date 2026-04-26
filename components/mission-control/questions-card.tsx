@@ -12,7 +12,7 @@ export function QuestionsCard({ questions, onAnswer }: QuestionsCardProps) {
   const hasPending = pending.length > 0;
   const first = pending[0];
 
-  // BL-067: When empty, collapse to a minimal strip — no eyebrow label, no
+  // T067: When empty, collapse to a minimal strip — no eyebrow label, no
   // card chrome, just a quiet status row that doesn't compete with the hero.
   if (!hasPending) {
     return (

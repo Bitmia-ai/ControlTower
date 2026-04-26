@@ -49,7 +49,7 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
     ? "border-t-amber-400"
     : "border-t-zinc-300 dark:border-t-zinc-700";
 
-  // BL-067: Hero treatment — increase padding, min-height, and add subtle
+  // T067: Hero treatment — increase padding, min-height, and add subtle
   // green wash when the loop is actively running.
   const runningWash = running ? "bg-green-50/30 dark:bg-green-950/10" : "bg-white dark:bg-zinc-900";
 
@@ -79,7 +79,7 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-amber-500" />
               <span className="text-amber-600 dark:text-amber-400 text-sm font-medium">
-                RedEye stopped — backlog empty.
+                RedEye stopped — task list empty.
               </span>
             </div>
             <p className="text-xs text-gray-500 dark:text-zinc-500 ml-4">

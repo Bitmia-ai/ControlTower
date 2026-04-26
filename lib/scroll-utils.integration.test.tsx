@@ -1,9 +1,9 @@
-// Integration test for BL-032 sticky-bottom behavior.
+// Integration test for T032 sticky-bottom behavior.
 //
 // T2 in the spec called for Playwright visual verification, but the
 // local test environment has no active transcript on the Live page
 // and the transcript-status route is 404ing on all projects (a
-// pre-existing issue unrelated to BL-032). Rather than skip verification,
+// pre-existing issue unrelated to T032). Rather than skip verification,
 // we exercise the exact same sticky-bottom state machine used by the
 // Live page here: a minimal component that mirrors the
 // listener + ref + scrolledAway wiring from app/project/[id]/live/page.tsx.
@@ -62,7 +62,7 @@ function setScrollGeometry(scrollY: number, innerHeight: number, scrollHeight: n
   });
 }
 
-describe("Live page sticky-bottom label (BL-032 T2 integration)", () => {
+describe("Live page sticky-bottom label (T032 T2 integration)", () => {
   beforeEach(() => {
     // Baseline: near bottom of a tall doc
     setScrollGeometry(3000, 800, 3800);

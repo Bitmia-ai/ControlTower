@@ -1,8 +1,8 @@
 /**
- * E2E tests for BL-024 — aria-labels on interactive UI controls.
+ * E2E tests for T024 — aria-labels on interactive UI controls.
  *
  * Asserts that the dashboard's icon-only buttons and form fields are
- * reachable by their accessible names (the ones added by BL-024). These
+ * reachable by their accessible names (the ones added by T024). These
  * use Playwright's getByRole/getByLabel which only resolves when the
  * accessible-name lookup succeeds — i.e. the aria-label / htmlFor /
  * <label> wiring is correct.
@@ -10,7 +10,7 @@
 
 import { test, expect } from "@playwright/test";
 
-test.describe("BL-024 aria-labels", () => {
+test.describe("T024 aria-labels", () => {
   test("Add Project dialog: Name and Path inputs are reachable via getByLabel", async ({
     page,
   }) => {

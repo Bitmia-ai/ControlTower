@@ -1,5 +1,5 @@
 /**
- * E2E tests for BL-053 — session history page with phase timeline.
+ * E2E tests for T053 — session history page with phase timeline.
  *
  * Verifies:
  *   - "Sessions" heading renders above the iteration log
@@ -25,8 +25,8 @@ const PROJECT_DETAIL = {
       iteration: 12,
       phase: "TRIAGE",
       phase_status: "complete",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       health: {
         confidence: "HIGH",
         env_status: "healthy",
@@ -41,7 +41,7 @@ const PROJECT_DETAIL = {
     upNext: [],
     recentlyShipped: [],
     recentChangelog: [
-      { title: "BL-001 done", details: "First feature shipped.", date: "2026-04-01" },
+      { title: "T001 done", details: "First feature shipped.", date: "2026-04-01" },
     ],
     steeringDirectives: [],
   },
@@ -78,7 +78,7 @@ const SESSION_HISTORY = {
   },
 };
 
-test.describe("Session history page (BL-053)", () => {
+test.describe("Session history page (T053)", () => {
   test.beforeEach(async ({ page }) => {
     await page.route("**/api/projects/0", (route) =>
       route.fulfill({

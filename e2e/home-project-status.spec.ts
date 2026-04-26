@@ -1,13 +1,13 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * BL-018 — Home page project cards show current phase and active task.
+ * T018 — Home page project cards show current phase and active task.
  *
  * These tests verify the null/stopped path (no active session): cards must
  * render without errors, show "No active task", and display the Idle badge.
  * The running path is verified by TypeScript types + unit tests for the API.
  */
-test.describe("Home page project status cards (BL-018)", () => {
+test.describe("Home page project status cards (T018)", () => {
   test("home page loads without console errors", async ({ page }) => {
     const errors: string[] = [];
     page.on("console", (msg) => {

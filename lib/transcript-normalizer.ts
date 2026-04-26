@@ -32,7 +32,7 @@ interface TranscriptEnvelope {
  * Returns an array because a single assistant envelope can carry multiple
  * content blocks (e.g. thinking + text) that each map to a distinct event.
  *
- * Maps the CLI envelope format described in BL-013 AD-2 to the
+ * Maps the CLI envelope format described in T013 AD-2 to the
  * ClaudeStreamEvent shape used by TranscriptViewer.
  */
 export function normalizeTranscriptLine(raw: string): ClaudeStreamEvent[] {

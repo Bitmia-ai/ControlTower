@@ -72,7 +72,7 @@ export function parseTasks(content: string): TaskItem[] {
     const blocks = extractItemBlocks(sectionContent);
 
     for (const { header: itemHeader, body } of blocks) {
-      const headerMatch = itemHeader.match(/^### (BL-\d+):\s*(.+)$/);
+      const headerMatch = itemHeader.match(/^### (T\d+):\s*(.+)$/);
       if (!headerMatch) continue;
 
       const [, id, title] = headerMatch;
@@ -222,7 +222,7 @@ export function parseChangelog(content: string): ChangelogEntry[] {
     const rawBody = content.substring(bodyStart, bodyEnd).trim();
     const details = rawBody.replace(/^---\s*/m, "").trim();
 
-    const builtMatch = details.match(/\*\*Built:\*\*\s*(?:BL-\d+\s*[-—]\s*)?(.+)/);
+    const builtMatch = details.match(/\*\*Built:\*\*\s*(?:T\d+\s*[-—]\s*)?(.+)/);
     const displayTitle = builtMatch ? builtMatch[1].trim() : title;
 
     entries.push({ title: displayTitle, details, date });

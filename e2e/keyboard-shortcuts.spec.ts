@@ -1,11 +1,11 @@
 /**
- * E2E tests for BL-052 — keyboard shortcuts for mission-control actions.
+ * E2E tests for T052 — keyboard shortcuts for mission-control actions.
  *
  * Verifies that:
  *   - Pressing 'x' on the project page with a running project triggers POST /stop
  *   - Pressing 's' on an idle project triggers POST /start
- *   - Pressing 'b' opens the Add to Backlog dialog
- *   - 'g' then 'b' chord navigates to the backlog page
+ *   - Pressing 'b' opens the Add Task dialog
+ *   - 'g' then 'b' chord navigates to the tasks page
  *   - kbd hint badges are rendered in the controls card and nav
  */
 
@@ -28,8 +28,8 @@ function detail(running: boolean) {
         iteration: 1,
         phase: "BUILD",
         phase_status: "in-progress",
-        backlog_item: null,
-        backlog_title: null,
+        task_id: null,
+        task_title: null,
         health: {
           confidence: "HIGH",
           env_status: "healthy",
@@ -79,7 +79,7 @@ async function stubCommon(page: import("@playwright/test").Page) {
   );
 }
 
-test.describe("Keyboard shortcuts (BL-052)", () => {
+test.describe("Keyboard shortcuts (T052)", () => {
   test("kbd hint badges render on ControlsCard buttons", async ({ page }) => {
     await page.route("**/api/projects/0", (route) =>
       route.fulfill({
@@ -95,8 +95,8 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
     const startBtn = page.getByRole("button", { name: /^Start/ });
     await expect(startBtn.locator("kbd", { hasText: "S" })).toBeVisible();
 
-    // Add to Backlog button contains B kbd badge
-    const addBtn = page.getByRole("button", { name: /Add item to backlog/i });
+    // Add Task button contains B kbd badge
+    const addBtn = page.getByRole("button", { name: /Add task/i });
     await expect(addBtn.locator("kbd", { hasText: "B" })).toBeVisible();
   });
 
@@ -112,7 +112,7 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
     await page.goto("/project/0", { waitUntil: "domcontentloaded" });
 
     await expect(
-      page.getByRole("link", { name: /^Backlog$/ }).locator("kbd", { hasText: "GB" })
+      page.getByRole("link", { name: /^Tasks$/ }).locator("kbd", { hasText: "GB" })
     ).toBeVisible();
     await expect(
       page.getByRole("link", { name: /^History$/ }).locator("kbd", { hasText: "GH" })
@@ -179,7 +179,7 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
     expect(startCalled).toBe(true);
   });
 
-  test("pressing 'b' opens the Add to Backlog dialog", async ({ page }) => {
+  test("pressing 'b' opens the Add Task dialog", async ({ page }) => {
     await page.route("**/api/projects/0", (route) =>
       route.fulfill({
         status: 200,
@@ -189,7 +189,7 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
     );
     await stubCommon(page);
     await page.goto("/project/0", { waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("button", { name: /Add item to backlog/i })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Add task/i })).toBeVisible();
 
     // Dialog not yet open
     await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -201,7 +201,7 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
     await expect(page.getByRole("dialog")).toBeVisible({ timeout: 3000 });
   });
 
-  test("'g' then 'b' chord navigates to backlog page", async ({ page }) => {
+  test("'g' then 'b' chord navigates to tasks page", async ({ page }) => {
     await page.route("**/api/projects/0", (route) =>
       route.fulfill({
         status: 200,
@@ -209,7 +209,7 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
         body: JSON.stringify(detail(false)),
       })
     );
-    await page.route("**/api/projects/0/backlog**", (route) =>
+    await page.route("**/api/projects/0/tasks**", (route) =>
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -224,7 +224,7 @@ test.describe("Keyboard shortcuts (BL-052)", () => {
     await page.keyboard.press("g");
     await page.keyboard.press("b");
 
-    await page.waitForURL("**/project/0/backlog", { timeout: 5000 });
-    expect(page.url()).toMatch(/\/project\/0\/backlog$/);
+    await page.waitForURL("**/project/0/tasks", { timeout: 5000 });
+    expect(page.url()).toMatch(/\/project\/0\/tasks$/);
   });
 });

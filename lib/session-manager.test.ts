@@ -1,6 +1,6 @@
 // @vitest-environment node
 /**
- * Unit tests for session-manager.ts stall detection logic (BL-010 T6).
+ * Unit tests for session-manager.ts stall detection logic (T010 T6).
  *
  * Tests cover makeSessionInfo returning:
  *  1. "running"  — fresh transcript mtime, process alive

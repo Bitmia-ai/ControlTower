@@ -2,7 +2,7 @@
 // Unlike graceful /stop (which writes a STOP directive and waits for the
 // next phase boundary), this calls stopSession() which sends SIGTERM and
 // falls back to SIGKILL after 10s. Use when the session is hung or
-// unresponsive. See docs/specs/BL-037-force-stop.md.
+// unresponsive. See docs/specs/T037-force-stop.md.
 
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";

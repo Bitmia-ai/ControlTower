@@ -1,5 +1,5 @@
 /**
- * E2E smoke tests for BL-056 tab redesign.
+ * E2E smoke tests for T056 tab redesign.
  * Verifies that the backlog, history, and live tabs render with the
  * expected new structural elements (section headers, section dividers, toolbar).
  *
@@ -8,14 +8,14 @@
 
 import { test, expect } from "@playwright/test";
 
-test.describe("BL-056: Tab redesign smoke tests", () => {
-  test("Backlog tab renders without errors and shows main page structure", async ({
+test.describe("T056: Tab redesign smoke tests", () => {
+  test("Tasks tab renders without errors and shows main page structure", async ({
     page,
   }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
 
-    await page.goto("http://localhost:3200/project/0/backlog", {
+    await page.goto("http://localhost:3200/project/0/tasks", {
       waitUntil: "networkidle",
     });
 

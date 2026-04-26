@@ -1,7 +1,7 @@
 /**
- * BL-061: Keyboard-shortcut hint badges removed from project nav tabs.
+ * T061: Keyboard-shortcut hint badges removed from project nav tabs.
  *
- * Verifies that no <kbd> elements appear in any nav link after BL-061 removal.
+ * Verifies that no <kbd> elements appear in any nav link after T061 removal.
  */
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
@@ -11,7 +11,7 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/project/42",
 }));
 
-describe("ProjectNav — no kbd badges (BL-061)", () => {
+describe("ProjectNav — no kbd badges (T061)", () => {
   afterEach(() => cleanup());
 
   it("no nav link contains a <kbd> element", () => {
