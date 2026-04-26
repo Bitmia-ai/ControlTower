@@ -333,3 +333,12 @@ Each entry follows:
 - **Deployed:** SUCCESS (production build clean Turbopack, 691/691 tests, tagged last-good-deploy-iter98-bl071)
 - **Visual check:** PASS — all 6 pages verified via Playwright: home (CONTROL TOWER eyebrow, Projects h1, status-border cards intact from BL-066), mission control (eyebrow + project h1 + pulsing dot + Running pill + colored card top borders border-t-[3px] + monospace small-caps labels: WORKING ON, CONTROLS, QUESTIONS, TELEMETRY), backlog (eyebrow + Backlog h1 + item count subtitle + border-b divider + in-progress row with border-l-2), history (eyebrow + History h1 + subtitle), schedules (eyebrow + Schedules h1 + amber top border on overdue ScheduleRow), steer (eyebrow + Steer h1 + CURRENT DIRECTIVES mono label)
 - **Documenter:** running in background
+
+## Iteration 108 — 2026-04-26T19:43:00Z
+- **Built:** T077 Lighthouse baseline + per-page metadata.title + chunk investigation
+- **Review findings:** 0C 0M 1m — clean (1 review cycle; 1 minor: history page missing metadata test, low risk)
+- **Tests:** 9 new tests added, 804 total, regression PASS
+- **User Tester:** 0 bugs reported, no feedback score (no tester entry this iteration)
+- **Deployed:** SUCCESS (production build clean, 804/804 tests, tagged last-good-deploy-iter108-t077)
+- **Visual check:** PASS — all 7 pages verified via Playwright: home "Projects", mission control "Mission Control | Control Tower", tasks "Tasks | Control Tower", live "Live | Control Tower", history "History | Control Tower", steer "Steer | Control Tower", schedules "Schedules | Control Tower"; title template "%s | Control Tower" confirmed in layout; no visual regressions
+- **Documenter:** running in background
