@@ -5,8 +5,8 @@
   "phase": "merge",
   "phase_status": "complete",
   "task_id": "T077",
-  "worktree_path": "/Users/casa/ControlTower/.worktrees/T-77",
-  "worktree_branch": "redeye/T-77",
+  "worktree_path": null,
+  "worktree_branch": null,
   "spec_file": "docs/specs/T077-lighthouse-perf.md",
   "phase_progress": {
     "triage": {
@@ -83,6 +83,12 @@
       "tester_bugs": 0,
       "tag": "last-good-deploy-iter108-t077",
       "notes": "804/804 tests pass. Visual check PASS — all 7 pages confirmed with correct metadata.title via Playwright. 0 bugs. Tagged last-good-deploy-iter108-t077."
+    },
+    "merge": {
+      "merge_status": "clean",
+      "commits_merged": 1,
+      "final_test_count": 804,
+      "notes": "T077 shipped: per-page metadata.title (8 pages), turbopack.root config, chunk analysis docs. 804/804 tests. T077 marked done in tasks.md."
     }
   },
   "review_cycles": 1,
@@ -102,7 +108,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge T077 — Lighthouse baseline + per-page metadata.title + chunk investigation",
+    "last_commit": "redeye: merge T077 — Lighthouse baseline + per-page metadata (iteration 108)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter108-t077",
     "merge_status": "clean",
@@ -110,6 +116,22 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 108,
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T077 complete: per-page metadata.title (8 pages, server wrapper pattern), turbopack.root config, 228KB chunk analysis + docs. 9 new tests (804 total). 0C/0M/1m review. Visual check pass. Merged clean.",
+      "next": "TRIAGE iter 109",
+      "timestamp": "2026-04-26T19:50:11Z"
+    },
     {
       "iteration": 108,
       "phases": [
@@ -166,20 +188,6 @@
       "outcome": "T068 live tab polish — full cycle complete. 783/783 tests pass. Backlog exhausted, filed Q-012.",
       "next": "waiting_for_ceo (Q-012 filed)",
       "timestamp": "2026-04-25T23:20:00Z"
-    },
-    {
-      "iteration": 104,
-      "phases": [
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "T065 Won't Do section — full cycle complete. 779/779 tests pass.",
-      "next": "TRIAGE iter 105",
-      "timestamp": "2026-04-25T23:05:00Z"
     }
   ],
   "counters": {
@@ -189,7 +197,7 @@
     "next_task_id": 80
   },
   "cost_tracking": {
-    "iterations_this_session": 79,
+    "iterations_this_session": 80,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
