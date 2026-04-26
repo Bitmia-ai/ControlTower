@@ -126,17 +126,42 @@ Or use Chrome DevTools → Lighthouse tab while visiting `http://127.0.0.1:3200`
 
 ## Recommendations for Future Iterations
 
-| Priority | Recommendation | Effort |
-|----------|---------------|--------|
-| P2 | Run Lighthouse CLI and record actual scores as baseline | S |
-| P2 | Investigate the 228 KB shared runtime chunk — identify what's in it | S |
-| P2 | Add per-page `metadata.title` to mission control, backlog, history, steer pages | S |
-| P3 | Consider adding `turbopack.root` to `next.config.ts` to silence the workspace root warning | XS |
-| P3 | Investigate CSS bundle (108 KB) — Tailwind v4 tree-shakes by default but the typography plugin may add size | M |
+| Priority | Recommendation | Effort | Status |
+|----------|---------------|--------|--------|
+| P2 | Run Lighthouse CLI and record actual scores as baseline | S | Pending (see `docs/lighthouse-report-baseline.md`) |
+| P2 | Investigate the 228 KB shared runtime chunk — identify what's in it | S | **Done (T077)** — React core + Turbopack runtime; not reducible without major version change |
+| P2 | Add per-page `metadata.title` to all pages | S | **Done (T077)** — server wrapper pattern applied to all 8 pages |
+| P3 | Add `turbopack.root` to `next.config.ts` to silence workspace root warning | XS | **Done (T077)** — `turbopack: { root: path.resolve(__dirname) }` added |
+| P3 | Investigate CSS bundle (108 KB) — Tailwind v4 tree-shakes by default but the typography plugin may add size | M | Pending |
+| P3 | Investigate 140 KB + 136 KB app-level chunks | M | Pending |
+
+---
+
+## T077 Follow-up — Chunk Analysis (2026-04-26)
+
+Build run post-T077, 24 JS chunks, 2 CSS files, 1.3 MB total uncompressed.
+
+**228 KB shared runtime:** Contains React core (react, react-dom, jsx-runtime, scheduling primitives) + Next.js/Turbopack client runtime infrastructure. Identifiable strings: `react.element`, `react.memo`, `react.lazy`, `NEXT_DEPLOYMENT_ID`, Turbopack module loader. This is the irreducible baseline for any React 19 + Next.js 16 app. Gzipped ~70 KB.
+
+**Next largest chunks:** 140 KB and 136 KB app-level bundles likely contain Radix UI primitives + lucide-react icons + app-level shared components. Further investigation could use Turbopack's `--analyze` flag when available.
+
+**Per-page metadata added (T077):**
+- `/` → "Projects | Control Tower"
+- `/project/[id]` → "Mission Control | Control Tower"
+- `/project/[id]/tasks` → "Tasks | Control Tower"
+- `/project/[id]/tasks/[taskId]` → "Task Detail | Control Tower"
+- `/project/[id]/live` → "Live | Control Tower"
+- `/project/[id]/history` → "History | Control Tower"
+- `/project/[id]/schedules` → "Schedules | Control Tower"
+- `/project/[id]/steer` → "Steer | Control Tower"
+
+Implementation: server wrapper components (e.g. `page.tsx` renders `*-client.tsx`) since all pages were `'use client'` and Next.js metadata must be in server components.
 
 ---
 
 ## Test Coverage Added
+
+### T075 (iter 106)
 
 | Test file | Tests added | What it covers |
 |-----------|-------------|----------------|
@@ -144,4 +169,19 @@ Or use Chrome DevTools → Lighthouse tab while visiting `http://127.0.0.1:3200`
 | `app/layout.test.tsx` | 3 | `viewport` export, `metadata.title` template, `robots.index: false` |
 | `next.config.test.ts` | 3 | `headers()` function exists, static rule has `immutable`, API rule has `no-store` |
 
-**Total new tests:** 13 (796 total, was 783)
+**T075 total new tests:** 13 (796 total, was 783)
+
+### T077 (iter 108)
+
+| Test file | Tests added | What it covers |
+|-----------|-------------|----------------|
+| `app/page.test.tsx` | 1 | Home page exports `metadata.title = "Projects"` |
+| `app/project/[id]/page.test.tsx` | 1 | Mission control exports `metadata.title = "Mission Control"` |
+| `app/project/[id]/live/page.test.tsx` | 1 | Live page exports `metadata.title = "Live"` |
+| `app/project/[id]/schedules/page.test.tsx` | 1 | Schedules page exports `metadata.title = "Schedules"` |
+| `app/project/[id]/steer/page.test.tsx` | 1 | Steer page exports `metadata.title = "Steer"` |
+| `app/project/[id]/tasks/page.test.tsx` | 1 | Tasks page exports `metadata.title = "Tasks"` |
+| `app/project/[id]/tasks/[taskId]/page.test.tsx` | 1 | Task detail exports `metadata.title = "Task Detail"` |
+| `next.config.test.ts` | 2 | `turbopack.root` defined, absolute path pointing to project dir |
+
+**T077 total new tests:** 9 (804 total, was 795)

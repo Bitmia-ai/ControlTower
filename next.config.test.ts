@@ -27,3 +27,17 @@ describe("next.config headers()", () => {
     expect(cacheHeader?.value).toContain("no-store");
   });
 });
+
+describe("next.config turbopack config (T077)", () => {
+  it("exports turbopack config with a root property", () => {
+    expect(nextConfig.turbopack).toBeDefined();
+    expect(typeof (nextConfig.turbopack as { root: string }).root).toBe("string");
+  });
+
+  it("turbopack root is an absolute path pointing to the project directory", () => {
+    const root = (nextConfig.turbopack as { root: string }).root;
+    expect(root).toMatch(/ControlTower/);
+    // Should be an absolute path (starts with /)
+    expect(root.startsWith("/")).toBe(true);
+  });
+});

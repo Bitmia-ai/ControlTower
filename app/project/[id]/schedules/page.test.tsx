@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
-import { SchedulesContent } from "./page";
+import { SchedulesContent } from "./schedules-client";
 import type { ScheduleEntry } from "@/lib/redeye-types";
 
 // Mock next/navigation
@@ -122,5 +122,13 @@ describe("SchedulesContent", () => {
     await waitFor(() => {
       expect(screen.getByLabelText(/schedule name/i)).toBeDefined();
     });
+  });
+});
+
+describe("Schedules page metadata (T077)", () => {
+  it("page module exports metadata with title 'Schedules'", async () => {
+    const mod = await import("./page");
+    expect(mod.metadata).toBeDefined();
+    expect((mod.metadata as { title: string }).title).toBe("Schedules");
   });
 });

@@ -1,3 +1,4 @@
+import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -6,6 +7,14 @@ const nextConfig: NextConfig = {
   // Fixes "Cannot read properties of null (reading 'useContext'/'use')" in
   // /_global-error prerender (Next.js 16 + React 19 + Turbopack bug).
   serverExternalPackages: ["react", "react-dom"],
+
+  // Silence the "workspace root inferred" warning from Turbopack.
+  // Turbopack finds multiple lockfiles (e.g. pnpm-lock.yaml at ~/
+  // and package-lock.json here) and picks the wrong root. Pinning the
+  // project root here removes the ambiguity.
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
 
   // Explicit cache-control headers.
   // /_next/static/* assets are content-addressed (filename includes a hash),
