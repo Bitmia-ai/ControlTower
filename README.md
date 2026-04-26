@@ -63,8 +63,12 @@ Projects live in `~/.redeye/config.json`. Override the location with `REDEYE_CON
 Default is `3200`. To use a different port:
 
 ```bash
-npx next dev --port 4000
+npx next dev --webpack --port 4000
 ```
+
+### Why dev runs on webpack, not Turbopack
+
+`npm run dev` invokes `next dev --webpack` deliberately. Next.js 16's default Turbopack walks the entire project root with no documented directory-exclude API, so RedEye's per-task `.worktrees/T-N/` and Claude Code's `.claude/worktrees/agent-*/` (both full project-tree clones inside the project root) cause the in-memory module graph to balloon past 80 GB. Webpack honors `watchOptions.ignored`, which `next.config.ts` uses to mask both worktree directories out of the dev-server's file index. Production `next build` keeps Turbopack — no watcher, no problem. See `next.config.ts` for the exclusion list.
 
 ## How It Works
 

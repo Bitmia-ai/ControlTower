@@ -26,8 +26,7 @@
     "nextjs"
   ],
   "scripts": {
-    "predev": "node scripts/check-no-worktrees.mjs",
-    "dev": "next dev --hostname 127.0.0.1 --port 3200",
+    "dev": "next dev --webpack --hostname 127.0.0.1 --port 3200",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 3200",
     "postinstall": "node scripts/patch-next.mjs",
