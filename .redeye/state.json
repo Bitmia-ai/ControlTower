@@ -3,7 +3,7 @@
   "iteration": 108,
   "started_at": "2026-04-26T05:50:47Z",
   "phase": "merge",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T077",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T-77",
   "worktree_branch": "redeye/T-77",
@@ -102,11 +102,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge T075 — performance audit complete (iteration 106)",
+    "last_commit": "redeye: merge T077 — Lighthouse baseline + per-page metadata.title + chunk investigation",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
+    "last_good_deploy_tag": "last-good-deploy-iter108-t077",
     "merge_status": "clean",
-    "notes": "PLAN iter 108: T077 spec written. 3 sub-tasks. Routing to BUILD."
+    "notes": "MERGE iter 108: T077 merged clean. 804/804 tests. Worktree teardown pending."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -114,11 +114,17 @@
       "iteration": 108,
       "phases": [
         "INCORPORATE",
-        "TRIAGE"
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077. PLAN: spec written (3 sub-tasks). BUILD: T1 per-page metadata (server wrappers, 7 tests), T2 turbopack.root config (2 tests), T3 chunk analysis + docs — 9 new tests, 804 total. Build clean.",
-      "next": "REVIEW",
-      "timestamp": "2026-04-26T05:58:00Z"
+      "outcome": "T077 Lighthouse baseline + per-page metadata.title + chunk investigation — full cycle complete. 804/804 tests pass. Per-page metadata.title added to 8 pages via server wrapper pattern. turbopack.root config added. 228KB chunk analyzed (React core + Turbopack runtime, not reducible). Merge clean.",
+      "next": "TRIAGE iter 109",
+      "timestamp": "2026-04-26T19:48:00Z"
     },
     {
       "iteration": 107,

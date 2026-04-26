@@ -15,10 +15,12 @@
 ### T077: Lighthouse baseline + per-page metadata.title + chunk investigation
 - **Type:** performance
 - **Priority:** P2
-- **Status:** in-progress
+- **Status:** done
 - **Added:** 2026-04-26 (iter 108)
 - **Started:** 2026-04-26 (iter 108)
+- **Merged:** 2026-04-26 (iter 108)
 - **Spec:** docs/specs/T077-lighthouse-perf.md
+- **Summary:** Added per-page metadata.title to all 8 dashboard pages using a server wrapper pattern, so browser tabs show the current section name. Added turbopack.root config to silence the workspace root warning during dev. Investigated the 228 KB shared runtime chunk and documented that it is React core plus Turbopack runtime and cannot be further reduced. 9 new tests bring the total to 804.
 - **Source:** Q-013 default (iter 108) — CEO invoked /redeye:start, interpreted as proceed with option 5 (deeper Lighthouse/performance work)
 - **Description:** Implement recommendations from docs/performance-audit.md. (1) Run Lighthouse CLI against the production build and record actual scores as a baseline in docs/lighthouse-report-baseline.md. (2) Add per-page `metadata.title` to mission control, backlog, history, live, schedules, and steer pages so the browser tab and title template show the current section. (3) Investigate the 228 KB shared runtime chunk — identify the top contributors and determine if any can be split or lazy-loaded. (4) Consider `turbopack.root` in next.config.ts to silence the workspace root warning. All changes must keep 796/796 tests green and production build clean.
 
