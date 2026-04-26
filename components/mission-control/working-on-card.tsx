@@ -35,7 +35,7 @@ function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
 
 export function WorkingOnCard({ state, running, projectId, upNextCount, openQuestionCount }: WorkingOnCardProps) {
   const hasTask = state?.task_title;
-  const isBacklogEmpty = !running && state?.phase === "HARDEN" && (upNextCount ?? 0) === 0;
+  const taskListEmpty = !running && state?.phase === "HARDEN" && (upNextCount ?? 0) === 0;
   // RedEye exits the loop when blocked on questions (phase=waiting_for_ceo).
   // The dashboard must surface this clearly so the user knows their reply is
   // expected, and so they understand the loop will resume on answer.
@@ -74,7 +74,7 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
                 : "Answering the inbox question resumes the loop."}
             </p>
           </div>
-        ) : isBacklogEmpty ? (
+        ) : taskListEmpty ? (
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-amber-500" />

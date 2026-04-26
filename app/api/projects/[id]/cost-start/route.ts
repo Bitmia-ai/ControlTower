@@ -13,9 +13,9 @@ import { safeRedeyePath } from "@/lib/redeye-files";
 import { atomicWriteJson } from "@/lib/atomic-write";
 import { sumCurrentSessionCost } from "@/lib/cost-calculator";
 import { readJsonBody } from "@/lib/json-body";
+import { TASK_ID_RE } from "@/lib/task-id";
 import type { RedEyeState } from "@/lib/redeye-types";
 
-const TASK_ID_RE = /^T\d+$/;
 const MAX_BODY_BYTES = 1024;
 
 export async function POST(

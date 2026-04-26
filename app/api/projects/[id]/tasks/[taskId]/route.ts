@@ -6,11 +6,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
 import { readTasks, readState, safeRedeyePath } from "@/lib/redeye-files";
 import { readJsonBody } from "@/lib/json-body";
+import { TASK_ID_RE } from "@/lib/task-id";
 import fs from "fs/promises";
 
 type Params = { params: Promise<{ id: string; taskId: string }> };
 
-const TASK_ID_RE = /^T\d+$/;
 const MAX_BODY_BYTES = 64 * 1024;
 
 export async function GET(req: NextRequest, { params }: Params) {

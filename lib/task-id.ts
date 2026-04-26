@@ -16,6 +16,9 @@ import { readState, scanMaxTaskId } from "./redeye-files";
 import { atomicWriteJson } from "./atomic-write";
 import type { RedEyeState } from "./redeye-types";
 
+/** Validates a single task ID string (T followed by digits). */
+export const TASK_ID_RE = /^T\d+$/;
+
 /**
  * Compute and atomically allocate the next T<N> ID for the given project.
  *
