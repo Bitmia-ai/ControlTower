@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T079: Pwa auto zooms when I type on my phone to add a task
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T078: History tab collapsibles only show some uuid which is useless
 - **Type:** feature
 - **Priority:** P1
