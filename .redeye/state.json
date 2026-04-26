@@ -7,7 +7,7 @@
   "task_id": "T079",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T079-pwa-viewport-zoom-fix.md",
   "phase_progress": {
     "triage": {
       "env_healthy": true,
