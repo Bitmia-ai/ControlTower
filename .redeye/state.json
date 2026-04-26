@@ -2,11 +2,11 @@
   "schema_version": 1,
   "iteration": 108,
   "started_at": "2026-04-26T05:50:47Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T077",
-  "worktree_path": null,
-  "worktree_branch": null,
+  "worktree_path": "/Users/casa/ControlTower/.worktrees/T-77",
+  "worktree_branch": "redeye/T-77",
   "spec_file": null,
   "phase_progress": {
     "triage": {
@@ -33,7 +33,10 @@
       "q013_resolved": true,
       "q010_already_incorporated": true,
       "q011_already_incorporated": true,
-      "tasks_added": ["T076", "T077"],
+      "tasks_added": [
+        "T076",
+        "T077"
+      ],
       "notes": "Q-013 resolved: CEO /redeye:start = proceed with default. T076 (dep updates: lucide-react, react/react-dom, TypeScript 6.0 eval, P2) and T077 (Lighthouse baseline + per-page metadata.title + 228KB chunk investigation, P2) added. Q-010 and Q-011 already in Answered section — no action. next_task_id advanced to 78."
     }
   },
@@ -64,7 +67,10 @@
   "iteration_log": [
     {
       "iteration": 108,
-      "phases": ["INCORPORATE", "TRIAGE"],
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE"
+      ],
       "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077 (Lighthouse baseline + per-page titles + chunk investigation).",
       "next": "PLAN T077",
       "timestamp": "2026-04-26T05:54:00Z"
