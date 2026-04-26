@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { TaskSection, WontDoItemRow, computeBuckets, parseTaskIdNumber } from "./page";
+import { TaskSection, WontDoItemRow, computeBuckets, parseTaskIdNumber } from "./tasks-client";
 import { CollapsibleSection } from "@/components/collapsible-section";
 import type { TaskItem } from "@/lib/redeye-types";
 
@@ -331,5 +331,13 @@ describe("CollapsibleSection", () => {
     const button = screen.getByRole("button", { name: /show done items/i });
     fireEvent.click(button);
     expect(onToggle).toHaveBeenCalledOnce();
+  });
+});
+
+describe("Tasks page metadata (T077)", () => {
+  it("page module exports metadata with title 'Tasks'", async () => {
+    const mod = await import("./page");
+    expect(mod.metadata).toBeDefined();
+    expect((mod.metadata as { title: string }).title).toBe("Tasks");
   });
 });

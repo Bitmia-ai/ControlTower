@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/react";
-import { SteerContent } from "./page";
+import { SteerContent } from "./steer-client";
 import type { SteeringDirective } from "@/lib/redeye-types";
 
 vi.mock("next/navigation", () => ({
@@ -525,5 +525,13 @@ describe("SteerContent", () => {
       (c) => (c[1] as RequestInit | undefined)?.method === "POST"
     );
     expect(postCalls).toHaveLength(0);
+  });
+});
+
+describe("Steer page metadata (T077)", () => {
+  it("page module exports metadata with title 'Steer'", async () => {
+    const mod = await import("./page");
+    expect(mod.metadata).toBeDefined();
+    expect((mod.metadata as { title: string }).title).toBe("Steer");
   });
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, cleanup, act } from "@testing-library/react";
-import Home from "./page";
+import Home, { metadata } from "./page";
 
 // Mock child components to keep test surface tight
 vi.mock("@/components/project-card", () => ({
@@ -26,6 +26,13 @@ function setVisibility(state: "visible" | "hidden") {
 function dispatchVisibilityChange() {
   document.dispatchEvent(new Event("visibilitychange"));
 }
+
+describe("Home page metadata (T077)", () => {
+  it("exports metadata with title 'Projects'", () => {
+    expect(metadata).toBeDefined();
+    expect(metadata.title).toBe("Projects");
+  });
+});
 
 describe("Home page header (T066)", () => {
   beforeEach(() => {

@@ -51,3 +51,11 @@ describe("Live page — TranscriptViewer empty state", () => {
     expect(screen.getByText("New session")).toBeDefined();
   });
 });
+
+describe("Live page metadata (T077)", () => {
+  it("page module exports metadata with title 'Live'", async () => {
+    const mod = await import("./page");
+    expect(mod.metadata).toBeDefined();
+    expect((mod.metadata as { title: string }).title).toBe("Live");
+  });
+});

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, act, cleanup, waitFor } from "@testing-library/react";
-import BacklogItemPage from "./page";
+import BacklogItemPage from "./task-detail-client";
 import type { TaskItem } from "@/lib/redeye-types";
 
 // Mocks that need to be defined before component import isn't necessary
@@ -215,5 +215,13 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     expect(screen.queryByText("Cost (est.)")).toBeNull();
     expect(screen.queryByText("Not recorded")).toBeNull();
     expect(screen.queryByRole("button", { name: /Record now/ })).toBeNull();
+  });
+});
+
+describe("Task detail page metadata (T077)", () => {
+  it("page module exports metadata with title 'Task Detail'", async () => {
+    const mod = await import("./page");
+    expect(mod.metadata).toBeDefined();
+    expect((mod.metadata as { title: string }).title).toBe("Task Detail");
   });
 });

@@ -163,3 +163,11 @@ describe("ProjectPage phase notifications integration", () => {
     expect(screen.queryByText(/entered BUILD/)).toBeFalsy();
   });
 });
+
+describe("Mission control page metadata (T077)", () => {
+  it("page module exports metadata with title 'Mission Control'", async () => {
+    const mod = await import("./page");
+    expect(mod.metadata).toBeDefined();
+    expect((mod.metadata as { title: string }).title).toBe("Mission Control");
+  });
+});
