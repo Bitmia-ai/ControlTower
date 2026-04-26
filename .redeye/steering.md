@@ -12,7 +12,7 @@
 
 ### Parser/UI alignment
 
-- **New status strings require updating three files in lockstep:** `BacklogItem["status"]` in `lib/redeye-types.ts`, the case branch in `normalizeStatus` in `lib/redeye-parsers.ts`, and the colour map (+ `STATUS_OPTIONS` array) in the backlog list and detail pages. The default branch returns `pending`, which silently surfaces unrecognized statuses as "to-do" in the UI (real bug we hit with `wont-do`).
+- **New status strings require updating three files in lockstep:** `TaskItem["status"]` in `lib/redeye-types.ts`, the case branch in `normalizeStatus` in `lib/redeye-parsers.ts`, and the colour map (+ `STATUS_OPTIONS` array) in the backlog list and detail pages. The default branch returns `pending`, which silently surfaces unrecognized statuses as "to-do" in the UI (real bug we hit with `wont-do`).
 
 ### Tests
 
