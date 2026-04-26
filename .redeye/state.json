@@ -18,7 +18,7 @@
       "actionable_backlog": 3,
       "backlog_all_done": false,
       "selected_item": "T079",
-      "notes": "Env healthy. 804/804 tests pass (post-T077). No open questions, no new tester reports, no overdue schedules. CEO Requests: T079 (PWA zoom on mobile keyboard, P1 pending) and T078 (history tab uuid labels, P1 pending). T076 (dep updates, P2 planned) also available. Routing to PLAN for T079 (highest priority, unblocked)."
+      "notes": "Env healthy. 804/804 tests pass. Build clean. No overdue schedules. No CEO answers pending. 3 actionable items. Selected T079 (P1: PWA auto-zoom on input). Routing to PLAN."
     }
   },
   "review_cycles": 0,
