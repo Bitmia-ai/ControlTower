@@ -2,18 +2,34 @@
 
 ## CEO Requests
 
-### BL-075: Performance audit — Lighthouse, bundle size, Core Web Vitals
+### T077: Lighthouse baseline + per-page metadata.title + chunk investigation
+- **Type:** performance
+- **Priority:** P2
+- **Status:** planned
+- **Added:** 2026-04-26 (iter 108)
+- **Source:** Q-013 default (iter 108) — CEO invoked /redeye:start, interpreted as proceed with option 5 (deeper Lighthouse/performance work)
+- **Description:** Implement recommendations from docs/performance-audit.md. (1) Run Lighthouse CLI against the production build and record actual scores as a baseline in docs/lighthouse-report-baseline.md. (2) Add per-page `metadata.title` to mission control, backlog, history, live, schedules, and steer pages so the browser tab and title template show the current section. (3) Investigate the 228 KB shared runtime chunk — identify the top contributors and determine if any can be split or lazy-loaded. (4) Consider `turbopack.root` in next.config.ts to silence the workspace root warning. All changes must keep 796/796 tests green and production build clean.
+
+### T076: Dependency updates — lucide-react, react/react-dom, evaluate TypeScript 6.0
+- **Type:** chore
+- **Priority:** P2
+- **Status:** planned
+- **Added:** 2026-04-26 (iter 108)
+- **Source:** Q-013 default (iter 108) — CEO invoked /redeye:start, interpreted as proceed with option 1 (dependency updates)
+- **Description:** Update the following dependencies to their latest stable versions and verify no regressions: lucide-react (1.9 → 1.11), react and react-dom (19.2.4 → 19.2.5). Evaluate TypeScript 6.0 upgrade: run `npm install typescript@6 --save-dev`, check for type errors, and either complete the upgrade if clean or document the blockers and revert. Also update @types/node to the current LTS version. After each update, run `npm run build` and `npx vitest run` to verify all 796 tests pass and the production build is clean. The postcss moderate vulnerability (no safe fix without breaking Next.js) should remain as a known/accepted risk — do not force-upgrade it.
+
+### T075: Performance audit — Lighthouse, bundle size, Core Web Vitals
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Added:** 2026-04-25 (iter 106)
 - **Started:** 2026-04-25 (iter 106)
 - **Merged:** 2026-04-25 (iter 106)
-- **Spec:** docs/specs/BL-075-performance-audit.md
+- **Spec:** docs/specs/T075-performance-audit.md
 - **Source:** Q-012 default (iter 106) — CEO invoked /redeye:start, interpreted as proceed with option 1 (performance audit)
 - **Summary:** Completed a performance audit of the Control Tower dashboard and implemented three quick-win improvements. T1: Created a shared MarkdownRenderer wrapper and switched all three pages that use react-markdown (steer, backlog detail, history) to next/dynamic — moves the markdown library (~60 KB gzip) out of the shared chunk into lazy route chunks loaded only when those tabs are visited. T2: Added proper viewport export and improved metadata (title template, robots:noindex) to root layout per Next.js 15+ convention. T3: Added explicit Cache-Control headers in next.config.ts (immutable for /_next/static/*, no-store for /api/*). Wrote docs/performance-audit.md with baseline metrics, changes, and recommendations. 13 new tests (796 total, was 783). Build clean. vitest config updated to include root-level *.test.ts files.
 
-### BL-074: "Working on" card height is different from "Controls" which is next to it. fix it
+### T074: "Working on" card height is different from "Controls" which is next to it. fix it
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -21,7 +37,7 @@
 - **Merged:** 2026-04-25 (iter 99)
 - **Summary:** Fixed WorkingOn/Controls card height mismatch by wrapping the top mission-control row in a nested stretch-alignment grid. Root cause was the outer grid using items-start which prevented h-full from working. No card markup changed — minimal CSS fix.
 
-### BL-073: steer tab, directives need to be rendered with markdown
+### T073: steer tab, directives need to be rendered with markdown
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -29,7 +45,7 @@
 - **Merged:** 2026-04-25 (iter 100)
 - **Summary:** Steer tab directives now render as markdown using react-markdown + remark-gfm (already in package.json). DirectiveRow wraps directive text in a Tailwind Typography prose container with dark mode support. Input textarea remains plain text. Links render in red-600 accent color.
 
-### BL-072: Steer tab. we need to be able to edit/delete directives
+### T072: Steer tab. we need to be able to edit/delete directives
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -37,14 +53,14 @@
 - **Merged:** 2026-04-25 (iter 101)
 - **Summary:** Steer tab directives are now editable and deletable. PATCH and DELETE API endpoints added with index-based addressing, input validation, and 4KB body cap. DirectiveRow gained hover-reveal pencil/trash icons (44px touch targets, aria-labels), inline edit textarea pre-filled with directive source, and inline delete confirmation panel matching the project-card pattern. applyDirectiveEdit/applyDirectiveDelete helpers added to lib/redeye-parsers.ts preserving file structure. 39 new tests (731 total).
 
-### BL-071: Apply the same design styles form the main page to all the other pages and tabs. use the design subagent and frond end skill
+### T071: Apply the same design styles form the main page to all the other pages and tabs. use the design subagent and frond end skill
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 98)
 - **Summary:** Propagated the precision-instrument design system from the home page to all dashboard pages. Mission control cards switched to a 3px status top border with phase-driven colors and monospace section labels. The project layout gained a Control Tower eyebrow, project name h1 with pulsing dot, and a Running/Idle pill above the nav. Backlog, History, Schedules, and Steer pages each received a standard eyebrow, h1, subtitle, and border-b header. Backlog list rows show a border-l-2 status indicator and ScheduleRow gained a border-t-[3px] with overdue/on-schedule color coding. 691/691 tests pass.
 
-### BL-070: we need to be able to add schedules form the schedule tab
+### T070: we need to be able to add schedules form the schedule tab
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -52,13 +68,13 @@
 - **Merged:** 2026-04-25 (iter 102)
 - **Summary:** Added schedule creation from the Schedules tab. POST /api/projects/[id]/schedules endpoint validates name, frequency, and steps, assigns the next SCHED-{id}, and writes the new entry to schedules.md. AddScheduleDialog Radix modal with name, frequency, steps, and optional description fields. Button added to page header and EmptyState. 31 new tests (762 total).
 
-### BL-069: Directives int eh Steer tab need to be editable or deletable
+### T069: Directives int eh Steer tab need to be editable or deletable
 - **Type:** feature
 - **Priority:** P1
 - **Status:** wont-do
-- **Reason:** Superseded by BL-072 which covers the same requirement (edit/delete steer directives) and was filed later as the canonical CEO request.
+- **Reason:** Superseded by T072 which covers the same requirement (edit/delete steer directives) and was filed later as the canonical CEO request.
 
-### BL-068: Polish Live tab visual design — improve transcript viewer styling and readability
+### T068: Polish Live tab visual design — improve transcript viewer styling and readability
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
@@ -68,7 +84,7 @@
 - **Summary:** Polished the Live tab transcript viewer with the precision-instrument design system. Added standard page header (Control Tower eyebrow + h1 Live + subtitle + border-b). Applied CARD-LABEL token to all card type eyebrows. Added border-l-2 identity rails (indigo=tool calls, cyan=results, violet=thinking, red=assistant). AssistantTextCard promoted to text-[15px] with shadow-sm. ThinkingCard muted to secondary violet. ChevronRight replaces unicode arrows with smooth rotation transition. 4 new tests (783 total).
 - **Description:** The Live tab transcript viewer works well functionally but could benefit from visual polish. Use the designer subagent to enhance the visual presentation and improve readability of transcript content. Focus areas: improve Claude's Thinking cards styling and visual hierarchy, refine User message box appearance, enhance phase indicator badges, optimize line-height and spacing for better text readability, ensure consistent styling across light/dark modes. Implement via frontend skill after designer mockups.
 
-### BL-067: Redesign mission control page layout and cards using designer + frontend
+### T067: Redesign mission control page layout and cards using designer + frontend
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -78,7 +94,7 @@
 - **Summary:** Redesigned the mission control page with an asymmetric two-column layout (lg:grid-cols-[1fr_300px]). Left column = mission feed (WorkingOn hero, QuestionsCard, Shipped+UpNext sub-grid). Right rail = Controls + Cost + Health. WorkingOnCard upgraded to hero treatment (p-6, min-h-160px, text-lg title, subtle green wash when running). QuestionsCard collapses to a minimal strip when empty. ControlsCard compacted for rail (p-4, separator row). CostCard stacked Session/Total layout. Removed Backlog/Telemetry section labels. 11 new tests (773 total).
 - **Description:** The mission control page at /project/[id] shows all critical information (Working On, Controls, Cost, Questions, Recently Shipped) but could benefit from a comprehensive visual redesign. Use the designer subagent to create mockups for a more polished, modern layout with improved visual hierarchy, better card proportions, and refined typography. Focus on: reorganizing the 3-column grid for better balance, enhancing card backgrounds and borders, improving spacing and alignment, refining typography scale and weights, and ensuring the design scales gracefully across viewports. Implement the design using the frontend skill after mockups are approved.
 
-### BL-066: Redesign home page project cards and improve dashboard visual hierarchy
+### T066: Redesign home page project cards and improve dashboard visual hierarchy
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -87,68 +103,68 @@
 - **Description:** The Control Tower home page displays project cards in a grid, but the visual design could be more distinctive and polished. Use the designer subagent to create a modern, visually distinctive design for the project card layout. Focus areas: enhance card visual presentation with improved colors, gradients, or layered backgrounds; improve the display of status indicators (phase badge, cost, question count); optimize typography and spacing for better visual hierarchy; add subtle animation or micro-interactions to make the dashboard feel more alive; ensure excellent contrast and readability in light/dark modes. Implement via frontend skill after designer provides mockups.
 - **Summary:** Redesigned the home page project cards with a 'precision instrument' aesthetic. Cards now have a 3px status top border (green=running, amber=questions pending, zinc=idle), an animate-ping pulsing dot when running, a phase footer strip with tinted PHASE_COLORS background, hover-reveal trash icon, monospace path text, and an inline red-tinted delete confirmation panel. The page header gained a 'CONTROL TOWER' eyebrow label, 'Projects' h1, project count subtitle, and a border-b divider. 15 new tests added (691 total). Verified in both dark and light mode.
 
-### BL-065: Add Won't Do section at the end of the backlog page
+### T065: Add Won't Do section at the end of the backlog page
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
 - **Started:** 2026-04-25 (iter 104)
 - **Merged:** 2026-04-25 (iter 104)
-- **Spec:** docs/specs/BL-065-wont-do-section.md
+- **Spec:** docs/specs/T065-wont-do-section.md
 - **Summary:** Added Won't Do section to the backlog page. Extended readProjectDetail to include wontDoItems (filtered by status=wontdo). parseBacklog extracts **Reason:** field. computeBuckets now filters by status (not section) so items from any markdown section are correctly bucketed. WontDoItemRow renders strikethrough title + monospace Reason eyebrow + rationale. Section collapsed by default, positioned after Done. 6 new tests (779 total). Required 2 fix cycles to correct data plumbing and bucket logic.
 
-### BL-064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
+### T064: the cost polot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 93)
-- **Spec:** docs/specs/BL-064-cost-plot-scaling.md
+- **Spec:** docs/specs/T064-cost-plot-scaling.md
 - **Summary:** Fixed the cost sparkline aspect ratio by increasing VIEW_H from 48 to 80 (2.5:1 ratio instead of 4.17:1), removing the `width="100%"` SVG attribute, and adding `height={80}` so the browser renders the chart at its natural height without horizontal distortion. Removed the `max-h-[72px]` container clamp. Updated 3 test files; 663/663 tests pass and the production build is clean.
 
-### BL-063: we need a steer tab added. make it fully funcitonal
+### T063: we need a steer tab added. make it fully funcitonal
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 94)
-- **Spec:** docs/specs/BL-063-steer-tab.md
+- **Spec:** docs/specs/T063-steer-tab.md
 - **Summary:** Added a fully functional Steer tab at `/project/[id]/steer`. New GET handler returns parsed directives from `steering.md`; existing POST handler writes directives. The `SteerContent` component renders a textarea form with inline success/error feedback, a live directive list with skeleton/empty states, and dark/light mode support. "Steer" tab added to ProjectNav after Schedules. 675/675 tests pass, production build clean.
 
-### BL-062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
+### T062: in the main screen for a project, make the cards look betteer. now they all have different sizes. it looks messy
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 92)
-- **Spec:** docs/specs/BL-062-card-sizing.md
+- **Spec:** docs/specs/T062-card-sizing.md
 - **Summary:** Fixed inconsistent card heights on the project mission-control screen by switching the grid to top-aligned items, adding a minimum height to row-1 card wrappers, making the sparkline scale proportionally, and capping its container at 72px. All 657 tests pass and the production build is clean.
 
-### BL-061: remove the keyboard shortcuts from all buttons like (GB)
+### T061: remove the keyboard shortcuts from all buttons like (GB)
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 91)
 - **Summary:** Removed all keyboard shortcut badge `<kbd>` elements from project-nav.tsx (G+B, G+H, G+L, G+S tab hints) and controls-card.tsx (S, X, P, B action buttons). The shortcut logic itself was also stripped. Tests updated across 3 files; 656/656 pass. Build clean.
 
-### BL-060: When phase=waiting_for_ceo and CTO has exited, the dashboard should clearly show blocked state on the project card (banner/badge) with CTA to answer the inbox question or hit Start. Today the card looks identical to running, leading to confusion when the user replies and nothing happens. Also: when state is waiting_for_ceo and inbox.md is updated with an answer, the dashboard should auto-start the CTO without manual intervention.
+### T060: When phase=waiting_for_ceo and CTO has exited, the dashboard should clearly show blocked state on the project card (banner/badge) with CTA to answer the inbox question or hit Start. Today the card looks identical to running, leading to confusion when the user replies and nothing happens. Also: when state is waiting_for_ceo and inbox.md is updated with an answer, the dashboard should auto-start the CTO without manual intervention.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 90)
 - **Summary:** Fixed false-positive "running" status and added auto-resume on inbox answer. Reduced log-freshness fallback window and added blocked-state badge to project card.
 
-### BL-059: Dashboard shows running when CTO process is dead. The 60s log-freshness fallback in discoverPid() returns pid=-1 (assume running) when session-cto.jsonl was modified recently — but that just means the last subagent flushed logs, not that the CTO is alive. Fix: trust PID file or process-table lookup over log freshness. Reduce the fallback window to 5s and require BOTH log freshness AND a writable pidfile.
+### T059: Dashboard shows running when CTO process is dead. The 60s log-freshness fallback in discoverPid() returns pid=-1 (assume running) when session-cto.jsonl was modified recently — but that just means the last subagent flushed logs, not that the CTO is alive. Fix: trust PID file or process-table lookup over log freshness. Reduce the fallback window to 5s and require BOTH log freshness AND a writable pidfile.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 90)
 - **Summary:** Fixed discoverPid() to trust PID file and process-table lookup over log freshness. Reduced fallback window to 5s, requires BOTH log freshness AND writable pidfile.
 
-### BL-058: schedules UI needs to be operative
+### T058: schedules UI needs to be operative
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 90)
 - **Summary:** Fixed global-error.tsx build failure (ClientProviders with custom ESM ThemeProvider, postinstall patch for Next.js 16.2.4 _global-error prerender bug). Added POST /api/projects/[id]/schedules/run endpoint, Run now button in ScheduleRow (sibling of expand button, not nested), SCHED-1 sample schedule, projectId threaded through schedules page, unit tests for all new code. 662/662 tests pass, npm run build clean.
 
-### BL-057: Mobile-responsive layout — make the dashboard usable on phones and tablets
+### T057: Mobile-responsive layout — make the dashboard usable on phones and tablets
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -171,29 +187,29 @@
   - Test with Playwright viewport resize (375x667 iPhone SE, 768x1024 iPad)
   - Add unit tests for any new responsive hooks or components
 
-### BL-056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
+### T056: Redesign backlog, history, and live tabs using designer sub-agent and frontend skill
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
 - **Added:** 2026-04-25 (iter 85)
 - **Merged:** 2026-04-25 (iter 86)
-- **Spec:** docs/specs/BL-056-tab-redesign.md
+- **Spec:** docs/specs/T056-tab-redesign.md
 - **Details:**
   - The backlog, history, and live tabs need a visual redesign pass using the designer sub-agent and frontend skill
-  - Apply a consistent, polished design system across all three tabs, matching the quality level of the redesigned mission control page (BL-045)
+  - Apply a consistent, polished design system across all three tabs, matching the quality level of the redesigned mission control page (T045)
   - Backlog tab: improve list layout, status indicators, priority badges, and the collapsible done section
   - History tab: improve the sessions list layout, phase chips, cost badges, and the iteration log
   - Live tab: improve the transcript viewer, collapsible user boxes, thinking cards, and the toolbar
   - Ensure dark/light mode consistency across all redesigned components
   - Use the designer sub-agent for visual direction, then implement with the frontend skill
 
-### BL-055: Add Schedules tab to project dashboard — view and manage RedEye scheduled tasks
+### T055: Add Schedules tab to project dashboard — view and manage RedEye scheduled tasks
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 85)
 - **Added:** 2026-04-25 (iter 85)
-- **Spec:** docs/specs/BL-055-schedules-tab.md
+- **Spec:** docs/specs/T055-schedules-tab.md
 - **Summary:** Added a Schedules tab to the project dashboard. New `ScheduleEntry` type and `parseDurationMs`/`parseSchedules` parsers read `.redeye/schedules.md`. A `GET /api/projects/[id]/schedules` endpoint exposes parsed schedules. The `ScheduleList`/`ScheduleRow`/`StatusBadge` components render overdue/on-schedule sections with expandable step details. The `/project/[id]/schedules` page shows a skeleton, empty-state, error-state, or the list. ProjectNav gains a 5th "Schedules" tab with GS keyboard shortcut. 42 new unit tests added (627 total).
 - **Details:**
   - RedEye supports scheduled recurring tasks via `.redeye/schedules.md` (SCHED-{id} format with frequency, last run, steps, assigned roles)
@@ -206,20 +222,20 @@
   - Add unit tests for the parser and API route
   - Add to ProjectNav alongside existing tabs
 
-### BL-054: BL-029 and BL-030 are in the backlog but were never picked
+### T054: T029 and T030 are in the backlog but were never picked
 - **Type:** bug
 - **Priority:** P1
 - **Status:** wont-do
 - **Added:** 2026-04-25 (iter 85)
-- **Reason:** CEO noted BL-029 and BL-030 were never actioned. On investigation: both are already marked wont-do. BL-029 is a duplicate of BL-013 (reopened and completed iter 42). BL-030 is also superseded by BL-013. Both bugs were resolved when BL-013 fixed the Live tab EventSource issue with Playwright verification. No further action required.
+- **Reason:** CEO noted T029 and T030 were never actioned. On investigation: both are already marked wont-do. T029 is a duplicate of T013 (reopened and completed iter 42). T030 is also superseded by T013. Both bugs were resolved when T013 fixed the Live tab EventSource issue with Playwright verification. No further action required.
 
-### BL-053: Improve session history page — show phase timeline and cost per session
+### T053: Improve session history page — show phase timeline and cost per session
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 83)
 - **Added:** 2026-04-25 (iter 79)
-- **Spec:** docs/specs/BL-053-session-history-phase-timeline.md
+- **Spec:** docs/specs/T053-session-history-phase-timeline.md
 - **Summary:** The history page now shows a Sessions section above the Iteration Log, with one row per JSONL transcript file. Each row displays the session date, approximate duration, a cost badge, and a strip of phase chips (TRI, PLN, BLD, REV, DEP, VER) extracted from the transcript. A pre-existing infinite render loop in the sessions section was also found and fixed during this cycle.
 - **Details:**
   - The history page at /project/[id]/history shows a flat session list with start/end times
@@ -228,7 +244,7 @@
   - Show a "phases completed" count badge and an expandable phase list on each row
   - Should use existing cost-calculator.ts and transcript-file-resolver.ts
 
-### BL-052: Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
+### T052: Add keyboard shortcuts for common actions (Start, Stop, Backlog navigation)
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
@@ -242,13 +258,13 @@
   - Implement via a global keydown listener in a client component; disable shortcuts when a modal/dialog is open or a text input is focused
   - Add unit tests for the shortcut hook
 
-### BL-051: Cost analytics — add cumulative cost chart to mission control
+### T051: Cost analytics — add cumulative cost chart to mission control
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 81)
 - **Added:** 2026-04-25 (iter 79)
-- **Spec:** docs/specs/BL-051-cost-analytics-sparkline.md
+- **Spec:** docs/specs/T051-cost-analytics-sparkline.md
 - **Summary:** Added a cumulative cost sparkline to the mission control Cost card. Each bar represents one session's cost over the last ten sessions, implemented as a pure SVG component with no new dependencies. The sparkline respects dark and light mode and is hidden when no session history exists.
 - **Planning:** Pure SVG sparkline (no new deps). New `lib/cost-history.ts`, `GET /api/projects/[id]/cost-history`, `SparklineChart` component, and `CostCard` extension. 6 sub-tasks (4S+1M+1S). No CEO questions needed.
 - **Details:**
@@ -258,7 +274,7 @@
   - Chart should be responsive and respect dark/light mode
   - Data source: parse each JSONL transcript file for cost_usd sum per file (one file = one session)
 
-### BL-050: Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
+### T050: Add in-app notification toast when RedEye phase changes (BUILD, REVIEW, DEPLOY, DONE)
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -266,19 +282,19 @@
 - **Added:** 2026-04-25 (iter 79)
 - **Details:**
   - Users have no awareness of phase changes without watching the dashboard constantly
-  - When the mission control 5s poll detects a phase change, show a toast notification (e.g. "RedEye entered BUILD phase — working on BL-049")
+  - When the mission control 5s poll detects a phase change, show a toast notification (e.g. "RedEye entered BUILD phase — working on T049")
   - Use the browser Notification API with permission request on first interaction; fall back to an in-app toast overlay if permission denied
   - Toast should auto-dismiss after 5 seconds; clicking it navigates to the Live tab
   - Add unit tests for the notification hook (mock Notification API)
 - **Summary:** Phase-change toast notifications are now shown in the mission control page whenever RedEye enters BUILD, REVIEW, DEPLOY, VERIFY, or DONE. A ToastProvider and ToastContainer were wired into the root layout, with an auto-dismissing overlay and a browser Notification API fallback. Thirty new unit tests and four Playwright E2E tests verify the feature end-to-end.
 
-### BL-049: Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
+### T049: Expand E2E test coverage — Playwright specs for backlog CRUD, start/stop flow, and cost card
 - **Type:** test
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 79)
 - **Added:** 2026-04-25 (iter 79)
-- **Spec:** docs/specs/BL-049-e2e-test-coverage.md
+- **Spec:** docs/specs/T049-e2e-test-coverage.md
 - **Details:**
   - Current Playwright coverage is limited to smoke tests and the logo mark
   - Add three new E2E specs:
@@ -288,96 +304,96 @@
   - Each spec should run against http://localhost:3200 with an existing initialized project
 - **Summary:** Added two new Playwright E2E specs: backlog-crud.spec.ts exercises the full add-via-dialog flow through to the detail page, and cost-card.spec.ts verifies the session/total cost non-negative invariant and exact value formatting. Both specs use route interception to avoid external dependencies.
 
-### BL-048: In the live tab, User boxes need to be collapsible and collapsed by default In the live tab, User boxes need to be collapsible and collapsed by default
+### T048: In the live tab, User boxes need to be collapsible and collapsed by default In the live tab, User boxes need to be collapsible and collapsed by default
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 57)
 - **Summary:** User message boxes in the Live tab transcript are now collapsible and collapsed by default, reducing visual noise. A sticky Collapse All / Expand All toolbar was added to let users toggle all boxes at once without losing their scroll position.
 
-### BL-047: Update dashboard logo
+### T047: Update dashboard logo
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 63)
-- **Spec:** docs/specs/BL-047-logo.md
+- **Spec:** docs/specs/T047-logo.md
 - **Planning:** Split-weight "Control Tower" text mark (CONTROL small / TOWER large, both red-600/red-500) replacing flat single-span in app/layout.tsx; linked to /. 3 sub-tasks (all S): T1 implement mark, T2 remove unused public SVGs, T3 unit tests. No image assets needed.
 - **Summary:** Replaced the flat single-line header text with a split-weight two-span logo mark — "CONTROL" in small bold tracking-widest and "TOWER" in large black weight, both in red-600/red-500 with dark mode variant, wrapped in a Link to /. Five unused default Next.js scaffold SVGs were removed from public/. Five unit tests and three Playwright E2E tests confirm the link, text content, and navigation behaviour.
 
-### BL-046: Per task cost (est) not autoamtically recorded at the end of each task. it should be the value at the end of the task minus the value at the begining
+### T046: Per task cost (est) not autoamtically recorded at the end of each task. it should be the value at the end of the task minus the value at the begining
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
-- **Spec:** docs/specs/BL-046-auto-cost-recording.md
+- **Spec:** docs/specs/T046-auto-cost-recording.md
 - **Planning:** Spec written iter 55. Delta detection via mission control 5s polling loop; new cost-start endpoint captures session baseline; cost-snapshot updated to compute end-minus-start. 6 sub-tasks (4S + 1M + 1S), ~13 new unit tests.
 - **Summary:** Per-task cost is now recorded automatically as an end-minus-start delta. When the mission control page detects a task transition via its 5-second poll, it fires a cost-start POST at task activation and a cost-snapshot POST at completion; the snapshot endpoint computes the delta and stores only the cost attributable to that task. Older items without a start record continue to fall back to the manual "Record now" button.
 
-### BL-045: can we use the designer sub agent and frontend skill to improve the design of the main project screen?
+### T045: can we use the designer sub agent and frontend skill to improve the design of the main project screen?
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 61)
 - **Summary:** Redesigned the mission control project page to a 3-column grid with Controls promoted into the first row alongside the wide WorkingOn card, removing decorative borders and section dividers for a cleaner layout. The active task title is now displayed at text-base size with a compact running pill badge shown inline beneath the project name in the header.
 
-### BL-044: In the main screen for a project, i dont like the text +Backlog in the button. can we improve the button? use the designer and frontend skills
+### T044: In the main screen for a project, i dont like the text +Backlog in the button. can we improve the button? use the designer and frontend skills
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 58)
 - **Summary:** Replaced the minimal "+Backlog" label with an "Add to Backlog" button featuring a PlusCircle icon and indigo accent styling, making the action clearer and visually distinct in both light and dark mode. A unit test was added to verify the button's accessible name and click handler.
 
-### BL-043: force stop redeye should be part of a dropdown of the stop button. not a bigger button. the stop button has a dropdown with force stop
+### T043: force stop redeye should be part of a dropdown of the stop button. not a bigger button. the stop button has a dropdown with force stop
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
-- **Spec:** docs/specs/BL-043-force-stop-dropdown.md
+- **Spec:** docs/specs/T043-force-stop-dropdown.md
 - **Summary:** Replaced the standalone Force Stop button with a split-button pattern on the Stop button: a chevron caret opens a dropdown containing Force Stop, with a two-click inline confirmation and 4-second auto-dismiss replacing the previous Shift+click gesture. The Controls card is now more compact and the power action remains discoverable.
 
-### BL-042: in the backlog detail view, cost (est) shows as Not recorded. fix it
+### T042: in the backlog detail view, cost (est) shows as Not recorded. fix it
 - **Type:** bug
 - **Priority:** P1
 - **Status:** done
-- **Spec:** docs/specs/BL-042-backlog-detail-cost.md
+- **Spec:** docs/specs/T042-backlog-detail-cost.md
 - **Summary:** Fixed the backlog detail cost row to correctly surface cost data from the cost-snapshot API, distinguishing between items with a genuine zero cost and items where no snapshot was ever recorded. Added a "Record now" button for done items missing a snapshot, and expanded the test suite with 15 new cases covering all display states.
 
-### BL-041: IN the backlog, done tasks should be in a separate section so they don't clutter the ui. use the design subagent and frontend skill to re-design this page
+### T041: IN the backlog, done tasks should be in a separate section so they don't clutter the ui. use the design subagent and frontend skill to re-design this page
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 54)
-- **Spec:** docs/specs/BL-041-backlog-done-section.md
+- **Spec:** docs/specs/T041-backlog-done-section.md
 - **Summary:** Redesigned the backlog page to separate done tasks into a collapsible "Done" section below the active/planned items. Done tasks are hidden by default and toggled with a chevron button showing the count, reducing visual clutter while keeping completed work accessible.
 
-### BL-040: In the live tab I still don't see Claude's inter round status messages or thoughts. just tool uses
+### T040: In the live tab I still don't see Claude's inter round status messages or thoughts. just tool uses
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
-- **Spec:** docs/specs/BL-040-live-tab-messages.md
+- **Spec:** docs/specs/T040-live-tab-messages.md
 - **Planning:** Root cause is in TranscriptViewer rendering, not normalizer or SSE. Thinking blocks render as invisible bare italic text; text messages lack visual identity. Fix: ThinkingCard (collapsible violet card), AssistantTextCard (red left-border + "Claude" label), suppress plain user messages. 5 sub-tasks (4S + 1S E2E), 1 new test file.
 - **Summary:** The Live tab now shows Claude's inter-round text messages and internal thoughts alongside tool uses. Thinking blocks appear as collapsible violet cards labeled "Claude's Thinking", assistant text messages appear with a red left border and "Claude" label, and plain user prompt messages are suppressed to reduce noise.
 
-### BL-039: When RedEye stops due to empty backlog, show a clear message in the UI: "RedEye stopped — backlog empty. Add tasks to resume." instead of just showing Idle.
+### T039: When RedEye stops due to empty backlog, show a clear message in the UI: "RedEye stopped — backlog empty. Add tasks to resume." instead of just showing Idle.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Summary:** Added a "Backlog empty" state to the WorkingOn card and home page phase badge so that when RedEye stops due to an empty backlog, the UI displays a clear actionable message instead of the generic Idle label. Unit tests cover the new state.
 
-### BL-038: BL-027 cost visibility bug — detail-page cost field not rendering despite code present; verify data flow in item_costs population.
+### T038: T027 cost visibility bug — detail-page cost field not rendering despite code present; verify data flow in item_costs population.
 - **Type:** bug
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 49)
 - **Source:** Q-005 adjustment (iter 48) — CEO reports cost field invisible in UI
-- **Context:** BL-020 T7 shipped cost-per-item infrastructure and code to display `Cost (est.)` on backlog detail page (lines 273–278 in `app/project/[id]/backlog/[taskId]/page.tsx`). However, CEO verified with Playwright that the field is not visible. Suspect issue: `item_costs` in state.json not being populated for completed items, or enrichment logic failing in the GET route.
-- **Summary:** Fixed: the cost row (`Cost (est.)`) now always renders for done items in the backlog detail page. Pre-fix, the row was gated behind a condition that could suppress it; post-fix it renders unconditionally for `status === "done"`, showing `$X.XX` when cost_usd is recorded or "Not recorded" for items predating BL-020. Cost snapshot for BL-038 recorded at VERIFY time ($44.71). Steering directive to POST cost-snapshot at every future VERIFY was executed and cleared.
+- **Context:** T020 T7 shipped cost-per-item infrastructure and code to display `Cost (est.)` on backlog detail page (lines 273–278 in `app/project/[id]/backlog/[taskId]/page.tsx`). However, CEO verified with Playwright that the field is not visible. Suspect issue: `item_costs` in state.json not being populated for completed items, or enrichment logic failing in the GET route.
+- **Summary:** Fixed: the cost row (`Cost (est.)`) now always renders for done items in the backlog detail page. Pre-fix, the row was gated behind a condition that could suppress it; post-fix it renders unconditionally for `status === "done"`, showing `$X.XX` when cost_usd is recorded or "Not recorded" for items predating T020. Cost snapshot for T038 recorded at VERIFY time ($44.71). Steering directive to POST cost-snapshot at every future VERIFY was executed and cleared.
 
-### BL-037: Add Force Stop button (hard kill) for unresponsive sessions — complements graceful stop.
+### T037: Add Force Stop button (hard kill) for unresponsive sessions — complements graceful stop.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 50)
 - **Source:** Q-004 adjustment (iter 48) — CEO wants Force Stop in addition to graceful Stop
-- **Context:** BL-034/035/036 shipped graceful Stop/Pause (writes STOP/PAUSE directive to steering.md; CTO exits at next phase boundary). CEO requests a complementary Force Stop button for stalled/unresponsive sessions. This button should hard-kill the subprocess without waiting for graceful shutdown.
+- **Context:** T034/035/036 shipped graceful Stop/Pause (writes STOP/PAUSE directive to steering.md; CTO exits at next phase boundary). CEO requests a complementary Force Stop button for stalled/unresponsive sessions. This button should hard-kill the subprocess without waiting for graceful shutdown.
 - **Acceptance criteria:**
   - Add "Force Stop" button (or icon variant) alongside graceful Stop in mission control and home page project cards
   - Force Stop: SIGKILL the active claude child process via session-manager
@@ -385,48 +401,48 @@
   - No backlog item state change (leave as-is until next TRIAGE)
   - Test: start session, trigger Force Stop, verify process exits immediately and UI returns to idle
 
-### BL-036: Stop button not working from home page project cards either — same bug as BL-034 but affects the main screen, not just mission control.
+### T036: Stop button not working from home page project cards either — same bug as T034 but affects the main screen, not just mission control.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 44)
-- **Spec:** docs/specs/BL-034-stop-pause-fix.md
+- **Spec:** docs/specs/T034-stop-pause-fix.md
 
-### BL-035: Pause button does not work — clicking Pause in browser has no effect on the running session.
+### T035: Pause button does not work — clicking Pause in browser has no effect on the running session.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 44)
-- **Spec:** docs/specs/BL-034-stop-pause-fix.md
+- **Spec:** docs/specs/T034-stop-pause-fix.md
 
-### BL-034: Stop button does not work — clicking Stop in browser has no effect on the running session.
+### T034: Stop button does not work — clicking Stop in browser has no effect on the running session.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 44)
-- **Spec:** docs/specs/BL-034-stop-pause-fix.md
+- **Spec:** docs/specs/T034-stop-pause-fix.md
 
-### BL-032: Live tab auto-scroll UX fix — when auto-scroll is on, user cannot scroll up because it snaps back. Auto-scroll should pause when user scrolls up and resume when they scroll back to bottom.
+### T032: Live tab auto-scroll UX fix — when auto-scroll is on, user cannot scroll up because it snaps back. Auto-scroll should pause when user scrolls up and resume when they scroll back to bottom.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 45)
-- **Spec:** docs/specs/BL-032-autoscroll.md
+- **Spec:** docs/specs/T032-autoscroll.md
 
-### BL-031: Live tab transcript viewer — fold tool/terminal output by default, only show Claude inter-round messages and thoughts unfolded. Should look like a readable session log, not raw JSONL dump.
+### T031: Live tab transcript viewer — fold tool/terminal output by default, only show Claude inter-round messages and thoughts unfolded. Should look like a readable session log, not raw JSONL dump.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 43)
-- **Spec:** docs/specs/BL-031-live-tab-fold-tools.md
+- **Spec:** docs/specs/T031-live-tab-fold-tools.md
 
-### BL-030: Fix Live tab — BL-013 was marked done but Live tab still shows nothing. EventSource doesn't receive data despite transcript files existing. Must verify with Playwright before closing.
+### T030: Fix Live tab — T013 was marked done but Live tab still shows nothing. EventSource doesn't receive data despite transcript files existing. Must verify with Playwright before closing.
 - **Type:** feature
 - **Priority:** P1
 - **Status:** wont-do
-- **Reason:** Superseded by BL-013 (reopened and completed iteration 42). Live tab now tails Claude transcripts with Playwright verification (screenshots: bl013-verify-iter42-live-tab.png, deploy-smoke-live-tab.png). Closed as duplicate at TRIAGE iter 43.
+- **Reason:** Superseded by T013 (reopened and completed iteration 42). Live tab now tails Claude transcripts with Playwright verification (screenshots: bl013-verify-iter42-live-tab.png, deploy-smoke-live-tab.png). Closed as duplicate at TRIAGE iter 43.
 
-### BL-001: Smoke test all pages using Playwright browser
+### T001: Smoke test all pages using Playwright browser
 - **Type:** test
 - **Priority:** P0
 - **Status:** done
@@ -439,7 +455,7 @@
   - Test Add Project, Steer, Add Backlog dialogs
   - Screenshot each page
 
-### BL-002: Fix Live tab showing nothing
+### T002: Fix Live tab showing nothing
 - **Type:** bug
 - **Priority:** P0
 - **Status:** done
@@ -448,7 +464,7 @@
   - Add empty state: "No active session. Start RedEye to see live output."
   - When session IS running, verify SSE stream connects and renders events
 
-### BL-003: Test Start/Stop flow end-to-end
+### T003: Test Start/Stop flow end-to-end
 - **Type:** test
 - **Priority:** P1
 - **Status:** done
@@ -458,7 +474,7 @@
   - Verify Working On card updates
   - Click Stop, verify session stops and UI returns to idle
 
-### BL-004: Polish UI consistency
+### T004: Polish UI consistency
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -469,7 +485,7 @@
   - Nav tabs highlight correctly on each page
   - Responsive layout on narrower viewports
 
-### BL-005: Verify onboarding wizard end-to-end
+### T005: Verify onboarding wizard end-to-end
 - **Type:** test
 - **Priority:** P1
 - **Status:** done
@@ -479,11 +495,11 @@
   - Verify wizard starts, fill in fields, initialize
   - Verify redirect to mission control
 
-### BL-009: Support both dark and light mode properly
+### T009: Support both dark and light mode properly
 - **Type:** feature
 - **Priority:** P0
 - **Status:** done
-- **Spec:** docs/specs/BL-009-dark-light-mode.md
+- **Spec:** docs/specs/T009-dark-light-mode.md
 - **CEO Note:** NOT DONE. Components have dark: variants but the theme toggle was never wired. The html element has no dark class, no theme provider, no toggle in the header. Light mode still looks broken. Reopen and finish: add next-themes or a manual theme provider, wire the toggle, default to system preference.
 - **Details:**
   - The dashboard currently only looks good in dark mode — light mode is broken (wrong backgrounds, invisible text)
@@ -496,12 +512,12 @@
   - Update ALL components to use dark: variants where needed
   - Test both modes with Playwright screenshots
 
-### BL-010: Detect and recover from stalled sessions (quota exhaustion, permission prompts)
+### T010: Detect and recover from stalled sessions (quota exhaustion, permission prompts)
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24
-- **Spec:** docs/specs/BL-010-stall-detection.md
+- **Spec:** docs/specs/T010-stall-detection.md
 - **Details:**
   - When claude --print hits a quota wall, it shows an interactive menu that can't be answered in headless mode. The process hangs indefinitely.
   - In session-manager.ts: add a health check that monitors the .jsonl log file. If no new output for 10 minutes but the process is still alive, kill and restart it.
@@ -509,11 +525,11 @@
   - Add a `lastActivity` timestamp to SessionInfo derived from the log file's mtime.
   - The controls card should show "Stalled" state with amber border when detected.
 
-### BL-011: Enforce BL-xxx ID counter at write level — prevent duplicate IDs
+### T011: Enforce BL-xxx ID counter at write level — prevent duplicate IDs
 - **Type:** bug
 - **Priority:** P0
 - **Status:** done
-- **Spec:** docs/specs/BL-011-enforce-bl-id-counter.md
+- **Spec:** docs/specs/T011-enforce-bl-id-counter.md
 - **Details:**
   - Multiple entry points can add backlog items: /redeye:backlog command, dashboard API, manual edits, HARDEN-discovered items
   - The BL counter in state.json can get out of sync if any entry point skips incrementing it
@@ -521,7 +537,7 @@
   - Add a utility function `getNextBacklogId(projectPath)` that reads both state.json counter AND scans backlog.md for the actual highest BL-xxx, returns whichever is higher + 1, and updates state.json
   - All code paths that create backlog items must use this function
 
-### BL-016: Make phase badge more prominent and dynamic
+### T016: Make phase badge more prominent and dynamic
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -533,7 +549,7 @@
   - The badge should feel alive — convey that work is happening right now
   - Only animate when the session is running, not when idle
 
-### BL-015: Show cost tracking on mission control
+### T015: Show cost tracking on mission control
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -545,12 +561,12 @@
   - Update in real-time as the session runs
   - Also show cost per completed backlog item in the Recently Shipped card and backlog detail page
 
-### BL-013: Live tab should tail Claude transcript files
+### T013: Live tab should tail Claude transcript files
 - **Type:** bug
 - **Priority:** P0
 - **Status:** done
 - **Completed:** 2026-04-24
-- **Spec:** docs/specs/BL-013-live-tab-fix.md
+- **Spec:** docs/specs/T013-live-tab-fix.md
 - **CEO Note:** REOPENED. Was marked done but Live tab still shows nothing. The transcript resolver and stream route were updated but the EventSource connection in the browser doesn't receive any data. Must be visually verified with Playwright before marking done again.
 - **Details:**
   - Live tab shows nothing because it looks for .redeye/session-cto.jsonl which only exists for Control Tower-spawned sessions
@@ -560,7 +576,7 @@
   - Update the SSE stream API route and stream-utils to use this path
   - The transcript format is JSONL with type/message fields — similar enough to parse
 
-### BL-014: Backlog page should show currently active task as "In Progress" at the top
+### T014: Backlog page should show currently active task as "In Progress" at the top
 - **Type:** bug
 - **Priority:** P0
 - **Status:** done
@@ -573,7 +589,7 @@
 
 ## Discovered
 
-### BL-017: Cost card leaves empty column in mission control grid
+### T017: Cost card leaves empty column in mission control grid
 - **Type:** bug
 - **Priority:** P2
 - **Status:** done
@@ -583,19 +599,19 @@
   - Cost card sits alone in left column, leaving right column blank when Questions card spans full width below
   - Fix: make Cost card span full width, or pair it with another card in the grid
 
-### BL-018: Project cards on home page don't show current phase or active task
+### T018: Project cards on home page don't show current phase or active task
 - **Type:** bug
 - **Priority:** P2
 - **Status:** done
 - **Completed:** 2026-04-24
-- **Spec:** docs/specs/BL-018-home-status.md
+- **Spec:** docs/specs/T018-home-status.md
 - **Source:** User Tester (iteration 32, BUG-2)
 - **Details:**
   - ProjectCard always shows "Idle" / "No active task" even when project is running
   - The phase and currentTask fields are not populated from state.json in the projects API
   - Fix: read state.json in the projects list API and pass phase + backlog_title to ProjectCard
 
-### BL-006: Duplicate backlog items cause React key warnings and visual duplicates
+### T006: Duplicate backlog items cause React key warnings and visual duplicates
 - **Type:** bug
 - **Priority:** P2
 - **Status:** done
@@ -603,23 +619,23 @@
   - When a backlog.md file contains the same BL-xxx ID in multiple sections (e.g. CEO Requests and Triaged), parseBacklog returns duplicate items
   - This causes React "duplicate key" console errors on the Mission Control page and shows the same item multiple times in the Up Next list
   - Fixed by adding deduplication in parseBacklog() — keeps the last occurrence when the same ID appears in multiple sections
-  - Reproduction: haze project had BL-001 in both CEO Requests and Triaged sections
+  - Reproduction: haze project had T001 in both CEO Requests and Triaged sections
   - Screenshot: screenshots/T2-mission-control.png (shows duplicate before fix)
 
-### BL-019: Fix cost invariant — session cost can exceed total when cliDir unreadable
+### T019: Fix cost invariant — session cost can exceed total when cliDir unreadable
 - **Type:** bug
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24
-- **Spec:** docs/specs/BL-019-cost-invariant-fix.md
-- **Source:** Discovered (iteration 33 — known live bug in BL-015)
+- **Spec:** docs/specs/T019-cost-invariant-fix.md
+- **Source:** Discovered (iteration 33 — known live bug in T015)
 - **Details:**
   - In app/api/projects/[id]/cost/route.ts, when cliDir is unreadable the session cost is computed from the active JSONL log but total is computed only from readable transcript files
   - This can cause sessionCost > totalCost, violating the invariant that total >= session
   - Fix: apply Math.max(totalCost, sessionCost) before returning to ensure total always covers session
   - Also guards against any rounding edge cases
 
-### BL-021: Add questionCount to ProjectWithStatus — remove unsafe cast in ProjectCard
+### T021: Add questionCount to ProjectWithStatus — remove unsafe cast in ProjectCard
 - **Type:** bug
 - **Priority:** P1
 - **Status:** done
@@ -629,7 +645,7 @@
   - ProjectCard line 38 uses `(project as ProjectWithStatus & { questionCount?: number }).questionCount` — unsafe cast
   - Fix: add `questionCount?: number` to `ProjectWithStatus` type and populate it in the projects list API route
 
-### BL-022: Add unit tests for critical API routes (start, stop, restart, backlog CRUD)
+### T022: Add unit tests for critical API routes (start, stop, restart, backlog CRUD)
 - **Type:** test
 - **Priority:** P1
 - **Status:** done
@@ -641,7 +657,7 @@
   - Use vitest with mocked session-manager and redeye-files
 - **Shipped:** 2 new test files — `app/api/projects/[id]/start/route.test.ts` (3 tests) and `app/api/projects/[id]/backlog/[taskId]/route.test.ts` (13 tests). Total suite: 343/343 passing.
 
-### BL-023: Add auto-refresh polling to home page project cards
+### T023: Add auto-refresh polling to home page project cards
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
@@ -653,12 +669,12 @@
   - Add a 10-second polling interval (matching mission control pattern) so project cards update phase/task in real-time
   - Pause polling when browser tab is hidden
 
-### BL-024: Add aria-labels to all interactive buttons and controls
+### T024: Add aria-labels to all interactive buttons and controls
 - **Type:** ux
 - **Priority:** P2
 - **Status:** done
 - **Completed:** 2026-04-25 (iter 59)
-- **Spec:** docs/specs/BL-024-aria-labels.md
+- **Spec:** docs/specs/T024-aria-labels.md
 - **Source:** CTO (iteration 37, HARDEN phase)
 - **Details:**
   - 14+ interactive buttons across the app have no aria-label, making them inaccessible to screen readers
@@ -667,7 +683,7 @@
   - Run Playwright accessibility scan after fix to catch remaining issues
 - **Summary:** Added aria-labels and linked labels to all interactive buttons and form controls across the dashboard, covering icon-only buttons in mission control cards, dialog fields, and transcript viewer toggles. A dedicated unit test suite and a Playwright E2E spec were added to assert accessible names on key controls.
 
-### BL-025: Wrap unguarded API route handlers in try-catch for safe error responses
+### T025: Wrap unguarded API route handlers in try-catch for safe error responses
 - **Type:** tech-debt
 - **Priority:** P1
 - **Status:** done
@@ -679,7 +695,7 @@
   - Additionally, /api/projects/[id]/answer has an empty catch {} block that silently discards state.json write errors
   - Fix pattern: wrap entire handler body in try-catch; return NextResponse.json({ error: e.message }, { status: 500 }) on failure; replace empty catch blocks with at minimum a console.error
 
-### BL-026: Completed backlog items should have a collapsible LLM summary
+### T026: Completed backlog items should have a collapsible LLM summary
 - **Type:** feature
 - **Priority:** P1
 - **Status:** done
@@ -694,45 +710,45 @@
   - 1. Control Tower: parse and display the Summary field in backlog detail and shipped card (this repo)
   - 2. RedEye plugin: update verify.md and merge.md agents to write a `- **Summary:**` field when completing items (separate repo ~/redeye — add as steering note, don't edit directly)
 
-### BL-029: Fix Live tab — EventSource connection receives no data despite transcript files existing
+### T029: Fix Live tab — EventSource connection receives no data despite transcript files existing
 - **Type:** bug
 - **Priority:** medium
 - **Status:** wont-do
-- **Reason:** Duplicate of BL-013 (reopened). BL-013 covers the same bug and is currently being planned in iteration 40.
+- **Reason:** Duplicate of T013 (reopened). T013 covers the same bug and is currently being planned in iteration 40.
 
 ## Triaged
 
-### BL-064: the cost plot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
+### T064: the cost plot is nice, but it seems scaled weird, the text is very wide while not tall. it feels like a stretched image. fix it
 - **Type:** bug
 - **Priority:** P1
 - **Status:** done
 - **Merged:** 2026-04-25 (iter 93)
-- **Spec:** docs/specs/BL-064-cost-plot-scaling.md
+- **Spec:** docs/specs/T064-cost-plot-scaling.md
 - **Summary:** Fixed the cost sparkline aspect ratio by increasing VIEW_H from 48 to 80 (2.5:1 ratio instead of 4.17:1), removing the `width="100%"` SVG attribute, and adding `height={80}` so the browser renders the chart at its natural height without horizontal distortion. Removed the `max-h-[72px]` container clamp. Updated 3 test files; 663/663 tests pass and the production build is clean.
 
-### BL-027: Show cost for completed items in backlog list and detail page
+### T027: Show cost for completed items in backlog list and detail page
 - **Type:** bug
 - **Priority:** P1
 - **Status:** done
 - **Completed:** 2026-04-24 (iter 47)
 - **Source:** VP Product triage (iteration 40)
-- **Spec:** docs/specs/BL-027-backlog-list-cost.md
+- **Spec:** docs/specs/T027-backlog-list-cost.md
 - **Details:**
-  - BL-020 added cost-per-item via cost snapshots but the cost is not visible in the backlog list page or detail page
+  - T020 added cost-per-item via cost snapshots but the cost is not visible in the backlog list page or detail page
   - Read item_costs from state.json and display cost next to each completed item in the backlog list
   - Show cost on the backlog detail page for done items
   - Format as "$X.XX" in a subtle secondary label
-- **Planning note (iter 46):** Detail-page cost already shipped in BL-020 T7. BL-027 focuses on the list page gap; see Q-005 for confirmation.
+- **Planning note (iter 46):** Detail-page cost already shipped in T020 T7. T027 focuses on the list page gap; see Q-005 for confirmation.
 
-### BL-020: Show cost per completed backlog item in Recently Shipped card
+### T020: Show cost per completed backlog item in Recently Shipped card
 - **Type:** feature
 - **Priority:** P2
 - **Status:** done
 - **Completed:** 2026-04-24
-- **Spec:** docs/specs/BL-020-cost-per-item.md
-- **Source:** User Tester (iteration 32 feedback) + BL-015 spec (not implemented)
+- **Spec:** docs/specs/T020-cost-per-item.md
+- **Source:** User Tester (iteration 32 feedback) + T015 spec (not implemented)
 - **Details:**
-  - The BL-015 spec called out "Also show cost per completed backlog item in the Recently Shipped card and backlog detail page" but this was never implemented
+  - The T015 spec called out "Also show cost per completed backlog item in the Recently Shipped card and backlog detail page" but this was never implemented
   - In the Recently Shipped card on mission control, each completed item should show its cost contribution (e.g. "$1.42")
   - Store cost snapshot in state.json item_costs map when item transitions to done
   - Show as a subtle secondary label next to each completed item
