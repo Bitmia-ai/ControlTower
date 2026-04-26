@@ -2,23 +2,20 @@
   "schema_version": 1,
   "iteration": 109,
   "started_at": "2026-04-26T05:50:47Z",
-  "phase": "plan",
+  "phase": "build",
   "phase_status": "in-progress",
   "task_id": "T079",
-  "worktree_path": null,
-  "worktree_branch": null,
+  "worktree_path": "/Users/casa/ControlTower/.worktrees/T-79",
+  "worktree_branch": "redeye/T-79",
   "spec_file": "docs/specs/T079-pwa-viewport-zoom-fix.md",
   "phase_progress": {
-    "triage": {
-      "env_healthy": true,
-      "test_count": 804,
-      "tests_pass": true,
-      "ceo_answers_pending": 0,
-      "overdue_schedules": 0,
-      "actionable_backlog": 3,
-      "backlog_all_done": false,
+    "plan": {
       "selected_item": "T079",
-      "notes": "Env healthy. 804/804 tests pass. Build clean. No overdue schedules. No CEO answers pending. 3 actionable items. Selected T079 (P1: PWA auto-zoom on input). Routing to PLAN."
+      "spec_file": "docs/specs/T079-pwa-viewport-zoom-fix.md",
+      "sub_tasks": 2,
+      "sub_task_sizes": "S+S",
+      "questions_posted": 0,
+      "notes": "T079 planned. 2 sub-tasks: T1 add maximumScale+userScalable to viewport in layout.tsx + update test (S), T2 build smoke grep for maximum-scale=1 (S). No CEO questions needed."
     }
   },
   "review_cycles": 0,
@@ -46,6 +43,16 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 109,
+      "phases": [
+        "TRIAGE",
+        "PLAN"
+      ],
+      "outcome": "TRIAGE: env healthy, 804/804 tests, no CEO answers pending, selected T079 PWA zoom fix. PLAN: spec written (2 sub-tasks S+S). Worktree created.",
+      "next": "BUILD T079",
+      "timestamp": "2026-04-26T19:57:32Z"
+    },
     {
       "iteration": 108,
       "phases": [
@@ -103,21 +110,6 @@
       "outcome": "INCORPORATE: Q-012 resolved, T075 added. TRIAGE: env healthy, 783/783 tests, selected T075. PLAN: spec written. BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated — 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed. MERGE: T075 marked done.",
       "next": "TRIAGE iter 107",
       "timestamp": "2026-04-25T21:40:53Z"
-    },
-    {
-      "iteration": 105,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "T068 live tab polish — full cycle complete. 783/783 tests pass. Backlog exhausted, filed Q-012.",
-      "next": "waiting_for_ceo (Q-012 filed)",
-      "timestamp": "2026-04-25T23:20:00Z"
     }
   ],
   "counters": {
@@ -127,7 +119,7 @@
     "next_task_id": 80
   },
   "cost_tracking": {
-    "iterations_this_session": 80,
+    "iterations_this_session": 81,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
