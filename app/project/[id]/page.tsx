@@ -14,7 +14,7 @@ import { ShippedCard } from "@/components/mission-control/shipped-card";
 import { ControlsCard } from "@/components/mission-control/controls-card";
 import { CostCard } from "@/components/mission-control/cost-card";
 import { AnswerModal } from "@/components/answer-modal";
-import { AddBacklogDialog } from "@/components/add-backlog-dialog";
+import { AddTaskDialog } from "@/components/add-task-dialog";
 import { SteerDialog } from "@/components/steer-dialog";
 import { OnboardingWizard } from "@/components/onboarding-wizard";
 import { FetchError } from "@/components/fetch-error";
@@ -68,7 +68,7 @@ export default function ProjectPage({
   // BL-046: record per-task cost baseline on task start, delta on task end.
   // Both POSTs are fire-and-forget — they must not block the UI. Server-side
   // idempotency (cost-start AD-7 guard) prevents duplicate baselines.
-  const activeId = detail ? (detail.state?.backlog_item ?? null) : undefined;
+  const activeId = detail ? (detail.state?.task_id ?? null) : undefined;
   const postCostStart = useCallback((blId: string) => {
     fetch(`/api/projects/${id}/cost-start`, {
       method: "POST",
@@ -88,7 +88,7 @@ export default function ProjectPage({
   // BL-050: in-app + native notifications when RedEye phase transitions.
   // Hook is no-op until a real transition is observed (skips first mount).
   const phaseForNotifications = detail ? (detail.state?.phase ?? null) : undefined;
-  const backlogTitleForNotifications = detail?.state?.backlog_title ?? null;
+  const backlogTitleForNotifications = detail?.state?.task_title ?? null;
   usePhaseNotifications(phaseForNotifications, backlogTitleForNotifications, projectId);
 
   async function handleAction(action: "start" | "stop" | "pause") {
@@ -232,7 +232,7 @@ export default function ProjectPage({
         onSteered={fetchDetail}
       />
 
-      <AddBacklogDialog
+      <AddTaskDialog
         projectId={projectId}
         open={backlogOpen}
         onOpenChange={setBacklogOpen}

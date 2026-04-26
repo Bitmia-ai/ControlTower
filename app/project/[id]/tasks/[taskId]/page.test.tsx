@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, act, cleanup, waitFor } from "@testing-library/react";
 import BacklogItemPage from "./page";
-import type { BacklogItem } from "@/lib/redeye-types";
+import type { TaskItem } from "@/lib/redeye-types";
 
 // Mocks that need to be defined before component import isn't necessary
 // (vi.mock calls are hoisted), but group them for clarity.
@@ -31,8 +31,8 @@ vi.mock("react-markdown", () => ({
 
 vi.mock("remark-gfm", () => ({ default: () => {} }));
 
-vi.mock("@/components/backlog-id", () => ({
-  BacklogId: ({ id }: { id: string }) => <span>{id}</span>,
+vi.mock("@/components/task-id", () => ({
+  TaskId: ({ id }: { id: string }) => <span>{id}</span>,
 }));
 
 vi.mock("@/components/fetch-error", () => ({
@@ -47,9 +47,9 @@ function makeResponse(body: unknown, status = 200): Response {
   } as unknown as Response;
 }
 
-function makeItem(overrides: Partial<BacklogItem> = {}): BacklogItem {
+function makeItem(overrides: Partial<TaskItem> = {}): TaskItem {
   return {
-    id: "BL-042",
+    id: "T042",
     title: "Test backlog item",
     status: "done",
     section: "triaged",
@@ -79,11 +79,11 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     );
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "BL-042")} />);
+      render(<BacklogItemPage params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
-      expect(fetchSpy).toHaveBeenCalledWith("/api/projects/0/backlog/BL-042");
+      expect(fetchSpy).toHaveBeenCalledWith("/api/projects/0/tasks/T042");
     });
 
     await waitFor(() => {
@@ -99,7 +99,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(makeResponse({ data: item }));
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "BL-042")} />);
+      render(<BacklogItemPage params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -123,10 +123,10 @@ describe("BacklogItemPage — cost row + Record now button", () => {
         if (url === "/api/projects/0/cost-snapshot" && method === "POST") {
           snapshotRecorded = true;
           return makeResponse({
-            data: { blId: "BL-042", cost_usd: 2.37, recorded: true },
+            data: { blId: "T042", cost_usd: 2.37, recorded: true },
           });
         }
-        if (url === "/api/projects/0/backlog/BL-042") {
+        if (url === "/api/projects/0/tasks/T042") {
           return makeResponse({
             data: snapshotRecorded ? itemWithCost : itemNoCost,
           });
@@ -136,7 +136,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     );
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "BL-042")} />);
+      render(<BacklogItemPage params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -160,7 +160,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     );
     expect(postCall).toBeTruthy();
     const postInit = postCall![1] as RequestInit;
-    expect(JSON.parse(postInit.body as string)).toEqual({ blId: "BL-042" });
+    expect(JSON.parse(postInit.body as string)).toEqual({ blId: "T042" });
 
     // Button should no longer be rendered
     expect(screen.queryByRole("button", { name: /Record now/ })).toBeNull();
@@ -173,14 +173,14 @@ describe("BacklogItemPage — cost row + Record now button", () => {
         const url = typeof input === "string" ? input : input.toString();
         const method = init?.method ?? "GET";
         if (url === "/api/projects/0/cost-snapshot" && method === "POST") {
-          return makeResponse({ data: { blId: "BL-042", cost_usd: 0, recorded: false } });
+          return makeResponse({ data: { blId: "T042", cost_usd: 0, recorded: false } });
         }
         return makeResponse({ data: item });
       }
     );
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "BL-042")} />);
+      render(<BacklogItemPage params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {
@@ -204,7 +204,7 @@ describe("BacklogItemPage — cost row + Record now button", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(makeResponse({ data: item }));
 
     await act(async () => {
-      render(<BacklogItemPage params={makeParams("0", "BL-042")} />);
+      render(<BacklogItemPage params={makeParams("0", "T042")} />);
     });
 
     await waitFor(() => {

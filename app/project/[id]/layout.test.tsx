@@ -26,9 +26,9 @@ describe("ProjectNav — no kbd badges (BL-061)", () => {
     expect(link.querySelector("kbd")).toBeNull();
   });
 
-  it("Backlog link has no kbd badge", () => {
+  it("Tasks link has no kbd badge", () => {
     render(<ProjectNav projectId="42" />);
-    const link = screen.getByRole("link", { name: /^Backlog$/ });
+    const link = screen.getByRole("link", { name: /^Tasks$/ });
     expect(link.querySelector("kbd")).toBeNull();
   });
 });

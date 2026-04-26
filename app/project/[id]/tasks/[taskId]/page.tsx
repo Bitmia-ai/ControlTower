@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import type { BacklogItem } from "@/lib/redeye-types";
+import type { TaskItem } from "@/lib/redeye-types";
 
 // Dynamic import moves react-markdown out of the shared chunk into a lazy
 // route chunk that is only fetched when the backlog detail page is visited.
@@ -17,9 +17,9 @@ const MarkdownRenderer = dynamic(
     ),
   }
 );
-import { BacklogId } from "@/components/backlog-id";
+import { TaskId } from "@/components/task-id";
 import { FetchError } from "@/components/fetch-error";
-import { BacklogSummarySection } from "@/components/backlog-summary-section";
+import { TaskSummarySection } from "@/components/task-summary-section";
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-zinc-300",
@@ -56,7 +56,7 @@ export default function BacklogItemPage({
   const { id, taskId } = use(params);
   const router = useRouter();
 
-  const [item, setItem] = useState<BacklogItem | null>(null);
+  const [item, setItem] = useState<TaskItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
@@ -79,7 +79,7 @@ export default function BacklogItemPage({
   const fetchItem = useCallback(async () => {
     try {
       setFetchError(null);
-      const res = await fetch(`/api/projects/${id}/backlog/${taskId}`);
+      const res = await fetch(`/api/projects/${id}/tasks/${taskId}`);
       if (res.status === 404) {
         setNotFound(true);
         return;
@@ -114,7 +114,7 @@ export default function BacklogItemPage({
     if (!item) return;
     setSaving(true);
     try {
-      const res = await fetch(`/api/projects/${id}/backlog/${taskId}`, {
+      const res = await fetch(`/api/projects/${id}/tasks/${taskId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -169,11 +169,11 @@ export default function BacklogItemPage({
   async function handleDelete() {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/projects/${id}/backlog/${taskId}`, {
+      const res = await fetch(`/api/projects/${id}/tasks/${taskId}`, {
         method: "DELETE",
       });
       if (res.ok) {
-        router.push(`/project/${id}/backlog`);
+        router.push(`/project/${id}/tasks`);
       }
     } finally {
       setDeleting(false);
@@ -183,7 +183,7 @@ export default function BacklogItemPage({
   return (
     <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
       <Link
-        href={`/project/${id}/backlog`}
+        href={`/project/${id}/tasks`}
         className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition inline-flex items-center gap-1 mb-3"
       >
         <span>&larr;</span>
@@ -216,7 +216,7 @@ export default function BacklogItemPage({
         <div className="flex flex-col items-center justify-center py-24 gap-4">
           <p className="text-gray-500 dark:text-zinc-600 text-sm">Backlog item not found.</p>
           <Link
-            href={`/project/${id}/backlog`}
+            href={`/project/${id}/tasks`}
             className="text-xs text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition"
           >
             Return to Backlog
@@ -311,7 +311,7 @@ export default function BacklogItemPage({
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
               <div>
                 <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-0.5">ID</dt>
-                <dd><BacklogId id={item.id} projectId={id} /></dd>
+                <dd><TaskId id={item.id} projectId={id} /></dd>
               </div>
               {item.type && (
                 <div>
@@ -356,7 +356,7 @@ export default function BacklogItemPage({
             </dl>
 
             {item.summary && (
-              <BacklogSummarySection
+              <TaskSummarySection
                 summary={item.summary}
                 defaultOpen={item.status === "done"}
               />

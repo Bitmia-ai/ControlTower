@@ -17,7 +17,7 @@ const MarkdownRenderer = dynamic(
 );
 import type { ProjectDetail, ChangelogEntry } from "@/lib/redeye-types";
 import type { SessionHistoryEntry } from "@/lib/cost-history";
-import { linkifyBacklogIds } from "@/components/backlog-id";
+import { linkifyBacklogIds } from "@/components/task-id";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { SessionHistoryRow } from "@/components/history/session-history-row";

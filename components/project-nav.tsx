@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { label: "Overview", path: "" },
-  { label: "Tasks", path: "/backlog" },
+  { label: "Tasks", path: "/tasks" },
   { label: "History", path: "/history" },
   { label: "Live", path: "/live" },
   { label: "Schedules", path: "/schedules" },

@@ -3,9 +3,9 @@
 import { useEffect, useState, useCallback, use } from "react";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
-import type { ProjectDetail, BacklogItem } from "@/lib/redeye-types";
-import { BacklogId } from "@/components/backlog-id";
-import { AddBacklogDialog } from "@/components/add-backlog-dialog";
+import type { ProjectDetail, TaskItem } from "@/lib/redeye-types";
+import { TaskId } from "@/components/task-id";
+import { AddTaskDialog } from "@/components/add-task-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { CollapsibleSection } from "@/components/collapsible-section";
@@ -27,19 +27,13 @@ const PRIORITY_COLORS: Record<string, string> = {
   P2: "bg-gray-200 text-gray-700 dark:bg-zinc-600 dark:text-zinc-200",
 };
 
-const SECTION_LABELS: Record<string, string> = {
-  ceo: "CEO Requests",
-  discovered: "Discovered",
-  triaged: "Triaged",
-  wontdo: "Won't Do",
-};
 
 /**
- * Parse the numeric portion of a BL-xxx id. Used for sorting done items newest-first.
+ * Parse the numeric portion of a T-prefixed id. Used for sorting items newest-first.
  * Falls back to 0 if the id is malformed.
  */
-export function parseBacklogIdNumber(id: string): number {
-  const match = id.match(/BL-(\d+)/i);
+export function parseTaskIdNumber(id: string): number {
+  const match = id.match(/T(\d+)/);
   if (!match) return 0;
   return parseInt(match[1], 10) || 0;
 }
@@ -49,19 +43,19 @@ export function parseBacklogIdNumber(id: string): number {
  * Exported so tests can verify the filtering + sort logic without rendering the page.
  */
 export function computeBuckets(
-  allItems: BacklogItem[],
+  allItems: TaskItem[],
   activeId: string | null,
 ): {
-  plannedItems: BacklogItem[];
-  doneItems: BacklogItem[];
-  wontDoItems: BacklogItem[];
+  plannedItems: TaskItem[];
+  doneItems: TaskItem[];
+  wontDoItems: TaskItem[];
 } {
   const plannedItems = allItems.filter(
     (i) => i.status !== "done" && i.status !== "wontdo" && i.id !== activeId,
   );
   const doneItems = allItems
     .filter((i) => i.status === "done" && i.id !== activeId)
-    .sort((a, b) => parseBacklogIdNumber(b.id) - parseBacklogIdNumber(a.id));
+    .sort((a, b) => parseTaskIdNumber(b.id) - parseTaskIdNumber(a.id));
   const wontDoItems = allItems.filter((i) => i.status === "wontdo");
   return { plannedItems, doneItems, wontDoItems };
 }
@@ -70,7 +64,7 @@ function ActiveTaskCard({
   item,
   projectId,
 }: {
-  item: BacklogItem;
+  item: TaskItem;
   projectId: number;
 }) {
   return (
@@ -83,13 +77,13 @@ function ActiveTaskCard({
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug font-medium">
-              <BacklogId
+              <TaskId
                 id={item.id}
                 projectId={projectId}
                 className="text-xs text-gray-400 dark:text-zinc-500 mr-1.5 font-normal"
               />
               <Link
-                href={`/project/${projectId}/backlog/${item.id}`}
+                href={`/project/${projectId}/tasks/${item.id}`}
                 className="hover:text-red-600 dark:hover:text-red-400 transition"
               >
                 {item.title}
@@ -125,19 +119,19 @@ function ActiveTaskCard({
   );
 }
 
-export function BacklogSection({
+export function TaskSection({
   label,
   items,
   projectId,
 }: {
-  label: string;
-  items: BacklogItem[];
+  label?: string;
+  items: TaskItem[];
   projectId: number;
 }) {
   if (items.length === 0) return null;
   return (
     <div>
-      <SectionHeader label={label} count={items.length} className="mb-3" />
+      {label && <SectionHeader label={label} count={items.length} className="mb-3" />}
       <div className="flex flex-col gap-2">
         {items.map((item) => (
           <div
@@ -146,13 +140,13 @@ export function BacklogSection({
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug">
-                <BacklogId
+                <TaskId
                   id={item.id}
                   projectId={projectId}
                   className="text-xs text-gray-400 dark:text-zinc-500 mr-1.5"
                 />
                 <Link
-                  href={`/project/${projectId}/backlog/${item.id}`}
+                  href={`/project/${projectId}/tasks/${item.id}`}
                   className="hover:text-red-600 dark:hover:text-red-400 transition"
                 >
                   {item.title}
@@ -196,7 +190,7 @@ function DoneItemRow({
   item,
   projectId,
 }: {
-  item: BacklogItem;
+  item: TaskItem;
   projectId: number;
 }) {
   return (
@@ -207,13 +201,13 @@ function DoneItemRow({
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm leading-snug">
-          <BacklogId
+          <TaskId
             id={item.id}
             projectId={projectId}
             className="text-xs text-gray-400 dark:text-zinc-600 mr-1.5"
           />
           <Link
-            href={`/project/${projectId}/backlog/${item.id}`}
+            href={`/project/${projectId}/tasks/${item.id}`}
             className="text-gray-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 transition"
           >
             {item.title}
@@ -238,7 +232,7 @@ export function WontDoItemRow({
   item,
   projectId,
 }: {
-  item: BacklogItem;
+  item: TaskItem;
   projectId: number;
 }) {
   return (
@@ -249,13 +243,13 @@ export function WontDoItemRow({
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm leading-snug">
-          <BacklogId
+          <TaskId
             id={item.id}
             projectId={projectId}
             className="text-xs text-gray-400 dark:text-zinc-600 mr-1.5"
           />
           <Link
-            href={`/project/${projectId}/backlog/${item.id}`}
+            href={`/project/${projectId}/tasks/${item.id}`}
             className="text-gray-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition line-through decoration-gray-300 dark:decoration-zinc-600"
           >
             {item.title}
@@ -293,7 +287,8 @@ export default function BacklogPage({
   const [detail, setDetail] = useState<ProjectDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
-  const [backlogOpen, setBacklogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [backlogSectionOpen, setBacklogSectionOpen] = useState(true);
   const [doneOpen, setDoneOpen] = useState(false);
   const [wontDoOpen, setWontDoOpen] = useState(false);
 
@@ -322,7 +317,7 @@ export default function BacklogPage({
   const activeItem = detail?.activeItem ?? null;
   const activeId = activeItem?.id ?? null;
 
-  const allItems: BacklogItem[] = [
+  const allItems: TaskItem[] = [
     ...(detail?.upNext ?? []),
     ...(detail?.recentlyShipped ?? []),
     ...(detail?.wontDoItems ?? []),
@@ -333,11 +328,13 @@ export default function BacklogPage({
     activeId,
   );
 
-  const plannedBySection: Record<"ceo" | "discovered" | "triaged", BacklogItem[]> = {
-    ceo: plannedItems.filter((i) => i.section === "ceo"),
-    discovered: plannedItems.filter((i) => i.section === "discovered"),
-    triaged: plannedItems.filter((i) => i.section === "triaged"),
-  };
+  const sortedBacklog = [...plannedItems].sort((a, b) => {
+    const pri = (p: string | undefined) =>
+      p === "P0" ? 0 : p === "P1" ? 1 : p === "P2" ? 2 : 3;
+    const dp = pri(a.priority) - pri(b.priority);
+    if (dp !== 0) return dp;
+    return parseTaskIdNumber(b.id) - parseTaskIdNumber(a.id);
+  });
 
   const totalCount = allItems.length + (activeItem ? 1 : 0);
 
@@ -357,7 +354,7 @@ export default function BacklogPage({
             </p>
           </div>
           <button
-            onClick={() => setBacklogOpen(true)}
+            onClick={() => setAddDialogOpen(true)}
             className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
           >
             + Add Item
@@ -376,7 +373,7 @@ export default function BacklogPage({
           icon={<span>~</span>}
           title="No backlog items yet"
           subtitle="Add items to track work for this project."
-          action={{ label: "+ Add Item", onClick: () => setBacklogOpen(true) }}
+          action={{ label: "+ Add Item", onClick: () => setAddDialogOpen(true) }}
         />
       ) : (
         <div className="flex flex-col gap-8">
@@ -384,14 +381,16 @@ export default function BacklogPage({
             <ActiveTaskCard item={activeItem} projectId={projectId} />
           )}
 
-          {(["ceo", "discovered", "triaged"] as const).map((section) => (
-            <BacklogSection
-              key={section}
-              label={SECTION_LABELS[section]}
-              items={plannedBySection[section]}
-              projectId={projectId}
-            />
-          ))}
+          {sortedBacklog.length > 0 && (
+            <CollapsibleSection
+              label="Backlog"
+              count={sortedBacklog.length}
+              open={backlogSectionOpen}
+              onToggle={() => setBacklogSectionOpen((o) => !o)}
+            >
+              <TaskSection items={sortedBacklog} projectId={projectId} />
+            </CollapsibleSection>
+          )}
 
           {doneItems.length > 0 && (
             <CollapsibleSection
@@ -433,10 +432,10 @@ export default function BacklogPage({
         </div>
       )}
 
-      <AddBacklogDialog
+      <AddTaskDialog
         projectId={projectId}
-        open={backlogOpen}
-        onOpenChange={setBacklogOpen}
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
         onAdded={fetchDetail}
       />
     </main>
