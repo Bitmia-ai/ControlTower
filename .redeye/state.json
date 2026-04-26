@@ -2,22 +2,23 @@
   "schema_version": 1,
   "iteration": 108,
   "started_at": "2026-04-26T05:50:47Z",
-  "phase": "incorporate",
+  "phase": "triage",
   "phase_status": "complete",
+  "task_id": "T077",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
     "triage": {
       "env_healthy": true,
-      "test_count": 796,
+      "test_count": 795,
       "tests_pass": true,
       "ceo_answers_pending": 0,
-      "overdue_schedules": 2,
-      "actionable_backlog": 0,
-      "backlog_all_done": true,
-      "selected_item": null,
-      "notes": "Env healthy. 796/796 tests pass. Build clean. 2 overdue schedules (SCHED-1, SCHED-2). Backlog exhausted — all 75 items done or wont-do. Transitioning to SCHEDULES to handle overdue tasks before filing Q-013."
+      "overdue_schedules": 0,
+      "actionable_backlog": 2,
+      "backlog_all_done": false,
+      "selected_item": "T077",
+      "notes": "Env healthy. 795/795 tests pass. Build clean. No overdue schedules. No CEO answers pending. 2 actionable items (T077: Lighthouse/perf, T076: dep updates). Selected T077 (higher impact, unlocks perf baseline for T076 context). Routing to PLAN."
     },
     "schedules": {
       "sched1_run": true,
@@ -57,16 +58,16 @@
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
     "merge_status": "clean",
-    "notes": "INCORPORATE iter 108: Q-013 resolved — T076 (dep updates) + T077 (Lighthouse/perf) added. 2 tasks now actionable."
+    "notes": "TRIAGE iter 108: selected T077 (Lighthouse baseline + per-page metadata.title + chunk investigation). Routing to PLAN."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 108,
-      "phases": ["INCORPORATE"],
-      "outcome": "Q-013 resolved: CEO /redeye:start = proceed with default. T076 (dep updates) + T077 (Lighthouse baseline + per-page titles + chunk investigation) added to backlog. 2 items now actionable.",
-      "next": "TRIAGE iter 108",
-      "timestamp": "2026-04-26T05:52:00Z"
+      "phases": ["INCORPORATE", "TRIAGE"],
+      "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077 (Lighthouse baseline + per-page titles + chunk investigation).",
+      "next": "PLAN T077",
+      "timestamp": "2026-04-26T05:54:00Z"
     },
     {
       "iteration": 107,
