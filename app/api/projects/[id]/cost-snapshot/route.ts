@@ -1,15 +1,15 @@
 // POST /api/projects/[id]/cost-snapshot
 // Captures cost for a completed backlog item.
 //
-// If `state.item_cost_starts[blId]` is present (set by cost-start when the task
+// If `state.item_cost_starts[taskId]` is present (set by cost-start when the task
 // became active), the recorded cost is the DELTA: current_session_cost − start.
 // This reflects only the work done on this task, not the cumulative session total.
 //
 // If no start record exists (e.g. older "Record now" manual use), the raw
 // current session cost is recorded instead — preserving pre-BL-046 behaviour.
 //
-// Body: { blId: string }
-// Returns: { data: { blId: string, cost_usd: number, recorded: boolean } }
+// Body: { taskId: string }
+// Returns: { data: { taskId: string, cost_usd: number, recorded: boolean } }
 
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
@@ -20,7 +20,7 @@ import { sumCurrentSessionCost } from "@/lib/cost-calculator";
 import { readJsonBody } from "@/lib/json-body";
 import type { RedEyeState } from "@/lib/redeye-types";
 
-const BL_ID_RE = /^BL-\d+$/;
+const TASK_ID_RE = /^BL-\d+$/;
 const MAX_BODY_BYTES = 1024;
 
 export async function POST(
@@ -37,9 +37,9 @@ export async function POST(
 
   const r = await readJsonBody<Record<string, unknown>>(req, MAX_BODY_BYTES);
   if (!r.ok) return r.response;
-  const blId = r.data?.blId;
-  if (typeof blId !== "string" || !BL_ID_RE.test(blId)) {
-    return NextResponse.json({ error: "blId must match BL-<number>" }, { status: 400 });
+  const taskId = r.data?.taskId;
+  if (typeof taskId !== "string" || !TASK_ID_RE.test(taskId)) {
+    return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
   }
 
   // Read state.json first so we can check for a start baseline before
@@ -54,7 +54,7 @@ export async function POST(
     return NextResponse.json({ error: "Could not read state.json" }, { status: 500 });
   }
 
-  const startCost = state.item_cost_starts?.[blId];
+  const startCost = state.item_cost_starts?.[taskId];
   const hasStart = typeof startCost === "number";
 
   const current_cost = await sumCurrentSessionCost(project.path);
@@ -64,7 +64,7 @@ export async function POST(
   // When a start baseline exists we always proceed so we can clear it and
   // record the delta (even if it clamps to 0).
   if (!hasStart && (!current_cost || current_cost <= 0)) {
-    return NextResponse.json({ data: { blId, cost_usd: 0, recorded: false } });
+    return NextResponse.json({ data: { taskId, cost_usd: 0, recorded: false } });
   }
 
   // Delta mode when a start baseline exists, raw mode otherwise.
@@ -76,10 +76,10 @@ export async function POST(
   if (!state.item_costs) {
     state.item_costs = {};
   }
-  state.item_costs[blId] = cost_usd;
+  state.item_costs[taskId] = cost_usd;
 
   if (hasStart && state.item_cost_starts) {
-    delete state.item_cost_starts[blId];
+    delete state.item_cost_starts[taskId];
   }
 
   try {
@@ -88,5 +88,5 @@ export async function POST(
     return NextResponse.json({ error: "Could not write state.json" }, { status: 500 });
   }
 
-  return NextResponse.json({ data: { blId, cost_usd, recorded: true } });
+  return NextResponse.json({ data: { taskId, cost_usd, recorded: true } });
 }

@@ -4,7 +4,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
-import { readBacklog, readState, safeRedeyePath } from "@/lib/redeye-files";
+import { readTasks, readState, safeRedeyePath } from "@/lib/redeye-files";
 import { readJsonBody } from "@/lib/json-body";
 import fs from "fs/promises";
 
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   }
 
   const [items, state] = await Promise.all([
-    readBacklog(project.path),
+    readTasks(project.path),
     readState(project.path),
   ]);
   const item = items.find((i) => i.id === taskId);
@@ -60,7 +60,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       details?: string;
     };
 
-  const backlogPath = safeRedeyePath(project.path, "backlog.md");
+  const backlogPath = safeRedeyePath(project.path, "tasks.md");
 
   let content: string;
   try {
@@ -73,7 +73,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   // Verify the item exists
-  const items = await readBacklog(project.path);
+  const items = await readTasks(project.path);
   const item = items.find((i) => i.id === taskId);
   if (!item) {
     return NextResponse.json({ error: "Backlog item not found" }, { status: 404 });
@@ -127,7 +127,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   // Return the updated item, enriched with cost_usd from state if present
   const [updatedItems, state] = await Promise.all([
-    readBacklog(project.path),
+    readTasks(project.path),
     readState(project.path),
   ]);
   const updatedItem = updatedItems.find((i) => i.id === taskId) ?? item;
@@ -155,7 +155,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-  const backlogPath = safeRedeyePath(project.path, "backlog.md");
+  const backlogPath = safeRedeyePath(project.path, "tasks.md");
 
   let content: string;
   try {

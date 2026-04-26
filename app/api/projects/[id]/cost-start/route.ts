@@ -1,10 +1,10 @@
 // POST /api/projects/[id]/cost-start
 // Records the session cost at the moment a backlog item becomes active.
 // Later used by cost-snapshot to compute per-task delta (end - start).
-// Body: { blId: string }
+// Body: { taskId: string }
 // Returns:
-//   - { data: { blId, cost_at_start, recorded: true } } on first record
-//   - { data: { blId, skipped: true } } when a start is already recorded (idempotent)
+//   - { data: { taskId, cost_at_start, recorded: true } } on first record
+//   - { data: { taskId, skipped: true } } when a start is already recorded (idempotent)
 
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
@@ -15,7 +15,7 @@ import { sumCurrentSessionCost } from "@/lib/cost-calculator";
 import { readJsonBody } from "@/lib/json-body";
 import type { RedEyeState } from "@/lib/redeye-types";
 
-const BL_ID_RE = /^BL-\d+$/;
+const TASK_ID_RE = /^BL-\d+$/;
 const MAX_BODY_BYTES = 1024;
 
 export async function POST(
@@ -32,9 +32,9 @@ export async function POST(
 
   const r = await readJsonBody<Record<string, unknown>>(req, MAX_BODY_BYTES);
   if (!r.ok) return r.response;
-  const blId = r.data?.blId;
-  if (typeof blId !== "string" || !BL_ID_RE.test(blId)) {
-    return NextResponse.json({ error: "blId must match BL-<number>" }, { status: 400 });
+  const taskId = r.data?.taskId;
+  if (typeof taskId !== "string" || !TASK_ID_RE.test(taskId)) {
+    return NextResponse.json({ error: "taskId must match BL-<number>" }, { status: 400 });
   }
 
   const stateFilePath = safeRedeyePath(project.path, "state.json");
@@ -48,8 +48,8 @@ export async function POST(
 
   // Idempotency guard: if a start is already recorded, skip the write.
   // The first snapshot is always the correct baseline.
-  if (state.item_cost_starts?.[blId] !== undefined) {
-    return NextResponse.json({ data: { blId, skipped: true } });
+  if (state.item_cost_starts?.[taskId] !== undefined) {
+    return NextResponse.json({ data: { taskId, skipped: true } });
   }
 
   const cost = await sumCurrentSessionCost(project.path);
@@ -57,7 +57,7 @@ export async function POST(
   if (!state.item_cost_starts) {
     state.item_cost_starts = {};
   }
-  state.item_cost_starts[blId] = cost;
+  state.item_cost_starts[taskId] = cost;
 
   try {
     await atomicWriteJson(stateFilePath, JSON.stringify(state, null, 2));
@@ -65,5 +65,5 @@ export async function POST(
     return NextResponse.json({ error: "Could not write state.json" }, { status: 500 });
   }
 
-  return NextResponse.json({ data: { blId, cost_at_start: cost, recorded: true } });
+  return NextResponse.json({ data: { taskId, cost_at_start: cost, recorded: true } });
 }

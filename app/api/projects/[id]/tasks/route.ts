@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProjectByIndex } from "@/lib/projects";
-import { getNextBacklogId } from "@/lib/backlog-id";
+import { getNextTaskId } from "@/lib/task-id";
 import { getSessionStatus, startSession } from "@/lib/session-manager";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
@@ -49,14 +49,14 @@ export async function POST(
       description = sanitizeMarkdownInput(descriptionRaw, { maxLen: 2000 });
     }
 
-    const itemId = await getNextBacklogId(project.path);
-    const backlogPath = safeRedeyePath(project.path, "backlog.md");
+    const itemId = await getNextTaskId(project.path);
+    const backlogPath = safeRedeyePath(project.path, "tasks.md");
     let content: string;
     try {
       content = await fs.readFile(backlogPath, "utf-8");
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
-      content = "# Backlog\n\n## CEO Requests\n";
+      content = "# Tasks\n\n## CEO Requests\n";
     }
 
     const descLine = description ? `- **Description:** ${description}\n` : "";
@@ -78,8 +78,8 @@ export async function POST(
     // this item on the next iteration. Best-effort.
     const { committed, pushed } = await commitAndPush(
       project.path,
-      [".redeye/backlog.md"],
-      `ceo: add backlog item ${itemId} (via dashboard)`
+      [".redeye/tasks.md"],
+      `ceo: add task item ${itemId} (via dashboard)`
     );
 
     let resumed = false;

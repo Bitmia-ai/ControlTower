@@ -20,8 +20,8 @@ export async function GET() {
         initialized,
         running,
         phase: state?.phase,
-        currentTask: state?.backlog_title
-          ? `${state.backlog_item ?? ""} ${state.backlog_title}`.trim()
+        currentTask: state?.task_title
+          ? `${state.task_id ?? ""} ${state.task_title}`.trim()
           : null,
         questionCount: inbox.filter((q) => !q.answered).length,
       };

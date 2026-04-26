@@ -47,8 +47,8 @@ const baseState = {
   iteration: 1,
   phase: "BUILD",
   phase_status: "in-progress",
-  backlog_item: "BL-050",
-  backlog_title: "Test",
+  task_id: "T050",
+  task_title: "Test",
   spec_file: null,
   review_cycles: 0,
   health: {
@@ -58,7 +58,7 @@ const baseState = {
     questions_awaiting_ceo: 0,
     blocked_items_count: 0,
   },
-  counters: { next_bl_id: 1, next_q_id: 1 },
+  counters: { next_task_id: 1, next_q_id: 1 },
 };
 
 describe("POST /api/projects/[id]/cost-start", () => {
@@ -70,25 +70,25 @@ describe("POST /api/projects/[id]/cost-start", () => {
 
   it("returns 404 when project not found", async () => {
     mockGetProject.mockResolvedValue(null);
-    const [req, ctx] = makeRequest("99", { blId: "BL-050" });
+    const [req, ctx] = makeRequest("99", { taskId: "T050" });
     const res = await POST(req, ctx);
     expect(res.status).toBe(404);
     const json = await res.json();
     expect(json.error).toBeDefined();
   });
 
-  it("returns 400 when blId is missing", async () => {
+  it("returns 400 when taskId is missing", async () => {
     mockGetProject.mockResolvedValue({ name: "test", path: "/test/project" });
     const [req, ctx] = makeRequest("0", {});
     const res = await POST(req, ctx);
     expect(res.status).toBe(400);
     const json = await res.json();
-    expect(json.error).toMatch(/blId/);
+    expect(json.error).toMatch(/taskId/);
   });
 
-  it("returns 400 when blId is not a string", async () => {
+  it("returns 400 when taskId is not a string", async () => {
     mockGetProject.mockResolvedValue({ name: "test", path: "/test/project" });
-    const [req, ctx] = makeRequest("0", { blId: 42 });
+    const [req, ctx] = makeRequest("0", { taskId: 42 });
     const res = await POST(req, ctx);
     expect(res.status).toBe(400);
   });
@@ -98,18 +98,18 @@ describe("POST /api/projects/[id]/cost-start", () => {
     mockReadFile.mockResolvedValue(JSON.stringify(baseState));
     mockSumCost.mockResolvedValue(1.25);
 
-    const [req, ctx] = makeRequest("0", { blId: "BL-050" });
+    const [req, ctx] = makeRequest("0", { taskId: "T050" });
     const res = await POST(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.data.blId).toBe("BL-050");
+    expect(json.data.taskId).toBe("T050");
     expect(json.data.cost_at_start).toBe(1.25);
     expect(json.data.recorded).toBe(true);
 
     expect(mockWriteFile).toHaveBeenCalledOnce();
     const writtenContent = mockWriteFile.mock.calls[0][1] as string;
     const written = JSON.parse(writtenContent);
-    expect(written.item_cost_starts).toEqual({ "BL-050": 1.25 });
+    expect(written.item_cost_starts).toEqual({ "T050": 1.25 });
   });
 
   it("writes 0 as baseline when current session cost is 0 (new session)", async () => {
@@ -117,7 +117,7 @@ describe("POST /api/projects/[id]/cost-start", () => {
     mockReadFile.mockResolvedValue(JSON.stringify(baseState));
     mockSumCost.mockResolvedValue(0);
 
-    const [req, ctx] = makeRequest("0", { blId: "BL-051" });
+    const [req, ctx] = makeRequest("0", { taskId: "T051" });
     const res = await POST(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -126,23 +126,23 @@ describe("POST /api/projects/[id]/cost-start", () => {
 
     const writtenContent = mockWriteFile.mock.calls[0][1] as string;
     const written = JSON.parse(writtenContent);
-    expect(written.item_cost_starts).toEqual({ "BL-051": 0 });
+    expect(written.item_cost_starts).toEqual({ "T051": 0 });
   });
 
-  it("skips write when item_cost_starts[blId] already exists (idempotent)", async () => {
+  it("skips write when item_cost_starts[taskId] already exists (idempotent)", async () => {
     const stateWithStart = {
       ...baseState,
-      item_cost_starts: { "BL-050": 0.5 },
+      item_cost_starts: { "T050": 0.5 },
     };
     mockGetProject.mockResolvedValue({ name: "test", path: "/test/project" });
     mockReadFile.mockResolvedValue(JSON.stringify(stateWithStart));
     mockSumCost.mockResolvedValue(1.25);
 
-    const [req, ctx] = makeRequest("0", { blId: "BL-050" });
+    const [req, ctx] = makeRequest("0", { taskId: "T050" });
     const res = await POST(req, ctx);
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.data).toEqual({ blId: "BL-050", skipped: true });
+    expect(json.data).toEqual({ taskId: "T050", skipped: true });
 
     // No write — guard prevented it
     expect(mockWriteFile).not.toHaveBeenCalled();
@@ -155,7 +155,7 @@ describe("POST /api/projects/[id]/cost-start", () => {
     mockGetProject.mockResolvedValue({ name: "test", path: "/test/project" });
     mockReadFile.mockRejectedValue(new Error("ENOENT"));
 
-    const [req, ctx] = makeRequest("0", { blId: "BL-050" });
+    const [req, ctx] = makeRequest("0", { taskId: "T050" });
     const res = await POST(req, ctx);
     expect(res.status).toBe(500);
   });
@@ -165,7 +165,7 @@ describe("POST /api/projects/[id]/cost-start", () => {
     mockReadFile.mockResolvedValue(JSON.stringify(baseState));
     mockSumCost.mockResolvedValue(0.42);
 
-    const [req, ctx] = makeRequest("0", { blId: "BL-050" });
+    const [req, ctx] = makeRequest("0", { taskId: "T050" });
     await POST(req, ctx);
 
     expect(mockWriteFile).toHaveBeenCalledOnce();
@@ -181,20 +181,20 @@ describe("POST /api/projects/[id]/cost-start", () => {
   it("preserves other state fields and existing item_cost_starts entries on write", async () => {
     const stateWithOther = {
       ...baseState,
-      item_cost_starts: { "BL-049": 0.1 },
-      item_costs: { "BL-048": 0.8 },
+      item_cost_starts: { "T049": 0.1 },
+      item_costs: { "T048": 0.8 },
     };
     mockGetProject.mockResolvedValue({ name: "test", path: "/test/project" });
     mockReadFile.mockResolvedValue(JSON.stringify(stateWithOther));
     mockSumCost.mockResolvedValue(2.0);
 
-    const [req, ctx] = makeRequest("0", { blId: "BL-050" });
+    const [req, ctx] = makeRequest("0", { taskId: "T050" });
     await POST(req, ctx);
 
     const writtenContent = mockWriteFile.mock.calls[0][1] as string;
     const written = JSON.parse(writtenContent);
-    expect(written.item_cost_starts).toEqual({ "BL-049": 0.1, "BL-050": 2.0 });
-    expect(written.item_costs).toEqual({ "BL-048": 0.8 });
+    expect(written.item_cost_starts).toEqual({ "T049": 0.1, "T050": 2.0 });
+    expect(written.item_costs).toEqual({ "T048": 0.8 });
     expect(written.iteration).toBe(1);
     expect(written.phase).toBe("BUILD");
   });

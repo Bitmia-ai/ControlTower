@@ -48,8 +48,8 @@ describe("GET /api/projects", () => {
     mockIsInitialized.mockResolvedValue(true);
     mockReadState.mockResolvedValue({
       phase: "BUILD",
-      backlog_item: "BL-018",
-      backlog_title: "Home status fix",
+      task_id: "BL-018",
+      task_title: "Home status fix",
     });
     mockGetSessionStatus.mockReturnValue(stoppedSession());
 
@@ -61,10 +61,10 @@ describe("GET /api/projects", () => {
     expect(project.currentTask).toBe("BL-018 Home status fix");
   });
 
-  it("sets currentTask to null when backlog_title is missing", async () => {
+  it("sets currentTask to null when task_title is missing", async () => {
     mockListProjects.mockResolvedValue([{ name: "haze", path: "/projects/haze" }]);
     mockIsInitialized.mockResolvedValue(true);
-    mockReadState.mockResolvedValue({ phase: "TRIAGE", backlog_item: null, backlog_title: null });
+    mockReadState.mockResolvedValue({ phase: "TRIAGE", task_id: null, task_title: null });
     mockGetSessionStatus.mockReturnValue(stoppedSession());
 
     const res = await GET();
@@ -92,7 +92,7 @@ describe("GET /api/projects", () => {
   it("preserves initialized and running fields", async () => {
     mockListProjects.mockResolvedValue([{ name: "haze", path: "/projects/haze" }]);
     mockIsInitialized.mockResolvedValue(true);
-    mockReadState.mockResolvedValue({ phase: "DEPLOY", backlog_item: null, backlog_title: null });
+    mockReadState.mockResolvedValue({ phase: "DEPLOY", task_id: null, task_title: null });
     mockGetSessionStatus.mockReturnValue({ cto: { status: "running" } });
 
     const res = await GET();
@@ -103,13 +103,13 @@ describe("GET /api/projects", () => {
     expect(project.running).toBe(true);
   });
 
-  it("trims currentTask when backlog_item is null", async () => {
+  it("trims currentTask when task_id is null", async () => {
     mockListProjects.mockResolvedValue([{ name: "haze", path: "/projects/haze" }]);
     mockIsInitialized.mockResolvedValue(true);
     mockReadState.mockResolvedValue({
       phase: "PLAN",
-      backlog_item: null,
-      backlog_title: "Some task title",
+      task_id: null,
+      task_title: "Some task title",
     });
     mockGetSessionStatus.mockReturnValue(stoppedSession());
 
@@ -117,7 +117,7 @@ describe("GET /api/projects", () => {
     const json = await res.json();
     const project = json.data[0];
 
-    // No leading space when backlog_item is null
+    // No leading space when task_id is null
     expect(project.currentTask).toBe("Some task title");
   });
 });
