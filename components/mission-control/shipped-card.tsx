@@ -1,10 +1,10 @@
 "use client";
 
-import { BacklogId } from "@/components/backlog-id";
-import type { BacklogItem, ChangelogEntry } from "@/lib/redeye-types";
+import { TaskId } from "@/components/task-id";
+import type { TaskItem, ChangelogEntry } from "@/lib/redeye-types";
 
 interface ShippedCardProps {
-  items: BacklogItem[];
+  items: TaskItem[];
   changelog?: ChangelogEntry[];
   projectId?: number;
 }
@@ -46,7 +46,7 @@ export function ShippedCard({ items, changelog = [], projectId }: ShippedCardPro
                     <div className="min-w-0">
                       <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug">
                         {projectId !== undefined && blId ? (
-                          <BacklogId id={blId} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
+                          <TaskId id={blId} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
                         ) : blId ? (
                           <span className="text-gray-500 dark:text-zinc-500 font-mono">{blId}</span>
                         ) : null}
@@ -60,14 +60,14 @@ export function ShippedCard({ items, changelog = [], projectId }: ShippedCardPro
                   </li>
                 );
               })
-            : (shippedItems as BacklogItem[]).map((item) => (
+            : (shippedItems as TaskItem[]).map((item) => (
                 <li key={item.id} className="flex items-start gap-2">
                   <span className="mt-0.5 text-green-500 text-sm shrink-0">✓</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug flex-1 min-w-0">
                         {projectId !== undefined ? (
-                          <BacklogId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
+                          <TaskId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
                         ) : (
                           <span className="text-gray-500 dark:text-zinc-500 font-mono">{item.id}</span>
                         )}

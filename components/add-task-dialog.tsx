@@ -10,7 +10,7 @@ interface AddBacklogDialogProps {
   onAdded: () => void;
 }
 
-export function AddBacklogDialog({
+export function AddTaskDialog({
   projectId,
   open,
   onOpenChange,

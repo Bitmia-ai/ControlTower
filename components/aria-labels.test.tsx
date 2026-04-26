@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup, fireEvent, act } from "@testing-library/react";
 import { AddProjectDialog } from "./add-project-dialog";
-import { AddBacklogDialog } from "./add-backlog-dialog";
+import { AddTaskDialog } from "./add-task-dialog";
 import { SteerDialog } from "./steer-dialog";
 import { AnswerModal } from "./answer-modal";
 import { OnboardingWizard } from "./onboarding-wizard";
@@ -36,10 +36,10 @@ describe("AddProjectDialog aria-labels (BL-024)", () => {
   });
 });
 
-describe("AddBacklogDialog aria-labels (BL-024)", () => {
+describe("AddTaskDialog aria-labels (BL-024)", () => {
   it("title input is reachable via its 'Task title' aria-label", () => {
     render(
-      <AddBacklogDialog
+      <AddTaskDialog
         projectId={0}
         open={true}
         onOpenChange={vi.fn()}

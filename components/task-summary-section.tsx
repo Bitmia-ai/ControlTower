@@ -17,7 +17,7 @@ const PREVIEW_CHARS = 120;
  * item. Expanded by default for done items; collapsed otherwise so non-done
  * items don't dominate the page.
  */
-export function BacklogSummarySection({
+export function TaskSummarySection({
   summary,
   defaultOpen = false,
 }: SummarySectionProps) {

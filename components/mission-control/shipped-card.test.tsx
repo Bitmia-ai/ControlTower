@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { ShippedCard } from "./shipped-card";
-import type { BacklogItem } from "@/lib/redeye-types";
+import type { TaskItem } from "@/lib/redeye-types";
 
-// Mock next/link used inside BacklogId
+// Mock next/link used inside TaskId
 vi.mock("next/link", () => ({
   default: ({
     href,
@@ -24,7 +24,7 @@ afterEach(() => {
   cleanup();
 });
 
-function makeItem(overrides: Partial<BacklogItem> = {}): BacklogItem {
+function makeItem(overrides: Partial<TaskItem> = {}): TaskItem {
   return {
     id: "BL-015",
     title: "Add cost tracking",
@@ -76,7 +76,7 @@ describe("ShippedCard — cost badge rendering", () => {
   });
 
   it("renders cost badge for only items that have cost_usd > 0", () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       makeItem({ id: "BL-015", title: "With cost", cost_usd: 1.42 }),
       makeItem({ id: "BL-016", title: "Without cost", cost_usd: undefined }),
     ];
@@ -137,7 +137,7 @@ describe("ShippedCard — summary snippet (BL-026)", () => {
   });
 
   it("renders snippets for multiple items independently", () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       makeItem({ id: "BL-103", title: "First", summary: "First summary text." }),
       makeItem({ id: "BL-104", title: "Second", summary: undefined }),
       makeItem({ id: "BL-105", title: "Third", summary: "Third summary text." }),
@@ -152,7 +152,7 @@ describe("ShippedCard — summary snippet (BL-026)", () => {
     const entries = [
       { title: "Shipped feature", details: "**Built:** BL-106", date: "2026-04-24" },
     ];
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       makeItem({ id: "BL-106", summary: "Should be ignored under changelog mode." }),
     ];
     render(<ShippedCard items={items} changelog={entries} />);
@@ -176,7 +176,7 @@ describe("ShippedCard — changelog path is unaffected", () => {
       { title: "Shipped feature", details: "**Built:** BL-015", date: "2026-04-24" },
     ];
     // Pass items with cost_usd — they should be ignored when changelog is present
-    const items: BacklogItem[] = [makeItem({ cost_usd: 5.0 })];
+    const items: TaskItem[] = [makeItem({ cost_usd: 5.0 })];
     const { container } = render(
       <ShippedCard items={items} changelog={entries} />
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import { BacklogId } from "@/components/backlog-id";
+import { TaskId } from "@/components/task-id";
 import { PHASE_LABELS, PHASE_COLORS } from "@/lib/redeye-types";
 import type { RedEyeState } from "@/lib/redeye-types";
 
@@ -34,7 +34,7 @@ function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
 }
 
 export function WorkingOnCard({ state, running, projectId, upNextCount, openQuestionCount }: WorkingOnCardProps) {
-  const hasTask = state?.backlog_title;
+  const hasTask = state?.task_title;
   const isBacklogEmpty = !running && state?.phase === "HARDEN" && (upNextCount ?? 0) === 0;
   // RedEye exits the loop when blocked on questions (phase=waiting_for_ceo).
   // The dashboard must surface this clearly so the user knows their reply is
@@ -117,17 +117,17 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
           <div className="flex items-start gap-2">
             <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-green-500" />
             <p className="text-lg font-semibold text-gray-900 dark:text-zinc-100 leading-snug">
-              {projectId !== undefined && state?.backlog_item ? (
-                <BacklogId
-                  id={state.backlog_item}
+              {projectId !== undefined && state?.task_id ? (
+                <TaskId
+                  id={state.task_id}
                   projectId={projectId}
                   className="text-gray-500 dark:text-zinc-500"
                 />
               ) : (
-                <span className="text-gray-500 dark:text-zinc-500 font-mono">{state?.backlog_item}</span>
+                <span className="text-gray-500 dark:text-zinc-500 font-mono">{state?.task_id}</span>
               )}
-              {state?.backlog_item && " · "}
-              {state!.backlog_title}
+              {state?.task_id && " · "}
+              {state!.task_title}
             </p>
           </div>
 

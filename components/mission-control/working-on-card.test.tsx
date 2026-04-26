@@ -3,7 +3,7 @@ import { render, screen, cleanup } from "@testing-library/react";
 import { WorkingOnCard } from "./working-on-card";
 import type { RedEyeState } from "@/lib/redeye-types";
 
-// Mock next/link used inside BacklogId
+// Mock next/link used inside TaskId
 vi.mock("next/link", () => ({
   default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
     <a href={href} className={className}>{children}</a>
@@ -19,8 +19,8 @@ function makeState(overrides: Partial<RedEyeState> = {}): RedEyeState {
     phase: "BUILD",
     phase_status: "in-progress",
     iteration: 1,
-    backlog_item: null,
-    backlog_title: null,
+    task_id: null,
+    task_title: null,
     last_updated: new Date().toISOString(),
     ...overrides,
   } as RedEyeState;
@@ -35,7 +35,7 @@ describe("WorkingOnCard — idle state", () => {
 
 describe("WorkingOnCard — backlog empty stop state", () => {
   it("renders backlog-empty message when !running, phase=HARDEN, upNextCount=0", () => {
-    const state = makeState({ phase: "HARDEN", backlog_title: null });
+    const state = makeState({ phase: "HARDEN", task_title: null });
     const { container } = render(
       <WorkingOnCard state={state} running={false} upNextCount={0} />
     );
@@ -46,7 +46,7 @@ describe("WorkingOnCard — backlog empty stop state", () => {
   });
 
   it("renders plain idle when !running, phase=HARDEN, upNextCount=1", () => {
-    const state = makeState({ phase: "HARDEN", backlog_title: null });
+    const state = makeState({ phase: "HARDEN", task_title: null });
     const { container } = render(
       <WorkingOnCard state={state} running={false} upNextCount={1} />
     );
@@ -55,7 +55,7 @@ describe("WorkingOnCard — backlog empty stop state", () => {
   });
 
   it("renders plain idle when !running, phase=BUILD, upNextCount=0", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: null });
+    const state = makeState({ phase: "BUILD", task_title: null });
     const { container } = render(
       <WorkingOnCard state={state} running={false} upNextCount={0} />
     );
@@ -66,49 +66,49 @@ describe("WorkingOnCard — backlog empty stop state", () => {
 
 describe("WorkingOnCard — running with phase, no task", () => {
   it("renders phase badge with BUILD blue classes when running=true", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: null });
+    const state = makeState({ phase: "BUILD", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector(".phase-badge-shimmer");
     expect(badge).toBeTruthy();
   });
 
   it("has blue text class for BUILD phase", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: null });
+    const state = makeState({ phase: "BUILD", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector("[class*='text-blue']");
     expect(badge).toBeTruthy();
   });
 
   it("has no shimmer class when running=false", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: null });
+    const state = makeState({ phase: "BUILD", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={false} />);
     const badge = container.querySelector(".phase-badge-shimmer");
     expect(badge).toBeNull();
   });
 
   it("has amber text class for REVIEW phase", () => {
-    const state = makeState({ phase: "REVIEW", backlog_title: null });
+    const state = makeState({ phase: "REVIEW", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector("[class*='text-amber']");
     expect(badge).toBeTruthy();
   });
 
   it("has green text class for DEPLOY phase", () => {
-    const state = makeState({ phase: "DEPLOY", backlog_title: null });
+    const state = makeState({ phase: "DEPLOY", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector("[class*='text-green']");
     expect(badge).toBeTruthy();
   });
 
   it("has red text class for STABILIZE phase", () => {
-    const state = makeState({ phase: "STABILIZE", backlog_title: null });
+    const state = makeState({ phase: "STABILIZE", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector("[class*='text-red']");
     expect(badge).toBeTruthy();
   });
 
   it("animated dot is present when running=true", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: null });
+    const state = makeState({ phase: "BUILD", task_title: null });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const dot = container.querySelector(".animate-pulse.rounded-full");
     expect(dot).toBeTruthy();
@@ -117,7 +117,7 @@ describe("WorkingOnCard — running with phase, no task", () => {
 
 describe("WorkingOnCard — BL-067 hero treatment", () => {
   it("uses p-6 and min-h-[160px] (hero padding/height)", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).toContain("p-6");
@@ -125,14 +125,14 @@ describe("WorkingOnCard — BL-067 hero treatment", () => {
   });
 
   it("applies green wash bg when running=true", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).toContain("bg-green-50/30");
   });
 
   it("does NOT apply green wash bg when running=false", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-001" });
     const { container } = render(<WorkingOnCard state={state} running={false} />);
     const card = container.firstElementChild as HTMLElement | null;
     expect(card?.className).not.toContain("bg-green-50/30");
@@ -140,7 +140,7 @@ describe("WorkingOnCard — BL-067 hero treatment", () => {
   });
 
   it("renders task title with text-lg font-semibold (hero typography)", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: "My Feature", backlog_item: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "My Feature", task_id: "BL-001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const title = container.querySelector("p.text-lg.font-semibold");
     expect(title).toBeTruthy();
@@ -150,20 +150,20 @@ describe("WorkingOnCard — BL-067 hero treatment", () => {
 
 describe("WorkingOnCard — running with task", () => {
   it("renders task title", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: "My Feature", backlog_item: "BL-001" });
+    const state = makeState({ phase: "BUILD", task_title: "My Feature", task_id: "BL-001" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     expect(container.textContent).toContain("My Feature");
   });
 
   it("renders phase badge with shimmer when running=true and has task", () => {
-    const state = makeState({ phase: "DEPLOY", backlog_title: "Ship it", backlog_item: "BL-002" });
+    const state = makeState({ phase: "DEPLOY", task_title: "Ship it", task_id: "BL-002" });
     const { container } = render(<WorkingOnCard state={state} running={true} />);
     const badge = container.querySelector(".phase-badge-shimmer");
     expect(badge).toBeTruthy();
   });
 
   it("badge has larger padding px-3 py-1", () => {
-    const state = makeState({ phase: "BUILD", backlog_title: "Task", backlog_item: "BL-003" });
+    const state = makeState({ phase: "BUILD", task_title: "Task", task_id: "BL-003" });
     const { container } = render(<WorkingOnCard state={state} running={false} />);
     const badge = container.querySelector("[class*='px-3'][class*='py-1']");
     expect(badge).toBeTruthy();

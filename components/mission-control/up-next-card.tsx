@@ -1,10 +1,10 @@
 "use client";
 
-import { BacklogId } from "@/components/backlog-id";
-import type { BacklogItem } from "@/lib/redeye-types";
+import { TaskId } from "@/components/task-id";
+import type { TaskItem } from "@/lib/redeye-types";
 
 interface UpNextCardProps {
-  items: BacklogItem[];
+  items: TaskItem[];
   projectId?: number;
 }
 
@@ -40,7 +40,7 @@ export function UpNextCard({ items, projectId }: UpNextCardProps) {
               <div className="min-w-0">
                 <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug">
                   {projectId !== undefined ? (
-                    <BacklogId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
+                    <TaskId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
                   ) : (
                     <span className="text-gray-500 dark:text-zinc-500 font-mono">{item.id}</span>
                   )}

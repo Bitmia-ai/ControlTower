@@ -8,7 +8,7 @@ interface BacklogIdProps {
   className?: string;
 }
 
-export function BacklogId({ id, projectId, className }: BacklogIdProps) {
+export function TaskId({ id, projectId, className }: BacklogIdProps) {
   return (
     <Link
       href={`/project/${projectId}/backlog/${id}`}
@@ -23,7 +23,7 @@ export function linkifyBacklogIds(text: string, projectId: number | string): Rea
   const parts = text.split(/(BL-\d+)/g);
   return parts.map((part, i) =>
     /^BL-\d+$/.test(part) ? (
-      <BacklogId key={i} id={part} projectId={projectId} />
+      <TaskId key={i} id={part} projectId={projectId} />
     ) : (
       <span key={i}>{part}</span>
     )
