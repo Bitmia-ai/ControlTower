@@ -41,7 +41,7 @@ Additionally, `next.config.ts` has a workspace root warning from Turbopack that 
 
 ## Sub-Tasks
 
-### T1 — Add per-page metadata.title (S)
+### T1 — Add per-page metadata.title (S) — DONE
 
 **Files to modify:**
 - `app/page.tsx` — add `export const metadata: Metadata = { title: "Projects" }`
@@ -61,7 +61,7 @@ Additionally, `next.config.ts` has a workspace root warning from Turbopack that 
 - [ ] Tests for each page's metadata export pass
 - [ ] All existing 795 tests still pass
 
-### T2 — Turbopack root config (XS)
+### T2 — Turbopack root config (XS) — DONE
 
 **Files to modify:**
 - `next.config.ts` — add `experimental: { turbo: { root: process.cwd() } }` or check the correct config key for Next.js 16
@@ -72,7 +72,7 @@ Additionally, `next.config.ts` has a workspace root warning from Turbopack that 
 - [ ] No workspace root warning in `npm run build` output
 - [ ] Build is clean, all existing tests pass
 
-### T3 — Chunk analysis and baseline documentation (S)
+### T3 — Chunk analysis and baseline documentation (S) — DONE
 
 **Task:** Run `NODE_ENV=production npm run build`, capture the chunk size output, identify the top 5 JS chunks by size, and write findings to `docs/performance-audit.md` (append a new section) and create `docs/lighthouse-report-baseline.md` with the build output and instructions for running Lighthouse.
 
