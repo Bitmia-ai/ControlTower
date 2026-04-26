@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T078: History tab collapsibles only show some uuid which is useless
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T077: Lighthouse baseline + per-page metadata.title + chunk investigation
 - **Type:** performance
 - **Priority:** P2
