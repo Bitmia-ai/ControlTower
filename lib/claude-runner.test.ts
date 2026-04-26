@@ -11,11 +11,20 @@ import { EventEmitter } from "events";
 // Mocks — vi.hoisted ensures these are available when vi.mock factories run.
 // ---------------------------------------------------------------------------
 
-const { mockSpawn, mockMkdirSync, mockOpenSync, mockCloseSync } = vi.hoisted(() => ({
+const {
+  mockSpawn,
+  mockMkdirSync,
+  mockOpenSync,
+  mockCloseSync,
+  mockStatSync,
+  mockRenameSync,
+} = vi.hoisted(() => ({
   mockSpawn: vi.fn(),
   mockMkdirSync: vi.fn(),
   mockOpenSync: vi.fn(() => 99),
   mockCloseSync: vi.fn(),
+  mockStatSync: vi.fn(),
+  mockRenameSync: vi.fn(),
 }));
 
 vi.mock(import("child_process"), async (importOriginal) => {
@@ -30,11 +39,18 @@ vi.mock(import("fs"), async (importOriginal) => {
     mkdirSync: mockMkdirSync,
     openSync: mockOpenSync,
     closeSync: mockCloseSync,
+    statSync: mockStatSync,
+    renameSync: mockRenameSync,
   };
 });
 
 // Import after mocks are set up.
-import { parseStreamEvent, runClaudeCommand, spawnClaudeSession } from "./claude-runner";
+import {
+  parseStreamEvent,
+  runClaudeCommand,
+  spawnClaudeSession,
+  SESSION_LOG_MAX_BYTES,
+} from "./claude-runner";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -224,6 +240,12 @@ describe("spawnClaudeSession", () => {
     mockMkdirSync.mockReset();
     mockOpenSync.mockReset().mockReturnValue(99);
     mockCloseSync.mockReset();
+    mockStatSync.mockReset();
+    mockRenameSync.mockReset();
+    // Default: log file does not exist yet (rotation no-ops).
+    mockStatSync.mockImplementation(() => {
+      throw Object.assign(new Error("ENOENT"), { code: "ENOENT" });
+    });
   });
 
   it("returns pid and logFile", () => {
@@ -270,5 +292,40 @@ describe("spawnClaudeSession", () => {
 
     const { logFile } = spawnClaudeSession("/proj", "cto", "go");
     expect(logFile).toContain("session-cto.jsonl");
+  });
+
+  it("rotates the session log when it exceeds SESSION_LOG_MAX_BYTES", () => {
+    mockSpawn.mockReturnValue(makeFakeProc({}));
+    mockStatSync.mockImplementation((p: string) => {
+      if (p.endsWith("session-cto.jsonl")) {
+        return { size: SESSION_LOG_MAX_BYTES + 1 };
+      }
+      throw Object.assign(new Error("ENOENT"), { code: "ENOENT" });
+    });
+
+    spawnClaudeSession("/proj", "cto", "go");
+
+    expect(mockRenameSync).toHaveBeenCalledOnce();
+    const [from, to] = mockRenameSync.mock.calls[0];
+    expect(from).toMatch(/session-cto\.jsonl$/);
+    expect(to).toMatch(/archive\/session-cto-.*\.jsonl$/);
+  });
+
+  it("does not rotate when log is below the size threshold", () => {
+    mockSpawn.mockReturnValue(makeFakeProc({}));
+    mockStatSync.mockImplementation(() => ({ size: 1024 }));
+
+    spawnClaudeSession("/proj", "cto", "go");
+
+    expect(mockRenameSync).not.toHaveBeenCalled();
+  });
+
+  it("does not rotate when log file does not exist", () => {
+    mockSpawn.mockReturnValue(makeFakeProc({}));
+    // statSync default mock throws ENOENT — covered by beforeEach
+
+    spawnClaudeSession("/proj", "cto", "go");
+
+    expect(mockRenameSync).not.toHaveBeenCalled();
   });
 });

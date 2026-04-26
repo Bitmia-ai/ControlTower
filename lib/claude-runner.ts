@@ -97,6 +97,40 @@ export interface SpawnedSession {
   logFile: string;
 }
 
+/**
+ * Rotate the session log if it exceeds SESSION_LOG_MAX_BYTES.
+ * The active log lives inside the project's .redeye/ which is watched by
+ * the dev-server file system indexer; an unbounded log balloons heap usage.
+ * Archives go in .redeye/archive/ which downstream readers can ignore.
+ */
+export const SESSION_LOG_MAX_BYTES = 5 * 1024 * 1024;
+
+function rotateSessionLogIfLarge(logFile: string): void {
+  let size: number;
+  try {
+    size = fs.statSync(logFile).size;
+  } catch {
+    return; // file does not exist yet — nothing to rotate
+  }
+  if (size <= SESSION_LOG_MAX_BYTES) return;
+
+  const archiveDir = path.join(path.dirname(logFile), "archive");
+  try {
+    fs.mkdirSync(archiveDir, { recursive: true });
+  } catch {
+    return; // can't make archive dir — leave the log as-is rather than lose it
+  }
+
+  const base = path.basename(logFile, ".jsonl");
+  const ts = new Date().toISOString().replace(/[:.]/g, "-");
+  const archivedPath = path.join(archiveDir, `${base}-${ts}.jsonl`);
+  try {
+    fs.renameSync(logFile, archivedPath);
+  } catch {
+    // ignore — caller will append to the existing file
+  }
+}
+
 export function spawnClaudeSession(
   projectPath: string,
   role: string,
@@ -107,6 +141,7 @@ export function spawnClaudeSession(
   fs.mkdirSync(redeyeDir, { recursive: true });
 
   const logFile = path.join(redeyeDir, `session-${role}.jsonl`);
+  rotateSessionLogIfLarge(logFile);
   const logFd = fs.openSync(logFile, "a");
 
   const args = [

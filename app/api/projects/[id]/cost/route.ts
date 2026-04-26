@@ -10,6 +10,16 @@ import fs from "fs";
 import { getProjectByIndex } from "@/lib/projects";
 import { resolveTranscriptFile, encodeProjectPath } from "@/lib/transcript-file-resolver";
 import { sumTranscriptFileCost } from "@/lib/cost-calculator";
+import { mapWithConcurrency } from "@/lib/promise-pool";
+
+/**
+ * Limit how many transcript files are streamed in parallel. With cache
+ * misses on cold start, an unbounded Promise.all over ~30 jsonl files
+ * (each up to 60+ MB) opens that many concurrent readline pipelines
+ * and stacks gigabytes of transient heap. With the mtime cache warm,
+ * this limit is effectively a no-op.
+ */
+const COST_FANOUT_CONCURRENCY = 4;
 
 export async function GET(
   _req: NextRequest,
@@ -35,7 +45,11 @@ export async function GET(
   try {
     const entries = fs.readdirSync(cliDir);
     const jsonlFiles = entries.filter((e) => e.endsWith(".jsonl")).map((e) => path.join(cliDir, e));
-    const costs = await Promise.all(jsonlFiles.map(sumTranscriptFileCost));
+    const costs = await mapWithConcurrency(
+      jsonlFiles,
+      COST_FANOUT_CONCURRENCY,
+      sumTranscriptFileCost
+    );
     totalCost = costs.reduce((sum, c) => sum + c, 0);
   } catch {
     // Directory doesn't exist or unreadable — total stays 0

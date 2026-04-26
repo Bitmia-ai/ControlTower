@@ -3,7 +3,15 @@ import os from "os";
 import path from "path";
 import readline from "readline";
 import { encodeProjectPath } from "./transcript-file-resolver";
-import { sumTranscriptFileCost } from "./cost-calculator";
+import { sumTranscriptFileCost, calculateCostUsd } from "./cost-calculator";
+import { mapWithConcurrency } from "./promise-pool";
+
+/**
+ * Cap on parallel transcript scans. The history routes can fan out over
+ * up to 50 files; without a limit, cold-cache scans stack large transient
+ * heap. With the cost cache warm, this limit is effectively a no-op.
+ */
+const HISTORY_FANOUT_CONCURRENCY = 4;
 
 /** A single session's cost entry. */
 export interface SessionCostEntry {
@@ -79,15 +87,11 @@ export async function getSessionCostHistory(
 ): Promise<SessionCostEntry[]> {
   const recent = listRecentTranscriptFiles(projectPath, limit);
 
-  const result = await Promise.all(
-    recent.map(async (c) => ({
-      file: c.file,
-      cost: await sumTranscriptFileCost(c.filePath),
-      mtimeMs: c.mtimeMs,
-    }))
-  );
-
-  return result;
+  return mapWithConcurrency(recent, HISTORY_FANOUT_CONCURRENCY, async (c) => ({
+    file: c.file,
+    cost: await sumTranscriptFileCost(c.filePath),
+    mtimeMs: c.mtimeMs,
+  }));
 }
 
 const PHASE_RE =
@@ -167,15 +171,66 @@ export async function extractSessionPhases(filePath: string): Promise<string[]> 
 }
 
 /**
- * Read the first JSONL line and return its timestamp (ms) if parseable.
- * Falls back to `fallback` when no timestamp is found.
+ * mtime+size keyed memo for the fused single-pass scan. Old transcripts
+ * never change, so cached entries stay valid forever.
  */
-async function readFirstLineTimestamp(filePath: string, fallback: number): Promise<number> {
+interface ScanResult {
+  cost: number;
+  phases: string[];
+  startedAt: number;
+}
+const MAX_SCAN_CACHE_ENTRIES = 256;
+const scanCache = new Map<string, ScanResult>();
+
+function evictOldestScanIfFull(): void {
+  while (scanCache.size >= MAX_SCAN_CACHE_ENTRIES) {
+    const oldest = scanCache.keys().next().value;
+    if (oldest === undefined) return;
+    scanCache.delete(oldest);
+  }
+}
+
+/** Test-only: clear the in-memory scan cache. Not intended for production use. */
+export function __resetScanCacheForTests(): void {
+  scanCache.clear();
+}
+
+interface AssistantUsageEnvelope {
+  type?: string;
+  message?: { usage?: Parameters<typeof calculateCostUsd>[0] };
+}
+
+/**
+ * Single-pass scan that yields cost, phases, and the first-line timestamp
+ * for a transcript. Replaces three separate full-file streams with one.
+ *
+ * The result is cached by `${filePath}:${mtimeMs}:${size}`.
+ */
+async function scanTranscriptOnce(
+  filePath: string,
+  fallbackTimestampMs: number
+): Promise<ScanResult> {
+  let stat: fs.Stats;
+  try {
+    stat = fs.statSync(filePath);
+  } catch {
+    return { cost: 0, phases: [], startedAt: fallbackTimestampMs };
+  }
+
+  const cacheKey = `${filePath}:${stat.mtimeMs}:${stat.size}`;
+  const cached = scanCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+
+  const phases: string[] = [];
+  const seen = new Set<string>();
+  let cost = 0;
+  let startedAt: number | null = null;
+
   let stream: NodeJS.ReadableStream;
   try {
     stream = fs.createReadStream(filePath, { encoding: "utf8" });
   } catch {
-    return fallback;
+    return { cost: 0, phases: [], startedAt: fallbackTimestampMs };
   }
 
   try {
@@ -186,26 +241,45 @@ async function readFirstLineTimestamp(filePath: string, fallback: number): Promi
       try {
         parsed = JSON.parse(line);
       } catch {
-        rl.close();
-        return fallback;
+        continue;
       }
-      const ts = (parsed as { timestamp?: unknown })?.timestamp;
-      if (typeof ts === "string") {
-        const n = Date.parse(ts);
-        rl.close();
-        return Number.isFinite(n) ? n : fallback;
+      if (!parsed || typeof parsed !== "object") continue;
+
+      if (startedAt === null) {
+        const ts = (parsed as { timestamp?: unknown }).timestamp;
+        if (typeof ts === "string") {
+          const n = Date.parse(ts);
+          startedAt = Number.isFinite(n) ? n : fallbackTimestampMs;
+        } else if (typeof ts === "number" && Number.isFinite(ts)) {
+          startedAt = ts;
+        } else {
+          startedAt = fallbackTimestampMs;
+        }
       }
-      if (typeof ts === "number" && Number.isFinite(ts)) {
-        rl.close();
-        return ts;
+
+      const envelope = parsed as AssistantUsageEnvelope;
+      if (envelope.type === "assistant" && envelope.message?.usage) {
+        cost += calculateCostUsd(envelope.message.usage);
       }
-      rl.close();
-      return fallback;
+
+      const evt = parsed as { message?: { content?: unknown }; content?: unknown };
+      if (evt.message && typeof evt.message === "object") {
+        scanContentForPhases((evt.message as { content?: unknown }).content, seen, phases);
+      }
+      if (evt.content !== undefined) scanContentForPhases(evt.content, seen, phases);
     }
   } catch {
-    // fall through
+    // partial result is better than none — fall through with what we have
   }
-  return fallback;
+
+  const result: ScanResult = {
+    cost,
+    phases,
+    startedAt: startedAt ?? fallbackTimestampMs,
+  };
+  evictOldestScanIfFull();
+  scanCache.set(cacheKey, result);
+  return result;
 }
 
 /**
@@ -217,15 +291,9 @@ async function readFirstLineTimestamp(filePath: string, fallback: number): Promi
  *
  * Returns `[]` if the CLI projects directory is unreadable. Never throws.
  *
- * KNOWN PERFORMANCE ISSUE (T053 review m-1, accepted):
- * Each transcript file is opened and streamed three times per call:
- *   1) `sumTranscriptFileCost` — full scan for token usage
- *   2) `extractSessionPhases` — full scan for phase markers
- *   3) `readFirstLineTimestamp` — opens stream, reads one line, closes
- * For large transcripts this triples I/O. A future optimisation could fuse
- * these into a single pass that yields cost, phases, and the first timestamp
- * together. Deferred: current call sites cap `limit` at 50 and the route
- * is not in a tight hot path; correctness was prioritised over throughput.
+ * Single-pass per file: cost, phases, and the first-line timestamp are
+ * collected by a single `scanTranscriptOnce` stream and cached by
+ * mtime+size, so repeat calls on unchanged files return without re-reading.
  */
 export async function getSessionHistory(
   projectPath: string,
@@ -233,24 +301,15 @@ export async function getSessionHistory(
 ): Promise<SessionHistoryEntry[]> {
   const recent = listRecentTranscriptFiles(projectPath, limit);
 
-  const result = await Promise.all(
-    recent.map(async (c) => {
-      const [cost, phases, startedAt] = await Promise.all([
-        sumTranscriptFileCost(c.filePath),
-        extractSessionPhases(c.filePath),
-        readFirstLineTimestamp(c.filePath, c.mtimeMs),
-      ]);
-      const durationMs = Math.max(0, c.mtimeMs - startedAt);
-      return {
-        file: c.file,
-        cost,
-        mtimeMs: c.mtimeMs,
-        startedAt,
-        durationMs,
-        phases,
-      } satisfies SessionHistoryEntry;
-    })
-  );
-
-  return result;
+  return mapWithConcurrency(recent, HISTORY_FANOUT_CONCURRENCY, async (c) => {
+    const { cost, phases, startedAt } = await scanTranscriptOnce(c.filePath, c.mtimeMs);
+    return {
+      file: c.file,
+      cost,
+      mtimeMs: c.mtimeMs,
+      startedAt,
+      durationMs: Math.max(0, c.mtimeMs - startedAt),
+      phases,
+    } satisfies SessionHistoryEntry;
+  });
 }

@@ -49,18 +49,31 @@ interface AssistantEnvelope {
 }
 
 /**
- * Read a JSONL transcript file and sum the cost of all assistant events.
- * Returns 0 if the file does not exist or contains no assistant events with usage.
- * Skips malformed lines without throwing.
+ * mtime-keyed memo for sumTranscriptFileCost. Old transcripts never change,
+ * so we cache by `${filePath}:${mtimeMs}:${size}` and skip the streaming
+ * scan on cache hit. The active transcript file's mtime advances on every
+ * write, so its result is still recomputed when needed.
+ *
+ * The cache is bounded at MAX_COST_CACHE_ENTRIES; oldest entries are
+ * evicted when the limit is reached.
  */
-export async function sumTranscriptFileCost(filePath: string): Promise<number> {
-  // Check existence before opening to avoid unhandled stream errors
-  try {
-    fs.accessSync(filePath, fs.constants.R_OK);
-  } catch {
-    return 0;
-  }
+const MAX_COST_CACHE_ENTRIES = 256;
+const costCache = new Map<string, number>();
 
+function evictOldestIfFull(): void {
+  while (costCache.size >= MAX_COST_CACHE_ENTRIES) {
+    const oldest = costCache.keys().next().value;
+    if (oldest === undefined) return;
+    costCache.delete(oldest);
+  }
+}
+
+/** Test-only: clear the in-memory cost cache. Not intended for production use. */
+export function __resetCostCacheForTests(): void {
+  costCache.clear();
+}
+
+async function streamSumTranscriptCost(filePath: string): Promise<number> {
   const stream = fs.createReadStream(filePath, { encoding: "utf-8" });
 
   return new Promise((resolve) => {
@@ -92,6 +105,34 @@ export async function sumTranscriptFileCost(filePath: string): Promise<number> {
 
     rl.on("close", () => settle(total));
   });
+}
+
+/**
+ * Read a JSONL transcript file and sum the cost of all assistant events.
+ * Cached by `${filePath}:${mtimeMs}:${size}` — repeated calls on
+ * unchanged files return instantly without re-streaming.
+ *
+ * Returns 0 if the file does not exist or contains no assistant events with usage.
+ * Skips malformed lines without throwing.
+ */
+export async function sumTranscriptFileCost(filePath: string): Promise<number> {
+  let stat: fs.Stats;
+  try {
+    stat = fs.statSync(filePath);
+  } catch {
+    return 0;
+  }
+  if (!stat.isFile()) return 0;
+
+  const cacheKey = `${filePath}:${stat.mtimeMs}:${stat.size}`;
+  const cached = costCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+
+  const total = await streamSumTranscriptCost(filePath);
+
+  evictOldestIfFull();
+  costCache.set(cacheKey, total);
+  return total;
 }
 
 /**

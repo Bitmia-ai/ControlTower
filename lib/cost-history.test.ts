@@ -21,11 +21,20 @@ vi.mock("fs", () => {
   };
 });
 
-vi.mock("./cost-calculator", () => ({
-  sumTranscriptFileCost: (...args: unknown[]) => mockSumCost(...args),
-}));
+vi.mock("./cost-calculator", async () => {
+  const actual = await vi.importActual<typeof import("./cost-calculator")>("./cost-calculator");
+  return {
+    ...actual,
+    sumTranscriptFileCost: (...args: unknown[]) => mockSumCost(...args),
+  };
+});
 
-import { getSessionCostHistory, extractSessionPhases, getSessionHistory } from "./cost-history";
+import {
+  getSessionCostHistory,
+  extractSessionPhases,
+  getSessionHistory,
+  __resetScanCacheForTests,
+} from "./cost-history";
 
 /**
  * Helper to create a mock readable stream from an array of lines.
@@ -44,6 +53,7 @@ beforeEach(() => {
   mockReaddirSync.mockReset();
   mockCreateReadStream.mockReset();
   mockSumCost.mockReset();
+  __resetScanCacheForTests();
 });
 
 describe("getSessionCostHistory", () => {
@@ -243,25 +253,22 @@ describe("getSessionHistory", () => {
   it("returns sessions with phases sorted ascending by mtime", async () => {
     mockReaddirSync.mockReturnValue(["a.jsonl", "b.jsonl"]);
     mockStatSync.mockImplementation((p: string) => {
-      if (p.endsWith("a.jsonl")) return { mtimeMs: 2000, isDirectory: () => false };
-      if (p.endsWith("b.jsonl")) return { mtimeMs: 1000, isDirectory: () => false };
+      if (p.endsWith("a.jsonl")) return { mtimeMs: 2000, size: 100, isDirectory: () => false };
+      if (p.endsWith("b.jsonl")) return { mtimeMs: 1000, size: 100, isDirectory: () => false };
       throw new Error("not found");
     });
-    mockSumCost.mockImplementation(async (file: string) => {
-      if (file.endsWith("a.jsonl")) return 1.5;
-      if (file.endsWith("b.jsonl")) return 0.5;
-      return 0;
-    });
+    // 500_000 input tokens × $3/M = $1.5 ; 166_666 input tokens × $3/M ≈ $0.5
     mockCreateReadStream.mockImplementation((p: string) => {
       if (p.endsWith("a.jsonl")) {
         return mockJsonlStream([
-          JSON.stringify({ type: "user", message: { content: "ts:1900" } }),
           JSON.stringify({ type: "user", message: { content: "Entering BUILD phase" } }),
+          JSON.stringify({ type: "assistant", message: { usage: { input_tokens: 500_000 } } }),
         ]);
       }
       if (p.endsWith("b.jsonl")) {
         return mockJsonlStream([
           JSON.stringify({ type: "user", message: { content: "Entering PLAN phase" } }),
+          JSON.stringify({ type: "assistant", message: { usage: { input_tokens: 166_666 } } }),
         ]);
       }
       return mockJsonlStream([]);
@@ -270,10 +277,11 @@ describe("getSessionHistory", () => {
     const result = await getSessionHistory(PROJECT_PATH);
     expect(result).toHaveLength(2);
     expect(result[0].file).toBe("b.jsonl");
-    expect(result[0].cost).toBe(0.5);
+    expect(result[0].cost).toBeCloseTo(0.5, 3);
     expect(result[0].mtimeMs).toBe(1000);
     expect(result[0].phases).toEqual(["PLAN"]);
     expect(result[1].file).toBe("a.jsonl");
+    expect(result[1].cost).toBeCloseTo(1.5, 3);
     expect(result[1].phases).toEqual(["BUILD"]);
   });
 
