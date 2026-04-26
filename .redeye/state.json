@@ -6,8 +6,6 @@
   "phase_status": "complete",
   "worktree_path": null,
   "worktree_branch": null,
-  "backlog_item": null,
-  "backlog_title": null,
   "spec_file": null,
   "phase_progress": {
     "triage": {
@@ -47,7 +45,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge BL-075 — performance audit complete (iteration 106)",
+    "last_commit": "redeye: merge T075 — performance audit complete (iteration 106)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
     "merge_status": "clean",
@@ -57,45 +55,80 @@
   "iteration_log": [
     {
       "iteration": 107,
-      "phases": ["TRIAGE", "SCHEDULES"],
+      "phases": [
+        "TRIAGE",
+        "SCHEDULES"
+      ],
       "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules, backlog exhausted. SCHEDULES: SCHED-1 dep audit run — 2 moderate vulns (postcss in Next.js, no safe fix), no high/critical, no backlog items filed; SCHED-2 test schedule run. Both schedules updated.",
       "next": "TRIAGE then Q-013 (backlog empty)",
       "timestamp": "2026-04-25T21:44:30Z"
     },
     {
       "iteration": 106,
-      "phases": ["INCORPORATE", "TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "INCORPORATE: Q-012 resolved, BL-075 added. TRIAGE: env healthy, 783/783 tests, selected BL-075. PLAN: spec written. BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated — 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed. MERGE: BL-075 marked done.",
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "INCORPORATE: Q-012 resolved, T075 added. TRIAGE: env healthy, 783/783 tests, selected T075. PLAN: spec written. BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated — 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed. MERGE: T075 marked done.",
       "next": "TRIAGE iter 107",
       "timestamp": "2026-04-25T21:40:53Z"
     },
     {
       "iteration": 105,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "BL-068 live tab polish — full cycle complete. 783/783 tests pass. Backlog exhausted, filed Q-012.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T068 live tab polish — full cycle complete. 783/783 tests pass. Backlog exhausted, filed Q-012.",
       "next": "waiting_for_ceo (Q-012 filed)",
       "timestamp": "2026-04-25T23:20:00Z"
     },
     {
       "iteration": 104,
-      "phases": ["PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "BL-065 Won't Do section — full cycle complete. 779/779 tests pass.",
+      "phases": [
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T065 Won't Do section — full cycle complete. 779/779 tests pass.",
       "next": "TRIAGE iter 105",
       "timestamp": "2026-04-25T23:05:00Z"
     },
     {
       "iteration": 103,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "BL-067 mission control redesign — full cycle complete. 773/773 tests pass.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T067 mission control redesign — full cycle complete. 773/773 tests pass.",
       "next": "TRIAGE iter 104",
       "timestamp": "2026-04-25T22:50:00Z"
     }
   ],
   "counters": {
-    "next_bl_id": 76,
     "next_q_id": 14,
     "next_cred_id": 1,
-    "next_sched_id": 2
+    "next_sched_id": 2,
+    "next_task_id": 76
   },
   "cost_tracking": {
     "iterations_this_session": 79,
@@ -118,47 +151,47 @@
     "full_regression_overdue": false
   },
   "item_costs": {
-    "BL-038": 44.71138350000003,
-    "BL-037": 60.530642850000035,
-    "BL-043": 62.436974400000025,
-    "BL-041": 73.50490740000002,
-    "BL-040": 81.36289680000004,
-    "BL-056": 5.246291399999933,
-    "BL-057": 6.706097850000106,
-    "BL-058": 1.763799150000068,
-    "BL-061": 5.289914549999935,
-    "BL-062": 6.174803550000092,
-    "BL-063": 2.621212350000036,
-    "BL-064": 6.174803550000092,
-    "BL-066": 109.21807290000001,
-    "BL-071": 50.40187815,
-    "BL-074": 0,
-    "BL-073": 1.54,
-    "BL-072": 3.46,
-    "BL-070": 52.84,
-    "BL-067": 0.20593650000006392,
-    "BL-065": 51.95,
-    "BL-068": 3.44,
-    "BL-075": 0
+    "T038": 44.71138350000003,
+    "T037": 60.530642850000035,
+    "T043": 62.436974400000025,
+    "T041": 73.50490740000002,
+    "T040": 81.36289680000004,
+    "T056": 5.246291399999933,
+    "T057": 6.706097850000106,
+    "T058": 1.763799150000068,
+    "T061": 5.289914549999935,
+    "T062": 6.174803550000092,
+    "T063": 2.621212350000036,
+    "T064": 6.174803550000092,
+    "T066": 109.21807290000001,
+    "T071": 50.40187815,
+    "T074": 0,
+    "T073": 1.54,
+    "T072": 3.46,
+    "T070": 52.84,
+    "T067": 0.20593650000006392,
+    "T065": 51.95,
+    "T068": 3.44,
+    "T075": 0
   },
   "item_cost_starts": {
-    "BL-046": 73.40777850000002,
-    "BL-048": 81.36289680000004,
-    "BL-044": 84.79576530000003,
-    "BL-024": 88.12103009999997,
-    "BL-026": 98.03656575000008,
-    "BL-049": 124.89217890000009,
-    "BL-050": 126.25882920000019,
-    "BL-051": 135.25504920000046,
-    "BL-052": 141.69885615000055,
-    "BL-053": 156.30889500000052,
-    "BL-055": 159.36187110000037,
-    "BL-059": 183.8620549500003,
-    "BL-061": 218.73707190000033,
-    "BL-066": 239.0346324000005,
-    "BL-071": 241.31352765000028,
-    "BL-073": 250.6147629000001,
-    "BL-065": 265.3649980500002,
-    "BL-075": 320.75
+    "T046": 73.40777850000002,
+    "T048": 81.36289680000004,
+    "T044": 84.79576530000003,
+    "T024": 88.12103009999997,
+    "T026": 98.03656575000008,
+    "T049": 124.89217890000009,
+    "T050": 126.25882920000019,
+    "T051": 135.25504920000046,
+    "T052": 141.69885615000055,
+    "T053": 156.30889500000052,
+    "T055": 159.36187110000037,
+    "T059": 183.8620549500003,
+    "T061": 218.73707190000033,
+    "T066": 239.0346324000005,
+    "T071": 241.31352765000028,
+    "T073": 250.6147629000001,
+    "T065": 265.3649980500002,
+    "T075": 320.75
   }
 }
