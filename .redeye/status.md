@@ -1,71 +1,26 @@
-# BL-068 BUILD complete — Live tab precision-instrument visual polish
+# TRIAGE Status — Iteration 109
+**Date:** 2026-04-26
+**Phase:** TRIAGE → PLAN
 
-**Date:** 2026-04-25
-**Iteration:** 105
-**Phase:** review (transitioned from build)
+## Inputs Read
+- steering.md: no STOP/PAUSE; API/security/parser/test/process directives in place
+- inbox.md: 0 open questions (Q-013 already incorporated in iter 108)
+- tasks.md: T079 (P1 pending), T078 (P1 pending), T076 (P2 planned), T077 (done), plus all prior items done
+- schedules.md: SCHED-1 last run 2026-04-25, SCHED-2 last run 2026-04-25 — neither overdue
+- tester-reports.md: only the SCHED-1 audit report from iter 107 (already actioned, no new bugs)
+- active-claims.json: empty (no competing claims)
 
-## Sub-tasks completed
+## Findings
+- **Environment:** healthy (HIGH confidence)
+- **Tests:** 804/804 passing (post-T077 merge)
+- **CEO Requests pending:** T079 (PWA viewport zoom on mobile keyboard), T078 (history tab shows UUIDs)
+- **Tester reports:** none new
+- **Schedules:** no overdue tasks
+- **Documenter commits:** none in last 5 commits
 
-- **T1 [done]:** Added standard precision-instrument page header to
-  `app/project/[id]/live/page.tsx` (Control Tower eyebrow + Live h1 +
-  subtitle + border-b divider). Refreshed sticky-toolbar `border-b` token
-  from `border-gray-100 dark:border-zinc-800` to
-  `border-gray-200 dark:border-zinc-800` to match other pages.
-- **T2 [done]:** Restyled five transcript card types in
-  `components/transcript-viewer.tsx` with shared design tokens:
-  - **CARD-LABEL token** (`font-mono text-[10px] uppercase tracking-[0.18em]`)
-    applied to every card eyebrow ("tool call", "result", "Thinking…",
-    "Claude", "Session Result", "New session", fallback type label)
-  - **`border-l-2` identity rails** in accent colors:
-    `indigo-500/60` (tool call), `cyan-500/50` (result),
-    `violet-500/60` (thinking), `red-500` (assistant text),
-    `zinc-400/600` (session result + fallback)
-  - **`ChevronRight` (lucide)** with rotation transition replaces unicode
-    carets — matches collapsible-section pattern
-  - **AssistantTextCard** body bumped to `text-[15px]` with `shadow-sm`
-    so the AI's actual response is the most prominent thing on screen
-  - **ThinkingCard** softened from heavy violet panel to a muted wash
-    (`bg-violet-50/40 dark:bg-violet-950/15` with translucent border) so
-    it feels secondary, not competitive
-  - **ResultCard** numbers switched to `font-mono tabular-nums` for
-    aligned columns
+## Routing Decision
+**PLAN** — highest-priority unblocked item: **T079** (PWA auto-zoom on mobile phone input, P1)
 
-## Files modified
+T079 addresses a mobile UX bug where the PWA zooms in when typing on a phone (standard fix: add `maximum-scale=1, user-scalable=no` to the viewport meta). P1, clearly scoped, immediately actionable.
 
-- `/Users/casa/ControlTower/app/project/[id]/live/page.tsx`
-- `/Users/casa/ControlTower/components/transcript-viewer.tsx`
-- `/Users/casa/ControlTower/components/transcript-viewer.test.tsx`
-- `/Users/casa/ControlTower/docs/specs/BL-068-live-tab-polish.md`
-- `/Users/casa/ControlTower/.redeye/state.json`
-
-## Tests written
-
-Added 4 new assertions in `components/transcript-viewer.test.tsx` under
-`TranscriptViewer — BL-068 precision-instrument design tokens` — pin the
-CARD-LABEL token classes (font-mono / uppercase / tracking-[0.18em]) on
-the eyebrows of ToolUseCard, ToolResultCard, AssistantTextCard, ThinkingCard,
-plus the `border-l-indigo-500/60`, `border-l-cyan-500/50`, and
-`border-l-violet-500/60` identity rails.
-
-## Verification
-
-- `npx vitest run` — **783/783 tests pass** (was 779, +4 new)
-- `npm run build` — clean
-- All pre-existing transcript-viewer test contracts preserved verbatim
-  (label text, italic preview span, `border-l-red-500` accent on
-  AssistantTextCard, `whitespace-pre-wrap` body, aria-label / aria-expanded
-  toggling on all collapsible cards)
-
-## Concerns / notes
-
-- E2E Playwright not run from BUILD per CLAUDE.md ("Playwright via MCP
-  browser, no CLI command configured"). Visual VERIFY belongs in the
-  next phase via the MCP browser.
-- No functional changes — collapse/expand, auto-scroll toolbar 3-state
-  toggle, and SSE flow are untouched.
-
-## Commits
-
-- `5000f11` redeye: plan BL-068 — live tab polish spec
-- `dbc16dc` feat: BL-068 task 1 — add precision-instrument page header to live tab
-- `d7ba212` feat: BL-068 task 2 — restyle transcript card types with precision-instrument tokens
+T078 (history tab UUIDs) is also P1 pending — will follow if T079 completes this iteration.
