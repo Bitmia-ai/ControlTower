@@ -1,8 +1,6 @@
 
 ## Directives
 
-STOP — CEO directed stop at 2026-04-26T19:46:50.184Z
-
 ### API & security conventions
 
 - **Read request bodies via `lib/json-body.ts:readJsonBody(req, MAX_BODY_BYTES)`** — never `req.json()` directly. Cap is 64KB; use 1KB for tiny payloads (`{blId}`, `{scheduleId}`). Direct `req.json()` is bypassable via `Transfer-Encoding: chunked` and skips the Content-Type guard.

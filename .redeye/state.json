@@ -1,97 +1,15 @@
 {
   "schema_version": 1,
-  "iteration": 108,
+  "iteration": 109,
   "started_at": "2026-04-26T05:50:47Z",
-  "phase": "merge",
-  "phase_status": "complete",
-  "task_id": "T077",
+  "phase": "triage",
+  "phase_status": "in-progress",
+  "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T077-lighthouse-perf.md",
-  "phase_progress": {
-    "triage": {
-      "env_healthy": true,
-      "test_count": 795,
-      "tests_pass": true,
-      "ceo_answers_pending": 0,
-      "overdue_schedules": 0,
-      "actionable_backlog": 2,
-      "backlog_all_done": false,
-      "selected_item": "T077",
-      "notes": "Env healthy. 795/795 tests pass. Build clean. No overdue schedules. No CEO answers pending. 2 actionable items (T077: Lighthouse/perf, T076: dep updates). Selected T077 (higher impact, unlocks perf baseline for T076 context). Routing to PLAN."
-    },
-    "schedules": {
-      "sched1_run": true,
-      "sched2_run": true,
-      "vulnerabilities_found": "2 moderate (postcss in next — not directly fixable without breaking Next.js)",
-      "high_critical": 0,
-      "backlog_items_filed": 0,
-      "notes": "SCHED-1 weekly dep audit: 2 moderate vulns (postcss XSS in Next.js bundle, no viable fix without breaking changes), no high/critical. Outdated: lucide-react 1.9→1.11, react 19.2.4→19.2.5, react-dom 19.2.4→19.2.5, typescript 5.9→6.0, @types/node 20→25. No backlog items required (no high/critical). SCHED-2 test schedule: trivial, marked complete. Both schedules updated to 2026-04-25T21:44:00Z."
-    },
-    "incorporate": {
-      "questions_processed": 1,
-      "q013_resolved": true,
-      "q010_already_incorporated": true,
-      "q011_already_incorporated": true,
-      "tasks_added": [
-        "T076",
-        "T077"
-      ],
-      "notes": "Q-013 resolved: CEO /redeye:start = proceed with default. T076 (dep updates: lucide-react, react/react-dom, TypeScript 6.0 eval, P2) and T077 (Lighthouse baseline + per-page metadata.title + 228KB chunk investigation, P2) added. Q-010 and Q-011 already in Answered section — no action. next_task_id advanced to 78."
-    },
-    "plan": {
-      "selected_item": "T077",
-      "spec_file": "docs/specs/T077-lighthouse-perf.md",
-      "sub_tasks": 3,
-      "sub_task_sizes": "S+XS+S",
-      "questions_posted": 0,
-      "notes": "T077 planned. 3 sub-tasks: T1 per-page metadata.title (8 pages, ~10 tests, S), T2 turbopack root config (XS), T3 chunk analysis + docs update (S). No CEO questions needed."
-    },
-    "build": {
-      "sub_tasks_completed": 3,
-      "tests_before": 795,
-      "tests_after": 804,
-      "new_tests": 9,
-      "files_modified": [
-        "app/page.tsx",
-        "app/home-client.tsx (new)",
-        "app/project/[id]/page.tsx + *-client.tsx (x7)",
-        "next.config.ts",
-        "next.config.test.ts",
-        "docs/lighthouse-report-baseline.md (new)",
-        "docs/performance-audit.md"
-      ],
-      "build_clean": true,
-      "notes": "T1: per-page metadata via server wrapper pattern — 8 pages × metadata.title. T2: turbopack.root config added. T3: chunk analysis written, 228KB = React core + Turbopack runtime (not reducible). 804/804 tests pass, build clean."
-    },
-    "review": {
-      "tier": "L (28 files, mostly refactoring)",
-      "findings_critical": 0,
-      "findings_major": 0,
-      "findings_minor": 1,
-      "minor_notes": "History page has no metadata test (all other pages have metadata tests; gap is low-risk)",
-      "recommendation": "DEPLOY",
-      "review_cycle": 1,
-      "notes": "All changes are low-risk: server wrapper pattern (standard Next.js), turbopack config (build-time only), docs (no code). 0C/0M/1m. Proceed to DEPLOY."
-    },
-    "verify": {
-      "health": "healthy",
-      "confidence": "HIGH",
-      "tests_pass": true,
-      "test_count": 804,
-      "visual_check": "pass",
-      "tester_bugs": 0,
-      "tag": "last-good-deploy-iter108-t077",
-      "notes": "804/804 tests pass. Visual check PASS — all 7 pages confirmed with correct metadata.title via Playwright. 0 bugs. Tagged last-good-deploy-iter108-t077."
-    },
-    "merge": {
-      "merge_status": "clean",
-      "commits_merged": 1,
-      "final_test_count": 804,
-      "notes": "T077 shipped: per-page metadata.title (8 pages), turbopack.root config, chunk analysis docs. 804/804 tests. T077 marked done in tasks.md."
-    }
-  },
-  "review_cycles": 1,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
