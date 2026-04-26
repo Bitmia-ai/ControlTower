@@ -3,11 +3,11 @@
   "iteration": 108,
   "started_at": "2026-04-26T05:50:47Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T077",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T-77",
   "worktree_branch": "redeye/T-77",
-  "spec_file": null,
+  "spec_file": "docs/specs/T077-lighthouse-perf.md",
   "phase_progress": {
     "triage": {
       "env_healthy": true,
@@ -38,6 +38,14 @@
         "T077"
       ],
       "notes": "Q-013 resolved: CEO /redeye:start = proceed with default. T076 (dep updates: lucide-react, react/react-dom, TypeScript 6.0 eval, P2) and T077 (Lighthouse baseline + per-page metadata.title + 228KB chunk investigation, P2) added. Q-010 and Q-011 already in Answered section — no action. next_task_id advanced to 78."
+    },
+    "plan": {
+      "selected_item": "T077",
+      "spec_file": "docs/specs/T077-lighthouse-perf.md",
+      "sub_tasks": 3,
+      "sub_task_sizes": "S+XS+S",
+      "questions_posted": 0,
+      "notes": "T077 planned. 3 sub-tasks: T1 per-page metadata.title (8 pages, ~10 tests, S), T2 turbopack root config (XS), T3 chunk analysis + docs update (S). No CEO questions needed."
     }
   },
   "review_cycles": 0,
@@ -61,7 +69,7 @@
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter106-bl075",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 108: selected T077 (Lighthouse baseline + per-page metadata.title + chunk investigation). Routing to PLAN."
+    "notes": "PLAN iter 108: T077 spec written. 3 sub-tasks. Routing to BUILD."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -71,9 +79,9 @@
         "INCORPORATE",
         "TRIAGE"
       ],
-      "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077 (Lighthouse baseline + per-page titles + chunk investigation).",
-      "next": "PLAN T077",
-      "timestamp": "2026-04-26T05:54:00Z"
+      "outcome": "INCORPORATE: Q-013 resolved, T076+T077 added. TRIAGE: env healthy, 795/795 tests pass, 2 actionable items, selected T077 (Lighthouse baseline + per-page titles + chunk investigation). PLAN: spec written (3 sub-tasks: per-page metadata, turbopack config, chunk docs).",
+      "next": "BUILD T077",
+      "timestamp": "2026-04-26T05:56:00Z"
     },
     {
       "iteration": 107,
