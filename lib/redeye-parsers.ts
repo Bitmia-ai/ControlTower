@@ -1,5 +1,5 @@
 import type {
-  BacklogItem,
+  TaskItem,
   InboxQuestion,
   ChangelogEntry,
   SteeringDirective,
@@ -52,10 +52,10 @@ function pickField(body: string, fieldName: string): string | undefined {
   return match?.[1]?.trim();
 }
 
-export function parseBacklog(content: string): BacklogItem[] {
+export function parseTasks(content: string): TaskItem[] {
   const sectionMap: Array<{
     header: string;
-    section: BacklogItem["section"];
+    section: TaskItem["section"];
   }> = [
     { header: "## CEO Requests", section: "ceo" },
     { header: "## Discovered", section: "discovered" },
@@ -63,7 +63,7 @@ export function parseBacklog(content: string): BacklogItem[] {
     { header: "## Won't Do", section: "wontdo" },
   ];
 
-  const items: BacklogItem[] = [];
+  const items: TaskItem[] = [];
 
   for (const { header, section } of sectionMap) {
     const sectionContent = extractSection(content, header);
@@ -117,7 +117,7 @@ export function parseBacklog(content: string): BacklogItem[] {
   return deduped;
 }
 
-function normalizeStatus(raw: string | undefined): BacklogItem["status"] {
+function normalizeStatus(raw: string | undefined): TaskItem["status"] {
   if (!raw) return "pending";
   const lower = raw.toLowerCase();
   if (lower === "pending") return "pending";

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  parseBacklog,
+  parseTasks,
   parseInbox,
   parseChangelog,
   parseSteering,
@@ -11,22 +11,22 @@ import {
 } from "./redeye-parsers";
 
 // ---------------------------------------------------------------------------
-// parseBacklog
+// parseTasks
 // ---------------------------------------------------------------------------
 
-describe("parseBacklog", () => {
+describe("parseTasks", () => {
   it("returns empty array for empty content", () => {
-    expect(parseBacklog("")).toEqual([]);
+    expect(parseTasks("")).toEqual([]);
   });
 
   it("returns empty array when no BL- items exist", () => {
     const content = `# Backlog\n\n## CEO Requests\n_(empty)_\n\n## Discovered\n\n## Triaged\n`;
-    expect(parseBacklog(content)).toEqual([]);
+    expect(parseTasks(content)).toEqual([]);
   });
 
   it("parses a single CEO request", () => {
     const content = `# Backlog\n\n## CEO Requests\n\n### BL-001: Core CLI with colored output\n- **Type:** feature\n- **Priority:** critical\n- **Status:** pending\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({
       id: "BL-001",
@@ -62,7 +62,7 @@ describe("parseBacklog", () => {
 - **Priority:** P1 (medium)
 - **Status:** planned
 `;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(3);
 
     expect(items[0]).toMatchObject({ id: "BL-001", section: "ceo", status: "done" });
@@ -72,7 +72,7 @@ describe("parseBacklog", () => {
 
   it("handles items with missing optional fields", () => {
     const content = `# Backlog\n\n## CEO Requests\n\n### BL-005: Minimal item\n- **Status:** pending\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].type).toBeUndefined();
     expect(items[0].priority).toBeUndefined();
@@ -93,7 +93,7 @@ describe("parseBacklog", () => {
 ### BL-003: Blocked item
 - **Status:** blocked
 `;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0].status).toBe("done");
     expect(items[1].status).toBe("in-progress");
     expect(items[2].status).toBe("blocked");
@@ -101,7 +101,7 @@ describe("parseBacklog", () => {
 
   it("defaults status to pending when field is missing", () => {
     const content = `# Backlog\n\n## Discovered\n\n### BL-003: No status field\n- **Type:** test\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0].status).toBe("pending");
   });
 
@@ -120,7 +120,7 @@ describe("parseBacklog", () => {
 - **Status:** planned
 - **Type:** feature
 `;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].id).toBe("BL-001");
     expect(items[0].title).toBe("Updated title");
@@ -130,7 +130,7 @@ describe("parseBacklog", () => {
 
   it("parses Won't Do section", () => {
     const content = `# Backlog\n\n## CEO Requests\n\n## Won't Do\n\n### BL-010: Rejected idea\n- **Status:** done\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].section).toBe("wontdo");
   });
@@ -144,7 +144,7 @@ describe("parseBacklog", () => {
       `### BL-001: hyphen form\n- **Status:** wont-do\n\n` +
       `### BL-002: smushed form\n- **Status:** wontdo\n\n` +
       `### BL-003: apostrophe form\n- **Status:** Won't Do\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(3);
     expect(items.map((i) => i.status)).toEqual(["wontdo", "wontdo", "wontdo"]);
   });
@@ -153,7 +153,7 @@ describe("parseBacklog", () => {
 
   it("parses Summary field on a done item", () => {
     const content = `# Backlog\n\n## Triaged\n\n### BL-048: Live tab collapsibles\n- **Type:** feature\n- **Status:** done\n- **Summary:** User message boxes are now collapsible by default to reduce noise.\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0].summary).toBe(
       "User message boxes are now collapsible by default to reduce noise."
@@ -162,13 +162,13 @@ describe("parseBacklog", () => {
 
   it("leaves summary undefined when field is missing", () => {
     const content = `# Backlog\n\n## CEO Requests\n\n### BL-001: No summary\n- **Type:** feature\n- **Status:** pending\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0].summary).toBeUndefined();
   });
 
   it("preserves multi-word summary text verbatim", () => {
     const content = `# Backlog\n\n## Triaged\n\n### BL-040: Thinking events\n- **Status:** done\n- **Summary:** Added violet ThinkingCard with 80-char preview and red AssistantTextCard.\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0].summary).toBe(
       "Added violet ThinkingCard with 80-char preview and red AssistantTextCard."
     );
@@ -176,7 +176,7 @@ describe("parseBacklog", () => {
 
   it("does not affect existing fields when Summary is present", () => {
     const content = `# Backlog\n\n## Triaged\n\n### BL-044: Add to Backlog button\n- **Type:** feature\n- **Priority:** P2\n- **Status:** done\n- **Summary:** Redesigned with PlusCircle icon and indigo accent.\n- **Spec:** docs/specs/BL-044.md\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0]).toMatchObject({
       id: "BL-044",
       type: "feature",
@@ -189,7 +189,7 @@ describe("parseBacklog", () => {
 
   it("extracts the Reason field on wont-do items (BL-065)", () => {
     const content = `# Backlog\n\n## Won't Do\n\n### BL-099: Some rejected idea\n- **Type:** feature\n- **Priority:** P1\n- **Status:** wont-do\n- **Reason:** Superseded by BL-100 which covers the same requirement.\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({
       id: "BL-099",
@@ -201,13 +201,13 @@ describe("parseBacklog", () => {
 
   it("returns reason: undefined when the field is absent (BL-065)", () => {
     const content = `# Backlog\n\n## CEO Requests\n\n### BL-100: Active item\n- **Type:** feature\n- **Status:** pending\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0].reason).toBeUndefined();
   });
 
   it("does not coerce Reason from other fields (BL-065)", () => {
     const content = `# Backlog\n\n## Triaged\n\n### BL-101: Done with summary\n- **Type:** feature\n- **Status:** done\n- **Summary:** A summary text, not a reason.\n`;
-    const items = parseBacklog(content);
+    const items = parseTasks(content);
     expect(items[0].summary).toBe("A summary text, not a reason.");
     expect(items[0].reason).toBeUndefined();
   });

@@ -20,19 +20,19 @@ import type { RedEyeState } from "./redeye-types";
  * Compute and atomically allocate the next BL-xxx ID for the given project.
  *
  * Algorithm:
- *   1. Read `counters.next_bl_id` from `state.json` (0 if file missing).
+ *   1. Read `counters.next_task_id` from `state.json` (0 if file missing).
  *   2. Scan `backlog.md` for the highest numeric BL suffix found.
  *   3. nextId = max(stateCounter - 1, scanMax) + 1
- *   4. Write `nextId + 1` back to `state.json` as the new `counters.next_bl_id`.
+ *   4. Write `nextId + 1` back to `state.json` as the new `counters.next_task_id`.
  *   5. Return `"BL-" + String(nextId).padStart(3, "0")`.
  */
-export async function getNextBacklogId(projectPath: string): Promise<string> {
+export async function getNextTaskId(projectPath: string): Promise<string> {
   const [state, scanMax] = await Promise.all([
     readState(projectPath),
     scanMaxBacklogId(projectPath),
   ]);
 
-  const stateCounter: number = state?.counters?.next_bl_id ?? 0;
+  const stateCounter: number = state?.counters?.next_task_id ?? 0;
   // stateCounter is the *next* ID the counter believes should be used.
   // scanMax is the highest ID already present in backlog.md.
   // We treat (stateCounter - 1) as the last allocated counter value and
@@ -67,7 +67,7 @@ async function writeNextBlId(
       ...existing,
       counters: {
         ...(existing.counters as Record<string, unknown>),
-        next_bl_id: newNextBlId,
+        next_task_id: newNextBlId,
       },
     };
   } else {
@@ -76,7 +76,7 @@ async function writeNextBlId(
     updated = {
       schema_version: 1,
       counters: {
-        next_bl_id: newNextBlId,
+        next_task_id: newNextBlId,
         next_q_id: 1,
       },
     };

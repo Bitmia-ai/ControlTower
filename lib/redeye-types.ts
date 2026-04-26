@@ -16,8 +16,8 @@ export interface RedEyeState {
   iteration: number;
   phase: Phase;
   phase_status: PhaseStatus;
-  backlog_item: string | null;
-  backlog_title: string | null;
+  task_id: string | null;
+  task_title: string | null;
   spec_file: string | null;
   review_cycles: number;
   health: {
@@ -28,12 +28,12 @@ export interface RedEyeState {
     blocked_items_count: number;
   };
   counters: {
-    next_bl_id: number;
+    next_task_id: number;
     next_q_id: number;
   };
-  /** Cost in USD per completed backlog item, keyed by BL-xxx. Append-only. */
+  /** Cost in USD per completed backlog item, keyed by T<N>. Append-only. */
   item_costs?: Record<string, number>;
-  /** Session cost at task start, keyed by BL-xxx. Used for delta calculation. */
+  /** Session cost at task start, keyed by T<N>. Used for delta calculation. */
   item_cost_starts?: Record<string, number>;
   /** Absolute path to the worktree where the active task is being built. Null when no worktree. */
   worktree_path?: string | null;
@@ -89,7 +89,7 @@ export const PHASE_COLORS: Record<string, { bg: string; text: string; shimmer: s
   SCHEDULES: { bg: "bg-gray-100 dark:bg-zinc-700", text: "text-gray-700 dark:text-zinc-200", shimmer: "from-gray-100 via-gray-200 to-gray-100 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-700" },
 };
 
-export interface BacklogItem {
+export interface TaskItem {
   id: string;
   title: string;
   type?: string;
@@ -147,17 +147,17 @@ export interface ProjectDetail {
   project: ProjectWithStatus;
   state: RedEyeState | null;
   currentTask: string | null;
-  activeItem: BacklogItem | null;
+  activeItem: TaskItem | null;
   pendingQuestions: InboxQuestion[];
-  upNext: BacklogItem[];
-  recentlyShipped: BacklogItem[];
+  upNext: TaskItem[];
+  recentlyShipped: TaskItem[];
   /**
    * Items the team has decided not to ship. Carried separately because
    * upNext (planned/pending/in-progress) and recentlyShipped (done) both
    * exclude wont-do, so without a dedicated bucket the backlog page would
    * never render its Won't Do section.
    */
-  wontDoItems: BacklogItem[];
+  wontDoItems: TaskItem[];
   recentChangelog: ChangelogEntry[];
   steeringDirectives: SteeringDirective[];
 }

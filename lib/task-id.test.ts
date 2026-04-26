@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest";
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
-import { getNextBacklogId } from "./backlog-id";
+import { getNextTaskId } from "./task-id";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -12,7 +12,7 @@ async function createTempProject(opts?: {
   nextBlId?: number;
   backlogContent?: string;
   noStateJson?: boolean;
-  noBacklogMd?: boolean;
+  noTasksMd?: boolean;
 }): Promise<string> {
   const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "blid-test-"));
   const redeyeDir = path.join(tmpDir, ".redeye");
@@ -24,8 +24,8 @@ async function createTempProject(opts?: {
       iteration: 1,
       phase: "BUILD",
       phase_status: "pending",
-      backlog_item: null,
-      backlog_title: null,
+      task_id: null,
+      task_title: null,
       spec_file: null,
       review_cycles: 0,
       health: {
@@ -36,7 +36,7 @@ async function createTempProject(opts?: {
         blocked_items_count: 0,
       },
       counters: {
-        next_bl_id: opts?.nextBlId ?? 1,
+        next_task_id: opts?.nextBlId ?? 1,
         next_q_id: 1,
       },
     };
@@ -47,9 +47,9 @@ async function createTempProject(opts?: {
     );
   }
 
-  if (!opts?.noBacklogMd && opts?.backlogContent !== undefined) {
+  if (!opts?.noTasksMd && opts?.backlogContent !== undefined) {
     await fs.writeFile(
-      path.join(redeyeDir, "backlog.md"),
+      path.join(redeyeDir, "tasks.md"),
       opts.backlogContent,
       "utf-8"
     );
@@ -64,7 +64,7 @@ async function readNextBlId(projectPath: string): Promise<number> {
     "utf-8"
   );
   const state = JSON.parse(stateRaw);
-  return state.counters.next_bl_id;
+  return state.counters.next_task_id;
 }
 
 // ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ function trackDir(dir: string): string {
   return dir;
 }
 
-describe("getNextBacklogId", () => {
+describe("getNextTaskId", () => {
   it("uses counter when counter is ahead of backlog scan", async () => {
     // counter says 5, backlog highest is 3 → next should be BL-005, counter becomes 6
     const dir = trackDir(
@@ -92,7 +92,7 @@ describe("getNextBacklogId", () => {
         backlogContent: "## BL-003: old task\n## BL-001: older\n",
       })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toBe("BL-005");
     expect(await readNextBlId(dir)).toBe(6);
   });
@@ -105,7 +105,7 @@ describe("getNextBacklogId", () => {
         backlogContent: "## BL-007: latest task\n## BL-001: first\n",
       })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toBe("BL-008");
     expect(await readNextBlId(dir)).toBe(9);
   });
@@ -118,7 +118,7 @@ describe("getNextBacklogId", () => {
         backlogContent: "## BL-004: last task\n",
       })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toBe("BL-005");
     expect(await readNextBlId(dir)).toBe(6);
   });
@@ -131,7 +131,7 @@ describe("getNextBacklogId", () => {
         backlogContent: "",
       })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toBe("BL-001");
     expect(await readNextBlId(dir)).toBe(2);
   });
@@ -144,21 +144,21 @@ describe("getNextBacklogId", () => {
         backlogContent: "## BL-003: some task\n",
       })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toBe("BL-004");
     // state.json should have been written with counter = 5
     expect(await readNextBlId(dir)).toBe(5);
   });
 
-  it("falls back to counter only when backlog.md is missing", async () => {
-    // counter=7, no backlog.md → BL-007, counter becomes 8
+  it("falls back to counter only when tasks.md is missing", async () => {
+    // counter=7, no tasks.md → BL-007, counter becomes 8
     const dir = trackDir(
       await createTempProject({
         nextBlId: 7,
-        noBacklogMd: true,
+        noTasksMd: true,
       })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toBe("BL-007");
     expect(await readNextBlId(dir)).toBe(8);
   });
@@ -167,7 +167,7 @@ describe("getNextBacklogId", () => {
     const dir = trackDir(
       await createTempProject({ nextBlId: 1, backlogContent: "" })
     );
-    const id = await getNextBacklogId(dir);
+    const id = await getNextTaskId(dir);
     expect(id).toMatch(/^BL-\d{3}$/);
   });
 });
@@ -176,7 +176,7 @@ describe("getNextBacklogId", () => {
 // T4: Integration test — two sequential calls return distinct IDs
 // ---------------------------------------------------------------------------
 
-describe("getNextBacklogId — sequential duplicate-prevention (T4)", () => {
+describe("getNextTaskId — sequential duplicate-prevention (T4)", () => {
   it("two sequential calls return distinct consecutive IDs and counter advances correctly", async () => {
     const dir = trackDir(
       await createTempProject({
@@ -185,8 +185,8 @@ describe("getNextBacklogId — sequential duplicate-prevention (T4)", () => {
       })
     );
 
-    const id1 = await getNextBacklogId(dir);
-    const id2 = await getNextBacklogId(dir);
+    const id1 = await getNextTaskId(dir);
+    const id2 = await getNextTaskId(dir);
 
     expect(id1).toBe("BL-005");
     expect(id2).toBe("BL-006");
@@ -205,11 +205,11 @@ describe("getNextBacklogId — sequential duplicate-prevention (T4)", () => {
     );
 
     const ids = await Promise.all([
-      getNextBacklogId(dir),
+      getNextTaskId(dir),
       // Must be sequential — each awaits the previous
     ]);
-    const id2 = await getNextBacklogId(dir);
-    const id3 = await getNextBacklogId(dir);
+    const id2 = await getNextTaskId(dir);
+    const id3 = await getNextTaskId(dir);
     const allIds = [...ids, id2, id3];
 
     // All unique

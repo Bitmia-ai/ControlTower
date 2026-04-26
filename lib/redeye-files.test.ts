@@ -4,13 +4,13 @@ import path from "path";
 import os from "os";
 import { scanMaxBacklogId } from "./redeye-files";
 
-// Helper to create a temp project directory with .redeye/backlog.md
+// Helper to create a temp project directory with .redeye/tasks.md
 async function createTempProject(backlogContent?: string): Promise<string> {
   const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "redeye-test-"));
   const redeyeDir = path.join(tmpDir, ".redeye");
   await fs.mkdir(redeyeDir);
   if (backlogContent !== undefined) {
-    await fs.writeFile(path.join(redeyeDir, "backlog.md"), backlogContent, "utf-8");
+    await fs.writeFile(path.join(redeyeDir, "tasks.md"), backlogContent, "utf-8");
   }
   return tmpDir;
 }
@@ -24,19 +24,19 @@ describe("scanMaxBacklogId", () => {
     }
   });
 
-  it("returns 0 when backlog.md does not exist", async () => {
-    tmpDir = await createTempProject(); // no backlog.md
+  it("returns 0 when tasks.md does not exist", async () => {
+    tmpDir = await createTempProject(); // no tasks.md
     const result = await scanMaxBacklogId(tmpDir);
     expect(result).toBe(0);
   });
 
-  it("returns 0 when backlog.md is empty", async () => {
+  it("returns 0 when tasks.md is empty", async () => {
     tmpDir = await createTempProject("");
     const result = await scanMaxBacklogId(tmpDir);
     expect(result).toBe(0);
   });
 
-  it("returns 0 when backlog.md has no BL-xxx items", async () => {
+  it("returns 0 when tasks.md has no BL-xxx items", async () => {
     tmpDir = await createTempProject("# Backlog\n\nSome content without any IDs.\n");
     const result = await scanMaxBacklogId(tmpDir);
     expect(result).toBe(0);

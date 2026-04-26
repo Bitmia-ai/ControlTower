@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import type {
   RedEyeState,
-  BacklogItem,
+  TaskItem,
   InboxQuestion,
   ChangelogEntry,
   SteeringDirective,
@@ -10,7 +10,7 @@ import type {
   ProjectWithStatus,
 } from "./redeye-types";
 import {
-  parseBacklog,
+  parseTasks,
   parseInbox,
   parseChangelog,
   parseSteering,
@@ -67,11 +67,11 @@ export async function readState(
   }
 }
 
-export async function readBacklog(projectPath: string): Promise<BacklogItem[]> {
-  const filePath = safeRedeyePath(projectPath, "backlog.md");
+export async function readTasks(projectPath: string): Promise<TaskItem[]> {
+  const filePath = safeRedeyePath(projectPath, "tasks.md");
   const content = await readFileOrNull(filePath);
   if (!content) return [];
-  return parseBacklog(content);
+  return parseTasks(content);
 }
 
 export async function readInbox(
@@ -126,7 +126,7 @@ export async function isInitialized(projectPath: string): Promise<boolean> {
  * maximum ID present in the file regardless of formatting.
  */
 export async function scanMaxBacklogId(projectPath: string): Promise<number> {
-  const filePath = safeRedeyePath(projectPath, "backlog.md");
+  const filePath = safeRedeyePath(projectPath, "tasks.md");
   const content = await readFileOrNull(filePath);
   if (!content) return 0;
 
@@ -147,16 +147,16 @@ export async function readProjectDetail(
 ): Promise<ProjectDetail> {
   const [state, backlogRaw, inbox, changelog, steering] = await Promise.all([
     readState(projectPath),
-    readBacklog(projectPath),
+    readTasks(projectPath),
     readInbox(projectPath),
     readChangelog(projectPath),
     readSteering(projectPath),
   ]);
 
-  // Enrich the backlog: if state.backlog_item matches an item, override its
+  // Enrich the backlog: if state.task_id matches an item, override its
   // status to "in-progress" ephemerally (not written back to disk).
-  const activeId = state?.backlog_item ?? null;
-  let activeItem: BacklogItem | null = null;
+  const activeId = state?.task_id ?? null;
+  let activeItem: TaskItem | null = null;
   const backlog = backlogRaw.map((item) => {
     if (activeId && item.id === activeId) {
       const enriched = { ...item, status: "in-progress" as const };
@@ -166,8 +166,8 @@ export async function readProjectDetail(
     return item;
   });
 
-  const currentTask = state?.backlog_title
-    ? `${state.backlog_item ?? ""} ${state.backlog_title}`.trim()
+  const currentTask = state?.task_title
+    ? `${state.task_id ?? ""} ${state.task_title}`.trim()
     : null;
   const pendingQuestions = inbox.filter((q) => !q.answered);
   const upNext = backlog.filter(
@@ -183,7 +183,7 @@ export async function readProjectDetail(
       const cost = itemCosts[item.id];
       return cost !== undefined ? { ...item, cost_usd: cost } : item;
     });
-  // parseBacklog normalizes both "wont-do" and "won't do" raw values to the
+  // parseTasks normalizes both "wont-do" and "won't do" raw values to the
   // single canonical status "wontdo"; section is also "wontdo". Source on
   // status so a section-misplaced item still surfaces.
   const wontDoItems = backlog.filter((item) => item.status === "wontdo");

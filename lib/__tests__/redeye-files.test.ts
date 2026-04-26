@@ -12,7 +12,7 @@ vi.mock("fs/promises", () => ({
 
 import fs from "fs/promises";
 import { readProjectDetail } from "../redeye-files";
-import type { ProjectWithStatus, BacklogItem, RedEyeState } from "../redeye-types";
+import type { ProjectWithStatus, TaskItem, RedEyeState } from "../redeye-types";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -25,13 +25,13 @@ const mockProject: ProjectWithStatus = {
   running: false,
 };
 
-function makeState(backlog_item: string | null): RedEyeState {
+function makeState(task_id: string | null): RedEyeState {
   return {
     iteration: 1,
     phase: "BUILD",
     phase_status: "in-progress",
-    backlog_item,
-    backlog_title: backlog_item ? "Test task title" : null,
+    task_id,
+    task_title: task_id ? "Test task title" : null,
     spec_file: null,
     review_cycles: 0,
     health: {
@@ -41,11 +41,11 @@ function makeState(backlog_item: string | null): RedEyeState {
       questions_awaiting_ceo: 0,
       blocked_items_count: 0,
     },
-    counters: { next_bl_id: 2, next_q_id: 1 },
+    counters: { next_task_id: 2, next_q_id: 1 },
   };
 }
 
-// Map from section key to the ## header label used by parseBacklog
+// Map from section key to the ## header label used by parseTasks
 const SECTION_HEADERS: Record<string, string> = {
   ceo: "## CEO Requests",
   discovered: "## Discovered",
@@ -54,11 +54,11 @@ const SECTION_HEADERS: Record<string, string> = {
 };
 
 /**
- * Produce a backlog.md string that parseBacklog() can parse.
+ * Produce a backlog.md string that parseTasks() can parse.
  * Items are grouped by section so each section header appears once.
  */
-function makeBacklogMd(items: BacklogItem[]): string {
-  const bySection: Record<string, BacklogItem[]> = {
+function makeBacklogMd(items: TaskItem[]): string {
+  const bySection: Record<string, TaskItem[]> = {
     ceo: [],
     discovered: [],
     triaged: [],
@@ -86,12 +86,12 @@ function makeBacklogMd(items: BacklogItem[]): string {
   return sections.join("\n\n");
 }
 
-// Build a minimal file map: state.json + backlog.md; everything else returns ""
+// Build a minimal file map: state.json + tasks.md; everything else returns ""
 function setupFsMock(stateJson: string, backlogMd: string) {
   vi.mocked(fs.readFile).mockImplementation(async (filePath) => {
     const p = filePath as string;
     if (p.endsWith("state.json")) return stateJson;
-    if (p.endsWith("backlog.md")) return backlogMd;
+    if (p.endsWith("tasks.md")) return backlogMd;
     // inbox, changelog, steering — return empty/valid content
     if (p.endsWith("inbox.md")) return "";
     if (p.endsWith("changelog.md")) return "";
@@ -109,8 +109,8 @@ describe("readProjectDetail — activeItem enrichment", () => {
     vi.clearAllMocks();
   });
 
-  it("sets activeItem and overrides status to in-progress when backlog_item matches", async () => {
-    const items: BacklogItem[] = [
+  it("sets activeItem and overrides status to in-progress when task_id matches", async () => {
+    const items: TaskItem[] = [
       { id: "BL-001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
       { id: "BL-014", title: "Active task", status: "planned", section: "triaged", priority: "P0", type: "bug" },
       { id: "BL-003", title: "Gamma task", status: "planned", section: "discovered", priority: "P2", type: "chore" },
@@ -134,8 +134,8 @@ describe("readProjectDetail — activeItem enrichment", () => {
     expect(upNextActive?.status).toBe("in-progress");
   });
 
-  it("returns activeItem = null when state.backlog_item is null", async () => {
-    const items: BacklogItem[] = [
+  it("returns activeItem = null when state.task_id is null", async () => {
+    const items: TaskItem[] = [
       { id: "BL-001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
     ];
 
@@ -151,8 +151,8 @@ describe("readProjectDetail — activeItem enrichment", () => {
     expect(detail.upNext.find((i) => i.id === "BL-001")?.status).toBe("planned");
   });
 
-  it("returns activeItem = null when backlog_item does not match any item (stale state)", async () => {
-    const items: BacklogItem[] = [
+  it("returns activeItem = null when task_id does not match any item (stale state)", async () => {
+    const items: TaskItem[] = [
       { id: "BL-001", title: "Alpha task", status: "planned", section: "triaged", priority: "P1", type: "feature" },
     ];
 
@@ -170,7 +170,7 @@ describe("readProjectDetail — activeItem enrichment", () => {
   });
 
   it("does not mutate the original backlog item object", async () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       { id: "BL-014", title: "Active task", status: "planned", section: "triaged", priority: "P0", type: "bug" },
     ];
 
@@ -188,7 +188,7 @@ describe("readProjectDetail — activeItem enrichment", () => {
   });
 
   it("active item does not appear twice (upNext contains it with correct in-progress status)", async () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       { id: "BL-014", title: "Active task", status: "planned", section: "ceo", priority: "P0", type: "bug" },
       { id: "BL-002", title: "Another task", status: "planned", section: "triaged", priority: "P2", type: "feature" },
     ];
@@ -219,7 +219,7 @@ describe("readProjectDetail — cost_usd enrichment", () => {
   }
 
   it("attaches cost_usd to recentlyShipped items when item_costs match", async () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       { id: "BL-015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
       { id: "BL-016", title: "Dark mode", status: "done", section: "triaged", priority: "P2", type: "feature" },
     ];
@@ -238,7 +238,7 @@ describe("readProjectDetail — cost_usd enrichment", () => {
   });
 
   it("leaves cost_usd undefined for items without matching entry", async () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       { id: "BL-015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
       { id: "BL-016", title: "Dark mode", status: "done", section: "triaged", priority: "P2", type: "feature" },
     ];
@@ -258,7 +258,7 @@ describe("readProjectDetail — cost_usd enrichment", () => {
   });
 
   it("works when item_costs is absent from state", async () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       { id: "BL-015", title: "Cost tracking", status: "done", section: "triaged", priority: "P1", type: "feature" },
     ];
 
@@ -274,7 +274,7 @@ describe("readProjectDetail — cost_usd enrichment", () => {
   });
 
   it("does not attach cost_usd to non-done items", async () => {
-    const items: BacklogItem[] = [
+    const items: TaskItem[] = [
       { id: "BL-015", title: "In progress", status: "in-progress", section: "triaged", priority: "P1", type: "feature" },
       { id: "BL-016", title: "Planned", status: "planned", section: "triaged", priority: "P2", type: "feature" },
     ];
