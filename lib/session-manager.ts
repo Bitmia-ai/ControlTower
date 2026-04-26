@@ -4,6 +4,7 @@ import { execFileSync } from "child_process";
 import type { SessionRole, SessionInfo, SessionStatus } from "./redeye-types";
 import { spawnClaudeSession, runClaudeCommand } from "./claude-runner";
 import { resolveTranscriptFile } from "./transcript-file-resolver";
+import { pruneOrphanWorktrees } from "./worktree-pruner";
 
 const STALL_THRESHOLD_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -370,6 +371,11 @@ export async function startSession(
   }
   autoRestartEnabled.add(key);
 
+  // Sweep worktrees abandoned by previously-killed claude processes before
+  // spawning a fresh one. Leaked worktrees inside the project root cause
+  // Turbopack to walk duplicate trees and balloon the dev server's heap.
+  pruneOrphanWorktrees(projectPath);
+
   return spawnAndWatch(projectPath, role, prompts[role], models[role]);
 }
 
@@ -407,4 +413,8 @@ export async function stopSession(
   }
 
   clearPid(projectPath, role);
+
+  // After the claude process is gone, sweep any worktrees it left locked.
+  // Same rationale as in startSession: leaked worktrees explode `next dev`.
+  pruneOrphanWorktrees(projectPath);
 }
