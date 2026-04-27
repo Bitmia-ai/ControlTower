@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 117,
   "started_at": "2026-04-27T12:20:53Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T089",
   "task_title": "Recently shipped and Up Next UX fixes",
   "worktree_path": null,
@@ -35,11 +35,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start TRIAGE T089+T088 (iteration 117)",
+    "last_commit": "redeye: complete TRIAGE — selected T089+T088 mission-control UX fixes (iteration 117)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter116-T086-T087",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 117: Selected T089+T088. T078 also pending."
+    "notes": "PLAN iter 117: writing spec for T089+T088."
   },
   "blocked_items": [],
   "iteration_log": [
