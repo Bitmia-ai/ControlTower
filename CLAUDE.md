@@ -25,6 +25,10 @@ There is no `tailscale funnel` workaround that preserves tailnet-only access. Th
 
 References: `vercel/turborepo#8765`, `vercel/next.js#80665`.
 
+## Running CT against its own repo
+
+When Control Tower manages its own development (a CT project pointing at this repo), RedEye's DEPLOY phase runs `npm run build` inside an isolated `.worktrees/task-T-N/` directory — not in the main checkout — so the prod server's chunks stay consistent. If you are on an older CTO setup that does not use worktree isolation, the prod server may crash on DEPLOY with "Unexpected token" or "Cannot find module" errors because `.next/` chunks are rewritten mid-request. Fix: run `npm run build && npm run start` after DEPLOY completes to restart the prod server with fresh chunks.
+
 ## Architecture
 
 **Pages** (`app/`) — App Router, all server components unless marked `'use client'`

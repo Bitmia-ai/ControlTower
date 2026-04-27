@@ -162,6 +162,8 @@ Fix: `npm run build && npm start` to bring up a fresh prod server with consisten
 Clicking Start does nothing, or the CTO exits immediately — the `~/redeye` plugin directory does not exist or `claude` is not in PATH.
 Fix: verify `which claude` works in your shell and that `~/redeye/plugin.json` exists; if not, re-install RedEye with `--plugin-dir ~/redeye`.
 
+> **Running CT against itself?** RedEye's DEPLOY phase runs in a temporary worktree, so the prod server is not affected during builds. If you are on an older setup and see chunk errors ("Unexpected token", "Cannot find module") immediately after a DEPLOY, run `npm run build && npm start` to recover.
+
 ## Architecture
 
 ```
