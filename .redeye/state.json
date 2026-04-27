@@ -3,15 +3,15 @@
   "iteration": 117,
   "started_at": "2026-04-27T12:20:53Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T089",
   "task_title": "Recently shipped and Up Next UX fixes",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T089-T088-mission-control-ux-fixes.md",
   "phase_progress": {
     "triage": "Selected T089 (P1) + T088 (P1) bundled: (1) T089: Recently Shipped card slices to 8 but CEO wants 10+. Fix: change slice(0,8) to slice(0,10) in readProjectDetail, update ShippedCard comment. (2) T088: Up Next shows in-progress task when no pending tasks exist. Fix: in UpNextCard filter out in-progress-only state to show 'No pending tasks'. T078 (history UUIDs) also pending. Bundling T089+T088 as they are both small UI fixes to the same mission-control page.",
-    "plan": "",
+    "plan": "Spec written: docs/specs/T089-T088-mission-control-ux-fixes.md. 5 sub-tasks (all S). T089: slice(0,8)->slice(0,10) in readProjectDetail, update comment in ShippedCard, update test. T088: filter in-progress from UpNextCard display, show 'No pending tasks' empty state, 4 new tests in new up-next-card.test.tsx file.",
     "build": "",
     "review": "",
     "deploy": "",
@@ -35,11 +35,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete TRIAGE — selected T089+T088 mission-control UX fixes (iteration 117)",
+    "last_commit": "redeye: start PLAN T089+T088 (iteration 117)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter116-T086-T087",
     "merge_status": "clean",
-    "notes": "PLAN iter 117: writing spec for T089+T088."
+    "notes": "PLAN iter 117: spec written for T089+T088."
   },
   "blocked_items": [],
   "iteration_log": [
