@@ -2,6 +2,12 @@
 
 ## CEO Requests
 
+### T084: All lists across the dashboard (history, steer, schedules, etc need to have pagination and filtering
+- **Type:** feature
+- **Priority:** P0
+- **Status:** pending
+- **Description:** Use the designer subagent + frontend skill to design it and share the components/ui between tabs as much as possible for code maintenance. I should be able to filter by priorities, status, last run (when applicable), as well as key words. I should also be able to sort according to some keys
+
 ### T083: the 4 control buttons in the project main screen as misaligned. also only one has an icon
 - **Type:** feature
 - **Priority:** P0
