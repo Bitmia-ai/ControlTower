@@ -1,21 +1,21 @@
 {
   "schema_version": 1,
-  "iteration": 126,
+  "iteration": 127,
   "started_at": "2026-04-27T14:06:08Z",
-  "phase": "merge",
-  "phase_status": "complete",
-  "task_id": "T103+T105+T106",
-  "task_title": "Self-dogfood doc note + CHANGELOG v0.2.0 + GitHub repo metadata",
+  "phase": "triage",
+  "phase_status": "in-progress",
+  "task_id": null,
+  "task_title": null,
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T103-T105-T106-dogfood-changelog-metadata.md",
+  "spec_file": null,
   "phase_progress": {
-    "triage": "T095 (P1, demo gif) skipped — agent-infeasible, requires manual screen recording. Selected T103+T105+T106 (all P3): self-dogfood doc note in CLAUDE.md+README, CHANGELOG.md v0.2.0 + package.json bump to 0.2.0 + git tag, gh repo edit to set GitHub description+topics. T104 (npm pack) deferred to next cycle — more complex (next.config.ts changes, bin/ file). Env healthy, no CEO questions pending. Next: PLAN.",
+    "triage": "T095 (P1, demo gif) skipped \u2014 agent-infeasible, requires manual screen recording. Selected T103+T105+T106 (all P3): self-dogfood doc note in CLAUDE.md+README, CHANGELOG.md v0.2.0 + package.json bump to 0.2.0 + git tag, gh repo edit to set GitHub description+topics. T104 (npm pack) deferred to next cycle \u2014 more complex (next.config.ts changes, bin/ file). Env healthy, no CEO questions pending. Next: PLAN.",
     "plan": "Spec written: docs/specs/T103-T105-T106-dogfood-changelog-metadata.md. T103: add self-dogfood caveat paragraph to CLAUDE.md + footnote in README Troubleshooting. T105: create CHANGELOG.md (Keep a Changelog format, v0.1.0 + v0.2.0), bump package.json to 0.2.0, git tag v0.2.0. T106: gh repo edit Bitmia-ai/ControlTower --description + --add-topic (7 topics). 6 S-tier sub-tasks, no new test files, no breaking changes. Worktree: .worktrees/task-T103-T105-T106 on branch task/T103-T105-T106.",
-    "build": "Complete. T103: added self-dogfood caveat paragraph to CLAUDE.md (## Running CT against its own repo) + blockquote note in README.md before Architecture. T105: created CHANGELOG.md at repo root (Keep a Changelog format, v0.1.0 + v0.2.0 entries with full feature list); bumped package.json version 0.1.0→0.2.0. T106: gh repo edit deferred to MERGE (no code change). 923 tests (440 passing, 483 pre-existing failures unchanged). All 4 files changed in worktree commit 607b87c.",
-    "review": "0C/0M/0m. Security: pure docs — no code, no user input, no injection vectors; package.json remains private:true, no accidental publish risk. Systems: worktree caveat is accurate, CHANGELOG comparison URLs follow Keep a Changelog spec correctly, version 0.2.0 appropriate (significant feature additions, no API breaks). UX: docs clear and actionable. Proceeding to DEPLOY.",
-    "deploy": "Build clean from main. 1 pre-existing Turbopack NFT trace warning (unchanged from iter 125). Custom Cache-Control warning (unchanged, pre-existing). ƒ Proxy (Middleware) present. No errors. All changed files are docs/metadata — no Next.js source changes.",
-    "verify": "PASS. 923 tests (440 passing, 483 pre-existing failing). 0 regressions. Build clean. T106 executed: gh repo edit set description + 7 topics (autonomous, claude-code, dashboard, local-first, nextjs, orchestration, redeye) — verified with gh repo view. Proceeding to MERGE.",
+    "build": "Complete. T103: added self-dogfood caveat paragraph to CLAUDE.md (## Running CT against its own repo) + blockquote note in README.md before Architecture. T105: created CHANGELOG.md at repo root (Keep a Changelog format, v0.1.0 + v0.2.0 entries with full feature list); bumped package.json version 0.1.0\u21920.2.0. T106: gh repo edit deferred to MERGE (no code change). 923 tests (440 passing, 483 pre-existing failures unchanged). All 4 files changed in worktree commit 607b87c.",
+    "review": "0C/0M/0m. Security: pure docs \u2014 no code, no user input, no injection vectors; package.json remains private:true, no accidental publish risk. Systems: worktree caveat is accurate, CHANGELOG comparison URLs follow Keep a Changelog spec correctly, version 0.2.0 appropriate (significant feature additions, no API breaks). UX: docs clear and actionable. Proceeding to DEPLOY.",
+    "deploy": "Build clean from main. 1 pre-existing Turbopack NFT trace warning (unchanged from iter 125). Custom Cache-Control warning (unchanged, pre-existing). \u0192 Proxy (Middleware) present. No errors. All changed files are docs/metadata \u2014 no Next.js source changes.",
+    "verify": "PASS. 923 tests (440 passing, 483 pre-existing failing). 0 regressions. Build clean. T106 executed: gh repo edit set description + 7 topics (autonomous, claude-code, dashboard, local-first, nextjs, orchestration, redeye) \u2014 verified with gh repo view. Proceeding to MERGE.",
     "merge": "Merged clean to main via --no-ff merge. Tags: v0.2.0 + last-good-deploy-iter126-T103-T105-T106. Worktree task/T103-T105-T106 removed. T103, T105, T106 complete. 4 files changed (95 insertions, 1 deletion). CEO: push the v0.2.0 tag with `git push origin v0.2.0` when ready to publish the release."
   },
   "review_cycles": 0,
@@ -35,7 +35,7 @@
     }
   },
   "git_state": {
-    "last_commit": "docs(chore): T103+T105+T106 — self-dogfood caveat, CHANGELOG v0.2.0, GitHub metadata (iter 126)",
+    "last_commit": "docs(chore): T103+T105+T106 \u2014 self-dogfood caveat, CHANGELOG v0.2.0, GitHub metadata (iter 126)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter126-T103-T105-T106",
     "merge_status": "clean",
@@ -45,9 +45,17 @@
   "iteration_log": [
     {
       "iteration": 126,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T103+T105+T106 complete: (1) Self-dogfood caveat — CLAUDE.md new section + README blockquote note before Architecture. (2) CHANGELOG.md created (Keep a Changelog, v0.1.0 + v0.2.0 with full feature/fix lists); package.json bumped 0.1.0→0.2.0; git tag v0.2.0 created. (3) GitHub repo description + 7 topics set via gh repo edit. T095 skipped (manual screen recording). T104 deferred. 0C/0M/0m review. VERIFY PASS.",
-      "next": "TRIAGE iter 127 — T104 (npm pack, P3). CEO: push v0.2.0 tag with `git push origin v0.2.0` when ready.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T103+T105+T106 complete: (1) Self-dogfood caveat \u2014 CLAUDE.md new section + README blockquote note before Architecture. (2) CHANGELOG.md created (Keep a Changelog, v0.1.0 + v0.2.0 with full feature/fix lists); package.json bumped 0.1.0\u21920.2.0; git tag v0.2.0 created. (3) GitHub repo description + 7 topics set via gh repo edit. T095 skipped (manual screen recording). T104 deferred. 0C/0M/0m review. VERIFY PASS.",
+      "next": "TRIAGE iter 127 \u2014 T104 (npm pack, P3). CEO: push v0.2.0 tag with `git push origin v0.2.0` when ready.",
       "timestamp": "2026-04-27T14:16:22Z"
     },
     {
@@ -61,8 +69,8 @@
         "VERIFY",
         "MERGE"
       ],
-      "outcome": "T101+T102 complete: (1) Coverage CI badge — test:coverage script, vitest v8 coverage with reportOnFailure:true, conservative thresholds (20%/10%/15% vs actuals 26%/12%/18%), codecov/codecov-action@v4 in CI with continue-on-error, Codecov badge in README. (2) GitHub YAML issue forms — bug_report.yml (OS dropdown + 6 env fields) + feature_request.yml (problem/solution/local-only checkbox), deleted old .md templates. 0C/0M/1m review. VERIFY PASS.",
-      "next": "TRIAGE iter 126 — T095 P1 (demo gif, manual/skip), T103-T106 P3 chores.",
+      "outcome": "T101+T102 complete: (1) Coverage CI badge \u2014 test:coverage script, vitest v8 coverage with reportOnFailure:true, conservative thresholds (20%/10%/15% vs actuals 26%/12%/18%), codecov/codecov-action@v4 in CI with continue-on-error, Codecov badge in README. (2) GitHub YAML issue forms \u2014 bug_report.yml (OS dropdown + 6 env fields) + feature_request.yml (problem/solution/local-only checkbox), deleted old .md templates. 0C/0M/1m review. VERIFY PASS.",
+      "next": "TRIAGE iter 126 \u2014 T095 P1 (demo gif, manual/skip), T103-T106 P3 chores.",
       "timestamp": "2026-04-27T14:04:54Z"
     },
     {
