@@ -56,7 +56,7 @@ Open [http://localhost:3200](http://localhost:3200).
 
 Click **+ Add project** on the home page, point it at a git repo that has already run `/redeye:init` (or a fresh repo — Control Tower will walk you through init). The project shows up as a card and you can start/stop RedEye from there.
 
-Projects live in `~/.redeye/config.json`. Override the location with `REDEYE_CONFIG_PATH=/custom/path` if you want.
+Projects live in `~/.redeye/config.json`. Override the location with `REDEYE_CONFIG_PATH=/custom/path` if you want. All configurable runtime environment variables are listed in [`.env.example`](.env.example).
 
 ### Change the port
 

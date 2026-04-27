@@ -12,7 +12,13 @@ const NAV_ITEMS = [
   { label: "Steer", path: "/steer" },
 ] as const;
 
-export function ProjectNav({ projectId }: { projectId: string }) {
+interface ProjectNavProps {
+  projectId: string;
+  /** Count of open tasks (status = pending | planned). Badge shown when > 0. */
+  openTaskCount?: number;
+}
+
+export function ProjectNav({ projectId, openTaskCount = 0 }: ProjectNavProps) {
   const rawPathname = usePathname();
   // During static prerendering, usePathname() may return null
   const pathname = rawPathname ?? "";
@@ -34,13 +40,21 @@ export function ProjectNav({ projectId }: { projectId: string }) {
         <Link
           key={label}
           href={basePath + path}
-          className={`text-sm pb-3 px-0.5 transition border-b-2 whitespace-nowrap ${
+          className={`inline-flex items-center gap-1.5 text-sm pb-3 px-0.5 transition border-b-2 whitespace-nowrap ${
             isActive(path)
               ? "border-red-600 text-gray-900 dark:text-zinc-100 font-medium"
               : "border-transparent text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300"
           }`}
         >
           {label}
+          {label === "Tasks" && openTaskCount > 0 && (
+            <span
+              className="inline-flex items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white min-w-[16px]"
+              aria-label={`${openTaskCount} open tasks`}
+            >
+              {openTaskCount}
+            </span>
+          )}
         </Link>
       ))}
     </nav>

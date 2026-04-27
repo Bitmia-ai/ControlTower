@@ -9,6 +9,7 @@ interface ProjectInfo {
   name: string;
   running: boolean;
   path?: string;
+  openTaskCount: number;
 }
 
 export default function ProjectLayout({
@@ -25,10 +26,15 @@ export default function ProjectLayout({
       const res = await fetch(`/api/projects/${id}`);
       const json = await res.json();
       if (json.data?.project) {
+        const upNext: Array<{ status: string }> = json.data?.upNext ?? [];
+        const openTaskCount = upNext.filter(
+          (i) => i.status === "pending" || i.status === "planned"
+        ).length;
         setProject({
           name: json.data.project.name,
           running: json.data.project.running ?? false,
           path: json.data.project.path,
+          openTaskCount,
         });
       }
     } catch {
@@ -92,7 +98,7 @@ export default function ProjectLayout({
         </header>
 
         <div className="mt-4 mb-6">
-          <ProjectNav projectId={id} />
+          <ProjectNav projectId={id} openTaskCount={project?.openTaskCount ?? 0} />
         </div>
       </div>
       {children}
