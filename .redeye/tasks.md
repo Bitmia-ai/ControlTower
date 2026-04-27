@@ -113,7 +113,10 @@
 ### T090: the health card shows X shipped. X is a much lower number of those shipped in total. is it just the session shipped? it should be the total and then the ones shipped in this session
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 118)
+- **Spec:** docs/specs/T090-T078-health-card-count-history-uuid-fix.md
+- **Summary:** Fixed Health card "X shipped" to show total done count (allDoneItems.length) instead of recentlyShipped.length (which was capped at 10). Root cause: mission-control-client passed detail.recentlyShipped.length to HealthCard. Fix: pass detail.allDoneItems.length (full unsliced done list). Renamed prop recentlyShippedCount->totalShippedCount for clarity. 10 new tests in health-card.test.tsx. Build clean, 0 regressions.
 
 ### T089: recently shipped tasks is still showing not the top 10 recent ones, but older ones. fix it
 - **Type:** feature
@@ -208,7 +211,10 @@
 ### T078: History tab collapsibles only show some uuid which is useless
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 118)
+- **Spec:** docs/specs/T090-T078-health-card-count-history-uuid-fix.md
+- **Summary:** Fixed History tab expanded session rows to show useful information instead of just the UUID filename. Expanded section now shows: (1) full phase chip list with "All phases (N)" count header when row was truncated (overflow > 0), (2) Started and Ended timestamps for session duration context, (3) UUID filename de-emphasized as tiny monospace text (still accessible for debugging). 5 new tests in session-history-row.test.tsx. Build clean, 0 regressions.
 
 ### T077: Lighthouse baseline + per-page metadata.title + chunk investigation
 - **Type:** performance
