@@ -719,3 +719,47 @@ describe("parseSchedules", () => {
     expect(w[0].nextDueMs).toBe(0);
   });
 });
+
+// ---------------------------------------------------------------------------
+// parseTasks — Merged field (T082)
+// ---------------------------------------------------------------------------
+
+describe("parseTasks — Merged field parsing", () => {
+  function makeTaskWithMerged(mergedValue: string): string {
+    return `# Backlog\n\n## CEO Requests\n\n### T001: Some feature\n- **Type:** feature\n- **Status:** done\n- **Merged:** ${mergedValue}\n`;
+  }
+
+  it("parses date + iteration format: '2026-04-26 (iter 108)'", () => {
+    const items = parseTasks(makeTaskWithMerged("2026-04-26 (iter 108)"));
+    expect(items).toHaveLength(1);
+    expect(items[0].mergedAt).toBe("2026-04-26");
+    expect(items[0].mergedIteration).toBe(108);
+  });
+
+  it("parses iteration-only format: 'iteration 112'", () => {
+    const items = parseTasks(makeTaskWithMerged("iteration 112"));
+    expect(items).toHaveLength(1);
+    expect(items[0].mergedAt).toBeNull();
+    expect(items[0].mergedIteration).toBe(112);
+  });
+
+  it("returns null for both fields when Merged field is absent", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: Some feature\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].mergedAt).toBeNull();
+    expect(items[0].mergedIteration).toBeNull();
+  });
+
+  it("handles high iteration numbers correctly", () => {
+    const items = parseTasks(makeTaskWithMerged("2026-04-27 (iter 999)"));
+    expect(items[0].mergedAt).toBe("2026-04-27");
+    expect(items[0].mergedIteration).toBe(999);
+  });
+
+  it("is case-insensitive for 'iteration' keyword", () => {
+    const items = parseTasks(makeTaskWithMerged("Iteration 50"));
+    expect(items[0].mergedIteration).toBe(50);
+    expect(items[0].mergedAt).toBeNull();
+  });
+});

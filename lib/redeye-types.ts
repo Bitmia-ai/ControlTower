@@ -104,6 +104,16 @@ export interface TaskItem {
   summary?: string;
   /** Rationale text from `**Reason:**` field — typically present on wont-do items. */
   reason?: string;
+  /**
+   * ISO date string (YYYY-MM-DD) of merge, parsed from "Merged: YYYY-MM-DD (iter N)" field.
+   * Null when the Merged field contains only an iteration number (no date).
+   */
+  mergedAt?: string | null;
+  /**
+   * Iteration number when item was merged, parsed from the Merged field.
+   * Null when the Merged field is absent.
+   */
+  mergedIteration?: number | null;
 }
 
 export interface InboxQuestion {

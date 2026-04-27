@@ -20,6 +20,14 @@ vi.mock("next/link", () => ({
   ),
 }));
 
+// Mock formatRelativeTime so ShippedCard tests are date-independent.
+vi.mock("@/lib/format-relative-time", () => ({
+  formatRelativeTime: (dateStr: string | null | undefined) => {
+    if (!dateStr) return null;
+    return `${dateStr} — relative`;
+  },
+}));
+
 afterEach(() => {
   cleanup();
 });
@@ -182,5 +190,39 @@ describe("ShippedCard — changelog path is unaffected", () => {
     );
     // Changelog path: no cost badge
     expect(container.textContent).not.toContain("$5.00");
+  });
+});
+
+describe("ShippedCard — relative time (T082)", () => {
+  it("renders relative time when item has mergedAt", () => {
+    const item = makeItem({ id: "T200", mergedAt: "2026-04-25" });
+    render(<ShippedCard items={[item]} />);
+    const timeEl = screen.getByTestId("shipped-time-T200");
+    // Our mock returns "<date> — relative"
+    expect(timeEl.textContent).toBe("2026-04-25 — relative");
+  });
+
+  it("does not render a time element when mergedAt is null", () => {
+    const item = makeItem({ id: "T201", mergedAt: null });
+    render(<ShippedCard items={[item]} />);
+    expect(screen.queryByTestId("shipped-time-T201")).toBeNull();
+  });
+
+  it("does not render a time element when mergedAt is undefined (old items)", () => {
+    const item = makeItem({ id: "T202" }); // no mergedAt property
+    render(<ShippedCard items={[item]} />);
+    expect(screen.queryByTestId("shipped-time-T202")).toBeNull();
+  });
+
+  it("renders relative time independently for multiple items", () => {
+    const items: TaskItem[] = [
+      makeItem({ id: "T203", mergedAt: "2026-04-26" }),
+      makeItem({ id: "T204", mergedAt: null }),
+      makeItem({ id: "T205", mergedAt: "2026-04-24" }),
+    ];
+    render(<ShippedCard items={items} />);
+    expect(screen.getByTestId("shipped-time-T203")).toBeTruthy();
+    expect(screen.queryByTestId("shipped-time-T204")).toBeNull();
+    expect(screen.getByTestId("shipped-time-T205")).toBeTruthy();
   });
 });

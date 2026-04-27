@@ -91,6 +91,23 @@ export function parseTasks(content: string): TaskItem[] {
         if (lines.length > 0) details = lines.join("\n");
       }
 
+      // Parse the Merged field — two formats are possible:
+      // 1. "2026-04-26 (iter 108)"  → date + iteration
+      // 2. "iteration 112"          → iteration only (no date)
+      const mergedRaw = pickField(body, "Merged");
+      let mergedAt: string | null = null;
+      let mergedIteration: number | null = null;
+      if (mergedRaw) {
+        const dateIterMatch = mergedRaw.match(/^(\d{4}-\d{2}-\d{2})\s+\(iter\s+(\d+)\)/);
+        if (dateIterMatch) {
+          mergedAt = dateIterMatch[1];
+          mergedIteration = parseInt(dateIterMatch[2], 10);
+        } else {
+          const iterMatch = mergedRaw.match(/iteration\s+(\d+)/i);
+          if (iterMatch) mergedIteration = parseInt(iterMatch[1], 10);
+        }
+      }
+
       items.push({
         id,
         title: title.trim(),
@@ -102,6 +119,8 @@ export function parseTasks(content: string): TaskItem[] {
         spec: pickField(body, "Spec"),
         summary: pickField(body, "Summary"),
         reason: pickField(body, "Reason"),
+        mergedAt,
+        mergedIteration,
       });
     }
   }

@@ -2,6 +2,7 @@
 
 import { TaskId } from "@/components/task-id";
 import type { TaskItem, ChangelogEntry } from "@/lib/redeye-types";
+import { formatRelativeTime } from "@/lib/format-relative-time";
 
 interface ShippedCardProps {
   items: TaskItem[];
@@ -24,7 +25,10 @@ function truncateSummary(text: string): string {
 
 export function ShippedCard({ items, changelog = [], projectId }: ShippedCardProps) {
   const hasChangelog = changelog.length > 0;
-  const shippedItems = hasChangelog ? changelog.slice(0, 5) : items.slice(0, 5);
+  // When using changelog, take the 5 most recent entries.
+  // When using task items, the server already sorted and sliced to 8 items
+  // (see redeye-files.ts recentlyShipped), so we render all of them.
+  const shippedItems = hasChangelog ? changelog.slice(0, 5) : items;
 
   return (
     <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg p-5">
@@ -86,6 +90,14 @@ export function ShippedCard({ items, changelog = [], projectId }: ShippedCardPro
                         className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5 leading-snug"
                       >
                         {truncateSummary(item.summary)}
+                      </p>
+                    )}
+                    {item.mergedAt && (
+                      <p
+                        data-testid={`shipped-time-${item.id}`}
+                        className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5"
+                      >
+                        {formatRelativeTime(item.mergedAt)}
                       </p>
                     )}
                   </div>

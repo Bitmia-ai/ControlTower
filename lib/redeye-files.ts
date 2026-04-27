@@ -179,6 +179,14 @@ export async function readProjectDetail(
   const itemCosts = state?.item_costs ?? {};
   const recentlyShipped = tasks
     .filter((item) => item.status === "done")
+    .sort((a, b) => {
+      // Sort by mergedIteration descending — highest iteration number is most recent.
+      // Items without an iteration number (older entries) fall to the bottom.
+      const ai = a.mergedIteration ?? 0;
+      const bi = b.mergedIteration ?? 0;
+      return bi - ai;
+    })
+    .slice(0, 8)
     .map((item) => {
       const cost = itemCosts[item.id];
       return cost !== undefined ? { ...item, cost_usd: cost } : item;
