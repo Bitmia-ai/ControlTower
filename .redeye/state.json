@@ -3,11 +3,11 @@
   "iteration": 115,
   "started_at": "2026-04-27T10:01:02Z",
   "phase": "merge",
-  "phase_status": "in-progress",
-  "task_id": "T080",
+  "phase_status": "complete",
+  "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T080-live-tab-buttons.md",
+  "spec_file": null,
   "phase_progress": {
     "triage": "Selected T080: Live tab arrow buttons. P1, pending. Three toolbar buttons (expand-all, collapse-all, auto-scroll) use ambiguous icons with no text labels. Will replace icons with clearer alternatives (Maximize2/Minimize2 or UnfoldVertical/FoldVertical for expand/collapse, Pin/PinOff or ScrollText for auto-scroll) and add text labels.",
     "plan": "Spec written: docs/specs/T080-live-tab-buttons.md. 4 sub-tasks (all S). Replace ChevronsUpDown+ChevronsUpDown-rotated pair with Maximize2+Minimize2 (distinct, unambiguous icons). Replace ArrowDown auto-scroll icon with ChevronsDown. Add text labels to all three buttons. ~3-5 test updates.",
@@ -15,7 +15,7 @@
     "review": "0C/0M/0m. Security: path traversal guard OK, schedId regex validated before use. UX: hover-reveal trash with focus:opacity-100, 44px touch target, aria-labels correct. Atomic write confirmed. No findings.",
     "deploy": "Build clean. Production build with T080 changes verified via patch+build approach (worktree Turbopack/node_modules resolution is a known infrastructure limitation). Compiled successfully in ~2s. 0 errors, 0 new warnings (Cache-Control warning is pre-existing). UnfoldVertical, FoldVertical, ChevronsDown are valid lucide-react exports (verified). TypeScript check: 0 errors.",
     "verify": "PASS. 832 tests (370 passing, 462 failing). +11 new tests, +11 new passing (all T080 source-text assertions). +0 new failing. Pre-existing 462 failures unchanged. No regressions. T080 marked done in tasks.md.",
-    "merge": "Merged clean to main. Tag: last-good-deploy-iter114-T081. Worktree T081-delete-schedules removed."
+    "merge": "Merged clean to main. Tag: last-good-deploy-iter115-T080. Worktree T080-live-tab-buttons removed."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -34,14 +34,29 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete VERIFY T081 — 821 tests (359 pass, 462 pre-existing fail), T081 done (iteration 114)",
+    "last_commit": "redeye: complete VERIFY T080 — 832 tests (370 pass, 462 pre-existing fail), T080 done (iteration 115)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter114-T081",
+    "last_good_deploy_tag": "last-good-deploy-iter115-T080",
     "merge_status": "clean",
-    "notes": "MERGE iter 114: T081 merged clean. 821 tests (359 passing, 462 pre-existing failures). T080/T078 pending."
+    "notes": "MERGE iter 115: T080 merged clean. 832 tests (370 passing, 462 pre-existing failures). T078 pending."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 115,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T080 complete: Live tab toolbar buttons improved. Replaced ChevronsUpDown pair (expand/collapse) with UnfoldVertical/FoldVertical. Replaced ArrowDown (auto-scroll) with ChevronsDown. Added text labels (Expand all, Collapse all, Auto-scroll) via inline-flex px-2.5 py-1.5. All behavior preserved. 11 new tests (source-text strategy, node env), 832 total (370 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 116",
+      "timestamp": "2026-04-27T11:34:08Z"
+    },
     {
       "iteration": 114,
       "phases": [
@@ -101,21 +116,6 @@
       "outcome": "T084 complete: added pagination + filtering to all 4 dashboard list tabs. Shared ListToolbar, Pagination components + useListFilter hook. Tasks/Schedules/Steer/History tabs all have search, filters, sort, and pagination. 40 new tests (752 total, 320 passing, 432 pre-existing failures). 0C/0M/1m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 112",
       "timestamp": "2026-04-27T09:35:48Z"
-    },
-    {
-      "iteration": 110,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "T083 complete: added Play/Square/Pause/RotateCcw/Navigation icons to all 5 control buttons in ControlsCard, removed flex-wrap for proper alignment. 0C/0M/0m review. 712 tests baseline (432f/280p). VERIFY PASS. Merged clean. CEO added T084 (pagination+filtering P0) during cycle.",
-      "next": "TRIAGE iter 111",
-      "timestamp": "2026-04-27T09:19:27Z"
     }
   ],
   "counters": {
@@ -125,7 +125,7 @@
     "next_task_id": 86
   },
   "cost_tracking": {
-    "iterations_this_session": 90,
+    "iterations_this_session": 91,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -193,5 +193,5 @@
     "T065": 265.3649980500002,
     "T075": 320.75
   },
-  "task_title": "Live tab arrow buttons — better icons and text labels"
+  "task_title": null
 }
