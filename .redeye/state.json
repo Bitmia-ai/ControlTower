@@ -3,14 +3,14 @@
   "iteration": 126,
   "started_at": "2026-04-27T14:06:08Z",
   "phase": "triage",
-  "phase_status": "in-progress",
-  "task_id": null,
-  "task_title": null,
+  "phase_status": "complete",
+  "task_id": "T103+T105+T106",
+  "task_title": "Self-dogfood doc note + CHANGELOG v0.2.0 + GitHub repo metadata",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
-    "triage": "",
+    "triage": "T095 (P1, demo gif) skipped — agent-infeasible, requires manual screen recording. Selected T103+T105+T106 (all P3): self-dogfood doc note in CLAUDE.md+README, CHANGELOG.md v0.2.0 + package.json bump to 0.2.0 + git tag, gh repo edit to set GitHub description+topics. T104 (npm pack) deferred to next cycle — more complex (next.config.ts changes, bin/ file). Env healthy, no CEO questions pending. Next: PLAN.",
     "plan": "",
     "build": "",
     "review": "",
@@ -35,20 +35,20 @@
     }
   },
   "git_state": {
-    "last_commit": "feat(ci): T101+T102 — coverage reporting + GitHub issue templates (iter 125)",
+    "last_commit": "redeye: start TRIAGE (iteration 126)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter125-T101-T102",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 126: remaining tasks T095 (P1, demo gif, manual/skip), T103-T106 (P3 chores)."
+    "notes": "TRIAGE iter 126: selected T103+T105+T106 bundle. T104 deferred."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 126,
       "phases": ["TRIAGE"],
-      "outcome": "in-progress",
-      "next": "PLAN",
-      "timestamp": "2026-04-27T14:06:08Z"
+      "outcome": "Selected T103+T105+T106: self-dogfood doc note, CHANGELOG v0.2.0, GitHub repo metadata. T095 skipped (manual). T104 deferred (complex).",
+      "next": "PLAN T103+T105+T106",
+      "timestamp": "2026-04-27T14:07:12Z"
     },
     {
       "iteration": 125,
@@ -76,8 +76,8 @@
         "VERIFY",
         "MERGE"
       ],
-      "outcome": "T098+T100 complete: (1) middleware.ts renamed to proxy.ts, export renamed from middleware() to proxy() (Next.js 16 requires both changes) — CSRF/origin protection preserved, deprecation warning eliminated, 19 new unit tests. (2) .github/dependabot.yml added (npm + github-actions, weekly Monday, minor/patch grouped, major ignored for next/react/react-dom/tailwindcss, PR limit 5). 0C/0M/0m review. VERIFY PASS. Merged clean.",
-      "next": "TRIAGE iter 125 — T095 P1 (demo gif, manual/skip), T101 P2 (coverage), T102 P2 (issue templates), T103-T106 P3 chores.",
+      "outcome": "T098+T100 complete: (1) middleware.ts renamed to proxy.ts, export renamed from middleware() to proxy(). (2) .github/dependabot.yml added. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 125.",
       "timestamp": "2026-04-27T13:51:45Z"
     },
     {
@@ -91,7 +91,7 @@
         "VERIFY",
         "MERGE"
       ],
-      "outcome": "T076+T099 complete: (1) Dependency updates — lucide-react ^1.11.0, react/react-dom 19.2.5, TypeScript 6.0.3 (production source clean, 8 test-only type errors from stricter vitest mock narrowing), @types/node ^25.6.0. (2) next.config.test.ts fixed with @vitest-environment node annotation — 5 tests now pass (cache headers + turbopack config guards). 0C/0M/2m review. VERIFY PASS. Merged clean.",
+      "outcome": "T076+T099 complete. 0C/0M/2m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 124.",
       "timestamp": "2026-04-27T13:41:31Z"
     },
@@ -176,7 +176,10 @@
     "T076": 0,
     "T099": 0,
     "T101": 0,
-    "T102": 0
+    "T102": 0,
+    "T103": 0,
+    "T105": 0,
+    "T106": 0
   },
   "item_cost_starts": {
     "T046": 73.40777850000002,
