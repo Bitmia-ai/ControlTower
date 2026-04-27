@@ -3,7 +3,7 @@
   "iteration": 113,
   "started_at": "2026-04-27T09:47:12Z",
   "phase": "build",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T082",
   "worktree_path": null,
   "worktree_branch": null,
@@ -11,7 +11,7 @@
   "phase_progress": {
     "triage": "Selected T082: Recently Shipped relative time. P1, pending.",
     "plan": "Spec written: 6 sub-tasks (all S). New mergedAt/mergedIteration fields, parseMerged, sort by iteration, formatRelativeTime utility, ShippedCard update, 10+ new tests.",
-    "build": "In progress"
+    "build": "Complete: 7 files changed. mergedAt/mergedIteration parsing, formatRelativeTime utility, ShippedCard relative time display, sort by iteration. 28 new tests (23+5), build clean."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
