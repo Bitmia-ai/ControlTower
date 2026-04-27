@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "iteration": 122,
+  "iteration": 123,
   "started_at": "2026-04-27T13:21:28Z",
-  "phase": "merge",
-  "phase_status": "complete",
-  "task_id": "T093",
-  "task_title": "T093+T094: Troubleshooting README + Empty-state UX",
+  "phase": "triage",
+  "phase_status": "in-progress",
+  "task_id": null,
+  "task_title": null,
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T093-T094-readme-troubleshooting-empty-state.md",
+  "spec_file": null,
   "phase_progress": {
-    "triage": "Selected T093 (P1) + T094 (P1) bundled: Troubleshooting section in README + empty-state UX for first run. T095 (demo gif) skipped — requires manual screen recording. T076 (P2) deferred.",
+    "triage": "Selected T093 (P1) + T094 (P1) bundled: Troubleshooting section in README + empty-state UX for first run. T095 (demo gif) skipped \u2014 requires manual screen recording. T076 (P2) deferred.",
     "plan": "Spec written: docs/specs/T093-T094-readme-troubleshooting-empty-state.md. T093: add Troubleshooting section to README.md with 6 entries. T094: 3 sub-tasks (S1: EmptyState subtitle->ReactNode, S2: home-client richer empty state with FolderOpen + onboarding copy + links, S3: 14 unit tests). No CEO questions needed.",
     "build": "Complete: 4 files changed + 1 created. T093: Troubleshooting section added to README.md with 6 entries (port, tailscale, npm install, loading forever, something went wrong, loop won't start). T094: EmptyState subtitle changed string->ReactNode; home-client.tsx now shows 'Welcome to Control Tower' with FolderOpen icon, RedEye GitHub link, /redeye:init code, Quick Start link; 14 new unit tests in empty-state-home.test.tsx (all passing). 899 total tests (416 pass, 483 pre-existing fail). Build clean 2.2s.",
-    "review": "0C/0M/0m. T093: 6 troubleshooting entries correct, links accurate, format consistent (symptom/cause/fix). T094: EmptyState subtitle ReactNode change backward-compatible — all 8 other usages are string literals which remain valid. Home-client onboarding copy helpful with correct external links. Build clean.",
+    "review": "0C/0M/0m. T093: 6 troubleshooting entries correct, links accurate, format consistent (symptom/cause/fix). T094: EmptyState subtitle ReactNode change backward-compatible \u2014 all 8 other usages are string literals which remain valid. Home-client onboarding copy helpful with correct external links. Build clean.",
     "deploy": "Build clean. Compiled successfully in 1.8s. 0 errors, 1 pre-existing warning (Custom Cache-Control headers).",
     "verify": "PASS. 899 tests (416 passing, 483 pre-existing failing). 0 regressions. +14 new passing tests.",
     "merge": "Merged clean to main. Tag: last-good-deploy-iter122-T093-T094. No worktree (main branch throughout). T093 and T094 complete."
@@ -35,7 +35,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete VERIFY T093+T094 — 899 tests (416 pass, 483 pre-existing fail), 0 regressions (iteration 122)",
+    "last_commit": "redeye: complete VERIFY T093+T094 \u2014 899 tests (416 pass, 483 pre-existing fail), 0 regressions (iteration 122)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter122-T093-T094",
     "merge_status": "clean",
@@ -45,39 +45,79 @@
   "iteration_log": [
     {
       "iteration": 122,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T093+T094 complete: (1) README Troubleshooting section — 6 entries (port in use, Tailscale prod mode, npm install, loading forever, something went wrong, loop won't start). (2) Home page empty-state UX — 'Welcome to Control Tower' with FolderOpen icon, links to RedEye GitHub and Quick Start, /redeye:init inline code. EmptyState subtitle: string->ReactNode (backward-compatible). 14 new passing tests. 0C/0M/0m review. VERIFY PASS. Merged clean.",
-      "next": "TRIAGE iter 123 — T095 P1 (demo gif, manual), T076 P2 (deps), T098-T106 P2-P3.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T093+T094 complete: (1) README Troubleshooting section \u2014 6 entries (port in use, Tailscale prod mode, npm install, loading forever, something went wrong, loop won't start). (2) Home page empty-state UX \u2014 'Welcome to Control Tower' with FolderOpen icon, links to RedEye GitHub and Quick Start, /redeye:init inline code. EmptyState subtitle: string->ReactNode (backward-compatible). 14 new passing tests. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 123 \u2014 T095 P1 (demo gif, manual), T076 P2 (deps), T098-T106 P2-P3.",
       "timestamp": "2026-04-27T13:28:00Z"
     },
     {
       "iteration": 121,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T108+T092 complete: (1) Tasks tab count badge — ProjectNav shows red pill with open task count (pending+planned). Data extracted from upNext in existing 5s layout poll, no new API calls. Badge hidden at 0. 15 new passing tests. (2) .env.example created with 5 runtime env vars documented. README updated. 0C/0M/0m review. VERIFY PASS. Merged clean.",
-      "next": "TRIAGE iter 122 — T093 P1 (README Troubleshooting), T094 P1 (empty-state UX), T095 P1 (demo gif).",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T108+T092 complete: (1) Tasks tab count badge \u2014 ProjectNav shows red pill with open task count (pending+planned). Data extracted from upNext in existing 5s layout poll, no new API calls. Badge hidden at 0. 15 new passing tests. (2) .env.example created with 5 runtime env vars documented. README updated. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 122 \u2014 T093 P1 (README Troubleshooting), T094 P1 (empty-state UX), T095 P1 (demo gif).",
       "timestamp": "2026-04-27T13:19:25Z"
     },
     {
       "iteration": 120,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T091+T096 complete: (1) README screenshots refreshed — home.png (precision-instrument cards, 44KB), mission-control.png (2-col layout with all cards, 127KB), task-detail.png created new (T107 detail with Summary, 88KB). README referenced task-detail.png but the file was missing — now created. (2) .github/CODEOWNERS added with * @Bitmia-ai rule. 0 source code changes. 0C/0M/0m review. VERIFY PASS. Merged clean.",
-      "next": "TRIAGE iter 121 — T108 P1 (Tasks count badge), T092-T095 P1 docs.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T091+T096 complete: (1) README screenshots refreshed \u2014 home.png (precision-instrument cards, 44KB), mission-control.png (2-col layout with all cards, 127KB), task-detail.png created new (T107 detail with Summary, 88KB). README referenced task-detail.png but the file was missing \u2014 now created. (2) .github/CODEOWNERS added with * @Bitmia-ai rule. 0 source code changes. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 121 \u2014 T108 P1 (Tasks count badge), T092-T095 P1 docs.",
       "timestamp": "2026-04-27T13:07:07Z"
     },
     {
       "iteration": 119,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T107+T097 complete: (1) Task detail page now shows Description field. (2) Deleted stale flex-wrap test. 5 new passing tests. 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 120",
       "timestamp": "2026-04-27T12:57:04Z"
     },
     {
       "iteration": 118,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T090+T078 complete. 15 new tests (866 total). Merged clean.",
       "next": "TRIAGE iter 119",
       "timestamp": "2026-04-27T12:55:00Z"
-    },
+    }
   ],
   "counters": {
     "next_q_id": 14,
