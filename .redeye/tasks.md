@@ -59,7 +59,10 @@
 ### T100: Dependabot config for auto dependency PRs
 - **Type:** chore
 - **Priority:** P2
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 124)
+- **Spec:** docs/specs/T098-T100-proxy-migration-dependabot.md
+- **Summary:** Added .github/dependabot.yml for npm + github-actions ecosystems. Weekly Monday schedule. Minor/patch updates grouped. Major bumps ignored for next, react, react-dom, tailwindcss. PR limit 5 per ecosystem. Labels: dependencies + github-actions.
 - **Description:** Add `.github/dependabot.yml` configured for npm + github-actions ecosystems, weekly schedule, auto-grouping minor/patch updates. This is a strong trust signal for OSS users without much maintenance cost. Reference: github.com/dependabot/dependabot-core wiki for examples. Group by ecosystem; ignore major bumps for `next`, `react`, `react-dom`, `tailwindcss` (require manual review). Limit open PRs to 5 to avoid noise.
 
 ### T099: Audit or remove next.config.test.ts
@@ -74,7 +77,10 @@
 ### T098: Migrate middleware.ts to proxy.ts (Next.js 16 deprecation)
 - **Type:** chore
 - **Priority:** P2
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 124)
+- **Spec:** docs/specs/T098-T100-proxy-migration-dependabot.md
+- **Summary:** Renamed middleware.ts to proxy.ts and renamed the exported function from middleware() to proxy() (Next.js 16 requires both the filename AND the export name to be proxy). CSRF/origin protection logic identical: Sec-Fetch-Site primary signal, Origin header fallback, fail-closed with no headers. isSameOrigin() now exported for testability. 19 new unit tests in proxy.test.ts covering all header combinations. Build clean, deprecation warning eliminated, ƒ Proxy (Middleware) confirmed in Next.js route map.
 - **Description:** Next.js 16 deprecated the `middleware` file convention in favor of `proxy`. Every dev server start prints: `⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy`. Follow the migration guide at the linked URL. Our middleware.ts implements Origin / Sec-Fetch-Site CSRF protection on mutating routes — verify the protection still works after migration via the existing middleware.test.ts (or create one if absent). Run e2e against a fresh CT to confirm POSTs still pass and cross-origin POSTs still 403.
 
 ### T097: Fix or delete failing ControlsCard responsive test
