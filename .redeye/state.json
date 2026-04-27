@@ -2,17 +2,17 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "review",
-  "phase_status": "complete",
+  "phase": "deploy",
+  "phase_status": "in-progress",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
-    "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon.",
-    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md.",
-    "build": "T1+T2 complete: icons on all 5 buttons, flex layout fixed. 712 tests unchanged, build clean.",
-    "review": "PASS — 0C/0M/0m. Diff minimal: icons added to 5 buttons, flex-wrap removed. No logic changes, no regressions, no security/accessibility issues."
+    "triage": "Selected T083 (P0).",
+    "plan": "Spec written.",
+    "build": "Icons+layout complete. 712 tests unchanged.",
+    "review": "PASS 0C/0M/0m."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -31,20 +31,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start REVIEW T083 (iteration 110)",
+    "last_commit": "redeye: complete REVIEW T083 — 0C/0M/0m PASS (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "REVIEW iter 110: T083 passed 0C/0M/0m."
+    "notes": "DEPLOY iter 110: T083 deploying."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW"],
-      "outcome": "BUILD: Play/Square/Pause/RotateCcw/Navigation icons, flex-wrap removed. REVIEW PASS 0C/0M/0m.",
-      "next": "DEPLOY T083",
-      "timestamp": "2026-04-27T09:30:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY"],
+      "outcome": "REVIEW PASS. DEPLOY in-progress.",
+      "next": "VERIFY T083",
+      "timestamp": "2026-04-27T09:33:00Z"
     },
     {
       "iteration": 109,
@@ -56,15 +56,15 @@
     {
       "iteration": 108,
       "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
-      "outcome": "T077 complete: per-page metadata.title, turbopack.root, 228KB chunk docs. 9 new tests. Merged clean.",
+      "outcome": "T077 complete. 9 new tests. Merged clean.",
       "next": "TRIAGE iter 109",
       "timestamp": "2026-04-26T19:50:11Z"
     },
     {
       "iteration": 107,
       "phases": ["TRIAGE","SCHEDULES"],
-      "outcome": "TRIAGE: env healthy. SCHEDULES: SCHED-1 + SCHED-2 run.",
-      "next": "TRIAGE then Q-013 (backlog empty)",
+      "outcome": "TRIAGE: env healthy. SCHEDULES run.",
+      "next": "TRIAGE then Q-013",
       "timestamp": "2026-04-25T21:44:30Z"
     },
     {
