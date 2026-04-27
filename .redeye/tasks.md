@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T087: creating a new Schedule, shows next: xyz ago. Instead of showing never run before
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T086: pagination total counts (like Done X total count) shows only visible count, not total count. it shoudl show like 70 something
 - **Type:** feature
 - **Priority:** P1
