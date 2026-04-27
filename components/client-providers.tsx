@@ -8,6 +8,7 @@ import Link from "next/link";
 import { ThemeProvider } from "@/lib/theme-context";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ToastProvider } from "@/components/toast-provider";
+import { Logo } from "@/components/logo";
 
 /** Exported as both names so imports don't need to change. */
 export function ClientProviders({ children }: { children: React.ReactNode }) {
@@ -18,13 +19,16 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           <Link
             href="/"
             aria-label="Control Tower — go to home"
-            className="flex flex-col items-start leading-none select-none"
+            className="flex items-center gap-3 leading-none select-none text-gray-900 dark:text-gray-100"
           >
-            <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
-              Control
-            </span>
-            <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
-              Tower
+            <Logo className="h-9 w-9" />
+            <span className="flex flex-col items-start">
+              <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
+                Control
+              </span>
+              <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
+                Tower
+              </span>
             </span>
           </Link>
           <ThemeToggle />

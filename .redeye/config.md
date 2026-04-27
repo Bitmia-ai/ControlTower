@@ -39,6 +39,10 @@ Polish the Control Tower dashboard UI. Test every user interaction using Playwri
 - **Test (E2E):** `echo 'No e2e command configured'`
 - **App URL:** `http://localhost:3200`
 
+## Worktree Isolation
+
+- **Enabled:** true
+
 ## Wiki Sync
 
 - **Enabled:** false
