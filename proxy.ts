@@ -45,7 +45,8 @@ export function isSameOrigin(req: NextRequest): boolean {
   }
 }
 
-export function middleware(req: NextRequest) {
+// Next.js 16 requires the function to be exported as `proxy` (not `middleware`).
+export function proxy(req: NextRequest) {
   if (SAFE_METHODS.has(req.method)) {
     return NextResponse.next();
   }

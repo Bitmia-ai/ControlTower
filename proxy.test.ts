@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { NextRequest } from "next/server";
-import { isSameOrigin, middleware, config } from "./proxy";
+import { isSameOrigin, proxy, config } from "./proxy";
 
 function makeRequest(
   method: string,
@@ -74,37 +74,37 @@ describe("proxy.ts — CSRF / origin protection", () => {
     });
   });
 
-  describe("middleware() — safe methods bypass CSRF check", () => {
+  describe("proxy() — safe methods bypass CSRF check", () => {
     it("allows GET regardless of origin", async () => {
       const req = makeRequest("GET", { "sec-fetch-site": "cross-site" });
-      const res = middleware(req);
+      const res = proxy(req);
       // NextResponse.next() returns a response with no body and status 200
       expect(res.status).toBe(200);
     });
 
     it("allows HEAD regardless of origin", async () => {
       const req = makeRequest("HEAD", { "sec-fetch-site": "cross-site" });
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(200);
     });
 
     it("allows OPTIONS regardless of origin", async () => {
       const req = makeRequest("OPTIONS", { "sec-fetch-site": "cross-site" });
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(200);
     });
   });
 
-  describe("middleware() — mutating methods enforced", () => {
+  describe("proxy() — mutating methods enforced", () => {
     it("allows POST from same-origin (dashboard UI)", async () => {
       const req = makeRequest("POST", { "sec-fetch-site": "same-origin" });
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(200);
     });
 
     it("blocks POST from cross-site origin", async () => {
       const req = makeRequest("POST", { "sec-fetch-site": "cross-site" });
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(403);
       const body = await res.json();
       expect(body.error).toBe("Cross-origin request blocked");
@@ -112,19 +112,19 @@ describe("proxy.ts — CSRF / origin protection", () => {
 
     it("blocks DELETE from cross-site origin", async () => {
       const req = makeRequest("DELETE", { "sec-fetch-site": "cross-site" });
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(403);
     });
 
     it("blocks POST with no headers at all (fail-closed against legacy browsers)", async () => {
       const req = makeRequest("POST");
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(403);
     });
 
     it("allows POST with allowed Origin header and no Sec-Fetch-Site", async () => {
       const req = makeRequest("POST", { origin: "http://127.0.0.1:3200" });
-      const res = middleware(req);
+      const res = proxy(req);
       expect(res.status).toBe(200);
     });
   });
