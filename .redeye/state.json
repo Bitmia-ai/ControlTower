@@ -2,16 +2,16 @@
   "schema_version": 1,
   "iteration": 119,
   "started_at": "2026-04-27T12:44:42Z",
-  "phase": "plan",
+  "phase": "build",
   "phase_status": "in-progress",
   "task_id": "T107",
   "task_title": "Task detail page does not render the Description field (bundled: T107 + T097)",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T-107",
   "worktree_branch": "feature/T107-description-field",
-  "spec_file": null,
+  "spec_file": "docs/specs/T107-T097-description-field-responsive-test.md",
   "phase_progress": {
     "triage": "Selected T107 (P0) + T097 (P0) bundled: (1) T107: Parser in lib/redeye-parsers.ts does not extract **Description:** field — all task detail pages show no description. Fix: extend parser, thread through API + TaskItem type, render on detail page with markdown. (2) T097: Stale responsive test for ControlsCard flex-wrap (removed in T083) — either delete test or fix. Both are P0 bugs, both mechanical, good bundle.",
-    "plan": "",
+    "plan": "Spec written: docs/specs/T107-T097-description-field-responsive-test.md. 5 sub-tasks for T107 (parser pickMultilineField, TaskItem.description field, parseTasks includes it, task-detail-client renders it, 5 parser unit tests). 1 sub-task for T097 (delete stale flex-wrap test). All S/XS tier.",
     "build": "",
     "review": "",
     "deploy": "",
@@ -35,33 +35,25 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete TRIAGE — selected T107+T097 P0 bugs (iteration 119)",
+    "last_commit": "redeye: plan T107+T097 — description field + stale test fix",
     "branch": "feature/T107-description-field",
     "last_good_deploy_tag": "last-good-deploy-iter118-T090-T078",
     "merge_status": "clean",
-    "notes": "Worktree created: /Users/casa/ControlTower/.worktrees/T-107 on branch feature/T107-description-field"
+    "notes": "BUILD starting in worktree /Users/casa/ControlTower/.worktrees/T-107"
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 119,
-      "phases": ["TRIAGE", "PLAN"],
-      "outcome": "TRIAGE: T107+T097 selected. PLAN: in-progress",
-      "next": "BUILD",
-      "timestamp": "2026-04-27T12:46:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD"],
+      "outcome": "TRIAGE: T107+T097 selected. PLAN: spec complete. BUILD: in-progress",
+      "next": "REVIEW",
+      "timestamp": "2026-04-27T12:48:00Z"
     },
     {
       "iteration": 118,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "T090+T078 complete: (1) Health card now shows total done count (allDoneItems.length = true total) instead of recentlyShipped.length (capped at 10). Renamed HealthCard prop recentlyShippedCount->totalShippedCount. (2) History tab expanded session rows now show full phase list when overflow, Started/Ended timestamps, UUID de-emphasized. 15 new tests (866 total, 382 passing, 484 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "T090+T078 complete. 15 new tests (866 total). Merged clean.",
       "next": "TRIAGE iter 119",
       "timestamp": "2026-04-27T12:55:00Z"
     },
