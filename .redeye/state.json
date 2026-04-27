@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 119,
   "started_at": "2026-04-27T12:44:42Z",
-  "phase": "build",
+  "phase": "review",
   "phase_status": "in-progress",
   "task_id": "T107",
   "task_title": "Task detail page does not render the Description field (bundled: T107 + T097)",
@@ -12,7 +12,7 @@
   "phase_progress": {
     "triage": "Selected T107 (P0) + T097 (P0) bundled: (1) T107: Parser in lib/redeye-parsers.ts does not extract **Description:** field — all task detail pages show no description. Fix: extend parser, thread through API + TaskItem type, render on detail page with markdown. (2) T097: Stale responsive test for ControlsCard flex-wrap (removed in T083) — either delete test or fix. Both are P0 bugs, both mechanical, good bundle.",
     "plan": "Spec written: docs/specs/T107-T097-description-field-responsive-test.md. 5 sub-tasks for T107 (parser pickMultilineField, TaskItem.description field, parseTasks includes it, task-detail-client renders it, 5 parser unit tests). 1 sub-task for T097 (delete stale flex-wrap test). All S/XS tier.",
-    "build": "",
+    "build": "Complete: 5 files changed. T107: added pickMultilineField() to lib/redeye-parsers.ts (captures multi-paragraph descriptions, stops at next field marker), added description?: string to TaskItem type, added description rendering to task-detail-client.tsx (below Summary section, via MarkdownRenderer). T097: deleted stale flex-wrap test from responsive.test.tsx — T083 intentionally removed flex-wrap, touch-target test (min-h-[44px]) still present. 5 new passing parser tests. 870 total tests (387 passing, 483 failing — net +5 passing, -1 failing vs iter 118 baseline).",
     "review": "",
     "deploy": "",
     "verify": "",
@@ -35,20 +35,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: plan T107+T097 — description field + stale test fix",
+    "last_commit": "fix(T107+T097): add Description field parsing and delete stale flex-wrap test",
     "branch": "feature/T107-description-field",
     "last_good_deploy_tag": "last-good-deploy-iter118-T090-T078",
     "merge_status": "clean",
-    "notes": "BUILD starting in worktree /Users/casa/ControlTower/.worktrees/T-107"
+    "notes": "BUILD complete. REVIEW starting."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 119,
-      "phases": ["TRIAGE", "PLAN", "BUILD"],
-      "outcome": "TRIAGE: T107+T097 selected. PLAN: spec complete. BUILD: in-progress",
-      "next": "REVIEW",
-      "timestamp": "2026-04-27T12:48:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW"],
+      "outcome": "BUILD complete: T107+T097 implemented. 870 tests (387 passing, 483 pre-existing failures). REVIEW: in-progress",
+      "next": "DEPLOY",
+      "timestamp": "2026-04-27T12:52:07Z"
     },
     {
       "iteration": 118,
