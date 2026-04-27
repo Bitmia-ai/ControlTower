@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T088: If no more tasks are available, up next shows the currently worked on task. it should show "no pending tasks" in a nice way
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T087: creating a new Schedule, shows next: xyz ago. Instead of showing never run before
 - **Type:** feature
 - **Priority:** P1
