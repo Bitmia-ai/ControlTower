@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 117,
   "started_at": "2026-04-27T12:20:53Z",
-  "phase": "plan",
-  "phase_status": "complete",
+  "phase": "build",
+  "phase_status": "in-progress",
   "task_id": "T089",
   "task_title": "Recently shipped and Up Next UX fixes",
   "worktree_path": null,
@@ -35,11 +35,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start PLAN T089+T088 (iteration 117)",
+    "last_commit": "redeye: plan T089+T088 — Recently Shipped 10 items + Up Next no-pending state",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter116-T086-T087",
     "merge_status": "clean",
-    "notes": "PLAN iter 117: spec written for T089+T088."
+    "notes": "BUILD iter 117: implementing T089+T088."
   },
   "blocked_items": [],
   "iteration_log": [
