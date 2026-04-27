@@ -2,21 +2,21 @@
   "schema_version": 1,
   "iteration": 120,
   "started_at": "2026-04-27T12:58:22Z",
-  "phase": "verify",
+  "phase": "merge",
   "phase_status": "complete",
-  "task_id": "T091",
-  "task_title": "Refresh README screenshots (home, mission-control, task-detail)",
-  "worktree_path": "/Users/casa/ControlTower/.worktrees/T091",
-  "worktree_branch": "feat/T091-T096-readme-screenshots-codeowners",
-  "spec_file": "docs/specs/T091-T096-readme-screenshots-codeowners.md",
+  "task_id": null,
+  "task_title": null,
+  "worktree_path": null,
+  "worktree_branch": null,
+  "spec_file": null,
   "phase_progress": {
     "triage": "Selected T091 (P0) + T096 (P1) bundled: README screenshots refresh + CODEOWNERS.",
     "plan": "Spec written: docs/specs/T091-T096-readme-screenshots-codeowners.md. 4 sub-tasks: S1-S3 Playwright screenshots (home/mission-control/task-detail at 1200px dark mode), S4 CODEOWNERS. No source code changes.",
     "build": "Complete: 4 files changed. T091: home.png refreshed (44KB), mission-control.png refreshed (127KB), task-detail.png created (88KB). T096: .github/CODEOWNERS created (* @Bitmia-ai). 870 tests unchanged.",
     "review": "0C/0M/0m. Docs+binary-only change. CODEOWNERS syntax correct. All 3 PNGs valid and match README references exactly.",
-    "deploy": "Build clean. Compiled successfully in 2.2s. 0 errors, 1 pre-existing warning (Cache-Control headers).",
-    "verify": "PASS. 870 tests (387 passing, 483 failing). 0 regressions. No source code changed — test suite identical to iter 119 baseline.",
-    "merge": ""
+    "deploy": "Build clean. Compiled successfully in 2.2s. 0 errors, 1 pre-existing warning.",
+    "verify": "PASS. 870 tests (387 passing, 483 failing). 0 regressions.",
+    "merge": "Merged clean to main. Tag: last-good-deploy-iter120-T091-T096. Worktree removed. T091 and T096 complete."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -35,19 +35,19 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete DEPLOY T091+T096 — build clean 2.2s, start VERIFY (iteration 120)",
-    "branch": "feat/T091-T096-readme-screenshots-codeowners",
-    "last_good_deploy_tag": "last-good-deploy-iter119-T107-T097",
+    "last_commit": "merge: T091+T096 — README screenshots refresh + CODEOWNERS",
+    "branch": "main",
+    "last_good_deploy_tag": "last-good-deploy-iter120-T091-T096",
     "merge_status": "clean",
-    "notes": "Iter 120: VERIFY PASS. Next: MERGE."
+    "notes": "MERGE iter 120: T091+T096 merged clean. 870 tests (387 passing, 483 pre-existing failures). Remaining P1: T108 (Tasks badge), T092-T095. P2+: T098-T106 (T091 and T096 now done)."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 120,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "in-progress",
-      "next": "MERGE",
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "T091+T096 complete: (1) README screenshots refreshed — home.png (precision-instrument cards, 44KB), mission-control.png (2-col layout with all cards, 127KB), task-detail.png created new (T107 detail with Summary, 88KB). README referenced task-detail.png but the file was missing — now created. (2) .github/CODEOWNERS added with * @Bitmia-ai rule. 0 source code changes. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 121 — T108 P1 (Tasks count badge), T092-T095 P1 docs.",
       "timestamp": "2026-04-27T13:07:07Z"
     },
     {
@@ -86,7 +86,7 @@
     "next_task_id": 109
   },
   "cost_tracking": {
-    "iterations_this_session": 99,
+    "iterations_this_session": 100,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -134,7 +134,9 @@
     "T085": 0,
     "T082": 0,
     "T107": 0,
-    "T097": 0
+    "T097": 0,
+    "T091": 0,
+    "T096": 0
   },
   "item_cost_starts": {
     "T046": 73.40777850000002,

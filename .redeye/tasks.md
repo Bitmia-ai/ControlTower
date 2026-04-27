@@ -83,7 +83,10 @@
 ### T096: Add .github/CODEOWNERS
 - **Type:** chore
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 120)
+- **Spec:** docs/specs/T091-T096-readme-screenshots-codeowners.md
+- **Summary:** Added .github/CODEOWNERS with wildcard rule (* @Bitmia-ai). GitHub will now auto-request review from @Bitmia-ai on every pull request. Simple one-rule file as specified.
 - **Description:** Add `.github/CODEOWNERS` with at minimum `* @Bitmia-ai` — surfaces ownership on every PR for review request automation. If specific paths warrant different owners later (e.g., `lib/session-manager.ts` to a security reviewer), add path-specific lines. Keep it simple to start.
 
 ### T095: Add demo gif or short video to README
@@ -113,7 +116,10 @@
 ### T091: Refresh README screenshots (home, mission-control, task-detail)
 - **Type:** docs
 - **Priority:** P0
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 120)
+- **Spec:** docs/specs/T091-T096-readme-screenshots-codeowners.md
+- **Summary:** Refreshed all 3 README screenshots using Playwright at 1200x900 dark mode. home.png updated (44KB) showing precision-instrument project cards with CONTROL TOWER logo and 3 project cards. mission-control.png updated (127KB) showing the asymmetric 2-column layout with WorkingOn hero, Controls with all 5 icon buttons, Cost sparkline, and Health cards. task-detail.png created (88KB) — this file was missing (README referenced it but only backlog-detail.png existed); shows T107 task detail with Summary section, P0/done badges, ID, Type, Status fields. All 3 PNG files saved to .github/assets/. backlog-detail.png retained as harmless extra.
 - **Description:** Three screenshots in `.github/assets/` need refresh: home.png (now shows new logo + 3 projects), mission-control.png (Working On card was redesigned via T085, controls-card via T083, schedule deletion via T081), task-detail.png (replaces backlog-detail.png — README already references the new filename). Use Playwright via the frontend-design skill or designer subagent to capture in dark mode at 1200px viewport. Match the existing aspect ratios. Update README references if any filenames changed. After landing, the existing `backlog-detail.png` file in `.github/assets/` can be deleted.
 
 ### T090: the health card shows X shipped. X is a much lower number of those shipped in total. is it just the session shipped? it should be the total and then the ones shipped in this session
