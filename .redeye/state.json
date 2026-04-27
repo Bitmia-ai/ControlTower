@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 121,
   "started_at": "2026-04-27T13:10:14Z",
-  "phase": "verify",
+  "phase": "merge",
   "phase_status": "in-progress",
   "task_id": "T108",
   "task_title": "Tasks tab — show count badge of open tasks",
@@ -14,7 +14,8 @@
     "plan": "Spec written: docs/specs/T108-T092-tasks-badge-env-example.md. 4 sub-tasks: S1 layout openTaskCount, S2 ProjectNav badge, S3 tests, S4 .env.example. Data flows from upNext API field.",
     "build": "Complete: 4 files changed + 2 created. T108: layout.tsx extracts openTaskCount from upNext (pending+planned only), passes to ProjectNav. ProjectNav now accepts openTaskCount prop and renders red pill badge on Tasks tab when >0. 15 new source-text tests (all passing). T092: .env.example created with 5 env vars. README updated. 885 tests (402 pass, 483 pre-existing fail). Build clean 1.7s.",
     "review": "0C/0M/0m. Badge logic correct: filters pending+planned from upNext, defaults to 0 on null project, hides at 0 count. aria-label correct. .env.example content accurate. Build clean.",
-    "deploy": "Build clean. Compiled successfully in 1.8s. 0 errors, 1 pre-existing warning (Custom Cache-Control headers)."
+    "deploy": "Build clean. Compiled successfully in 1.8s. 0 errors, 1 pre-existing warning (Custom Cache-Control headers).",
+    "verify": "PASS. 885 tests (402 passing, 483 pre-existing failing). 0 regressions. +15 new passing tests."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,

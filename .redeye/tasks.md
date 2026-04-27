@@ -5,7 +5,10 @@
 ### T108: Tasks tab — show count badge of open tasks
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 121)
+- **Spec:** docs/specs/T108-T092-tasks-badge-env-example.md
+- **Summary:** Added red pill count badge to Tasks tab in ProjectNav. Badge shows count of open tasks (status=pending or planned, excluding in-progress which belongs in WorkingOn). Data extracted from upNext field in existing 5s layout poll — no new API calls. Badge hidden when count=0. 15 new passing tests. Build clean.
 - **Description:** Add a small count badge next to the "Tasks" label in the project tab nav (components/project-nav.tsx). Count = open tasks (Status: pending or planned, i.e. not done/wontdo/parked). The badge style should match the existing "pending questions" badge on the home page project cards (red pill with white number, smaller font). Show the badge only when count > 0; hide when zero. Live-updates via the same polling that powers the rest of the dashboard. Acceptance: open a project with N pending tasks, the Tasks tab shows "Tasks {N}". Mark one as done via /redeye:tasks done T###; the badge decrements on next poll. Do not double-count items that are in_progress (those belong in WorkingOn, not "open"). Consider whether the same treatment is useful for History/Schedules/Steer tabs (e.g. unread count) but ship Tasks first; file the others as a follow-up only if the pattern proves useful.
 
 ### T107: Task detail page does not render the Description field
@@ -110,7 +113,10 @@
 ### T092: Add .env.example documenting all runtime env vars
 - **Type:** docs
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 121)
+- **Spec:** docs/specs/T108-T092-tasks-badge-env-example.md
+- **Summary:** Created .env.example at repo root documenting all 5 runtime env vars (REDEYE_CONFIG_PATH, REDEYE_PLUGIN_DIR, CLAUDE_BIN, ALLOW_OUTSIDE_HOME, HOME) with defaults and purpose. Updated .gitignore to allow .env.example. Added one-sentence README Quick Start reference.
 - **Description:** CT reads five env vars at runtime, none documented anywhere a user would find: REDEYE_CONFIG_PATH (default ~/.redeye/config.json), REDEYE_PLUGIN_DIR (default ~/redeye), CLAUDE_BIN (default `claude`), ALLOW_OUTSIDE_HOME (default unset; `1` to allow project paths outside $HOME), HOME (system). Create `.env.example` at the repo root with each var, its default, and one-line purpose. Reference it from the Quick Start section of README.md. Don't actually load .env files at runtime unless there's a reason — just document.
 
 ### T091: Refresh README screenshots (home, mission-control, task-detail)
