@@ -24,10 +24,13 @@ function truncateSummary(text: string): string {
 }
 
 export function ShippedCard({ items, changelog = [], projectId }: ShippedCardProps) {
-  const hasChangelog = changelog.length > 0;
-  // When using changelog, take the 5 most recent entries.
-  // When using task items, the server already sorted and sliced to 10 items
-  // (see redeye-files.ts recentlyShipped), so we render all of them.
+  // Prefer the live task items (.redeye/tasks.md, sorted+sliced to 10 by the
+  // server). Fall back to changelog only when items is empty — older RedEye
+  // projects or freshly-init ones whose tasks.md has no done entries yet.
+  // Previously this preferred changelog whenever any entry existed, surfacing
+  // months-old BL- entries on projects whose CTO had stopped writing to
+  // changelog.md (documenter agent skipped). Task data is ground truth.
+  const hasChangelog = items.length === 0 && changelog.length > 0;
   const shippedItems = hasChangelog ? changelog.slice(0, 5) : items;
 
   return (
