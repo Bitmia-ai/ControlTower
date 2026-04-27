@@ -3,7 +3,7 @@
   "iteration": 115,
   "started_at": "2026-04-27T10:01:02Z",
   "phase": "build",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T080",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T080-live-tab-buttons",
   "worktree_branch": "T080-live-tab-buttons",
@@ -11,7 +11,7 @@
   "phase_progress": {
     "triage": "Selected T080: Live tab arrow buttons. P1, pending. Three toolbar buttons (expand-all, collapse-all, auto-scroll) use ambiguous icons with no text labels. Will replace icons with clearer alternatives (Maximize2/Minimize2 or UnfoldVertical/FoldVertical for expand/collapse, Pin/PinOff or ScrollText for auto-scroll) and add text labels.",
     "plan": "Spec written: docs/specs/T080-live-tab-buttons.md. 4 sub-tasks (all S). Replace ChevronsUpDown+ChevronsUpDown-rotated pair with Maximize2+Minimize2 (distinct, unambiguous icons). Replace ArrowDown auto-scroll icon with ChevronsDown. Add text labels to all three buttons. ~3-5 test updates.",
-    "build": "Complete: 6 files changed + 2 new. applyScheduleDelete parser, DELETE /api/schedules/[schedId] with atomic write, ScheduleRow hover-reveal trash + inline confirm, handleDelete in SchedulesContent. 821 tests (359 passing, 462 failing). +23 new tests, +11 new passing. +12 new failing match pre-existing fs-mock/React.act pattern.",
+    "build": "Complete. 2 files changed + 1 new. live-client.tsx: replaced ChevronsUpDown pair (expand/collapse) with UnfoldVertical/FoldVertical (distinct icons), replaced ArrowDown (auto-scroll) with ChevronsDown, added text labels to all 3 buttons (Expand all, Collapse all, Auto-scroll) using inline-flex px-2.5 py-1.5 layout. Preserved all behavior. New live-client.test.ts with 11 tests (node env, all passing). 832 tests total (370 passing, 462 pre-existing failures). +11 new tests, +11 new passing. 0 regressions.",
     "review": "0C/0M/0m. Security: path traversal guard OK, schedId regex validated before use. UX: hover-reveal trash with focus:opacity-100, 44px touch target, aria-labels correct. Atomic write confirmed. No findings.",
     "deploy": "Build clean. 0 errors, 0 warnings (Cache-Control custom headers expected). New route /api/projects/[id]/schedules/[schedId] compiled. All pages/routes compiled.",
     "verify": "PASS. 821 tests (359 passing, 462 failing). +23 new tests, +11 new passing (7 applyScheduleDelete parser + 3 DELETE route validation + 1 route 500). +12 new failing match pre-existing fs-mock/React.act patterns. No regressions. T081 marked done in tasks.md.",
@@ -122,7 +122,7 @@
     "next_q_id": 14,
     "next_cred_id": 1,
     "next_sched_id": 2,
-    "next_task_id": 86
+    "next_task_id": 87
   },
   "cost_tracking": {
     "iterations_this_session": 90,
