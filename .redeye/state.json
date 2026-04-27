@@ -2,13 +2,15 @@
   "schema_version": 1,
   "iteration": 112,
   "started_at": "2026-04-27T09:20:52Z",
-  "phase": "triage",
+  "phase": "plan",
   "phase_status": "in-progress",
-  "task_id": null,
+  "task_id": "T085",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
-  "phase_progress": {},
+  "phase_progress": {
+    "triage": "complete — selected T085 (WorkingOn card phase case bug, P1)"
+  },
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
@@ -26,14 +28,21 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge T084 — pagination + filtering for all dashboard lists (iteration 111)",
+    "last_commit": "redeye: start TRIAGE (iteration 112)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter111-t084",
     "merge_status": "clean",
-    "notes": "MERGE iter 111: T084 merged clean. 752 tests (320 passing, 432 pre-existing failures). No worktree (direct main). T085 pending (WorkingOn card phase case bug)."
+    "notes": "iter 112: T085 selected — WorkingOn card phase case bug."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 112,
+      "phases": ["TRIAGE"],
+      "outcome": "TRIAGE: selected T085 — WorkingOn card stuck on Starting up (phase case mismatch + missing task_title). Env healthy, no schedules/questions pending.",
+      "next": "PLAN T085",
+      "timestamp": "2026-04-27T09:37:56Z"
+    },
     {
       "iteration": 111,
       "phases": [
@@ -94,16 +103,6 @@
       "outcome": "T077 complete: per-page metadata.title (8 pages, server wrapper pattern), turbopack.root config, 228KB chunk analysis + docs. 9 new tests (804 total). 0C/0M/1m review. Visual check pass. Merged clean.",
       "next": "TRIAGE iter 109",
       "timestamp": "2026-04-26T19:50:11Z"
-    },
-    {
-      "iteration": 107,
-      "phases": [
-        "TRIAGE",
-        "SCHEDULES"
-      ],
-      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules. SCHEDULES: SCHED-1 + SCHED-2 both run.",
-      "next": "TRIAGE then Q-013 (backlog empty)",
-      "timestamp": "2026-04-25T21:44:30Z"
     }
   ],
   "counters": {
