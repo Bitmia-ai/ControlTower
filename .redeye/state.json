@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 116,
   "started_at": "2026-04-27T11:35:11Z",
-  "phase": "plan",
+  "phase": "build",
   "phase_status": "in-progress",
   "task_id": "T086",
   "task_title": "Pagination total counts show only visible count",
@@ -11,7 +11,7 @@
   "spec_file": "docs/specs/T086-pagination-total-count-fix.md",
   "phase_progress": {
     "triage": "Selected T086 (P1): Pagination total counts shows only visible count, not total count. Root cause: readProjectDetail slices recentlyShipped to 8 items; tasks-client builds allItems from recentlyShipped so Done section only shows up to 8 done items. Fix: expose allDoneItems separately in readProjectDetail and use it in tasks-client. T087 (P1, new schedule shows wrong Next time) and T078 (P1, history UUIDs) also pending.",
-    "plan": "",
+    "plan": "Spec written: docs/specs/T086-pagination-total-count-fix.md. 4 sub-tasks (all S). Add allDoneItems to ProjectDetail type, populate in readProjectDetail (unsliced), use in tasks-client. Also fix T087 (buildScheduleBlock epoch Last run → dash). Tests: 4 new in redeye-files.test.ts, 2 in page.test.tsx, 1 in schedule-list.test.tsx, updated assertions in route.test.ts.",
     "build": "",
     "review": "",
     "deploy": "",
@@ -45,35 +45,75 @@
   "iteration_log": [
     {
       "iteration": 115,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T080 complete: Live tab toolbar buttons improved. Replaced ChevronsUpDown pair (expand/collapse) with UnfoldVertical/FoldVertical. Replaced ArrowDown (auto-scroll) with ChevronsDown. Added text labels (Expand all, Collapse all, Auto-scroll) via inline-flex px-2.5 py-1.5. All behavior preserved. 11 new tests (source-text strategy, node env), 832 total (370 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 116",
       "timestamp": "2026-04-27T11:34:08Z"
     },
     {
       "iteration": 114,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T081 complete: delete schedules from schedule tab. applyScheduleDelete() parser, DELETE /api/projects/[id]/schedules/[schedId] with atomic write + validation, ScheduleRow hover-reveal trash icon + inline confirm panel (onDelete prop), handleDelete in SchedulesContent. 23 new tests (821 total, 359 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 115",
       "timestamp": "2026-04-27T11:20:24Z"
     },
     {
       "iteration": 113,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T082 complete: Recently Shipped card now sorts by iteration (newest first), shows 8 items, displays relative time (\"X days ago\") for items with Merged date. mergedAt/mergedIteration parsing, formatRelativeTime utility. 28 new tests (798 total, 348 passing, 450 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 114",
       "timestamp": "2026-04-27T09:59:25Z"
     },
     {
       "iteration": 112,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T085 complete: fixed WorkingOn card phase case mismatch (normalizePhase) + missing task title (activeTaskTitle prop). 14 new tests (766 total, 320 passing, 446 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 113",
       "timestamp": "2026-04-27T09:47:15Z"
     },
     {
       "iteration": 111,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T084 complete: added pagination + filtering to all 4 dashboard list tabs. Shared ListToolbar, Pagination components + useListFilter hook. Tasks/Schedules/Steer/History tabs all have search, filters, sort, and pagination. 40 new tests (752 total, 320 passing, 432 pre-existing failures). 0C/0M/1m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 112",
       "timestamp": "2026-04-27T09:35:48Z"
@@ -83,7 +123,7 @@
     "next_q_id": 14,
     "next_cred_id": 1,
     "next_sched_id": 2,
-    "next_task_id": 88
+    "next_task_id": 90
   },
   "cost_tracking": {
     "iterations_this_session": 92,
