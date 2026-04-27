@@ -101,13 +101,19 @@
 ### T094: Verify and improve empty-state UX for first run
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 122)
+- **Spec:** docs/specs/T093-T094-readme-troubleshooting-empty-state.md
+- **Summary:** Improved home page empty state for new users. Changed EmptyState subtitle prop from string to ReactNode (backward-compatible). Home page now shows "Welcome to Control Tower" heading with FolderOpen icon, onboarding copy that links to RedEye GitHub and Quick Start, and inline code for /redeye:init. 14 new unit tests in empty-state-home.test.tsx, all passing. Build clean.
 - **Description:** Test what a brand-new user sees: delete `~/.redeye/config.json`, start CT, open localhost:3200. Currently the home page probably shows "0 projects registered" with an Add Project button, which is fine but cold. Improve by: (a) showing onboarding copy explaining what to do ("Add your first project — point it at a git repo and CT will scaffold .redeye/ via /redeye:init"), (b) linking to the README's Quick Start, (c) maybe a sample project that can be added with one click (if Open-Meteo demo project exists somewhere users can clone). Verify against actual fresh state, not just the rendered card. Don't over-design — friendly is enough.
 
 ### T093: Troubleshooting section in README
 - **Type:** docs
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 122)
+- **Spec:** docs/specs/T093-T094-readme-troubleshooting-empty-state.md
+- **Summary:** Added ## Troubleshooting section to README.md with 6 entries: port in use (lsof kill or --port flag), Tailscale serve + prod mode (links #18827), npm install for module-not-found, home page loading forever (CSRF 403 check), project page something went wrong (stale .next chunks, rebuild), loop won't start (which claude + ~/redeye/plugin.json). Each entry: symptom / cause / fix format. No new tests (pure docs). Build clean.
 - **Description:** Add a Troubleshooting section to README.md covering: (1) Port 3200 already in use — how to find and kill, or override via `next dev --port`. (2) Tailscale serve needs prod mode (current CLAUDE.md note belongs in user-facing README too — link upstream Tailscale issue #18827). (3) `npm run build` fails with module-not-found — usually missing `npm install`. (4) Home page shows "Loading projects" forever — usually means dev mode + Tailscale (see #2) or middleware blocking the GET (CSRF false positive). (5) Project page shows "Something went wrong" — usually stale .next/ chunks after self-dogfood DEPLOY (see T103). (6) RedEye loop won't start — check `~/redeye` exists and `--plugin-dir ~/redeye` resolves. Each entry: 1 sentence symptom, 1 sentence cause, 1 line fix.
 
 ### T092: Add .env.example documenting all runtime env vars
