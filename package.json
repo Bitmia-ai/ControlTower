@@ -25,11 +25,36 @@
     "orchestration",
     "nextjs"
   ],
+  "bin": {
+    "control-tower": "bin/control-tower.mjs"
+  },
+  "files": [
+    "app/",
+    "components/",
+    "lib/",
+    "public/",
+    "scripts/",
+    "bin/",
+    "proxy.ts",
+    "next.config.ts",
+    "next-env.d.ts",
+    "postcss.config.mjs",
+    "tailwind.config.ts",
+    "tsconfig.json",
+    "package-lock.json",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md"
+  ],
   "scripts": {
     "dev": "next dev --webpack --hostname 127.0.0.1 --port 3200",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 3200",
     "postinstall": "node scripts/patch-next.mjs",
+    "prepublishOnly": "npm run build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
