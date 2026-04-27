@@ -1,6 +1,5 @@
 import path from "path";
 import type { NextConfig } from "next";
-import type { Configuration as WebpackConfiguration } from "webpack";
 
 const nextConfig: NextConfig = {
   // Silence the "workspace root inferred" warning from Turbopack
@@ -18,7 +17,7 @@ const nextConfig: NextConfig = {
   // 80 GB on this machine, three times reproducibly. Webpack honors
   // `watchOptions.ignored`, so we mask both worktree systems out of the
   // dev-server file index. Production `next build` keeps Turbopack.
-  webpack(config: WebpackConfiguration) {
+  webpack(config) {
     config.watchOptions = {
       ...(config.watchOptions ?? {}),
       ignored: [
