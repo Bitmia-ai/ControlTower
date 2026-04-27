@@ -47,13 +47,19 @@
 ### T102: Tune issue templates with OS/Node/RedEye-version fields
 - **Type:** chore
 - **Priority:** P2
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 125)
+- **Spec:** docs/specs/T101-T102-coverage-ci-issue-templates.md
+- **Summary:** Replaced old-style .md issue templates with GitHub YAML structured forms. bug_report.yml has required fields for OS (dropdown), OS version, Node version, CT version (git SHA), plus optional RedEye plugin version, Claude Code version, and browser. feature_request.yml has problem/solution/alternatives textarea fields plus a local-only checkbox with help text. Deleted bug_report.md and feature_request.md (superseded). question.md kept as-is. No code changes, no tests needed.
 - **Description:** Review .github/ISSUE_TEMPLATE/*.md (or *.yml) and ensure bug reports prompt for: macOS/Linux + version, Node version (`node -v`), RedEye plugin version (the `Bitmia-ai/RedEye` commit hash from `~/.claude/plugins/cache/.../plugin.json` if cached, or note user installed via `--plugin-dir`), CT version (from package.json), browser if relevant, the project path being dashboarded. Use GitHub's structured issue forms (.yml) rather than markdown if possible — they're more reliable. Keep feature-request template lighter.
 
 ### T101: Coverage report in CI + badge in README
 - **Type:** feature
 - **Priority:** P2
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 125)
+- **Spec:** docs/specs/T101-T102-coverage-ci-issue-templates.md
+- **Summary:** Added vitest coverage reporting with @vitest/coverage-v8 (already in devDeps). New test:coverage script; vitest.config.ts coverage section (v8 provider, lcov + json-summary reporters, reportOnFailure:true so coverage generates even when pre-existing tests fail). Thresholds: 20% lines/stmts, 15% branches, 10% functions (conservative floor — actual is ~26%/18%/12%; raise incrementally). CI: coverage step (continue-on-error:true) + codecov/codecov-action@v4 upload. README: Codecov badge + CODECOV_TOKEN note in Contributing section.
 - **Description:** vitest already has @vitest/coverage-v8 in devDependencies. (1) Add `npm test -- --coverage` step to the CI workflow (.github/workflows/test.yml). (2) Upload coverage to Codecov or similar (Codecov has free OSS tier). (3) Add a coverage badge to README.md under the existing badges. (4) Set a coverage threshold in vitest.config.ts (e.g., 70% lines/branches/functions) to prevent regression. Don't aim for 100% — pragmatic threshold only.
 
 ### T100: Dependabot config for auto dependency PRs
