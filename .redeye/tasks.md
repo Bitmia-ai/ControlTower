@@ -2,6 +2,114 @@
 
 ## CEO Requests
 
+### T108: fwaefwefsafawf
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+- **Description:** fasdfasdf
+
+### T107: Task detail page does not render the Description field
+- **Type:** bug
+- **Priority:** P0
+- **Status:** pending
+- **Description:** /project/[id]/tasks/[taskId] (e.g. http://127.0.0.1:3200/project/1/tasks/T097) does not show the task's Description even when one is set in .redeye/tasks.md. Verified via API: GET /api/projects/1/tasks/T085 (which has a long **Description:** in tasks.md) returns description=null. Same for T097. The parser in lib/redeye-parsers.ts / lib/redeye-files.ts does not extract the `**Description:**` markdown field at all (grep returns no matches for "description"/"Description" in those files). Fix: (1) extend the task parser to recognize `**Description:**` (multi-line — descriptions can span paragraphs until the next `### T` heading or `- **Field:**` marker, whichever comes first). (2) thread the field through the API response and the TaskItem type in lib/redeye-types.ts. (3) render it on the task detail page below the title, with markdown formatting if feasible (react-markdown is already a dep). (4) add a parser unit test using a fixture that includes a Description with multiple paragraphs and embedded code/links. This affects every task that carries detailed acceptance criteria — without it, RedEye agents AND CEO users miss critical context.
+
+### T106: GitHub repo metadata — set description + topics on the GitHub side
+- **Type:** chore
+- **Priority:** P3
+- **Status:** pending
+- **Description:** Use `gh repo edit Bitmia-ai/ControlTower` to set the GitHub-side description (matches package.json: "Web dashboard to orchestrate RedEye autonomous dev sessions across multiple projects. Local-only, binds to 127.0.0.1.") and topics (suggest: redeye, claude-code, autonomous, dashboard, orchestration, nextjs, local-first). These are GitHub repo settings, not code changes — `gh` CLI handles it. Verify after with `gh repo view Bitmia-ai/ControlTower`.
+
+### T105: CHANGELOG.md + first stable release tag
+- **Type:** chore
+- **Priority:** P3
+- **Status:** pending
+- **Description:** Create CHANGELOG.md following keep-a-changelog format with entries for v0.1.0 (initial OSS release) and v0.2.0 (current — task rename, logo, worktree fix, CI, etc.). After the OSS-readiness P0 tasks land, bump package.json to 0.2.0 and tag `git tag v0.2.0 && git push origin v0.2.0`. Don't `npm publish` — that's T104.
+
+### T104: Prepare npm package for npx-able install (DO NOT PUBLISH)
+- **Type:** feature
+- **Priority:** P3
+- **Status:** pending
+- **Description:** Get the npm publish flow ready but DO NOT run `npm publish`. The CEO will publish manually when ready. Steps: (1) Decide the package name — `@bitmia/control-tower` is safer (scoped, free) than unscoped `control-tower` which may already exist. (2) Add a `bin/` entry in package.json mapping a CLI launcher (e.g., `bin/control-tower.mjs`) that runs `next start` (assumes user has built first) or auto-builds if `.next/` is missing. (3) Add a `files` whitelist in package.json — must include `.next/standalone`, `.next/static`, `public/`, `bin/`, `package.json`, `LICENSE`, `README.md`. Review what NOT to ship (node_modules, src, e2e, tests, docs/, screenshots). (4) Switch to `output: "standalone"` in next.config.ts so the package contains a self-runnable Node bundle. (5) Add `prepublishOnly: "npm run build"` script. (6) Toggle `"private": true` to false (or document the toggle in README). (7) Run `npm pack --dry-run` to inspect the would-be tarball. Verify size is reasonable (<10 MB). (8) Test locally with `npm pack && npm install -g ./bitmia-control-tower-0.2.0.tgz && control-tower` — should boot the dashboard. (9) STOP. Document in CHANGELOG.md that the package is publish-ready but not yet on npm. Add a "Publishing" section to CONTRIBUTING.md describing the manual `npm publish --access public` step. **Do not actually publish.** Deliverable is a confirmed-working `npm pack` tarball + clear publish instructions.
+
+### T103: Self-dogfood doc note for prod-rebuild caveat
+- **Type:** docs
+- **Priority:** P3
+- **Status:** pending
+- **Description:** Document the "Running CT against its own repo" caveat. When CT autodevelops itself (a CT project pointing at /Users/.../ControlTower), RedEye's DEPLOY phase rebuilds main's `.next/` while the prod server is reading from it — chunks go stale, page crashes. With the worktree-isolation fix in agents/cto.md (RedEye repo) this no longer happens for new tasks since BUILD/DEPLOY run in `.worktrees/T-N/.next/`. But the caveat is worth a one-paragraph note in CLAUDE.md and a README footnote so a future contributor running CT against its own checkout knows what to expect. Reference the upstream bug context: tailscale/tailscale#18827 for the dev-mode-via-Tailscale issue is already in CLAUDE.md.
+
+### T102: Tune issue templates with OS/Node/RedEye-version fields
+- **Type:** chore
+- **Priority:** P2
+- **Status:** pending
+- **Description:** Review .github/ISSUE_TEMPLATE/*.md (or *.yml) and ensure bug reports prompt for: macOS/Linux + version, Node version (`node -v`), RedEye plugin version (the `Bitmia-ai/RedEye` commit hash from `~/.claude/plugins/cache/.../plugin.json` if cached, or note user installed via `--plugin-dir`), CT version (from package.json), browser if relevant, the project path being dashboarded. Use GitHub's structured issue forms (.yml) rather than markdown if possible — they're more reliable. Keep feature-request template lighter.
+
+### T101: Coverage report in CI + badge in README
+- **Type:** feature
+- **Priority:** P2
+- **Status:** pending
+- **Description:** vitest already has @vitest/coverage-v8 in devDependencies. (1) Add `npm test -- --coverage` step to the CI workflow (.github/workflows/test.yml). (2) Upload coverage to Codecov or similar (Codecov has free OSS tier). (3) Add a coverage badge to README.md under the existing badges. (4) Set a coverage threshold in vitest.config.ts (e.g., 70% lines/branches/functions) to prevent regression. Don't aim for 100% — pragmatic threshold only.
+
+### T100: Dependabot config for auto dependency PRs
+- **Type:** chore
+- **Priority:** P2
+- **Status:** pending
+- **Description:** Add `.github/dependabot.yml` configured for npm + github-actions ecosystems, weekly schedule, auto-grouping minor/patch updates. This is a strong trust signal for OSS users without much maintenance cost. Reference: github.com/dependabot/dependabot-core wiki for examples. Group by ecosystem; ignore major bumps for `next`, `react`, `react-dom`, `tailwindcss` (require manual review). Limit open PRs to 5 to avoid noise.
+
+### T099: Audit or remove next.config.test.ts
+- **Type:** chore
+- **Priority:** P2
+- **Status:** pending
+- **Description:** /Users/casa/ControlTower/next.config.test.ts exists at top level. Check whether it is referenced by vitest.config.ts (probably not — root configs are usually ignored). Either (a) move it under `__tests__/` if the assertions are valuable (e.g., it tests the watchOptions.ignored config), or (b) delete it as cruft. Verify the worktree-ignore globs are still tested somewhere (this is the regression-risk path that prevents the 80 GB Turbopack memory blowup).
+
+### T098: Migrate middleware.ts to proxy.ts (Next.js 16 deprecation)
+- **Type:** chore
+- **Priority:** P2
+- **Status:** pending
+- **Description:** Next.js 16 deprecated the `middleware` file convention in favor of `proxy`. Every dev server start prints: `⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy`. Follow the migration guide at the linked URL. Our middleware.ts implements Origin / Sec-Fetch-Site CSRF protection on mutating routes — verify the protection still works after migration via the existing middleware.test.ts (or create one if absent). Run e2e against a fresh CT to confirm POSTs still pass and cross-origin POSTs still 403.
+
+### T097: Fix or delete failing ControlsCard responsive test
+- **Type:** bug
+- **Priority:** P0
+- **Status:** pending
+- **Description:** components/__tests__/responsive.test.tsx > "T057 responsive classes > ControlsCard button row uses flex-wrap for narrow viewports" has been failing for several iterations and RedEye keeps not catching it. The test asserts `container.querySelectorAll("div.flex.flex-wrap").length > 0` but the recent T083 controls-card redesign explicitly removed flex-wrap. Either (a) the test is stale and should be deleted, or (b) the responsive intent is still valid and a new wrapping mechanism (CSS grid with auto-fit, or different breakpoint) should be added. Investigate, decide, fix or delete. After this lands the full vitest suite should be green.
+
+### T096: Add .github/CODEOWNERS
+- **Type:** chore
+- **Priority:** P1
+- **Status:** pending
+- **Description:** Add `.github/CODEOWNERS` with at minimum `* @Bitmia-ai` — surfaces ownership on every PR for review request automation. If specific paths warrant different owners later (e.g., `lib/session-manager.ts` to a security reviewer), add path-specific lines. Keep it simple to start.
+
+### T095: Add demo gif or short video to README
+- **Type:** docs
+- **Priority:** P1
+- **Status:** pending
+- **Description:** Static screenshots don't convey the autonomous loop. Record a 30–60 second clip showing: (a) home page with project cards, (b) clicking Start on a project, (c) phase progression in real time (TRIAGE → PLAN → BUILD), (d) a task transitioning to "done", (e) cost ticking up. Use `vhs` (terminalizer alternative) or screen-record + ffmpeg to convert to .gif (cap at ~5 MB). Embed in README under the existing screenshot table. The haze project is the cleanest demo target since it's the test app — set up a fresh haze with one task ("print weather for a city via Open-Meteo") and capture the loop.
+
+### T094: Verify and improve empty-state UX for first run
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+- **Description:** Test what a brand-new user sees: delete `~/.redeye/config.json`, start CT, open localhost:3200. Currently the home page probably shows "0 projects registered" with an Add Project button, which is fine but cold. Improve by: (a) showing onboarding copy explaining what to do ("Add your first project — point it at a git repo and CT will scaffold .redeye/ via /redeye:init"), (b) linking to the README's Quick Start, (c) maybe a sample project that can be added with one click (if Open-Meteo demo project exists somewhere users can clone). Verify against actual fresh state, not just the rendered card. Don't over-design — friendly is enough.
+
+### T093: Troubleshooting section in README
+- **Type:** docs
+- **Priority:** P1
+- **Status:** pending
+- **Description:** Add a Troubleshooting section to README.md covering: (1) Port 3200 already in use — how to find and kill, or override via `next dev --port`. (2) Tailscale serve needs prod mode (current CLAUDE.md note belongs in user-facing README too — link upstream Tailscale issue #18827). (3) `npm run build` fails with module-not-found — usually missing `npm install`. (4) Home page shows "Loading projects" forever — usually means dev mode + Tailscale (see #2) or middleware blocking the GET (CSRF false positive). (5) Project page shows "Something went wrong" — usually stale .next/ chunks after self-dogfood DEPLOY (see T103). (6) RedEye loop won't start — check `~/redeye` exists and `--plugin-dir ~/redeye` resolves. Each entry: 1 sentence symptom, 1 sentence cause, 1 line fix.
+
+### T092: Add .env.example documenting all runtime env vars
+- **Type:** docs
+- **Priority:** P1
+- **Status:** pending
+- **Description:** CT reads five env vars at runtime, none documented anywhere a user would find: REDEYE_CONFIG_PATH (default ~/.redeye/config.json), REDEYE_PLUGIN_DIR (default ~/redeye), CLAUDE_BIN (default `claude`), ALLOW_OUTSIDE_HOME (default unset; `1` to allow project paths outside $HOME), HOME (system). Create `.env.example` at the repo root with each var, its default, and one-line purpose. Reference it from the Quick Start section of README.md. Don't actually load .env files at runtime unless there's a reason — just document.
+
+### T091: Refresh README screenshots (home, mission-control, task-detail)
+- **Type:** docs
+- **Priority:** P0
+- **Status:** pending
+- **Description:** Three screenshots in `.github/assets/` need refresh: home.png (now shows new logo + 3 projects), mission-control.png (Working On card was redesigned via T085, controls-card via T083, schedule deletion via T081), task-detail.png (replaces backlog-detail.png — README already references the new filename). Use Playwright via the frontend-design skill or designer subagent to capture in dark mode at 1200px viewport. Match the existing aspect ratios. Update README references if any filenames changed. After landing, the existing `backlog-detail.png` file in `.github/assets/` can be deleted.
+
 ### T090: the health card shows X shipped. X is a much lower number of those shipped in total. is it just the session shipped? it should be the total and then the ones shipped in this session
 - **Type:** feature
 - **Priority:** P1
