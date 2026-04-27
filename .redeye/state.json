@@ -2,19 +2,19 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "verify",
-  "phase_status": "complete",
+  "phase": "merge",
+  "phase_status": "in-progress",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
     "triage": "Selected T083 (P0).",
-    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md.",
+    "plan": "Spec written.",
     "build": "Icons+layout complete. 712 tests unchanged.",
     "review": "PASS 0C/0M/0m.",
-    "deploy": "712 tests (432f/280p). Build clean. Tagged iter110-t083.",
-    "verify": "PASS: spec file present, controls-card.tsx has 12 icon references (Play/Square/Pause/RotateCcw/Navigation), tag last-good-deploy-iter110-t083 set, commits in order."
+    "deploy": "712 tests. Build clean. Tagged.",
+    "verify": "PASS: all artifacts confirmed."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -33,20 +33,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start VERIFY T083 (iteration 110)",
+    "last_commit": "redeye: complete VERIFY T083 — PASS, all artifacts confirmed (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter110-t083",
     "merge_status": "clean",
-    "notes": "VERIFY iter 110: T083 PASS."
+    "notes": "MERGE iter 110: T083 merging."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "VERIFY PASS: spec file confirmed, 12 icon refs in controls-card.tsx, deploy tag set, all commits in order.",
-      "next": "MERGE T083",
-      "timestamp": "2026-04-27T09:40:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "VERIFY PASS. MERGE in-progress.",
+      "next": "TRIAGE iter 111",
+      "timestamp": "2026-04-27T09:42:00Z"
     },
     {
       "iteration": 109,
@@ -84,7 +84,7 @@
     "next_task_id": 85
   },
   "cost_tracking": {
-    "iterations_this_session": 83,
+    "iterations_this_session": 84,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
