@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "iteration": 114,
+  "iteration": 115,
   "started_at": "2026-04-27T10:01:02Z",
   "phase": "triage",
-  "phase_status": "pending",
+  "phase_status": "in-progress",
   "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
@@ -44,39 +44,79 @@
   "iteration_log": [
     {
       "iteration": 114,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T081 complete: delete schedules from schedule tab. applyScheduleDelete() parser, DELETE /api/projects/[id]/schedules/[schedId] with atomic write + validation, ScheduleRow hover-reveal trash icon + inline confirm panel (onDelete prop), handleDelete in SchedulesContent. 23 new tests (821 total, 359 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 115",
       "timestamp": "2026-04-27T11:20:24Z"
     },
     {
       "iteration": 113,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T082 complete: Recently Shipped card now sorts by iteration (newest first), shows 8 items, displays relative time (\"X days ago\") for items with Merged date. mergedAt/mergedIteration parsing, formatRelativeTime utility. 28 new tests (798 total, 348 passing, 450 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 114",
       "timestamp": "2026-04-27T09:59:25Z"
     },
     {
       "iteration": 112,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T085 complete: fixed WorkingOn card phase case mismatch (normalizePhase) + missing task title (activeTaskTitle prop). 14 new tests (766 total, 320 passing, 446 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 113",
       "timestamp": "2026-04-27T09:47:15Z"
     },
     {
       "iteration": 111,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T084 complete: added pagination + filtering to all 4 dashboard list tabs. Shared ListToolbar, Pagination components + useListFilter hook. Tasks/Schedules/Steer/History tabs all have search, filters, sort, and pagination. 40 new tests (752 total, 320 passing, 432 pre-existing failures). 0C/0M/1m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 112",
       "timestamp": "2026-04-27T09:35:48Z"
     },
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T083 complete: added Play/Square/Pause/RotateCcw/Navigation icons to all 5 control buttons in ControlsCard, removed flex-wrap for proper alignment. 0C/0M/0m review. 712 tests baseline (432f/280p). VERIFY PASS. Merged clean. CEO added T084 (pagination+filtering P0) during cycle.",
       "next": "TRIAGE iter 111",
       "timestamp": "2026-04-27T09:19:27Z"
-    },
+    }
   ],
   "counters": {
     "next_q_id": 14,
