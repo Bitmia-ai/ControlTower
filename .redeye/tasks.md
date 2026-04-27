@@ -23,13 +23,19 @@
 ### T106: GitHub repo metadata — set description + topics on the GitHub side
 - **Type:** chore
 - **Priority:** P3
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 126)
+- **Spec:** docs/specs/T103-T105-T106-dogfood-changelog-metadata.md
+- **Summary:** Used `gh repo edit Bitmia-ai/ControlTower` to set description (matches package.json) and 7 topics: autonomous, claude-code, dashboard, local-first, nextjs, orchestration, redeye. Verified with `gh repo view`.
 - **Description:** Use `gh repo edit Bitmia-ai/ControlTower` to set the GitHub-side description (matches package.json: "Web dashboard to orchestrate RedEye autonomous dev sessions across multiple projects. Local-only, binds to 127.0.0.1.") and topics (suggest: redeye, claude-code, autonomous, dashboard, orchestration, nextjs, local-first). These are GitHub repo settings, not code changes — `gh` CLI handles it. Verify after with `gh repo view Bitmia-ai/ControlTower`.
 
 ### T105: CHANGELOG.md + first stable release tag
 - **Type:** chore
 - **Priority:** P3
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 126)
+- **Spec:** docs/specs/T103-T105-T106-dogfood-changelog-metadata.md
+- **Summary:** Created CHANGELOG.md (Keep a Changelog format) with v0.1.0 (initial release, 2026-04-23) and v0.2.0 (2026-04-27) entries. v0.2.0 lists all Added + Fixed items across ~125 iterations. Bumped package.json 0.1.0→0.2.0. Git tag v0.2.0 created (not pushed — CEO pushes manually with `git push origin v0.2.0`).
 - **Description:** Create CHANGELOG.md following keep-a-changelog format with entries for v0.1.0 (initial OSS release) and v0.2.0 (current — task rename, logo, worktree fix, CI, etc.). After the OSS-readiness P0 tasks land, bump package.json to 0.2.0 and tag `git tag v0.2.0 && git push origin v0.2.0`. Don't `npm publish` — that's T104.
 
 ### T104: Prepare npm package for npx-able install (DO NOT PUBLISH)
@@ -41,7 +47,10 @@
 ### T103: Self-dogfood doc note for prod-rebuild caveat
 - **Type:** docs
 - **Priority:** P3
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 126)
+- **Spec:** docs/specs/T103-T105-T106-dogfood-changelog-metadata.md
+- **Summary:** Added "## Running CT against its own repo" paragraph to CLAUDE.md explaining that worktree-isolated DEPLOY does not affect the prod server. Added a blockquote note in README.md before the Architecture section with the same information plus recovery instruction (`npm run build && npm start`).
 - **Description:** Document the "Running CT against its own repo" caveat. When CT autodevelops itself (a CT project pointing at /Users/.../ControlTower), RedEye's DEPLOY phase rebuilds main's `.next/` while the prod server is reading from it — chunks go stale, page crashes. With the worktree-isolation fix in agents/cto.md (RedEye repo) this no longer happens for new tasks since BUILD/DEPLOY run in `.worktrees/T-N/.next/`. But the caveat is worth a one-paragraph note in CLAUDE.md and a README footnote so a future contributor running CT against its own checkout knows what to expect. Reference the upstream bug context: tailscale/tailscale#18827 for the dev-mode-via-Tailscale issue is already in CLAUDE.md.
 
 ### T102: Tune issue templates with OS/Node/RedEye-version fields

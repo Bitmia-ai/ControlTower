@@ -3,11 +3,11 @@
   "iteration": 126,
   "started_at": "2026-04-27T14:06:08Z",
   "phase": "merge",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T103+T105+T106",
   "task_title": "Self-dogfood doc note + CHANGELOG v0.2.0 + GitHub repo metadata",
-  "worktree_path": "/Users/casa/ControlTower/.worktrees/task-T103-T105-T106",
-  "worktree_branch": "task/T103-T105-T106",
+  "worktree_path": null,
+  "worktree_branch": null,
   "spec_file": "docs/specs/T103-T105-T106-dogfood-changelog-metadata.md",
   "phase_progress": {
     "triage": "T095 (P1, demo gif) skipped — agent-infeasible, requires manual screen recording. Selected T103+T105+T106 (all P3): self-dogfood doc note in CLAUDE.md+README, CHANGELOG.md v0.2.0 + package.json bump to 0.2.0 + git tag, gh repo edit to set GitHub description+topics. T104 (npm pack) deferred to next cycle — more complex (next.config.ts changes, bin/ file). Env healthy, no CEO questions pending. Next: PLAN.",
@@ -16,7 +16,7 @@
     "review": "0C/0M/0m. Security: pure docs — no code, no user input, no injection vectors; package.json remains private:true, no accidental publish risk. Systems: worktree caveat is accurate, CHANGELOG comparison URLs follow Keep a Changelog spec correctly, version 0.2.0 appropriate (significant feature additions, no API breaks). UX: docs clear and actionable. Proceeding to DEPLOY.",
     "deploy": "Build clean from main. 1 pre-existing Turbopack NFT trace warning (unchanged from iter 125). Custom Cache-Control warning (unchanged, pre-existing). ƒ Proxy (Middleware) present. No errors. All changed files are docs/metadata — no Next.js source changes.",
     "verify": "PASS. 923 tests (440 passing, 483 pre-existing failing). 0 regressions. Build clean. T106 executed: gh repo edit set description + 7 topics (autonomous, claude-code, dashboard, local-first, nextjs, orchestration, redeye) — verified with gh repo view. Proceeding to MERGE.",
-    "merge": ""
+    "merge": "Merged clean to main via --no-ff merge. Tags: v0.2.0 + last-good-deploy-iter126-T103-T105-T106. Worktree task/T103-T105-T106 removed. T103, T105, T106 complete. 4 files changed (95 insertions, 1 deletion). CEO: push the v0.2.0 tag with `git push origin v0.2.0` when ready to publish the release."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -35,20 +35,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start TRIAGE (iteration 126)",
+    "last_commit": "docs(chore): T103+T105+T106 — self-dogfood caveat, CHANGELOG v0.2.0, GitHub metadata (iter 126)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter125-T101-T102",
+    "last_good_deploy_tag": "last-good-deploy-iter126-T103-T105-T106",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 126: selected T103+T105+T106 bundle. T104 deferred."
+    "notes": "MERGE iter 126: T103+T105+T106 merged clean. 923 tests (440 passing, 483 pre-existing failures). v0.2.0 tag created. CEO: `git push origin v0.2.0` to publish release. Remaining: T095 (demo gif, manual), T104 (npm pack, P3)."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 126,
-      "phases": ["TRIAGE"],
-      "outcome": "Selected T103+T105+T106: self-dogfood doc note, CHANGELOG v0.2.0, GitHub repo metadata. T095 skipped (manual). T104 deferred (complex).",
-      "next": "PLAN T103+T105+T106",
-      "timestamp": "2026-04-27T14:07:12Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "T103+T105+T106 complete: (1) Self-dogfood caveat — CLAUDE.md new section + README blockquote note before Architecture. (2) CHANGELOG.md created (Keep a Changelog, v0.1.0 + v0.2.0 with full feature/fix lists); package.json bumped 0.1.0→0.2.0; git tag v0.2.0 created. (3) GitHub repo description + 7 topics set via gh repo edit. T095 skipped (manual screen recording). T104 deferred. 0C/0M/0m review. VERIFY PASS.",
+      "next": "TRIAGE iter 127 — T104 (npm pack, P3). CEO: push v0.2.0 tag with `git push origin v0.2.0` when ready.",
+      "timestamp": "2026-04-27T14:16:22Z"
     },
     {
       "iteration": 125,
@@ -129,8 +129,8 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 125,
-    "last_deploy_iteration": 125,
+    "last_verify_iteration": 126,
+    "last_deploy_iteration": 126,
     "current_iteration": 126,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
