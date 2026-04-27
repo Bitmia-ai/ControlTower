@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "iteration": 110,
-  "started_at": "2026-04-27T09:09:04Z",
+  "iteration": 111,
+  "started_at": "2026-04-27T09:20:52Z",
   "phase": "triage",
-  "phase_status": "pending",
+  "phase_status": "in-progress",
   "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
@@ -111,10 +111,10 @@
     "next_q_id": 14,
     "next_cred_id": 1,
     "next_sched_id": 2,
-    "next_task_id": 85
+    "next_task_id": 86
   },
   "cost_tracking": {
-    "iterations_this_session": 84,
+    "iterations_this_session": 85,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -127,7 +127,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 110,
     "last_deploy_iteration": 110,
-    "current_iteration": 110,
+    "current_iteration": 111,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
