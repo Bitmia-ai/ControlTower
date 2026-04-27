@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "iteration": 119,
-  "started_at": "2026-04-27T12:44:42Z",
-  "phase": "merge",
-  "phase_status": "complete",
+  "iteration": 120,
+  "started_at": "2026-04-27T12:58:22Z",
+  "phase": "triage",
+  "phase_status": "in-progress",
   "task_id": null,
   "task_title": null,
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
-    "triage": "Selected T107 (P0) + T097 (P0) bundled: parser bug + stale test.",
-    "plan": "Spec written: docs/specs/T107-T097-description-field-responsive-test.md.",
-    "build": "Complete: 5 files changed. T107: pickMultilineField() added, description?: string in TaskItem, Description section rendered in task-detail-client.tsx. T097: stale flex-wrap test deleted. 870 total tests (387 passing, 483 failing).",
-    "review": "0C/0M/0m. No findings.",
-    "deploy": "Build clean. Compiled successfully in ~1.68s. 0 errors, 0 new warnings.",
-    "verify": "PASS. 870 tests (387 passing, 483 failing). +5 new passing tests. -1 stale failing test. No regressions.",
-    "merge": "Merged clean to main. Tag: last-good-deploy-iter119-T107-T097. Worktree removed. T107 and T097 complete."
+    "triage": "",
+    "plan": "",
+    "build": "",
+    "review": "",
+    "deploy": "",
+    "verify": "",
+    "merge": ""
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -35,14 +35,21 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete VERIFY T107+T097 — 870 tests (387 pass, 483 pre-existing fail), T107+T097 done (iteration 119)",
+    "last_commit": "redeye: complete MERGE T107+T097 — merged clean to main (iteration 119)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter119-T107-T097",
     "merge_status": "clean",
-    "notes": "MERGE iter 119: T107+T097 merged clean. 870 tests (387 passing, 483 pre-existing failures). Remaining P0: T091 (README screenshots). Next iter 120: triage remaining tasks."
+    "notes": "Starting iter 120 TRIAGE. Remaining P0: T091 (README screenshots). P1: T096 (CODEOWNERS), T108 (Tasks badge), T092-T095. P2+: T098-T106."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 120,
+      "phases": ["TRIAGE"],
+      "outcome": "in-progress",
+      "next": "PLAN",
+      "timestamp": "2026-04-27T12:58:22Z"
+    },
     {
       "iteration": 119,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
@@ -70,13 +77,6 @@
       "outcome": "T086+T087 complete. 15 new tests (847 total). Merged clean.",
       "next": "TRIAGE iter 117",
       "timestamp": "2026-04-27T12:16:44Z"
-    },
-    {
-      "iteration": 115,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T080 complete. 11 new tests (832 total). Merged clean.",
-      "next": "TRIAGE iter 116",
-      "timestamp": "2026-04-27T11:34:08Z"
     }
   ],
   "counters": {
@@ -86,7 +86,7 @@
     "next_task_id": 109
   },
   "cost_tracking": {
-    "iterations_this_session": 98,
+    "iterations_this_session": 99,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -99,7 +99,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 119,
     "last_deploy_iteration": 119,
-    "current_iteration": 119,
+    "current_iteration": 120,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
