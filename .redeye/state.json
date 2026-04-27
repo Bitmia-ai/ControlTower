@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
@@ -28,7 +28,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge T079 — PWA viewport zoom fix (iteration 109)",
+    "last_commit": "redeye: complete TRIAGE — selected T083 project main screen redesign (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
@@ -38,9 +38,9 @@
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE"],
-      "outcome": "TRIAGE complete: env healthy (712 tests baseline, 432f/280p pre-existing), no CEO answers, no overdue schedules. Selected T083 (P0): control buttons misaligned + project main screen redesign.",
-      "next": "PLAN T083",
+      "phases": ["TRIAGE", "PLAN"],
+      "outcome": "TRIAGE complete. PLAN in-progress.",
+      "next": "BUILD T083",
       "timestamp": "2026-04-27T09:12:00Z"
     },
     {
