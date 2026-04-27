@@ -334,6 +334,35 @@ describe("CollapsibleSection", () => {
   });
 });
 
+describe("T086 — allDoneItems full count regression", () => {
+  // This test verifies the logic mirror: if tasks-client received all done items
+  // (not sliced to 8), computeBuckets returns the full set. The actual slice
+  // was removed in readProjectDetail; this asserts the client-side logic is correct.
+  it("computeBuckets returns all done items when given more than 8 done items", () => {
+    const all: TaskItem[] = Array.from({ length: 12 }, (_, i) =>
+      makeItem({ id: `T${String(i + 1).padStart(3, "0")}`, status: "done", section: "triaged" })
+    );
+    const { doneItems } = computeBuckets(all, null);
+    expect(doneItems).toHaveLength(12);
+  });
+
+  it("CollapsibleSection count badge reflects full done item count (not page count)", () => {
+    // Simulate: 12 done items passed to CollapsibleSection — count shows 12, not 8
+    render(
+      <CollapsibleSection
+        label="Done"
+        count={12}
+        open={false}
+        onToggle={() => {}}
+      >
+        <div>content</div>
+      </CollapsibleSection>
+    );
+    const countBadge = screen.getByTestId("collapsible-count");
+    expect(countBadge.textContent).toBe("12");
+  });
+});
+
 describe("Tasks page metadata (T077)", () => {
   it("page module exports metadata with title 'Tasks'", async () => {
     const mod = await import("./page");

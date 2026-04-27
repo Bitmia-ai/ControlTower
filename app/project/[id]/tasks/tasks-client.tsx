@@ -610,7 +610,9 @@ export default function TasksPageClient({
 
   const allItems: TaskItem[] = [
     ...(detail?.upNext ?? []),
-    ...(detail?.recentlyShipped ?? []),
+    // Use allDoneItems (full list) not recentlyShipped (limited to 8) so the
+    // Done section shows the complete count and all done tasks are paginated.
+    ...(detail?.allDoneItems ?? []),
     ...(detail?.wontDoItems ?? []),
   ];
 

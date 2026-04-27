@@ -99,7 +99,10 @@ export function buildScheduleBlock(opts: {
   return [
     `### ${opts.id}: ${opts.name}`,
     `- **Frequency:** ${opts.frequency}`,
-    `- **Last run:** 1970-01-01T00:00:00Z`,
+    // Use "—" so the parser treats this as never-run (lastRunIso = null).
+    // A real ISO timestamp like "1970-01-01T00:00:00Z" would be parsed as
+    // valid and make the schedule appear overdue with "Next: 56 years ago".
+    `- **Last run:** —`,
     `- **Task:**`,
     stepLines,
     `- **Assigned to:** ${assigned}`,

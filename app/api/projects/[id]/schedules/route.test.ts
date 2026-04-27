@@ -173,7 +173,8 @@ describe("buildScheduleBlock", () => {
     });
     expect(block).toContain("### SCHED-2: Daily standup digest");
     expect(block).toContain("- **Frequency:** every 1d");
-    expect(block).toContain("- **Last run:** 1970-01-01T00:00:00Z");
+    // New schedules use "—" so the parser treats them as never-run (not epoch overdue)
+    expect(block).toContain("- **Last run:** —");
     expect(block).toContain("- **Task:**");
     expect(block).toContain("  1. Read transcripts");
     expect(block).toContain("  2. Summarize");
@@ -308,7 +309,8 @@ describe("POST /api/projects/[id]/schedules", () => {
     const written = mockWriteFile.mock.calls[0][1] as string;
     expect(written).toContain("### SCHED-1: Daily digest");
     expect(written).toContain("- **Frequency:** every 1d");
-    expect(written).toContain("- **Last run:** 1970-01-01T00:00:00Z");
+    // New schedules use "—" (never-run marker) not epoch date
+    expect(written).toContain("- **Last run:** —");
     expect(written).toContain("  1. read");
     expect(written).toContain("  2. post");
     expect(written).toContain("- **Assigned to:** CTO");

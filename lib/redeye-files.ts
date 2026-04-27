@@ -177,7 +177,10 @@ export async function readProjectDetail(
       item.status === "in-progress"
   );
   const itemCosts = state?.item_costs ?? {};
-  const recentlyShipped = tasks
+
+  // All done items sorted newest-first with cost enrichment.
+  // Used as the source for both recentlyShipped (sliced) and allDoneItems (full).
+  const allDoneSorted = tasks
     .filter((item) => item.status === "done")
     .sort((a, b) => {
       // Sort by mergedIteration descending — highest iteration number is most recent.
@@ -186,11 +189,17 @@ export async function readProjectDetail(
       const bi = b.mergedIteration ?? 0;
       return bi - ai;
     })
-    .slice(0, 8)
     .map((item) => {
       const cost = itemCosts[item.id];
       return cost !== undefined ? { ...item, cost_usd: cost } : item;
     });
+
+  // Mission-control "Recently Shipped" card — limited to 8 most recent.
+  const recentlyShipped = allDoneSorted.slice(0, 8);
+
+  // Full list for the Tasks page Done section — all done items, no slice.
+  const allDoneItems = allDoneSorted;
+
   // parseTasks normalizes both "wont-do" and "won't do" raw values to the
   // single canonical status "wontdo"; section is also "wontdo". Source on
   // status so a section-misplaced item still surfaces.
@@ -205,6 +214,7 @@ export async function readProjectDetail(
     pendingQuestions,
     upNext,
     recentlyShipped,
+    allDoneItems,
     wontDoItems,
     recentChangelog,
     steeringDirectives: steering,

@@ -162,6 +162,12 @@ export interface ProjectDetail {
   upNext: TaskItem[];
   recentlyShipped: TaskItem[];
   /**
+   * All done items sorted by mergedIteration descending. Used by the Tasks
+   * page to show the complete Done section with full pagination. Differs from
+   * recentlyShipped which is sliced to 8 for the mission-control card.
+   */
+  allDoneItems: TaskItem[];
+  /**
    * Items the team has decided not to ship. Carried separately because
    * upNext (planned/pending/in-progress) and recentlyShipped (done) both
    * exclude wont-do, so without a dedicated bucket the tasks page would

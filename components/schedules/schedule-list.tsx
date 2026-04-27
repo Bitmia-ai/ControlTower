@@ -267,9 +267,13 @@ function ScheduleRow({
     ? formatRelativeTime(Date.parse(entry.lastRunIso), nowMs)
     : "Never";
 
-  const nextDueLabel = entry.nextDueMs !== null
-    ? formatRelativeTime(entry.nextDueMs, nowMs)
-    : "—";
+  // When the schedule has never run, nextDueMs is 0 (not null) because the
+  // parser marks it overdue. Show "—" instead of "56 years ago".
+  const nextDueLabel = entry.lastRunIso === null
+    ? "—"
+    : entry.nextDueMs !== null
+      ? formatRelativeTime(entry.nextDueMs, nowMs)
+      : "—";
 
   // Top status border: amber for overdue, zinc for never-run, green for on-schedule.
   const topBorder = entry.isOverdue

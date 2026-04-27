@@ -133,6 +133,22 @@ describe("ScheduleList", () => {
     expect(screen.getByText(/On schedule \(1\)/i)).toBeDefined();
   });
 
+  it("shows '—' for Next field when schedule has never run (T087 fix)", () => {
+    const entry = makeEntry({
+      lastRunIso: null,
+      nextDueMs: 0,
+      isOverdue: true,
+    });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    // "Last run: Never" should be shown
+    expect(screen.getByText("Never")).toBeDefined();
+    // "Next: —" should be shown — NOT "56 years ago" or similar
+    const nextLabels = screen.getAllByText("—");
+    expect(nextLabels.length).toBeGreaterThan(0);
+    // Ensure "ago" text does not appear for nextDueMs when never run
+    expect(screen.queryByText(/\d+ years? ago/i)).toBeNull();
+  });
+
   it("renders Run now button for each schedule row", () => {
     const entries = [
       makeEntry({ id: "SCHED-001" }),
