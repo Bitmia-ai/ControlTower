@@ -3,12 +3,14 @@
   "iteration": 111,
   "started_at": "2026-04-27T09:20:52Z",
   "phase": "triage",
-  "phase_status": "in-progress",
-  "task_id": null,
+  "phase_status": "complete",
+  "task_id": "T084",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
-  "phase_progress": {},
+  "phase_progress": {
+    "triage": "Selected T084 (P0): pagination + filtering for all dashboard lists. Env healthy, build clean, 712 test baseline, no CEO questions, no blocked items."
+  },
   "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
