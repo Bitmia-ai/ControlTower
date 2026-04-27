@@ -15,12 +15,18 @@
 ### T087: creating a new Schedule, shows next: xyz ago. Instead of showing never run before
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 116)
+- **Spec:** docs/specs/T086-pagination-total-count-fix.md
+- **Summary:** Fixed buildScheduleBlock (schedules POST route) to write "Last run: —" instead of "Last run: 1970-01-01T00:00:00Z" for newly created schedules. The parser saw the epoch as a valid ISO timestamp, computed nextDueMs as epoch+duration, and showed "Next: 56 years ago". With "—", the parser returns lastRunIso=null (never-run) and ScheduleRow shows "Next: —" while StatusBadge shows "Never run" badge. Build clean, 0 regressions.
 
 ### T086: pagination total counts (like Done X total count) shows only visible count, not total count. it shoudl show like 70 something
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 116)
+- **Spec:** docs/specs/T086-pagination-total-count-fix.md
+- **Summary:** Fixed Tasks tab Done section showing only up to 8 items. Root cause: readProjectDetail sliced done tasks to 8 for the recentlyShipped card; tasks-client used recentlyShipped for allItems so Done bucket only had 8 entries. Fix: added allDoneItems (full sorted+enriched done list, unsliced) to ProjectDetail type and readProjectDetail. tasks-client now uses allDoneItems — Done CollapsibleSection shows full count (e.g. "Done 70") and pagination works correctly ("1–25 of 70"). recentlyShipped still limited to 8 for mission-control card. 4 new passing tests in redeye-files.test.ts. Build clean.
 
 ### T085: Working On card stuck on "Starting up — analyzing project..." for non-uppercase phases and when task_title is absent from state.json
 - **Type:** feature
