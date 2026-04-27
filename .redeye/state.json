@@ -3,14 +3,15 @@
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
   "phase": "build",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
     "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon.",
-    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md. 3 sub-tasks: T1 icons, T2 layout, T3 polish."
+    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md. 3 sub-tasks: T1 icons, T2 layout, T3 polish.",
+    "build": "T1+T2 complete: imported Play/Square/Pause/RotateCcw/Navigation from lucide-react. Added icons to all 5 action buttons (Start, Stop, Pause, Restart, Steer). Replaced flex-wrap with flex on both button rows. Build clean. 712 tests unchanged (432f/280p baseline)."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -29,20 +30,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete PLAN T083 — spec written, 3 sub-tasks (iteration 110)",
+    "last_commit": "feat(controls): add icons to all control buttons, fix button layout alignment",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "BUILD iter 110: T083 in progress."
+    "notes": "BUILD iter 110: T083 complete. Icons on all control buttons. Layout fixed."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
       "phases": ["TRIAGE", "PLAN", "BUILD"],
-      "outcome": "TRIAGE+PLAN complete. BUILD in-progress.",
+      "outcome": "TRIAGE: T083 selected. PLAN: spec written. BUILD: Play/Square/Pause/RotateCcw/Navigation icons added to all 5 control buttons. flex-wrap removed. Build clean. 712 tests unchanged.",
       "next": "REVIEW T083",
-      "timestamp": "2026-04-27T09:18:00Z"
+      "timestamp": "2026-04-27T09:25:00Z"
     },
     {
       "iteration": 109,
@@ -61,14 +62,14 @@
     {
       "iteration": 107,
       "phases": ["TRIAGE","SCHEDULES"],
-      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules, backlog exhausted. SCHEDULES: SCHED-1 dep audit run — 2 moderate vulns (postcss in Next.js, no safe fix), no high/critical, no backlog items filed; SCHED-2 test schedule run. Both schedules updated.",
+      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules, backlog exhausted. SCHEDULES: both SCHED-1 and SCHED-2 run.",
       "next": "TRIAGE then Q-013 (backlog empty)",
       "timestamp": "2026-04-25T21:44:30Z"
     },
     {
       "iteration": 106,
       "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
-      "outcome": "INCORPORATE: Q-012 resolved, T075 added. TRIAGE: env healthy, 783/783 tests, selected T075. PLAN: spec written. BUILD: 5 sub-tasks, 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests. VERIFY + MERGE: T075 marked done.",
+      "outcome": "T075 complete: MarkdownRenderer dynamic import, viewport+metadata, cache headers, perf audit. 13 new tests, 796 total. S-tier review. Merged clean.",
       "next": "TRIAGE iter 107",
       "timestamp": "2026-04-25T21:40:53Z"
     }
@@ -122,7 +123,8 @@
     "T065": 51.95,
     "T068": 3.44,
     "T075": 0,
-    "T079": 0
+    "T079": 0,
+    "T083": 0
   },
   "item_cost_starts": {
     "T046": 73.40777850000002,
