@@ -3,9 +3,9 @@
   "iteration": 121,
   "started_at": "2026-04-27T13:10:14Z",
   "phase": "merge",
-  "phase_status": "in-progress",
-  "task_id": "T108",
-  "task_title": "Tasks tab — show count badge of open tasks",
+  "phase_status": "complete",
+  "task_id": null,
+  "task_title": null,
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T108-T092-tasks-badge-env-example.md",
@@ -15,7 +15,8 @@
     "build": "Complete: 4 files changed + 2 created. T108: layout.tsx extracts openTaskCount from upNext (pending+planned only), passes to ProjectNav. ProjectNav now accepts openTaskCount prop and renders red pill badge on Tasks tab when >0. 15 new source-text tests (all passing). T092: .env.example created with 5 env vars. README updated. 885 tests (402 pass, 483 pre-existing fail). Build clean 1.7s.",
     "review": "0C/0M/0m. Badge logic correct: filters pending+planned from upNext, defaults to 0 on null project, hides at 0 count. aria-label correct. .env.example content accurate. Build clean.",
     "deploy": "Build clean. Compiled successfully in 1.8s. 0 errors, 1 pre-existing warning (Custom Cache-Control headers).",
-    "verify": "PASS. 885 tests (402 passing, 483 pre-existing failing). 0 regressions. +15 new passing tests."
+    "verify": "PASS. 885 tests (402 passing, 483 pre-existing failing). 0 regressions. +15 new passing tests.",
+    "merge": "Merged clean to main. Tag: last-good-deploy-iter121-T108-T092. No worktree (main branch throughout). T108 and T092 complete."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -34,14 +35,21 @@
     }
   },
   "git_state": {
-    "last_commit": "merge: T091+T096 — README screenshots refresh + CODEOWNERS",
+    "last_commit": "redeye: complete VERIFY T108+T092 — 885 tests (402 pass, 483 pre-existing fail), 0 regressions (iteration 121)",
     "branch": "main",
-    "last_good_deploy_tag": "last-good-deploy-iter120-T091-T096",
+    "last_good_deploy_tag": "last-good-deploy-iter121-T108-T092",
     "merge_status": "clean",
-    "notes": "MERGE iter 120: T091+T096 merged clean. 870 tests (387 passing, 483 pre-existing failures). Remaining P1: T108 (Tasks badge), T092-T095. P2+: T098-T106 (T091 and T096 now done)."
+    "notes": "MERGE iter 121: T108+T092 merged clean. 885 tests (402 passing, 483 pre-existing failures). Remaining P1: T093-T095. P2+: T098-T106. T108 and T092 now done."
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 121,
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "outcome": "T108+T092 complete: (1) Tasks tab count badge — ProjectNav shows red pill with open task count (pending+planned). Data extracted from upNext in existing 5s layout poll, no new API calls. Badge hidden at 0. 15 new passing tests. (2) .env.example created with 5 runtime env vars documented. README updated. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 122 — T093 P1 (README Troubleshooting), T094 P1 (empty-state UX), T095 P1 (demo gif).",
+      "timestamp": "2026-04-27T13:19:25Z"
+    },
     {
       "iteration": 120,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
@@ -70,13 +78,6 @@
       "next": "TRIAGE iter 118",
       "timestamp": "2026-04-27T12:41:00Z"
     },
-    {
-      "iteration": 116,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T086+T087 complete. 15 new tests (847 total). Merged clean.",
-      "next": "TRIAGE iter 117",
-      "timestamp": "2026-04-27T12:16:44Z"
-    }
   ],
   "counters": {
     "next_q_id": 14,
@@ -96,9 +97,9 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 120,
-    "last_deploy_iteration": 120,
-    "current_iteration": 120,
+    "last_verify_iteration": 121,
+    "last_deploy_iteration": 121,
+    "current_iteration": 121,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
@@ -135,7 +136,9 @@
     "T107": 0,
     "T097": 0,
     "T091": 0,
-    "T096": 0
+    "T096": 0,
+    "T108": 0,
+    "T092": 0
   },
   "item_cost_starts": {
     "T046": 73.40777850000002,
