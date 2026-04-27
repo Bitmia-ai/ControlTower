@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 121,
   "started_at": "2026-04-27T13:10:14Z",
-  "phase": "plan",
+  "phase": "build",
   "phase_status": "in-progress",
   "task_id": "T108",
   "task_title": "Tasks tab — show count badge of open tasks",
@@ -11,7 +11,7 @@
   "spec_file": "docs/specs/T108-T092-tasks-badge-env-example.md",
   "phase_progress": {
     "triage": "Selected T108 (P1) + T092 (P1) bundled: Tasks count badge + .env.example docs.",
-    "plan": "in-progress"
+    "plan": "Spec written: docs/specs/T108-T092-tasks-badge-env-example.md. 4 sub-tasks: S1 layout openTaskCount, S2 ProjectNav badge, S3 tests, S4 .env.example. Data flows from upNext API field."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
