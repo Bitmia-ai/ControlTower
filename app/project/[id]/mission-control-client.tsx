@@ -175,6 +175,7 @@ export default function MissionControlClient({
               projectId={projectId}
               upNextCount={detail?.upNext?.length ?? 0}
               openQuestionCount={pendingQuestions.length}
+              activeTaskTitle={detail?.activeItem?.title ?? null}
             />
 
             <QuestionsCard

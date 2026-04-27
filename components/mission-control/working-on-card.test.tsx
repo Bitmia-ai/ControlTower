@@ -169,3 +169,124 @@ describe("WorkingOnCard — running with task", () => {
     expect(badge).toBeTruthy();
   });
 });
+
+describe("WorkingOnCard — T085: lowercase phase normalization", () => {
+  it("shows 'Building the feature' message for lowercase phase 'build'", () => {
+    const state = makeState({ phase: "build", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Building the feature");
+    expect(container.textContent).not.toContain("Starting up");
+  });
+
+  it("shows 'Reviewing the implementation' message for lowercase phase 'review'", () => {
+    const state = makeState({ phase: "review", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Reviewing the implementation");
+  });
+
+  it("shows 'Triaging — picking the next task' for lowercase phase 'triage'", () => {
+    const state = makeState({ phase: "triage", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Triaging — picking the next task");
+  });
+
+  it("shows 'Merging to main' for lowercase phase 'merge'", () => {
+    const state = makeState({ phase: "merge", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Merging to main");
+  });
+
+  it("shows 'Deploying to production' for lowercase phase 'deploy'", () => {
+    const state = makeState({ phase: "deploy", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Deploying to production");
+  });
+
+  it("shows 'Verifying the deployment' for lowercase phase 'verify'", () => {
+    const state = makeState({ phase: "verify", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Verifying the deployment");
+  });
+
+  it("shows 'Planning the next task' for lowercase phase 'plan'", () => {
+    const state = makeState({ phase: "plan", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    expect(container.textContent).toContain("Planning the next task");
+  });
+
+  it("renders blue badge for lowercase 'build' phase", () => {
+    const state = makeState({ phase: "build", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    const badge = container.querySelector("[class*='text-blue']");
+    expect(badge).toBeTruthy();
+  });
+
+  it("renders amber badge for lowercase 'review' phase", () => {
+    const state = makeState({ phase: "review", task_title: null });
+    const { container } = render(<WorkingOnCard state={state} running={true} />);
+    const badge = container.querySelector("[class*='text-amber']");
+    expect(badge).toBeTruthy();
+  });
+
+  it("renders task list empty when !running and lowercase phase 'harden'", () => {
+    const state = makeState({ phase: "harden", task_title: null });
+    const { container } = render(
+      <WorkingOnCard state={state} running={false} upNextCount={0} />
+    );
+    expect(container.textContent).toContain("RedEye stopped — task list empty.");
+  });
+});
+
+describe("WorkingOnCard — T085: activeTaskTitle prop", () => {
+  it("renders task title from activeTaskTitle when state.task_title is null", () => {
+    const state = makeState({ phase: "build", task_title: null, task_id: "T085" });
+    const { container } = render(
+      <WorkingOnCard
+        state={state}
+        running={true}
+        activeTaskTitle="WorkingOn card phase case fix"
+      />
+    );
+    expect(container.textContent).toContain("WorkingOn card phase case fix");
+  });
+
+  it("renders rich task row (not phase-only message) when activeTaskTitle is provided", () => {
+    const state = makeState({ phase: "build", task_title: null, task_id: "T085" });
+    const { container } = render(
+      <WorkingOnCard
+        state={state}
+        running={true}
+        activeTaskTitle="My Active Task"
+      />
+    );
+    // Rich branch uses text-lg font-semibold paragraph
+    const title = container.querySelector("p.text-lg.font-semibold");
+    expect(title).toBeTruthy();
+    expect(title?.textContent).toContain("My Active Task");
+    // Should NOT show the phase-only message fallback
+    expect(container.textContent).not.toContain("Starting up");
+    expect(container.textContent).not.toContain("Building the feature");
+  });
+
+  it("prefers state.task_title over activeTaskTitle when both are present", () => {
+    const state = makeState({ phase: "build", task_title: "From State", task_id: "T085" });
+    const { container } = render(
+      <WorkingOnCard
+        state={state}
+        running={true}
+        activeTaskTitle="From ActiveItem"
+      />
+    );
+    expect(container.textContent).toContain("From State");
+    expect(container.textContent).not.toContain("From ActiveItem");
+  });
+
+  it("shows phase-only message when running=true, no task_title, and no activeTaskTitle", () => {
+    const state = makeState({ phase: "build", task_title: null });
+    const { container } = render(
+      <WorkingOnCard state={state} running={true} activeTaskTitle={null} />
+    );
+    expect(container.textContent).toContain("Building the feature");
+    expect(container.textContent).not.toContain("Starting up");
+  });
+});

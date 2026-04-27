@@ -6,17 +6,29 @@ import type { RedEyeState } from "@/lib/redeye-types";
 
 const DEFAULT_COLORS = { bg: "bg-gray-100 dark:bg-zinc-800", text: "text-gray-700 dark:text-zinc-300", shimmer: "from-gray-100 via-gray-200 to-gray-100 dark:from-zinc-800 dark:via-zinc-700 dark:to-zinc-800" };
 
+/**
+ * state.json stores phase values in lowercase ("build", "review", etc.) but
+ * PHASE_LABELS / PHASE_COLORS are keyed uppercase. Normalize at the component
+ * boundary so comparisons and lookups are always consistent.
+ */
+function normalizePhase(phase: string | null | undefined): string {
+  return (phase ?? "").toUpperCase();
+}
+
 interface WorkingOnCardProps {
   state: RedEyeState | null;
   running: boolean;
   projectId?: number;
   upNextCount?: number;
   openQuestionCount?: number;
+  /** Active task title derived from the task list (state.json has no task_title field). */
+  activeTaskTitle?: string | null;
 }
 
 function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
-  const label = PHASE_LABELS[phase] ?? phase;
-  const colors = PHASE_COLORS[phase] ?? DEFAULT_COLORS;
+  const normalized = normalizePhase(phase);
+  const label = PHASE_LABELS[normalized] ?? phase;
+  const colors = PHASE_COLORS[normalized] ?? DEFAULT_COLORS;
   const animate = running && colors.shimmer;
 
   return (
@@ -33,15 +45,19 @@ function PhaseBadge({ phase, running }: { phase: string; running: boolean }) {
   );
 }
 
-export function WorkingOnCard({ state, running, projectId, upNextCount, openQuestionCount }: WorkingOnCardProps) {
-  const hasTask = state?.task_title;
-  const taskListEmpty = !running && state?.phase === "HARDEN" && (upNextCount ?? 0) === 0;
+export function WorkingOnCard({ state, running, projectId, upNextCount, openQuestionCount, activeTaskTitle }: WorkingOnCardProps) {
+  // Normalize phase once; all comparisons below use the uppercase form.
+  const phase = normalizePhase(state?.phase);
+  // state.json does not include a task_title field — use activeTaskTitle derived
+  // from the parsed task list in the parent component as the source of truth.
+  const hasTask = state?.task_title ?? activeTaskTitle;
+  const taskListEmpty = !running && phase === "HARDEN" && (upNextCount ?? 0) === 0;
   // RedEye exits the loop when blocked on questions (phase=waiting_for_ceo).
   // The dashboard must surface this clearly so the user knows their reply is
   // expected, and so they understand the loop will resume on answer.
   const isWaitingOnCeo =
     !running &&
-    (state?.phase === "waiting_for_ceo" || (openQuestionCount ?? 0) > 0);
+    (phase === "WAITING_FOR_CEO" || (openQuestionCount ?? 0) > 0);
 
   const topBorder = running
     ? "border-t-green-500"
@@ -92,20 +108,26 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
             <span className="text-gray-500 dark:text-zinc-500 text-sm">RedEye is idle</span>
           </div>
         )
-      ) : running && !hasTask && state?.phase ? (
+      ) : running && !hasTask && phase ? (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-gray-700 dark:text-zinc-300 text-sm font-medium">
-              {state.phase === "HARDEN" ? "Improving the codebase — finding tech debt, tests, docs" :
-               state.phase === "STABILIZE" ? "Stabilizing — fixing broken environment" :
-               state.phase === "TRIAGE" ? "Triaging — picking the next task" :
-               state.phase === "INCORPORATE" ? "Incorporating your feedback" :
-               state.phase === "SCHEDULES" ? "Running scheduled tasks" :
+              {phase === "HARDEN" ? "Improving the codebase — finding tech debt, tests, docs" :
+               phase === "STABILIZE" ? "Stabilizing — fixing broken environment" :
+               phase === "TRIAGE" ? "Triaging — picking the next task" :
+               phase === "INCORPORATE" ? "Incorporating your feedback" :
+               phase === "SCHEDULES" ? "Running scheduled tasks" :
+               phase === "PLAN" ? "Planning the next task" :
+               phase === "BUILD" ? "Building the feature" :
+               phase === "REVIEW" ? "Reviewing the implementation" :
+               phase === "DEPLOY" ? "Deploying to production" :
+               phase === "VERIFY" ? "Verifying the deployment" :
+               phase === "MERGE" ? "Merging to main" :
                "Starting up — analyzing project..."}
             </span>
           </div>
-          <PhaseBadge phase={state.phase} running={running} />
+          <PhaseBadge phase={phase} running={running} />
         </div>
       ) : running && !hasTask ? (
         <div className="flex items-center gap-2">
@@ -127,12 +149,12 @@ export function WorkingOnCard({ state, running, projectId, upNextCount, openQues
                 <span className="text-gray-500 dark:text-zinc-500 font-mono">{state?.task_id}</span>
               )}
               {state?.task_id && " · "}
-              {state!.task_title}
+              {state?.task_title ?? activeTaskTitle}
             </p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            {state?.phase && <PhaseBadge phase={state.phase} running={running} />}
+            {phase && <PhaseBadge phase={phase} running={running} />}
             {state?.worktree_branch ? (
               <span className="text-xs text-gray-400 dark:text-zinc-500 font-mono">
                 {state.worktree_branch}
