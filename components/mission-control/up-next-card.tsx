@@ -18,7 +18,11 @@ const statusDot: Record<string, string> = {
 };
 
 export function UpNextCard({ items, projectId }: UpNextCardProps) {
-  const upNext = items.slice(0, 3);
+  // Exclude the currently in-progress task — it is already shown in the
+  // WorkingOn card. Showing it here too is redundant and confusing to the CEO
+  // when no other planned/pending tasks remain (T088).
+  const pendingItems = items.filter((i) => i.status !== "in-progress");
+  const upNext = pendingItems.slice(0, 3);
 
   return (
     <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg p-5">
@@ -27,7 +31,7 @@ export function UpNextCard({ items, projectId }: UpNextCardProps) {
       </p>
 
       {upNext.length === 0 ? (
-        <span className="text-gray-400 dark:text-zinc-600 text-sm">Nothing queued</span>
+        <span className="text-gray-400 dark:text-zinc-600 text-sm">No pending tasks</span>
       ) : (
         <ul className="space-y-2.5">
           {upNext.map((item) => (

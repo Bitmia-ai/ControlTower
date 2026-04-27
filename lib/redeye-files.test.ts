@@ -143,11 +143,11 @@ describe("readProjectDetail — allDoneItems (T086)", () => {
     expect(detail.allDoneItems).toHaveLength(12);
   });
 
-  it("recentlyShipped is still sliced to 8 items max", async () => {
+  it("recentlyShipped is still sliced to 10 items max", async () => {
     tmpDir = await createProjectWithDoneItems(12);
     const project = { ...fakeProject, path: tmpDir };
     const detail = await readProjectDetail(tmpDir, project);
-    expect(detail.recentlyShipped.length).toBeLessThanOrEqual(8);
+    expect(detail.recentlyShipped.length).toBeLessThanOrEqual(10);
   });
 
   it("allDoneItems is sorted newest first (highest iteration descending)", async () => {

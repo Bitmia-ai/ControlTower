@@ -194,8 +194,8 @@ export async function readProjectDetail(
       return cost !== undefined ? { ...item, cost_usd: cost } : item;
     });
 
-  // Mission-control "Recently Shipped" card — limited to 8 most recent.
-  const recentlyShipped = allDoneSorted.slice(0, 8);
+  // Mission-control "Recently Shipped" card — limited to 10 most recent.
+  const recentlyShipped = allDoneSorted.slice(0, 10);
 
   // Full list for the Tasks page Done section — all done items, no slice.
   const allDoneItems = allDoneSorted;

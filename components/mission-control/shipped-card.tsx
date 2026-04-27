@@ -26,7 +26,7 @@ function truncateSummary(text: string): string {
 export function ShippedCard({ items, changelog = [], projectId }: ShippedCardProps) {
   const hasChangelog = changelog.length > 0;
   // When using changelog, take the 5 most recent entries.
-  // When using task items, the server already sorted and sliced to 8 items
+  // When using task items, the server already sorted and sliced to 10 items
   // (see redeye-files.ts recentlyShipped), so we render all of them.
   const shippedItems = hasChangelog ? changelog.slice(0, 5) : items;
 
