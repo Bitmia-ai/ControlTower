@@ -3,14 +3,14 @@
   "iteration": 118,
   "started_at": "2026-04-27T12:34:39Z",
   "phase": "triage",
-  "phase_status": "in-progress",
-  "task_id": null,
-  "task_title": null,
+  "phase_status": "complete",
+  "task_id": "T090",
+  "task_title": "Health card shipped count fix + History tab UUID fix (T090+T078)",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
-    "triage": "",
+    "triage": "Selected T090 (P1) + T078 (P1) bundled: (1) T090: Health card 'X shipped' shows only session-capped count (recentlyShipped.length = 10 max). Fix: pass allDoneItems.length as totalShippedCount to HealthCard, update display to show 'N total shipped (M this session)' or similar. (2) T078: History tab collapsibles show raw UUID filename in expanded details. Fix: replace UUID display with human-readable session label (date + session number). Both are small targeted UI fixes to mission-control and history tab.",
     "plan": "",
     "build": "",
     "review": "",
@@ -35,46 +35,46 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete VERIFY T089+T088 — 851 tests (382 pass, 469 pre-existing fail), T089+T088 done (iteration 117)",
+    "last_commit": "redeye: start TRIAGE (iteration 118)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter117-T089-T088",
     "merge_status": "clean",
-    "notes": "Iter 118: T090+T078 pending (P1). T076 planned (P2)."
+    "notes": "Iter 118: bundling T090+T078 (both P1 small UI fixes). T076 (P2 dep updates) remains planned."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 117,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T089+T088 complete: (1) Recently Shipped card now shows up to 10 items (was 8) — changed recentlyShipped = allDoneSorted.slice(0, 10) in readProjectDetail. (2) Up Next card no longer shows the currently in-progress task when no pending tasks remain — UpNextCard now filters out in-progress items and shows 'No pending tasks' empty state. 4 new tests (851 total, 382 passing, 469 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "outcome": "T089+T088 complete: (1) Recently Shipped card now shows up to 10 items (was 8). (2) Up Next card no longer shows the currently in-progress task when no pending tasks remain. 4 new tests (851 total, 382 passing, 469 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 118",
       "timestamp": "2026-04-27T12:41:00Z"
     },
     {
       "iteration": 116,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T086+T087 complete: (1) Done section in Tasks tab now shows full count — added allDoneItems to ProjectDetail, readProjectDetail populates it unsliced, tasks-client uses allDoneItems. (2) New schedule NextDueLabel fixed — buildScheduleBlock writes Last run: — not epoch; ScheduleRow shows Next: — when never run. 15 new tests (847 total, 382 passing, 465 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "outcome": "T086+T087 complete: (1) Done section in Tasks tab now shows full count. (2) New schedule NextDueLabel fixed. 15 new tests (847 total, 382 passing, 465 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 117",
       "timestamp": "2026-04-27T12:16:44Z"
     },
     {
       "iteration": 115,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T080 complete: Live tab toolbar buttons improved. Replaced ChevronsUpDown pair (expand/collapse) with UnfoldVertical/FoldVertical. Replaced ArrowDown (auto-scroll) with ChevronsDown. Added text labels (Expand all, Collapse all, Auto-scroll) via inline-flex px-2.5 py-1.5. All behavior preserved. 11 new tests (source-text strategy, node env), 832 total (370 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "outcome": "T080 complete: Live tab toolbar buttons improved. 11 new tests (832 total, 370 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 116",
       "timestamp": "2026-04-27T11:34:08Z"
     },
     {
       "iteration": 114,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T081 complete: delete schedules from schedule tab. applyScheduleDelete() parser, DELETE /api/projects/[id]/schedules/[schedId] with atomic write + validation, ScheduleRow hover-reveal trash icon + inline confirm panel (onDelete prop), handleDelete in SchedulesContent. 23 new tests (821 total, 359 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "outcome": "T081 complete: delete schedules from schedule tab. 23 new tests (821 total, 359 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 115",
       "timestamp": "2026-04-27T11:20:24Z"
     },
     {
       "iteration": 113,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T082 complete: Recently Shipped card now sorts by iteration (newest first), shows 8 items, displays relative time (\"X days ago\") for items with Merged date. mergedAt/mergedIteration parsing, formatRelativeTime utility. 28 new tests (798 total, 348 passing, 450 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "outcome": "T082 complete: Recently Shipped card now sorts by iteration, shows 8 items, displays relative time. 28 new tests (798 total, 348 passing, 450 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 114",
       "timestamp": "2026-04-27T09:59:25Z"
     }
