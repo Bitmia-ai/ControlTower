@@ -11,8 +11,10 @@
 ### T084: All lists across the dashboard (history, steer, schedules, etc need to have pagination and filtering
 - **Type:** feature
 - **Priority:** P0
-- **Status:** in-progress
+- **Status:** done
+- **Merged:** iteration 111
 - **Spec:** docs/specs/T084-pagination-filtering.md
+- **Summary:** Added pagination and filtering to all 4 major list views. Shared components: ListToolbar (search input, filter chips, sort select, clear button) and Pagination (prev/next, range info), plus a generic useListFilter hook. Tasks tab: backlog has priority/status filters + 4 sort keys (20/page), done section has search/sort (25/page). Schedules tab: search + status filter (overdue/on-schedule/never-run) + next-due/last-run/title sort (15/page). Steer tab: search + newest/oldest sort (20/page). History tab: sessions (search + sort, 10/page) + iteration log (search, 20/page). 40 new tests; 752 total (320 passing, 432 pre-existing failures unchanged). Build clean.
 - **Description:** Use the designer subagent + frontend skill to design it and share the components/ui between tabs as much as possible for code maintenance. I should be able to filter by priorities, status, last run (when applicable), as well as key words. I should also be able to sort according to some keys
 
 ### T083: the 4 control buttons in the project main screen as misaligned. also only one has an icon
