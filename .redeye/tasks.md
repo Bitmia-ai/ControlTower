@@ -2,6 +2,12 @@
 
 ## CEO Requests
 
+### T109: Tasks list shows "in-progress" for already-done tasks (split-brain with detail view)
+- **Type:** bug
+- **Priority:** P1
+- **Status:** pending
+- **Description:** A task that has merged (Status: done in .redeye/tasks.md) renders as "in-progress" on the Tasks tab list view but as "done" on the task detail view. ROOT CAUSE: lib/redeye-files.ts:156-162 in readProjectDetail unconditionally promotes any task whose id == state.json.task_id to status: "in-progress" via `const enriched = { ...item, status: "in-progress" as const }`. The override is meant to surface in-flight work, but it triggers any time state.task_id still points at a recently-merged task — which is the normal transient state between MERGE complete and the next iteration's TRIAGE clearing state.task_id. Window can last minutes (or longer if the CTO loop pauses). REPRO: Wait for the CTO to merge a task (state.json shows phase: "merge", phase_status: "complete", task_id: "T104"). Open /project/1/tasks — T104 shows in the in-progress section. Open /project/1/tasks/T104 — the detail says done. The detail page reads parseTasks() directly without the override, so it shows the truth from tasks.md. EVIDENCE: state.json {phase: "merge", phase_status: "complete", task_id: "T104"} + tasks.md "Status: done" + parser line 162 — observed live. FIX OPTIONS: (a) Only promote to in-progress when the parsed item.status is "pending" or "planned", never when it is "done" or "wontdo" — `if (item.id === activeId && (item.status === "pending" || item.status === "planned")) { ... }`. (b) Only promote when state.phase_status is "in-progress" (skip the override when phase_status is "complete" — the CTO has finished and the task_id is stale). (c) Both. Recommend (a) — defends against any CTO-side race where state.json drifts from tasks.md. Add a unit test that pins a done task as state.task_id and asserts the readProjectDetail output keeps status="done". The .redeye/state.json should not be the authoritative source for task status; tasks.md is.
+
 ### T108: Tasks tab — show count badge of open tasks
 - **Type:** feature
 - **Priority:** P1
