@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, PlusCircle } from "lucide-react";
+import { ChevronDown, PlusCircle, Play, Square, Pause, RotateCcw, Navigation } from "lucide-react";
 
 interface ControlsCardProps {
   running: boolean;
@@ -156,12 +156,13 @@ export function ControlsCard({
       )}
 
       <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2">
           {!running ? (
             <button
               onClick={onStart}
-              className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-green-700 hover:bg-green-600 text-white rounded-md transition"
+              className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-green-700 hover:bg-green-600 text-white rounded-md transition"
             >
+              <Play size={15} />
               Start
             </button>
           ) : (
@@ -170,8 +171,9 @@ export function ControlsCard({
                 <button
                   onClick={handleStop}
                   disabled={pending === "stop" || forceStopping}
-                  className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-l-md transition"
+                  className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-red-700 hover:bg-red-600 disabled:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-l-md transition"
                 >
+                  <Square size={15} />
                   {stopLabel}
                 </button>
                 <button
@@ -213,16 +215,18 @@ export function ControlsCard({
                 <button
                   onClick={onRestart}
                   disabled={forceStopping}
-                  className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-amber-600 hover:bg-amber-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-md transition"
+                  className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-amber-600 hover:bg-amber-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-md transition"
                 >
+                  <RotateCcw size={15} />
                   Restart
                 </button>
               ) : (
                 <button
                   onClick={handlePause}
                   disabled={pending === "pause" || forceStopping}
-                  className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 disabled:opacity-60 disabled:cursor-not-allowed text-gray-700 dark:text-zinc-200 rounded-md transition"
+                  className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 disabled:opacity-60 disabled:cursor-not-allowed text-gray-700 dark:text-zinc-200 rounded-md transition"
                 >
+                  <Pause size={15} />
                   {pauseLabel}
                 </button>
               )}
@@ -230,11 +234,12 @@ export function ControlsCard({
           )}
         </div>
 
-        <div className="border-t border-gray-100 dark:border-zinc-800 pt-3 mt-1 flex flex-wrap gap-2">
+        <div className="border-t border-gray-100 dark:border-zinc-800 pt-3 mt-1 flex gap-2">
           <button
             onClick={onSteer}
-            className="flex-1 min-h-[44px] px-3 py-2 text-sm font-medium bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded-md border border-gray-200 dark:border-zinc-700 transition"
+            className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 rounded-md border border-gray-200 dark:border-zinc-700 transition"
           >
+            <Navigation size={15} />
             Steer
           </button>
           <button
