@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T090: the health card shows X shipped. X is a much lower number of those shipped in total. is it just the session shipped? it should be the total and then the ones shipped in this session
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T089: recently shipped tasks is still showing not the top 10 recent ones, but older ones. fix it
 - **Type:** feature
 - **Priority:** P1
