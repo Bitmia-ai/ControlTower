@@ -58,7 +58,10 @@
 ### T080: the three arrow buttons in the Live tab are hard to understand. what do they do? maybe better icons and some text?
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 115)
+- **Spec:** docs/specs/T080-live-tab-buttons.md
+- **Summary:** Replaced the three icon-only toolbar buttons with icon+text labeled buttons. Expand all: ChevronsUpDown replaced by UnfoldVertical + "Expand all" text. Collapse all: ChevronsUpDown-rotated replaced by FoldVertical + "Collapse all" text. Auto-scroll: ArrowDown replaced by ChevronsDown + "Auto-scroll" text. All buttons use inline-flex px-2.5 py-1.5 layout. All existing behavior preserved (active state colors, aria-labels, three-state logic, scroll-away yellow highlight). 11 new tests (all passing, @vitest-environment node, source-text strategy). 832 total tests (370 passing, 462 pre-existing failures unchanged). Build clean.
 
 ### T079: Pwa auto zooms when I type on my phone to add a task
 - **Type:** feature
