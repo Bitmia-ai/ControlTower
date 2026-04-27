@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "iteration": 116,
-  "started_at": "2026-04-27T11:35:11Z",
-  "phase": "merge",
-  "phase_status": "complete",
+  "iteration": 117,
+  "started_at": "2026-04-27T12:20:53Z",
+  "phase": "triage",
+  "phase_status": "in-progress",
   "task_id": null,
   "task_title": null,
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T086-pagination-total-count-fix.md",
+  "spec_file": null,
   "phase_progress": {
-    "triage": "Selected T086 (P1): Pagination total counts shows only visible count, not total count. Root cause: readProjectDetail slices recentlyShipped to 8 items; tasks-client builds allItems from recentlyShipped so Done section only shows up to 8 done items. Fix: expose allDoneItems separately in readProjectDetail and use it in tasks-client. T087 (P1, new schedule shows wrong Next time) and T078 (P1, history UUIDs) also pending.",
-    "plan": "Spec written: docs/specs/T086-pagination-total-count-fix.md. 4 sub-tasks (all S). Add allDoneItems to ProjectDetail type, populate in readProjectDetail (unsliced), use in tasks-client. Also fix T087 (buildScheduleBlock epoch Last run → dash). Tests: 4 new in redeye-files.test.ts, 2 in page.test.tsx, 1 in schedule-list.test.tsx, updated assertions in route.test.ts.",
-    "build": "Complete: 9 files changed. T086: allDoneItems added to ProjectDetail type, readProjectDetail computes full sorted+enriched done list and slices to recentlyShipped. tasks-client uses allDoneItems. T087: buildScheduleBlock uses Last run: — (not epoch). ScheduleRow shows — for Next when never run. 847 tests (382 passing, 465 failing). +12 new passing vs iter 115 baseline. Build clean.",
-    "review": "0C/0M/0m. Security: allDoneItems pulls from already-parsed task list, no new I/O or user input. buildScheduleBlock change is hardcoded string, not user-supplied. Correctness: recentlyShipped still sliced to 8, allDoneItems full list verified. Parser handles — for Last run correctly. ScheduleRow nextDueLabel shows — for never-run. Build clean. No findings.",
-    "deploy": "Build clean. Confirmed via NODE_ENV=production npm run build. Compiled successfully in ~1.7s. 0 errors, 0 new warnings (Cache-Control warning is pre-existing). allDoneItems field type-checks correctly. buildScheduleBlock — change verified.",
-    "verify": "PASS. 847 tests (382 passing, 465 failing). +15 new tests, +12 new passing. +3 new failing match pre-existing React.act pattern (schedule-list.test.tsx, page.test.tsx). No regressions. T086 and T087 marked done in tasks.md.",
-    "merge": "Merged clean to main (built directly on main). Tag: last-good-deploy-iter116-T086-T087. T086 and T087 complete."
+    "triage": "",
+    "plan": "",
+    "build": "",
+    "review": "",
+    "deploy": "",
+    "verify": "",
+    "merge": ""
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -35,11 +35,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete VERIFY T086+T087 — 847 tests (382 pass, 465 pre-existing fail), T086+T087 done (iteration 116)",
+    "last_commit": "redeye: complete MERGE T086+T087 — merged clean, tag last-good-deploy-iter116-T086-T087 (iteration 116)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter116-T086-T087",
     "merge_status": "clean",
-    "notes": "MERGE iter 116: T086+T087 merged clean. 847 tests (382 passing, 465 pre-existing failures). T088, T089, T078 pending."
+    "notes": "TRIAGE iter 117: T088, T089, T078 pending."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -109,7 +109,7 @@
       "outcome": "T085 complete: fixed WorkingOn card phase case mismatch (normalizePhase) + missing task title (activeTaskTitle prop). 14 new tests (766 total, 320 passing, 446 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 113",
       "timestamp": "2026-04-27T09:47:15Z"
-    },
+    }
   ],
   "counters": {
     "next_q_id": 14,
@@ -131,7 +131,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 116,
     "last_deploy_iteration": 116,
-    "current_iteration": 116,
+    "current_iteration": 117,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
