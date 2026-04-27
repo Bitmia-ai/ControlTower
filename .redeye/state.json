@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 109,
   "started_at": "2026-04-26T05:50:47Z",
-  "phase": "verify",
+  "phase": "merge",
   "phase_status": "in-progress",
   "task_id": "T079",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T-79",
@@ -25,7 +25,7 @@
       "new_passing_tests": 0,
       "build_clean": true,
       "build_smoke_pass": true,
-      "notes": "T1: viewport export updated (+maximumScale:1, +userScalable:false). Test updated to assert new fields. Build confirmed clean on main with patch applied. Build chunk confirms maximum-scale is emitted from maximumScale field. Branch rebased onto main. 1 commit: fix(pwa): add maximumScale and userScalable to viewport."
+      "notes": "T1: viewport export updated (+maximumScale:1, +userScalable:false). Test updated to assert new fields. Build confirmed clean. Build chunk confirms maximum-scale emitted. Rebased onto main."
     },
     "review": {
       "cycle": 1,
@@ -34,7 +34,7 @@
       "major": 0,
       "minor": 0,
       "result": "PASS",
-      "notes": "2 files changed, minimal diff. Viewport Viewport type fields valid. Test assertions match. Build smoke confirmed via chunk grep. 0C/0M/0m PASS."
+      "notes": "0C/0M/0m PASS."
     },
     "deploy": {
       "tests_pass": true,
@@ -43,7 +43,13 @@
       "fail_count": 432,
       "build_clean": true,
       "tag": "last-good-deploy-iter109-t079",
-      "notes": "432f/280p same as main baseline (pre-existing). Build verified clean. Tagged last-good-deploy-iter109-t079."
+      "notes": "432f/280p same as main baseline. Tagged last-good-deploy-iter109-t079."
+    },
+    "verify": {
+      "result": "PASS",
+      "artifacts_confirmed": true,
+      "test_count": 712,
+      "notes": "Viewport object confirmed. Build emission confirmed. Test 3/3 pass. Env healthy."
     }
   },
   "review_cycles": 1,
@@ -67,7 +73,7 @@
     "branch": "redeye/T-79",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "DEPLOY iter 109: tests 432f/280p (matches main baseline). Build clean. Tagged last-good-deploy-iter109-t079."
+    "notes": "VERIFY iter 109: PASS. Proceeding to MERGE."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -78,10 +84,11 @@
         "PLAN",
         "BUILD",
         "REVIEW",
-        "DEPLOY"
+        "DEPLOY",
+        "VERIFY"
       ],
-      "outcome": "TRIAGE: env healthy, selected T079. PLAN: spec (2xS). BUILD: viewport+test, build smoke pass, rebased. REVIEW: 0C/0M/0m PASS. DEPLOY: 712 tests (432f/280p matches main), build clean, tagged.",
-      "next": "VERIFY T079",
+      "outcome": "T079: viewport fix. REVIEW 0C/0M/0m PASS. DEPLOY 712 tests baseline. VERIFY PASS — all acceptance criteria met.",
+      "next": "MERGE T079",
       "timestamp": "2026-04-27T09:02:23Z"
     },
     {
@@ -149,7 +156,7 @@
     "next_task_id": 80
   },
   "cost_tracking": {
-    "iterations_this_session": 81,
+    "iterations_this_session": 82,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
