@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T081: I want to be able to delete schedules from the schedule tab
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T080: the three arrow buttons in the Live tab are hard to understand. what do they do? maybe better icons and some text?
 - **Type:** feature
 - **Priority:** P1
