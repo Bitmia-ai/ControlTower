@@ -2,21 +2,14 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "merge",
-  "phase_status": "in-progress",
-  "task_id": "T083",
+  "phase": "triage",
+  "phase_status": "pending",
+  "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
-  "phase_progress": {
-    "triage": "Selected T083 (P0).",
-    "plan": "Spec written.",
-    "build": "Icons+layout complete. 712 tests unchanged.",
-    "review": "PASS 0C/0M/0m.",
-    "deploy": "712 tests. Build clean. Tagged.",
-    "verify": "PASS: all artifacts confirmed."
-  },
-  "review_cycles": 1,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -33,46 +26,83 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete VERIFY T083 — PASS, all artifacts confirmed (iteration 110)",
+    "last_commit": "redeye: merge T083 — control buttons icons + layout fix (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter110-t083",
     "merge_status": "clean",
-    "notes": "MERGE iter 110: T083 merging."
+    "notes": "MERGE iter 110: T083 merged clean. 712 tests baseline. No worktree (direct main). New T084 filed by CEO."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "VERIFY PASS. MERGE in-progress.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T083 complete: added Play/Square/Pause/RotateCcw/Navigation icons to all 5 control buttons in ControlsCard, removed flex-wrap for proper alignment. 0C/0M/0m review. 712 tests baseline (432f/280p). VERIFY PASS. Merged clean. CEO added T084 (pagination+filtering P0) during cycle.",
       "next": "TRIAGE iter 111",
-      "timestamp": "2026-04-27T09:42:00Z"
+      "timestamp": "2026-04-27T09:19:27Z"
     },
     {
       "iteration": 109,
-      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
-      "outcome": "T079 complete. 712 tests baseline. VERIFY PASS. Merged clean.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T079 complete: added maximumScale:1 + userScalable:false to viewport export in app/layout.tsx. Updated test assertions. Build smoke confirmed. 0C/0M/0m review. 712 tests baseline (432f/280p matches main). VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 110",
       "timestamp": "2026-04-27T09:02:23Z"
     },
     {
       "iteration": 108,
-      "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
-      "outcome": "T077 complete. 9 new tests. Merged clean.",
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T077 complete: per-page metadata.title (8 pages, server wrapper pattern), turbopack.root config, 228KB chunk analysis + docs. 9 new tests (804 total). 0C/0M/1m review. Visual check pass. Merged clean.",
       "next": "TRIAGE iter 109",
       "timestamp": "2026-04-26T19:50:11Z"
     },
     {
       "iteration": 107,
-      "phases": ["TRIAGE","SCHEDULES"],
-      "outcome": "TRIAGE: env healthy. SCHEDULES run.",
-      "next": "TRIAGE then Q-013",
+      "phases": [
+        "TRIAGE",
+        "SCHEDULES"
+      ],
+      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules. SCHEDULES: SCHED-1 + SCHED-2 both run.",
+      "next": "TRIAGE then Q-013 (backlog empty)",
       "timestamp": "2026-04-25T21:44:30Z"
     },
     {
       "iteration": 106,
-      "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
-      "outcome": "T075 complete. S-tier review. Merged clean.",
+      "phases": [
+        "INCORPORATE",
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T075 complete: MarkdownRenderer dynamic import, viewport+metadata, cache headers, perf audit. 13 new tests, 796 total. S-tier review. Merged clean.",
       "next": "TRIAGE iter 107",
       "timestamp": "2026-04-25T21:40:53Z"
     }
