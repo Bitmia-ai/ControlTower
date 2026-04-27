@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useState, useCallback, useMemo, use } from "react";
 import type { ScheduleEntry } from "@/lib/redeye-types";
 import { ScheduleList } from "@/components/schedules/schedule-list";
 import { AddScheduleDialog } from "@/components/schedules/add-schedule-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
+import { ListToolbar } from "@/components/list-toolbar";
+import { Pagination } from "@/components/pagination";
+import { useListFilter } from "@/lib/use-list-filter";
+
+const SCHEDULES_PAGE_SIZE = 15;
 
 function SchedulesSkeleton() {
   return (
@@ -16,6 +21,147 @@ function SchedulesSkeleton() {
           className="h-16 bg-gray-100 dark:bg-zinc-800/60 rounded-lg animate-pulse"
         />
       ))}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Search / filter helpers
+// ---------------------------------------------------------------------------
+
+function scheduleSearchFn(entry: ScheduleEntry, query: string): boolean {
+  return (
+    entry.id.toLowerCase().includes(query) ||
+    entry.title.toLowerCase().includes(query) ||
+    entry.frequency.toLowerCase().includes(query)
+  );
+}
+
+const scheduleFilterFns: Record<
+  string,
+  (entry: ScheduleEntry, v: string) => boolean
+> = {
+  status: (entry, v) => {
+    if (v === "overdue") return entry.isOverdue;
+    if (v === "never-run") return entry.lastRunIso === null && !entry.isOverdue;
+    if (v === "on-schedule")
+      return !entry.isOverdue && entry.lastRunIso !== null;
+    return true;
+  },
+};
+
+const scheduleSortFns: Record<
+  string,
+  (a: ScheduleEntry, b: ScheduleEntry) => number
+> = {
+  "next-due": (a, b) => {
+    if (a.nextDueMs === null && b.nextDueMs === null) return 0;
+    if (a.nextDueMs === null) return 1;
+    if (b.nextDueMs === null) return -1;
+    return a.nextDueMs - b.nextDueMs;
+  },
+  "last-run": (a, b) => {
+    const aMs = a.lastRunIso ? Date.parse(a.lastRunIso) : 0;
+    const bMs = b.lastRunIso ? Date.parse(b.lastRunIso) : 0;
+    return bMs - aMs;
+  },
+  title: (a, b) => a.title.localeCompare(b.title),
+};
+
+// ---------------------------------------------------------------------------
+// FilteredScheduleList — renders the filtered+paginated schedule list
+// ---------------------------------------------------------------------------
+
+function FilteredScheduleList({
+  schedules,
+  projectId,
+}: {
+  schedules: ScheduleEntry[];
+  projectId: string;
+}) {
+  const {
+    pagedItems,
+    page,
+    setPage,
+    pageCount,
+    totalCount,
+    filteredCount,
+    searchQuery,
+    setSearchQuery,
+    filters,
+    setFilter,
+    activeSort,
+    setSort,
+    resetFilters,
+  } = useListFilter({
+    items: schedules,
+    pageSize: SCHEDULES_PAGE_SIZE,
+    defaultSort: "next-due",
+    searchFn: scheduleSearchFn,
+    sortFns: scheduleSortFns,
+    filterFns: scheduleFilterFns,
+  });
+
+  const statusFilterConfig = useMemo(
+    () => ({
+      key: "status",
+      label: "Status",
+      options: [
+        { value: "overdue", label: "Overdue" },
+        { value: "on-schedule", label: "On schedule" },
+        { value: "never-run", label: "Never run" },
+      ],
+      value: filters["status"] ?? null,
+      onChange: (v: string | null) => setFilter("status", v),
+    }),
+    [filters, setFilter]
+  );
+
+  const sortOptions = useMemo(
+    () => [
+      { key: "next-due", label: "Next due" },
+      { key: "last-run", label: "Last run" },
+      { key: "title", label: "Title A–Z" },
+    ],
+    []
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ListToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search schedules…"
+        filters={[statusFilterConfig]}
+        sortOptions={sortOptions}
+        activeSort={activeSort}
+        onSortChange={setSort}
+        totalCount={totalCount}
+        filteredCount={filteredCount}
+      />
+
+      {pagedItems.length === 0 ? (
+        <div className="py-8 text-center text-sm text-gray-500 dark:text-zinc-500">
+          No schedules match your filters.{" "}
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-red-600 dark:text-red-400 hover:underline"
+          >
+            Clear filters
+          </button>
+        </div>
+      ) : (
+        <ScheduleList schedules={pagedItems} projectId={projectId} />
+      )}
+
+      <Pagination
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        pageSize={SCHEDULES_PAGE_SIZE}
+        totalCount={filteredCount}
+      />
     </div>
   );
 }
@@ -92,7 +238,7 @@ export function SchedulesContent({ id }: { id: string }) {
           action={{ label: "+ Add Schedule", onClick: () => setAddOpen(true) }}
         />
       ) : (
-        <ScheduleList schedules={schedules} projectId={id} />
+        <FilteredScheduleList schedules={schedules} projectId={id} />
       )}
 
       <AddScheduleDialog

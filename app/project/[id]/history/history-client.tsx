@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef, use } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo, use } from "react";
 import dynamic from "next/dynamic";
 import { Clock, GitBranch } from "lucide-react";
 
@@ -22,6 +22,12 @@ import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { SessionHistoryRow } from "@/components/history/session-history-row";
 import { SectionHeader } from "@/components/section-header";
+import { ListToolbar } from "@/components/list-toolbar";
+import { Pagination } from "@/components/pagination";
+import { useListFilter } from "@/lib/use-list-filter";
+
+const SESSIONS_PAGE_SIZE = 10;
+const CHANGELOG_PAGE_SIZE = 20;
 
 function TimelineEntry({ entry, projectId }: { entry: ChangelogEntry; projectId: string }) {
   return (
@@ -64,6 +70,173 @@ function SessionsSkeleton() {
           className="h-12 bg-gray-100 dark:bg-zinc-800/60 rounded-xl animate-pulse"
         />
       ))}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// SessionsWithFilter — sessions list with search + sort + pagination
+// ---------------------------------------------------------------------------
+
+function SessionsWithFilter({ sessions }: { sessions: SessionHistoryEntry[] }) {
+  const sessionSearchFn = useCallback(
+    (entry: SessionHistoryEntry, query: string) =>
+      entry.file.toLowerCase().includes(query) ||
+      new Date(entry.startedAt).toLocaleDateString().toLowerCase().includes(query),
+    []
+  );
+
+  const sessionSortFns = useMemo(
+    () => ({
+      newest: (a: SessionHistoryEntry, b: SessionHistoryEntry) =>
+        b.startedAt - a.startedAt,
+      oldest: (a: SessionHistoryEntry, b: SessionHistoryEntry) =>
+        a.startedAt - b.startedAt,
+    }),
+    []
+  );
+
+  const {
+    pagedItems,
+    page,
+    setPage,
+    pageCount,
+    totalCount,
+    filteredCount,
+    searchQuery,
+    setSearchQuery,
+    activeSort,
+    setSort,
+    resetFilters,
+  } = useListFilter({
+    items: sessions,
+    pageSize: SESSIONS_PAGE_SIZE,
+    defaultSort: "newest",
+    searchFn: sessionSearchFn,
+    sortFns: sessionSortFns,
+  });
+
+  const sortOptions = useMemo(
+    () => [
+      { key: "newest", label: "Newest first" },
+      { key: "oldest", label: "Oldest first" },
+    ],
+    []
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ListToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search sessions…"
+        sortOptions={sortOptions}
+        activeSort={activeSort}
+        onSortChange={setSort}
+        totalCount={totalCount}
+        filteredCount={filteredCount}
+      />
+
+      {pagedItems.length === 0 ? (
+        <div className="py-4 text-center text-sm text-gray-500 dark:text-zinc-500">
+          No sessions match.{" "}
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-red-600 dark:text-red-400 hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      ) : (
+        <div>
+          {pagedItems.map((s) => (
+            <SessionHistoryRow key={s.file} entry={s} />
+          ))}
+        </div>
+      )}
+
+      <Pagination
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        pageSize={SESSIONS_PAGE_SIZE}
+        totalCount={filteredCount}
+      />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ChangelogWithFilter — iteration log with search + pagination
+// ---------------------------------------------------------------------------
+
+function ChangelogWithFilter({
+  changelog,
+  projectId,
+}: {
+  changelog: ChangelogEntry[];
+  projectId: string;
+}) {
+  const changelogSearchFn = useCallback(
+    (entry: ChangelogEntry, query: string) =>
+      entry.title.toLowerCase().includes(query) ||
+      (entry.details ? entry.details.toLowerCase().includes(query) : false),
+    []
+  );
+
+  const {
+    pagedItems,
+    page,
+    setPage,
+    pageCount,
+    totalCount,
+    filteredCount,
+    searchQuery,
+    setSearchQuery,
+    resetFilters,
+  } = useListFilter({
+    items: changelog,
+    pageSize: CHANGELOG_PAGE_SIZE,
+    searchFn: changelogSearchFn,
+  });
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ListToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search iteration log…"
+        totalCount={totalCount}
+        filteredCount={filteredCount}
+      />
+
+      {pagedItems.length === 0 ? (
+        <div className="py-4 text-center text-sm text-gray-500 dark:text-zinc-500">
+          No entries match.{" "}
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-red-600 dark:text-red-400 hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      ) : (
+        <div className="mt-2">
+          {pagedItems.map((entry, i) => (
+            <TimelineEntry key={i} entry={entry} projectId={projectId} />
+          ))}
+        </div>
+      )}
+
+      <Pagination
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        pageSize={CHANGELOG_PAGE_SIZE}
+        totalCount={filteredCount}
+      />
     </div>
   );
 }
@@ -173,11 +346,7 @@ export default function HistoryPageClient({
             subtitle="Sessions will appear here once a RedEye session has run."
           />
         ) : (
-          <div>
-            {sessionsNewestFirst.map((s) => (
-              <SessionHistoryRow key={s.file} entry={s} />
-            ))}
-          </div>
+          <SessionsWithFilter sessions={sessionsNewestFirst} />
         )}
       </section>
 
@@ -203,11 +372,7 @@ export default function HistoryPageClient({
             subtitle="History will appear here as features are shipped."
           />
         ) : (
-          <div className="mt-2">
-            {changelog.map((entry, i) => (
-              <TimelineEntry key={i} entry={entry} projectId={id} />
-            ))}
-          </div>
+          <ChangelogWithFilter changelog={changelog} projectId={id} />
         )}
       </section>
     </main>

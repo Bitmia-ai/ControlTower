@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useState, useCallback, useMemo, use } from "react";
 import dynamic from "next/dynamic";
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -18,6 +18,11 @@ const MarkdownRenderer = dynamic(
 import type { SteeringDirective } from "@/lib/redeye-types";
 import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
+import { ListToolbar } from "@/components/list-toolbar";
+import { Pagination } from "@/components/pagination";
+import { useListFilter } from "@/lib/use-list-filter";
+
+const DIRECTIVES_PAGE_SIZE = 20;
 
 function DirectivesSkeleton() {
   return (
@@ -241,6 +246,118 @@ function DirectiveRow({
   );
 }
 
+// ---------------------------------------------------------------------------
+// DirectivesFilter — filtered + paginated list of directives
+// ---------------------------------------------------------------------------
+
+type IndexedDirective = SteeringDirective & { _idx: number };
+
+function DirectivesFilter({
+  directives,
+  projectId,
+  onChanged,
+}: {
+  directives: SteeringDirective[];
+  projectId: string;
+  onChanged: () => void | Promise<void>;
+}) {
+  // Attach original indices so PATCH/DELETE calls use the correct index
+  const indexedDirectives = useMemo<IndexedDirective[]>(
+    () => directives.map((d, i) => ({ ...d, _idx: i })),
+    [directives]
+  );
+
+  const sortFns = useMemo(
+    () => ({
+      newest: (a: IndexedDirective, b: IndexedDirective) => b._idx - a._idx,
+      oldest: (a: IndexedDirective, b: IndexedDirective) => a._idx - b._idx,
+    }),
+    []
+  );
+
+  const searchFn = useCallback(
+    (item: IndexedDirective, query: string) =>
+      item.text.toLowerCase().includes(query),
+    []
+  );
+
+  const {
+    pagedItems,
+    page,
+    setPage,
+    pageCount,
+    totalCount,
+    filteredCount,
+    searchQuery,
+    setSearchQuery,
+    activeSort,
+    setSort,
+    resetFilters,
+  } = useListFilter({
+    items: indexedDirectives,
+    pageSize: DIRECTIVES_PAGE_SIZE,
+    defaultSort: "newest",
+    searchFn,
+    sortFns,
+  });
+
+  const sortOptions = useMemo(
+    () => [
+      { key: "newest", label: "Newest first" },
+      { key: "oldest", label: "Oldest first" },
+    ],
+    []
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ListToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search directives…"
+        sortOptions={sortOptions}
+        activeSort={activeSort}
+        onSortChange={setSort}
+        totalCount={totalCount}
+        filteredCount={filteredCount}
+      />
+
+      {pagedItems.length === 0 ? (
+        <div className="py-4 text-center text-sm text-gray-500 dark:text-zinc-500">
+          No directives match.{" "}
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-red-600 dark:text-red-400 hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {pagedItems.map((d) => (
+            <DirectiveRow
+              key={`${d._idx}-${d.text}`}
+              directive={d}
+              index={d._idx}
+              projectId={projectId}
+              onChanged={onChanged}
+            />
+          ))}
+        </div>
+      )}
+
+      <Pagination
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        pageSize={DIRECTIVES_PAGE_SIZE}
+        totalCount={filteredCount}
+      />
+    </div>
+  );
+}
+
 /**
  * Inner content component — exported for testing without the use(params) wrapper.
  */
@@ -398,17 +515,11 @@ export function SteerContent({ id }: { id: string }) {
             subtitle="Use the form above to send your first directive to the team."
           />
         ) : (
-          <div className="space-y-2">
-            {directives.map((d, i) => (
-              <DirectiveRow
-                key={`${i}-${d.text}`}
-                directive={d}
-                index={i}
-                projectId={id}
-                onChanged={fetchDirectives}
-              />
-            ))}
-          </div>
+          <DirectivesFilter
+            directives={directives}
+            projectId={id}
+            onChanged={fetchDirectives}
+          />
         )}
       </div>
     </div>

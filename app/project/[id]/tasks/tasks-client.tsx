@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useState, useCallback, use, useMemo } from "react";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
 import type { ProjectDetail, TaskItem } from "@/lib/redeye-types";
@@ -10,6 +10,9 @@ import { EmptyState } from "@/components/empty-state";
 import { FetchError } from "@/components/fetch-error";
 import { CollapsibleSection } from "@/components/collapsible-section";
 import { SectionHeader } from "@/components/section-header";
+import { ListToolbar } from "@/components/list-toolbar";
+import { Pagination } from "@/components/pagination";
+import { useListFilter } from "@/lib/use-list-filter";
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-zinc-300",
@@ -27,6 +30,8 @@ const PRIORITY_COLORS: Record<string, string> = {
   P2: "bg-gray-200 text-gray-700 dark:bg-zinc-600 dark:text-zinc-200",
 };
 
+const BACKLOG_PAGE_SIZE = 20;
+const DONE_PAGE_SIZE = 25;
 
 /**
  * Parse the numeric portion of a T-prefixed id. Used for sorting items newest-first.
@@ -59,6 +64,46 @@ export function computeBuckets(
   const wontDoItems = allItems.filter((i) => i.status === "wontdo");
   return { plannedItems, doneItems, wontDoItems };
 }
+
+// ---------------------------------------------------------------------------
+// Search / filter helpers
+// ---------------------------------------------------------------------------
+
+function taskSearchFn(item: TaskItem, query: string): boolean {
+  return (
+    item.id.toLowerCase().includes(query) ||
+    item.title.toLowerCase().includes(query) ||
+    (item.type?.toLowerCase().includes(query) ?? false)
+  );
+}
+
+const taskFilterFns: Record<string, (item: TaskItem, v: string) => boolean> = {
+  priority: (item, v) => item.priority === v,
+  status: (item, v) => item.status === v,
+};
+
+const backlogSortFns: Record<string, (a: TaskItem, b: TaskItem) => number> = {
+  priority: (a, b) => {
+    const pri = (p: string | undefined) =>
+      p === "P0" ? 0 : p === "P1" ? 1 : p === "P2" ? 2 : 3;
+    const dp = pri(a.priority) - pri(b.priority);
+    if (dp !== 0) return dp;
+    return parseTaskIdNumber(b.id) - parseTaskIdNumber(a.id);
+  },
+  newest: (a, b) => parseTaskIdNumber(b.id) - parseTaskIdNumber(a.id),
+  oldest: (a, b) => parseTaskIdNumber(a.id) - parseTaskIdNumber(b.id),
+  title: (a, b) => a.title.localeCompare(b.title),
+};
+
+const doneSortFns: Record<string, (a: TaskItem, b: TaskItem) => number> = {
+  newest: (a, b) => parseTaskIdNumber(b.id) - parseTaskIdNumber(a.id),
+  oldest: (a, b) => parseTaskIdNumber(a.id) - parseTaskIdNumber(b.id),
+  title: (a, b) => a.title.localeCompare(b.title),
+};
+
+// ---------------------------------------------------------------------------
+// Components
+// ---------------------------------------------------------------------------
 
 function ActiveTaskCard({
   item,
@@ -276,6 +321,252 @@ export function WontDoItemRow({
   );
 }
 
+// ---------------------------------------------------------------------------
+// BacklogSection — backlog list with toolbar + pagination
+// ---------------------------------------------------------------------------
+
+function BacklogSection({
+  items,
+  projectId,
+}: {
+  items: TaskItem[];
+  projectId: number;
+}) {
+  const {
+    pagedItems,
+    page,
+    setPage,
+    pageCount,
+    totalCount,
+    filteredCount,
+    searchQuery,
+    setSearchQuery,
+    filters,
+    setFilter,
+    activeSort,
+    setSort,
+    resetFilters,
+  } = useListFilter({
+    items,
+    pageSize: BACKLOG_PAGE_SIZE,
+    defaultSort: "priority",
+    searchFn: taskSearchFn,
+    sortFns: backlogSortFns,
+    filterFns: taskFilterFns,
+  });
+
+  const priorityFilterConfig = useMemo(
+    () => ({
+      key: "priority",
+      label: "Priority",
+      options: [
+        { value: "P0", label: "P0" },
+        { value: "P1", label: "P1" },
+        { value: "P2", label: "P2" },
+      ],
+      value: filters["priority"] ?? null,
+      onChange: (v: string | null) => setFilter("priority", v),
+    }),
+    [filters, setFilter]
+  );
+
+  const statusFilterConfig = useMemo(
+    () => ({
+      key: "status",
+      label: "Status",
+      options: [
+        { value: "pending", label: "Pending" },
+        { value: "planned", label: "Planned" },
+        { value: "in-progress", label: "In Progress" },
+        { value: "blocked", label: "Blocked" },
+      ],
+      value: filters["status"] ?? null,
+      onChange: (v: string | null) => setFilter("status", v),
+    }),
+    [filters, setFilter]
+  );
+
+  const sortOptions = useMemo(
+    () => [
+      { key: "priority", label: "Priority" },
+      { key: "newest", label: "Newest first" },
+      { key: "oldest", label: "Oldest first" },
+      { key: "title", label: "Title A–Z" },
+    ],
+    []
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ListToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search backlog…"
+        filters={[priorityFilterConfig, statusFilterConfig]}
+        sortOptions={sortOptions}
+        activeSort={activeSort}
+        onSortChange={setSort}
+        totalCount={totalCount}
+        filteredCount={filteredCount}
+      />
+
+      {pagedItems.length === 0 ? (
+        <div className="py-8 text-center text-sm text-gray-500 dark:text-zinc-500">
+          No items match your filters.{" "}
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-red-600 dark:text-red-400 hover:underline"
+          >
+            Clear filters
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {pagedItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-l-2 border-l-transparent rounded-xl px-4 py-3 flex items-start gap-3 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-colors"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-gray-900 dark:text-zinc-100 leading-snug">
+                  <TaskId
+                    id={item.id}
+                    projectId={projectId}
+                    className="text-xs text-gray-400 dark:text-zinc-500 mr-1.5"
+                  />
+                  <Link
+                    href={`/project/${projectId}/tasks/${item.id}`}
+                    className="hover:text-red-600 dark:hover:text-red-400 transition"
+                  >
+                    {item.title}
+                  </Link>
+                </p>
+                {item.type && (
+                  <p className="text-xs text-gray-400 dark:text-zinc-600 mt-0.5">{item.type}</p>
+                )}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+                {item.priority && (
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded font-medium ${
+                      PRIORITY_COLORS[item.priority] ?? "bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-zinc-300"
+                    }`}
+                  >
+                    {item.priority}
+                  </span>
+                )}
+                <span
+                  className={`text-xs px-2 py-0.5 rounded ${
+                    STATUS_COLORS[item.status] ?? "bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-zinc-300"
+                  }`}
+                >
+                  {item.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Pagination
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        pageSize={BACKLOG_PAGE_SIZE}
+        totalCount={filteredCount}
+      />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// DoneSection — done list with toolbar + pagination
+// ---------------------------------------------------------------------------
+
+function DoneSection({
+  items,
+  projectId,
+}: {
+  items: TaskItem[];
+  projectId: number;
+}) {
+  const {
+    pagedItems,
+    page,
+    setPage,
+    pageCount,
+    totalCount,
+    filteredCount,
+    searchQuery,
+    setSearchQuery,
+    activeSort,
+    setSort,
+    resetFilters,
+  } = useListFilter({
+    items,
+    pageSize: DONE_PAGE_SIZE,
+    defaultSort: "newest",
+    searchFn: taskSearchFn,
+    sortFns: doneSortFns,
+  });
+
+  const sortOptions = useMemo(
+    () => [
+      { key: "newest", label: "Newest first" },
+      { key: "oldest", label: "Oldest first" },
+      { key: "title", label: "Title A–Z" },
+    ],
+    []
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ListToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search done items…"
+        sortOptions={sortOptions}
+        activeSort={activeSort}
+        onSortChange={setSort}
+        totalCount={totalCount}
+        filteredCount={filteredCount}
+      />
+
+      {pagedItems.length === 0 ? (
+        <div className="py-4 text-center text-sm text-gray-500 dark:text-zinc-500">
+          No items match.{" "}
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-red-600 dark:text-red-400 hover:underline"
+          >
+            Clear search
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-0.5 pb-1">
+          {pagedItems.map((item) => (
+            <DoneItemRow key={item.id} item={item} projectId={projectId} />
+          ))}
+        </div>
+      )}
+
+      <Pagination
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        pageSize={DONE_PAGE_SIZE}
+        totalCount={filteredCount}
+      />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
 export default function TasksPageClient({
   params,
 }: {
@@ -328,14 +619,6 @@ export default function TasksPageClient({
     activeId,
   );
 
-  const sortedBacklog = [...plannedItems].sort((a, b) => {
-    const pri = (p: string | undefined) =>
-      p === "P0" ? 0 : p === "P1" ? 1 : p === "P2" ? 2 : 3;
-    const dp = pri(a.priority) - pri(b.priority);
-    if (dp !== 0) return dp;
-    return parseTaskIdNumber(b.id) - parseTaskIdNumber(a.id);
-  });
-
   const totalCount = allItems.length + (activeItem ? 1 : 0);
 
   return (
@@ -381,14 +664,14 @@ export default function TasksPageClient({
             <ActiveTaskCard item={activeItem} projectId={projectId} />
           )}
 
-          {sortedBacklog.length > 0 && (
+          {plannedItems.length > 0 && (
             <CollapsibleSection
               label="Backlog"
-              count={sortedBacklog.length}
+              count={plannedItems.length}
               open={backlogSubsectionOpen}
               onToggle={() => setBacklogSubsectionOpen((o) => !o)}
             >
-              <TaskSection items={sortedBacklog} projectId={projectId} />
+              <BacklogSection items={plannedItems} projectId={projectId} />
             </CollapsibleSection>
           )}
 
@@ -399,15 +682,7 @@ export default function TasksPageClient({
               open={doneOpen}
               onToggle={() => setDoneOpen((o) => !o)}
             >
-              <div className="flex flex-col gap-0.5 pb-1">
-                {doneItems.map((item) => (
-                  <DoneItemRow
-                    key={item.id}
-                    item={item}
-                    projectId={projectId}
-                  />
-                ))}
-              </div>
+              <DoneSection items={doneItems} projectId={projectId} />
             </CollapsibleSection>
           )}
 
