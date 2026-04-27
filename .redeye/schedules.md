@@ -30,3 +30,12 @@ Each task follows:
   1. Step 1
   2. Step 2
 - **Assigned to:** CTO
+
+### SCHED-3: Security Review
+- **Frequency:** every 2 days
+- **Last run:** 1970-01-01T00:00:00Z
+- **Task:**
+  1. 1. Use claude security review plugin
+  2. 2. review all code for vulnerabilities
+  3. 3. fix them all
+- **Assigned to:** CTO
