@@ -2,57 +2,14 @@
   "schema_version": 1,
   "iteration": 109,
   "started_at": "2026-04-26T05:50:47Z",
-  "phase": "merge",
-  "phase_status": "in-progress",
-  "task_id": "T079",
-  "worktree_path": "/Users/casa/ControlTower/.worktrees/T-79",
-  "worktree_branch": "redeye/T-79",
-  "spec_file": "docs/specs/T079-pwa-viewport-zoom-fix.md",
-  "phase_progress": {
-    "plan": {
-      "selected_item": "T079",
-      "spec_file": "docs/specs/T079-pwa-viewport-zoom-fix.md",
-      "sub_tasks": 2,
-      "sub_task_sizes": "S+S",
-      "questions_posted": 0,
-      "notes": "T079 planned. 2 sub-tasks: T1 add maximumScale+userScalable to viewport in layout.tsx + update test (S), T2 build smoke grep for maximum-scale=1 (S). No CEO questions needed."
-    },
-    "build": {
-      "files_changed": 2,
-      "tests_pass": true,
-      "test_count_before": 712,
-      "test_count_after": 712,
-      "new_passing_tests": 0,
-      "build_clean": true,
-      "build_smoke_pass": true,
-      "notes": "T1: viewport export updated (+maximumScale:1, +userScalable:false). Test updated to assert new fields. Build confirmed clean. Build chunk confirms maximum-scale emitted. Rebased onto main."
-    },
-    "review": {
-      "cycle": 1,
-      "rating": "S",
-      "critical": 0,
-      "major": 0,
-      "minor": 0,
-      "result": "PASS",
-      "notes": "0C/0M/0m PASS."
-    },
-    "deploy": {
-      "tests_pass": true,
-      "test_count": 712,
-      "pass_count": 280,
-      "fail_count": 432,
-      "build_clean": true,
-      "tag": "last-good-deploy-iter109-t079",
-      "notes": "432f/280p same as main baseline. Tagged last-good-deploy-iter109-t079."
-    },
-    "verify": {
-      "result": "PASS",
-      "artifacts_confirmed": true,
-      "test_count": 712,
-      "notes": "Viewport object confirmed. Build emission confirmed. Test 3/3 pass. Env healthy."
-    }
-  },
-  "review_cycles": 1,
+  "phase": "triage",
+  "phase_status": "pending",
+  "task_id": null,
+  "worktree_path": null,
+  "worktree_branch": null,
+  "spec_file": null,
+  "phase_progress": {},
+  "review_cycles": 0,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -69,11 +26,11 @@
     }
   },
   "git_state": {
-    "last_commit": "fix(pwa): add maximumScale and userScalable to viewport to prevent auto-zoom on input focus",
-    "branch": "redeye/T-79",
+    "last_commit": "redeye: merge T079 — PWA viewport zoom fix (iteration 109)",
+    "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "VERIFY iter 109: PASS. Proceeding to MERGE."
+    "notes": "MERGE iter 109: T079 merged clean. 712 tests baseline. Worktree teardown complete."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -85,10 +42,11 @@
         "BUILD",
         "REVIEW",
         "DEPLOY",
-        "VERIFY"
+        "VERIFY",
+        "MERGE"
       ],
-      "outcome": "T079: viewport fix. REVIEW 0C/0M/0m PASS. DEPLOY 712 tests baseline. VERIFY PASS — all acceptance criteria met.",
-      "next": "MERGE T079",
+      "outcome": "T079 complete: added maximumScale:1 + userScalable:false to viewport export in app/layout.tsx. Updated test assertions. Build smoke confirmed. 0C/0M/0m review. 712 tests baseline (432f/280p matches main). VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 110",
       "timestamp": "2026-04-27T09:02:23Z"
     },
     {
@@ -197,7 +155,8 @@
     "T067": 0.20593650000006392,
     "T065": 51.95,
     "T068": 3.44,
-    "T075": 0
+    "T075": 0,
+    "T079": 0
   },
   "item_cost_starts": {
     "T046": 73.40777850000002,

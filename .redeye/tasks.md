@@ -4,7 +4,7 @@
 
 ### T083: the 4 control buttons in the project main screen as misaligned. also only one has an icon
 - **Type:** feature
-- **Priority:** P1
+- **Priority:** P0
 - **Status:** pending
 - **Description:** Can we have the design subagent and front end skill fix the entire project main screen so it looks sleek and not messy?
 
@@ -26,8 +26,9 @@
 ### T079: Pwa auto zooms when I type on my phone to add a task
 - **Type:** feature
 - **Priority:** P1
-- **Status:** planned
+- **Status:** done
 - **Spec:** docs/specs/T079-pwa-viewport-zoom-fix.md
+- **Merged:** iteration 109
 
 ### T078: History tab collapsibles only show some uuid which is useless
 - **Type:** feature
