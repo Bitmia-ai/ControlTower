@@ -19,9 +19,9 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           <Link
             href="/"
             aria-label="Control Tower — go to home"
-            className="flex items-center gap-3 leading-none select-none text-gray-900 dark:text-gray-100"
+            className="flex items-center gap-2 leading-none select-none text-gray-900 dark:text-gray-100"
           >
-            <Logo className="h-12 w-12" />
+            <Logo className="h-14 w-14" />
             <span className="flex flex-col items-start">
               <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
                 Control
