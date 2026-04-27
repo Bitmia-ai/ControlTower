@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, use } from "react";
-import { Terminal, ChevronsUpDown, ArrowDown } from "lucide-react";
+import { Terminal, UnfoldVertical, FoldVertical, ChevronsDown } from "lucide-react";
 import type { ClaudeStreamEvent } from "@/lib/redeye-types";
 import { TranscriptViewer } from "@/components/transcript-viewer";
 import { EmptyState } from "@/components/empty-state";
@@ -267,33 +267,35 @@ export default function LivePageClient({
               <button
                 onClick={() => setForceExpanded((v) => (v === true ? null : true))}
                 title="Expand all cards"
-                className={`p-1.5 rounded-md border transition ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs transition ${
                   forceExpanded === true
                     ? "bg-red-600 border-red-600 text-white"
                     : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
                 }`}
                 aria-label="Expand all"
               >
-                <ChevronsUpDown className="w-3.5 h-3.5" aria-hidden="true" />
+                <UnfoldVertical className="w-3.5 h-3.5" aria-hidden="true" />
+                Expand all
               </button>
 
               <button
                 onClick={() => setForceExpanded((v) => (v === false ? null : false))}
                 title="Collapse all cards"
-                className={`p-1.5 rounded-md border transition ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs transition ${
                   forceExpanded === false
                     ? "bg-red-600 border-red-600 text-white"
                     : "bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200"
                 }`}
                 aria-label="Collapse all"
               >
-                <ChevronsUpDown className="w-3.5 h-3.5 rotate-180" aria-hidden="true" />
+                <FoldVertical className="w-3.5 h-3.5" aria-hidden="true" />
+                Collapse all
               </button>
 
               <button
                 onClick={() => setAutoScroll((v) => !v)}
                 title={autoScroll ? "Disable auto-scroll" : "Enable auto-scroll"}
-                className={`p-1.5 rounded-md border transition ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs transition ${
                   autoScroll
                     ? scrolledAway
                       ? "bg-yellow-500 border-yellow-500 text-white"
@@ -302,7 +304,8 @@ export default function LivePageClient({
                 }`}
                 aria-label={autoScroll ? "Auto-scroll on" : "Auto-scroll off"}
               >
-                <ArrowDown className="w-3.5 h-3.5" aria-hidden="true" />
+                <ChevronsDown className="w-3.5 h-3.5" aria-hidden="true" />
+                Auto-scroll
               </button>
 
               {!connected && (
