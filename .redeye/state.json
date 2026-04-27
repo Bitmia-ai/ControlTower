@@ -3,17 +3,18 @@
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
   "phase": "verify",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
     "triage": "Selected T083 (P0).",
-    "plan": "Spec written.",
+    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md.",
     "build": "Icons+layout complete. 712 tests unchanged.",
     "review": "PASS 0C/0M/0m.",
-    "deploy": "712 tests (432f/280p). Build clean. Tagged iter110-t083."
+    "deploy": "712 tests (432f/280p). Build clean. Tagged iter110-t083.",
+    "verify": "PASS: spec file present, controls-card.tsx has 12 icon references (Play/Square/Pause/RotateCcw/Navigation), tag last-good-deploy-iter110-t083 set, commits in order."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -32,20 +33,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete DEPLOY T083 — 712 tests baseline, build clean, tagged iter110-t083 (iteration 110)",
+    "last_commit": "redeye: start VERIFY T083 (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter110-t083",
     "merge_status": "clean",
-    "notes": "VERIFY iter 110: T083 verifying."
+    "notes": "VERIFY iter 110: T083 PASS."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
-      "outcome": "DEPLOY PASS. VERIFY in-progress.",
+      "outcome": "VERIFY PASS: spec file confirmed, 12 icon refs in controls-card.tsx, deploy tag set, all commits in order.",
       "next": "MERGE T083",
-      "timestamp": "2026-04-27T09:38:00Z"
+      "timestamp": "2026-04-27T09:40:00Z"
     },
     {
       "iteration": 109,
@@ -94,7 +95,7 @@
     "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 109,
+    "last_verify_iteration": 110,
     "last_deploy_iteration": 110,
     "current_iteration": 110,
     "questions_awaiting_ceo": 0,
