@@ -50,3 +50,23 @@ Please add tests for:
 ## Security
 
 See [SECURITY.md](SECURITY.md). Do not open public issues for security bugs.
+
+## Publishing to npm
+
+> The package is publish-ready but not yet on npm. Publishing is a manual step reserved for the repo owner.
+
+1. Ensure you are on the `main` branch with all tests passing and the version bumped in `package.json`.
+2. Toggle `"private"` from `true` to `false` in `package.json` (it is intentionally `true` in the repo to prevent accidental publishes).
+3. Run `npm pack --dry-run` to inspect the tarball contents and verify the size is reasonable (should be well under 2 MB — no `.next/` build artifacts or `node_modules/` are included).
+4. Smoke-test the tarball locally:
+   ```sh
+   npm pack
+   # this creates control-tower-X.Y.Z.tgz in the current directory
+   mkdir /tmp/ct-test && cd /tmp/ct-test
+   npm install /path/to/control-tower-X.Y.Z.tgz
+   cd node_modules/control-tower
+   npm run build
+   npm start          # or: control-tower  (if installed globally)
+   ```
+5. When satisfied: `npm publish --access public`
+6. Restore `"private": true` in `package.json` on `main` after publishing to prevent accidental re-publishes.
