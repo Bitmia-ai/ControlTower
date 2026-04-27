@@ -4,12 +4,18 @@ Next.js 16 App Router dashboard for managing and monitoring RedEye AI coding age
 
 ## Commands
 
-- **Dev:** `npm run dev` — invokes `next dev --webpack` (see "Dev bundler" below; do NOT change to Turbopack)
+- **Dev:** `npm run dev` — invokes `next dev --webpack` (see "Dev bundler" below; do NOT change to Turbopack). **Local-only** — see "Tailscale needs prod" below.
 - **Build:** `npm run build` — uses Turbopack (production builds are fine; no watcher)
-- **Start (prod):** `npm run start`
+- **Start (prod):** `npm run start` — required when serving over Tailscale (see below)
 - **Unit tests:** `npm test` (vitest)
 - **E2E:** `npm run e2e` (Playwright)
 - **Typecheck:** `npm run typecheck`
+
+## Tailscale needs prod
+
+When CT is exposed via `tailscale serve` (so the dashboard is reachable from a phone or other tailnet device), use prod mode (`npm run build && npm run start`). Dev mode does **not** work over Tailscale because Next.js HMR uses a long-lived WebSocket at `/_next/webpack-hmr`, and `tailscale serve` drops WebSocket connections every 10–40 s with close code 1001 ("Going Away") — see [tailscale/tailscale#18827](https://github.com/tailscale/tailscale/issues/18827). The home page hangs on "Loading projects" or shows "0 projects registered" because hydration stalls when HMR can't keep its socket. Local dev (`http://127.0.0.1:3200`) is unaffected and works normally.
+
+There is no `tailscale funnel` workaround that preserves tailnet-only access. The accepted tradeoff: dev for local iteration, prod for tailnet access. There is **no** prod auto-rebuild watcher in this repo by design — re-deploy explicitly with `npm run build && npm run start` after merging changes you want to see live.
 
 ## Dev bundler
 

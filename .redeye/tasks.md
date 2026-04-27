@@ -2,11 +2,11 @@
 
 ## CEO Requests
 
-### T108: fwaefwefsafawf
+### T108: Tasks tab — show count badge of open tasks
 - **Type:** feature
 - **Priority:** P1
 - **Status:** pending
-- **Description:** fasdfasdf
+- **Description:** Add a small count badge next to the "Tasks" label in the project tab nav (components/project-nav.tsx). Count = open tasks (Status: pending or planned, i.e. not done/wontdo/parked). The badge style should match the existing "pending questions" badge on the home page project cards (red pill with white number, smaller font). Show the badge only when count > 0; hide when zero. Live-updates via the same polling that powers the rest of the dashboard. Acceptance: open a project with N pending tasks, the Tasks tab shows "Tasks {N}". Mark one as done via /redeye:tasks done T###; the badge decrements on next poll. Do not double-count items that are in_progress (those belong in WorkingOn, not "open"). Consider whether the same treatment is useful for History/Schedules/Steer tabs (e.g. unread count) but ship Tasks first; file the others as a follow-up only if the pattern proves useful.
 
 ### T107: Task detail page does not render the Description field
 - **Type:** bug

@@ -26,11 +26,11 @@ You run it locally. It binds to `127.0.0.1`, reads your own `~/.claude/projects/
 <table>
   <tr>
     <td align="center"><strong>Mission Control</strong><br/>per-project phase, health, questions, up-next, cost</td>
-    <td align="center"><strong>Backlog detail</strong><br/>sub-tasks, spec, cost, and outcome</td>
+    <td align="center"><strong>Task detail</strong><br/>sub-tasks, spec, cost, and outcome</td>
   </tr>
   <tr>
     <td><img src=".github/assets/mission-control.png" alt="Mission control page" /></td>
-    <td><img src=".github/assets/backlog-detail.png" alt="Backlog detail page" /></td>
+    <td><img src=".github/assets/task-detail.png" alt="Task detail page" /></td>
   </tr>
 </table>
 
@@ -75,10 +75,10 @@ npx next dev --webpack --port 4000
 Control Tower is a thin stateless UI over your local `.redeye/` files.
 
 - **Project list** — reads `~/.redeye/config.json` (user-editable, dynamic, no hardcoding).
-- **Per-project state** — reads `.redeye/state.json`, `backlog.md`, `inbox.md`, `status.md`, `changelog.md`, `feedback.md` on each poll. The dashboard never writes these files except through explicit user actions (backlog add, steer, answer).
+- **Per-project state** — reads `.redeye/state.json`, `tasks.md`, `inbox.md`, `status.md`, `changelog.md`, `feedback.md` on each poll. The dashboard never writes these files except through explicit user actions (add task, steer, answer).
 - **Session lifecycle** — `session-manager.ts` spawns and tracks a Claude Code process per project. Stop detection, auto-restart on crash, stall detection (no transcript activity for 10 min), and SIGTERM→SIGKILL cleanup on stop.
 - **Live tab** — tails the most recent Claude transcript file under `~/.claude/projects/<project-slug>/`, parses the JSONL stream, renders tool calls, thoughts, and inter-round messages as a readable timeline.
-- **Cost tracking** — aggregates `cost_usd` from transcript events, per-session and per-task (snapshot recorded when a backlog item merges).
+- **Cost tracking** — aggregates `cost_usd` from transcript events, per-session and per-task (snapshot recorded when a task merges).
 
 All process spawning uses `spawn()` with argument arrays. No shell-string interpolation anywhere.
 
@@ -92,7 +92,7 @@ From the dashboard you can:
 | Stop | SIGTERM the CTO process, falls back to SIGKILL after 10s |
 | Force stop | Immediate SIGKILL (for unresponsive sessions) |
 | Pause | Writes `PAUSE` to `.redeye/steering.md` — RedEye pauses after the current feature cycle |
-| Add backlog | Type your vague one-liner, RedEye's plugin expands it into a full entry |
+| Add task | Type your vague one-liner, RedEye's plugin expands it into a full entry |
 | Steer | Adds a directive to `.redeye/steering.md` picked up at the start of every iteration |
 | Answer | Writes your answer to `.redeye/inbox.md` — RedEye incorporates it next iteration |
 | Live | Tails the Claude transcript in real time |
@@ -127,7 +127,7 @@ Sessions stop. When you restart Control Tower and click Start on a project, RedE
 No. No analytics, no telemetry, no crash reporting. Control Tower talks to Anthropic's API only through the Claude Code processes it spawns (which do what they normally do).
 
 **How does cost tracking work?**
-It parses `cost_usd` fields from the Claude transcript JSONL files in `~/.claude/projects/`. Per-session cost is the sum within the current process's transcript; total cost is the sum across all transcripts for a project. Per-task cost is snapshotted when a backlog item transitions to `done`.
+It parses `cost_usd` fields from the Claude transcript JSONL files in `~/.claude/projects/`. Per-session cost is the sum within the current process's transcript; total cost is the sum across all transcripts for a project. Per-task cost is snapshotted when a task transitions to `done`.
 
 **Can I use it without RedEye?**
 No — Control Tower is specifically a RedEye management layer. For generic Claude Code orchestration, use something else.
@@ -137,12 +137,12 @@ No — Control Tower is specifically a RedEye management layer. For generic Clau
 ```
 app/                     # Next.js App Router routes + API handlers
 ├── page.tsx             # Home (project list + cards)
-├── project/[id]/        # Per-project mission control, backlog, history, live tabs
+├── project/[id]/        # Per-project mission control, tasks, history, live tabs
 └── api/projects/...     # REST endpoints — reads/writes .redeye/*.md, manages sessions
 
 lib/
 ├── projects.ts               # Project registry (~/.redeye/config.json)
-├── redeye-files.ts           # Parsers for backlog.md, state.json, inbox.md, etc.
+├── redeye-files.ts           # Parsers for tasks.md, state.json, inbox.md, etc.
 ├── redeye-parsers.ts         # Changelog parser, inbox parser, deduplication
 ├── session-manager.ts        # Spawns/tracks CTO processes, stall detection, auto-restart
 ├── transcript-file-resolver.ts  # Maps project path → most recent JSONL
@@ -150,7 +150,7 @@ lib/
 
 components/
 ├── mission-control/     # Per-project cards (Working On, Health, Cost, etc.)
-├── add-backlog-dialog.tsx, steer-dialog.tsx, answer-modal.tsx
+├── add-task-dialog.tsx, steer-dialog.tsx, answer-modal.tsx
 └── ...
 ```
 
