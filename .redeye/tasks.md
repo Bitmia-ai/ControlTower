@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T082: Recently shipped in the main project screen should show the last N tasks shipped. now it shows old ones it feels. It should also add X min ago, or X hours ago, or X days ago
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T081: I want to be able to delete schedules from the schedule tab
 - **Type:** feature
 - **Priority:** P1
