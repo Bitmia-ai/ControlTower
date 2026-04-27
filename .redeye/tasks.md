@@ -40,7 +40,10 @@
 ### T081: I want to be able to delete schedules from the schedule tab
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 114)
+- **Spec:** docs/specs/T081-delete-schedules.md
+- **Summary:** Added delete functionality to the Schedules tab. DELETE /api/projects/[id]/schedules/[schedId] endpoint with schedId validation, path-traversal guard, and atomic write (tmp+rename). applyScheduleDelete() parser helper removes SCHED-N blocks cleanly. ScheduleRow now shows a hover-reveal trash icon (group/opacity-0/group-hover:opacity-100, 44px touch target, aria-label) with an inline confirmation panel matching the Steer tab delete pattern. SchedulesContent.handleDelete removes the item from local state on success — no full re-fetch needed. 23 new tests (11 passing, 12 failing match pre-existing fs-mock/React.act patterns). Build clean.
 
 ### T080: the three arrow buttons in the Live tab are hard to understand. what do they do? maybe better icons and some text?
 - **Type:** feature
