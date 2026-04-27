@@ -47,7 +47,12 @@ afterEach(() => {
 
 describe("RootLayout metadata exports", () => {
   it("exports viewport with device-width and initialScale 1", () => {
-    expect(viewport).toMatchObject({ width: "device-width", initialScale: 1 });
+    expect(viewport).toMatchObject({
+      width: "device-width",
+      initialScale: 1,
+      maximumScale: 1,
+      userScalable: false,
+    });
   });
 
   it("exports metadata with a title template and default", () => {
