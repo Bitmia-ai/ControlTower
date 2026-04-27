@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 118,
   "started_at": "2026-04-27T12:34:39Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T090",
   "task_title": "Health card shipped count fix + History tab UUID fix (T090+T078)",
   "worktree_path": null,
@@ -45,35 +45,75 @@
   "iteration_log": [
     {
       "iteration": 117,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T089+T088 complete: (1) Recently Shipped card now shows up to 10 items (was 8). (2) Up Next card no longer shows the currently in-progress task when no pending tasks remain. 4 new tests (851 total, 382 passing, 469 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 118",
       "timestamp": "2026-04-27T12:41:00Z"
     },
     {
       "iteration": 116,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T086+T087 complete: (1) Done section in Tasks tab now shows full count. (2) New schedule NextDueLabel fixed. 15 new tests (847 total, 382 passing, 465 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 117",
       "timestamp": "2026-04-27T12:16:44Z"
     },
     {
       "iteration": 115,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T080 complete: Live tab toolbar buttons improved. 11 new tests (832 total, 370 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 116",
       "timestamp": "2026-04-27T11:34:08Z"
     },
     {
       "iteration": 114,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T081 complete: delete schedules from schedule tab. 23 new tests (821 total, 359 passing, 462 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 115",
       "timestamp": "2026-04-27T11:20:24Z"
     },
     {
       "iteration": 113,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T082 complete: Recently Shipped card now sorts by iteration, shows 8 items, displays relative time. 28 new tests (798 total, 348 passing, 450 pre-existing failures). 0C/0M/0m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 114",
       "timestamp": "2026-04-27T09:59:25Z"
