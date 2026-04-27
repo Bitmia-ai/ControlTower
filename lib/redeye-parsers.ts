@@ -52,6 +52,39 @@ function pickField(body: string, fieldName: string): string | undefined {
   return match?.[1]?.trim();
 }
 
+/**
+ * Pick a potentially multi-line field value from a `- **FieldName:**` marker.
+ *
+ * The description field in tasks.md can span multiple paragraphs and contain
+ * markdown (lists, code blocks, links). It continues from the field marker
+ * until the next `- **AnyField:**` marker or the next `### T` heading.
+ *
+ * Strategy:
+ * 1. Find the `- **FieldName:**` marker in body.
+ * 2. Capture everything from the end of the marker until the next
+ *    `- **` field marker or `### ` heading boundary.
+ * 3. Trim and return.
+ */
+function pickMultilineField(body: string, fieldName: string): string | undefined {
+  // Find the marker "- **FieldName:**"
+  const markerRe = new RegExp(`- \\*\\*${fieldName}:\\*\\*`);
+  const markerMatch = body.match(markerRe);
+  if (!markerMatch || markerMatch.index === undefined) return undefined;
+
+  // Slice body from just after the marker
+  const afterMarker = body.slice(markerMatch.index + markerMatch[0].length);
+
+  // Find the boundary: next "- **" field or "### " heading
+  const boundaryRe = /\n- \*\*|\n### /;
+  const boundaryMatch = afterMarker.match(boundaryRe);
+  const raw = boundaryMatch
+    ? afterMarker.slice(0, boundaryMatch.index)
+    : afterMarker;
+
+  const trimmed = raw.trim();
+  return trimmed || undefined;
+}
+
 export function parseTasks(content: string): TaskItem[] {
   const sectionMap: Array<{
     header: string;
@@ -116,6 +149,7 @@ export function parseTasks(content: string): TaskItem[] {
         status,
         section,
         details,
+        description: pickMultilineField(body, "Description"),
         spec: pickField(body, "Spec"),
         summary: pickField(body, "Summary"),
         reason: pickField(body, "Reason"),

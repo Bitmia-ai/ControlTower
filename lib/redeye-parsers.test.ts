@@ -212,6 +212,93 @@ describe("parseTasks", () => {
     expect(items[0].summary).toBe("A summary text, not a reason.");
     expect(items[0].reason).toBeUndefined();
   });
+
+  // ---- Description field (T107) ----
+
+  it("T107: parses single-line Description field", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T107: Fix description\n- **Type:** bug\n- **Status:** pending\n- **Description:** The task detail page does not show the description field.\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toBe(
+      "The task detail page does not show the description field."
+    );
+  });
+
+  it("T107: parses multi-paragraph Description field", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T107: Multi-paragraph task
+- **Type:** bug
+- **Status:** pending
+- **Description:** First paragraph describes the problem.
+
+Second paragraph gives more context.
+
+Third paragraph lists acceptance criteria.
+- **Priority:** P0
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toContain("First paragraph describes the problem.");
+    expect(items[0].description).toContain("Second paragraph gives more context.");
+    expect(items[0].description).toContain("Third paragraph lists acceptance criteria.");
+  });
+
+  it("T107: description capture stops at next field marker", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T107: Task with description and other fields
+- **Type:** feature
+- **Status:** pending
+- **Description:** This is the description content.
+It spans multiple lines.
+- **Spec:** docs/specs/T107.md
+- **Summary:** Short summary.
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toContain("This is the description content.");
+    // Should NOT include the Spec or Summary field text
+    expect(items[0].description).not.toContain("docs/specs/T107.md");
+    expect(items[0].description).not.toContain("Short summary.");
+    // Spec and summary should still be parsed correctly
+    expect(items[0].spec).toBe("docs/specs/T107.md");
+    expect(items[0].summary).toBe("Short summary.");
+  });
+
+  it("T107: description is undefined when field is absent", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: No description field\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toBeUndefined();
+  });
+
+  it("T107: description with markdown list content", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T200: Task with list in description
+- **Type:** feature
+- **Status:** pending
+- **Description:** Steps to reproduce:
+  1. Open the task detail page.
+  2. Note the description is missing.
+  Fix: extend the parser.
+- **Priority:** P0
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toContain("Steps to reproduce:");
+    expect(items[0].description).toContain("Open the task detail page.");
+    expect(items[0].description).toContain("Fix: extend the parser.");
+    // Priority field should not be captured as part of description
+    expect(items[0].priority).toBe("P0");
+  });
 });
 
 // ---------------------------------------------------------------------------

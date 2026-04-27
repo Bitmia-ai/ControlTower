@@ -99,17 +99,8 @@ describe("T057 responsive classes", () => {
     expect(startBtn?.className).toContain("min-h-[44px]");
   });
 
-  it("ControlsCard button row uses flex-wrap for narrow viewports", () => {
-    const { container } = render(
-      <ControlsCard
-        running={false}
-        onStart={vi.fn()}
-        onStop={vi.fn()}
-        onPause={vi.fn()}
-      />
-    );
-    // Look for any flex-wrap container inside the controls card
-    const wrappers = container.querySelectorAll("div.flex.flex-wrap");
-    expect(wrappers.length).toBeGreaterThan(0);
-  });
+  // T097: The "ControlsCard button row uses flex-wrap" test was deleted because
+  // T083 intentionally removed flex-wrap from ControlsCard to fix alignment at
+  // the 300px right-rail width. Wrapping at 300px caused layout problems. The
+  // responsive intent is served by the min-h-[44px] touch-target test above.
 });

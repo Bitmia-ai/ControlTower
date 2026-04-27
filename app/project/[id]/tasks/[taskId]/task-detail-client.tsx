@@ -362,6 +362,17 @@ export default function TaskDetailClient({
               />
             )}
 
+            {item.description && (
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-zinc-800">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
+                  Description
+                </h3>
+                <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none text-gray-700 dark:text-zinc-300">
+                  <MarkdownRenderer>{item.description}</MarkdownRenderer>
+                </div>
+              </div>
+            )}
+
             {item.details && (
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-zinc-800">
                 <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
