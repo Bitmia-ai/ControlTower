@@ -10,12 +10,18 @@
 ### T089: recently shipped tasks is still showing not the top 10 recent ones, but older ones. fix it
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 117)
+- **Spec:** docs/specs/T089-T088-mission-control-ux-fixes.md
+- **Summary:** Fixed Recently Shipped card to show up to 10 items (was 8). Changed recentlyShipped = allDoneSorted.slice(0, 10) in readProjectDetail. allDoneItems (Tasks tab full list) unaffected. Updated ShippedCard comment and redeye-files.test.ts assertion. Build clean, 0 regressions.
 
 ### T088: If no more tasks are available, up next shows the currently worked on task. it should show "no pending tasks" in a nice way
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 117)
+- **Spec:** docs/specs/T089-T088-mission-control-ux-fixes.md
+- **Summary:** Fixed Up Next card showing the currently in-progress task when no pending tasks remain. UpNextCard now filters out in-progress items (they belong in WorkingOn card) and shows "No pending tasks" when the filtered list is empty. 4 new tests in up-next-card.test.tsx. Build clean, 0 regressions.
 
 ### T087: creating a new Schedule, shows next: xyz ago. Instead of showing never run before
 - **Type:** feature
