@@ -120,7 +120,7 @@
     }
   ],
   "counters": {
-    "next_q_id": 14,
+    "next_q_id": 15,
     "next_cred_id": 1,
     "next_sched_id": 2,
     "next_task_id": 109
@@ -140,7 +140,7 @@
     "last_verify_iteration": 127,
     "last_deploy_iteration": 127,
     "current_iteration": 127,
-    "questions_awaiting_ceo": 0,
+    "questions_awaiting_ceo": 1,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
     "full_regression_overdue": false,

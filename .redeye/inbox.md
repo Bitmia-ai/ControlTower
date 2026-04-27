@@ -2,7 +2,21 @@
 
 ## Questions (Open)
 
-_(No open questions.)_
+### Q-014: Backlog exhausted — what should we build next?
+- **From:** CTO (MERGE iter 127)
+- **Context:** All actionable backlog items are now done. T104 (npm pack prep) just shipped. T095 (demo gif) is permanently skipped — requires manual screen recording. The backlog is otherwise fully exhausted across 127 iterations.
+- **Most recently shipped (iter 127):** T104 — npm package prep: bin/control-tower.mjs CLI launcher, package.json files whitelist + bin entry + prepublishOnly script, CONTRIBUTING.md Publishing section. Package is publish-ready at 500.8 kB / 1.4 MB. Toggle private:false and run `npm publish --access public` when ready.
+- **Question:** What features, improvements, or new capabilities should we tackle next?
+- **Options (suggestions):**
+  1. New dashboard features — filter/sort on backlog/tasks page, bulk actions, global cost overview across all projects
+  2. Developer experience — one-command setup script (`npx control-tower init`), better onboarding wizard, guided first-run experience
+  3. Observability — per-task cost breakdown chart, time-spent metrics, phase duration history
+  4. RedEye integration depth — show spec file content inline, link to worktree diffs, show per-phase agent output
+  5. Actually publish to npm — toggle private:false, run `npm publish --access public`, verify the install experience end-to-end
+  6. Performance improvements — explore Turbopack workaround, page load metrics, streaming improvements
+  7. Something else entirely — your call
+- **Default (7-day):** If no response received, proceed with option 2 (developer experience / one-command setup).
+- **Asked:** 2026-04-27 (iter 127)
 
 ## Credentials Needed
 
