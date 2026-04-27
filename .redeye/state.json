@@ -3,7 +3,7 @@
   "iteration": 118,
   "started_at": "2026-04-27T12:34:39Z",
   "phase": "deploy",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T090",
   "task_title": "Health card shipped count fix + History tab UUID fix (T090+T078)",
   "worktree_path": null,
@@ -14,7 +14,7 @@
     "plan": "Spec written: docs/specs/T090-T078-health-card-count-history-uuid-fix.md. 5 sub-tasks (all S). T090: rename recentlyShippedCount->totalShippedCount in HealthCard, pass allDoneItems.length from mission-control-client. T078: improve SessionHistoryRow expanded section (full phases when overflow, end time, de-emphasize UUID). Add tests for both.",
     "build": "Complete: 4 files changed. T090: renamed recentlyShippedCount->totalShippedCount in HealthCard, pass allDoneItems.length (not recentlyShipped.length) in mission-control-client.tsx \u2014 health card now shows total done count (e.g. 82 shipped) not session-capped count (10 max). T078: improved SessionHistoryRow expanded section \u2014 shows full phase list (with count header) when overflow > 0, Started/Ended timestamps, UUID de-emphasized as tiny font. New: health-card.test.tsx (10 tests), 5 new tests in session-history-row.test.tsx. 866 total tests (382 passing, 484 failing \u2014 +15 new tests all follow pre-existing React.act jsdom failure pattern). Build clean.",
     "review": "0C/0M/0m. Security: T090 prop rename + existing allDoneItems field \u2014 no new I/O or user input. T078 client-side display changes on existing SessionHistoryEntry data \u2014 no new I/O or user input. Systems: allDoneItems already in ProjectDetail type from T086; no other HealthCard callers. SessionHistoryRow pure display, no new fetch. Build clean. TypeScript confirms prop contract. UX: Health card now shows true total (e.g. 82 shipped). History expanded section shows Start/End times + full phase list with count header; UUID de-emphasized. No findings.",
-    "deploy": "",
+    "deploy": "Build clean. NODE_ENV=production next build. Compiled successfully in ~1.79s. 0 errors, 0 new warnings (cache-control and turbopack root warnings are pre-existing). totalShippedCount prop change type-checks correctly. SessionHistoryRow expanded section changes type-check correctly.",
     "verify": "",
     "merge": ""
   },
