@@ -2,14 +2,15 @@
   "schema_version": 1,
   "iteration": 113,
   "started_at": "2026-04-27T09:47:12Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T082",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T082-recently-shipped-relative-time.md",
   "phase_progress": {
-    "triage": "Selected T082: Recently Shipped relative time. P1, pending. Shows old items without relative timestamps."
+    "triage": "Selected T082: Recently Shipped relative time. P1, pending.",
+    "plan": "In progress: writing spec for T082"
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -28,11 +29,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge T085 — WorkingOn card phase case fix (iteration 112)",
+    "last_commit": "redeye: complete TRIAGE — selected T082 Recently Shipped relative time (iteration 113)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter112-t085",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 113: selected T082 (Recently Shipped relative time, P1)."
+    "notes": "PLAN iter 113: T082 — Recently Shipped relative time."
   },
   "blocked_items": [],
   "iteration_log": [
