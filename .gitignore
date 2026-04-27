@@ -58,6 +58,8 @@ next-env.d.ts
 *.png
 !.github/assets/*.png
 !public/**/*.png
+!app/icon*.png
+!app/apple-icon*.png
 test-results/
 screenshots/
 .playwright-mcp/
