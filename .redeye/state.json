@@ -3,13 +3,14 @@
   "iteration": 112,
   "started_at": "2026-04-27T09:20:52Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T085",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T085-working-on-card-phase-case-fix.md",
   "phase_progress": {
-    "triage": "complete — selected T085 (WorkingOn card phase case bug, P1)"
+    "triage": "complete — selected T085 (WorkingOn card phase case bug, P1)",
+    "plan": "complete — spec written: 3 sub-tasks (S/S/S). Fix 1: normalizePhase() in working-on-card. Fix 2: activeTaskTitle prop. Fix 3: tests."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -28,19 +29,19 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start TRIAGE (iteration 112)",
+    "last_commit": "redeye: plan T085 — WorkingOn card phase case fix",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter111-t084",
     "merge_status": "clean",
-    "notes": "iter 112: T085 selected — WorkingOn card phase case bug."
+    "notes": "iter 112: T085 planned. 3 sub-tasks: normalizePhase, activeTaskTitle prop, tests."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 112,
-      "phases": ["TRIAGE"],
-      "outcome": "TRIAGE: selected T085 — WorkingOn card stuck on Starting up (phase case mismatch + missing task_title). Env healthy, no schedules/questions pending.",
-      "next": "PLAN T085",
+      "phases": ["TRIAGE", "PLAN"],
+      "outcome": "TRIAGE: selected T085 — WorkingOn card stuck on Starting up. PLAN: spec written, 3 S sub-tasks.",
+      "next": "BUILD T085",
       "timestamp": "2026-04-27T09:37:56Z"
     },
     {
