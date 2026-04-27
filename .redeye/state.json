@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "iteration": 109,
-  "started_at": "2026-04-26T05:50:47Z",
+  "iteration": 110,
+  "started_at": "2026-04-27T09:09:04Z",
   "phase": "triage",
-  "phase_status": "pending",
+  "phase_status": "in-progress",
   "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
@@ -34,6 +34,13 @@
   },
   "blocked_items": [],
   "iteration_log": [
+    {
+      "iteration": 110,
+      "phases": ["TRIAGE"],
+      "outcome": "TRIAGE in-progress",
+      "next": "PLAN T083",
+      "timestamp": "2026-04-27T09:09:04Z"
+    },
     {
       "iteration": 109,
       "phases": [
@@ -90,31 +97,16 @@
       "outcome": "INCORPORATE: Q-012 resolved, T075 added. TRIAGE: env healthy, 783/783 tests, selected T075. PLAN: spec written. BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated — 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed. MERGE: T075 marked done.",
       "next": "TRIAGE iter 107",
       "timestamp": "2026-04-25T21:40:53Z"
-    },
-    {
-      "iteration": 105,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "T068 live tab polish — full cycle complete. 783/783 tests pass. Backlog exhausted, filed Q-012.",
-      "next": "waiting_for_ceo (Q-012 filed)",
-      "timestamp": "2026-04-25T23:20:00Z"
     }
   ],
   "counters": {
     "next_q_id": 14,
     "next_cred_id": 1,
     "next_sched_id": 2,
-    "next_task_id": 80
+    "next_task_id": 85
   },
   "cost_tracking": {
-    "iterations_this_session": 82,
+    "iterations_this_session": 83,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -127,7 +119,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 109,
     "last_deploy_iteration": 109,
-    "current_iteration": 109,
+    "current_iteration": 110,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
