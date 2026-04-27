@@ -21,7 +21,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
             aria-label="Control Tower — go to home"
             className="flex items-center gap-3 leading-none select-none text-gray-900 dark:text-gray-100"
           >
-            <Logo className="h-9 w-9" />
+            <Logo className="h-12 w-12" />
             <span className="flex flex-col items-start">
               <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
                 Control
