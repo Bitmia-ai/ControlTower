@@ -59,3 +59,4 @@ describe("Live page metadata (T077)", () => {
     expect((mod.metadata as { title: string }).title).toBe("Live");
   });
 });
+
