@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 116,
   "started_at": "2026-04-27T11:35:11Z",
-  "phase": "build",
+  "phase": "review",
   "phase_status": "in-progress",
   "task_id": "T086",
   "task_title": "Pagination total counts show only visible count",
@@ -12,7 +12,7 @@
   "phase_progress": {
     "triage": "Selected T086 (P1): Pagination total counts shows only visible count, not total count. Root cause: readProjectDetail slices recentlyShipped to 8 items; tasks-client builds allItems from recentlyShipped so Done section only shows up to 8 done items. Fix: expose allDoneItems separately in readProjectDetail and use it in tasks-client. T087 (P1, new schedule shows wrong Next time) and T078 (P1, history UUIDs) also pending.",
     "plan": "Spec written: docs/specs/T086-pagination-total-count-fix.md. 4 sub-tasks (all S). Add allDoneItems to ProjectDetail type, populate in readProjectDetail (unsliced), use in tasks-client. Also fix T087 (buildScheduleBlock epoch Last run → dash). Tests: 4 new in redeye-files.test.ts, 2 in page.test.tsx, 1 in schedule-list.test.tsx, updated assertions in route.test.ts.",
-    "build": "",
+    "build": "Complete: 9 files changed. T086: allDoneItems added to ProjectDetail type, readProjectDetail computes full sorted+enriched done list and slices to recentlyShipped. tasks-client uses allDoneItems. T087: buildScheduleBlock uses Last run: — (not epoch). ScheduleRow shows — for Next when never run. 847 tests (382 passing, 465 failing). +12 new passing vs iter 115 baseline. Build clean.",
     "review": "",
     "deploy": "",
     "verify": "",
