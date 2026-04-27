@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 120,
   "started_at": "2026-04-27T12:58:22Z",
-  "phase": "deploy",
+  "phase": "verify",
   "phase_status": "complete",
   "task_id": "T091",
   "task_title": "Refresh README screenshots (home, mission-control, task-detail)",
@@ -14,8 +14,8 @@
     "plan": "Spec written: docs/specs/T091-T096-readme-screenshots-codeowners.md. 4 sub-tasks: S1-S3 Playwright screenshots (home/mission-control/task-detail at 1200px dark mode), S4 CODEOWNERS. No source code changes.",
     "build": "Complete: 4 files changed. T091: home.png refreshed (44KB), mission-control.png refreshed (127KB), task-detail.png created (88KB). T096: .github/CODEOWNERS created (* @Bitmia-ai). 870 tests unchanged.",
     "review": "0C/0M/0m. Docs+binary-only change. CODEOWNERS syntax correct. All 3 PNGs valid and match README references exactly.",
-    "deploy": "Build clean. Compiled successfully in 2.2s. 0 errors, 1 pre-existing warning (Cache-Control headers). Pure docs/binary change — no source code affected.",
-    "verify": "",
+    "deploy": "Build clean. Compiled successfully in 2.2s. 0 errors, 1 pre-existing warning (Cache-Control headers).",
+    "verify": "PASS. 870 tests (387 passing, 483 failing). 0 regressions. No source code changed — test suite identical to iter 119 baseline.",
     "merge": ""
   },
   "review_cycles": 0,
@@ -35,20 +35,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete REVIEW T091+T096 — 0C/0M/0m, start DEPLOY (iteration 120)",
+    "last_commit": "redeye: complete DEPLOY T091+T096 — build clean 2.2s, start VERIFY (iteration 120)",
     "branch": "feat/T091-T096-readme-screenshots-codeowners",
     "last_good_deploy_tag": "last-good-deploy-iter119-T107-T097",
     "merge_status": "clean",
-    "notes": "Iter 120: DEPLOY clean. Next: VERIFY."
+    "notes": "Iter 120: VERIFY PASS. Next: MERGE."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 120,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY"],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
       "outcome": "in-progress",
-      "next": "VERIFY",
-      "timestamp": "2026-04-27T13:04:08Z"
+      "next": "MERGE",
+      "timestamp": "2026-04-27T13:07:07Z"
     },
     {
       "iteration": 119,
@@ -94,10 +94,10 @@
   "health": {
     "confidence": "HIGH",
     "env_status": "healthy",
-    "iterations_since_last_deploy": 1,
+    "iterations_since_last_deploy": 0,
     "last_deploy_result": "success",
     "last_verify_result": "pass",
-    "last_verify_iteration": 119,
+    "last_verify_iteration": 120,
     "last_deploy_iteration": 120,
     "current_iteration": 120,
     "questions_awaiting_ceo": 0,
