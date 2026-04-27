@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T080: the three arrow buttons in the Live tab are hard to understand. what do they do? maybe better icons and some text?
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T079: Pwa auto zooms when I type on my phone to add a task
 - **Type:** feature
 - **Priority:** P1
