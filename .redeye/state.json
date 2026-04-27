@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 119,
   "started_at": "2026-04-27T12:44:42Z",
-  "phase": "review",
+  "phase": "deploy",
   "phase_status": "in-progress",
   "task_id": "T107",
   "task_title": "Task detail page does not render the Description field (bundled: T107 + T097)",
@@ -10,10 +10,10 @@
   "worktree_branch": "feature/T107-description-field",
   "spec_file": "docs/specs/T107-T097-description-field-responsive-test.md",
   "phase_progress": {
-    "triage": "Selected T107 (P0) + T097 (P0) bundled: (1) T107: Parser in lib/redeye-parsers.ts does not extract **Description:** field — all task detail pages show no description. Fix: extend parser, thread through API + TaskItem type, render on detail page with markdown. (2) T097: Stale responsive test for ControlsCard flex-wrap (removed in T083) — either delete test or fix. Both are P0 bugs, both mechanical, good bundle.",
-    "plan": "Spec written: docs/specs/T107-T097-description-field-responsive-test.md. 5 sub-tasks for T107 (parser pickMultilineField, TaskItem.description field, parseTasks includes it, task-detail-client renders it, 5 parser unit tests). 1 sub-task for T097 (delete stale flex-wrap test). All S/XS tier.",
-    "build": "Complete: 5 files changed. T107: added pickMultilineField() to lib/redeye-parsers.ts (captures multi-paragraph descriptions, stops at next field marker), added description?: string to TaskItem type, added description rendering to task-detail-client.tsx (below Summary section, via MarkdownRenderer). T097: deleted stale flex-wrap test from responsive.test.tsx — T083 intentionally removed flex-wrap, touch-target test (min-h-[44px]) still present. 5 new passing parser tests. 870 total tests (387 passing, 483 failing — net +5 passing, -1 failing vs iter 118 baseline).",
-    "review": "",
+    "triage": "Selected T107 (P0) + T097 (P0) bundled: parser bug + stale test.",
+    "plan": "Spec written: docs/specs/T107-T097-description-field-responsive-test.md.",
+    "build": "Complete: 5 files changed. T107: pickMultilineField() added, description?: string in TaskItem, Description section rendered in task-detail-client.tsx. T097: stale flex-wrap test deleted. 870 total tests (387 passing, 483 failing).",
+    "review": "0C/0M/0m. Security: pickMultilineField is pure, fieldName is hardcoded literal, MarkdownRenderer sanitizes HTML. Systems: description? is optional — backwards compatible, GET API returns full TaskItem automatically. UX: Description section positioned below Summary, before Details, consistent styling, only shown when truthy. No findings.",
     "deploy": "",
     "verify": "",
     "merge": ""
@@ -39,16 +39,16 @@
     "branch": "feature/T107-description-field",
     "last_good_deploy_tag": "last-good-deploy-iter118-T090-T078",
     "merge_status": "clean",
-    "notes": "BUILD complete. REVIEW starting."
+    "notes": "REVIEW clean. DEPLOY starting."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 119,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW"],
-      "outcome": "BUILD complete: T107+T097 implemented. 870 tests (387 passing, 483 pre-existing failures). REVIEW: in-progress",
-      "next": "DEPLOY",
-      "timestamp": "2026-04-27T12:52:07Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY"],
+      "outcome": "REVIEW: 0C/0M/0m clean. DEPLOY: in-progress",
+      "next": "VERIFY",
+      "timestamp": "2026-04-27T12:53:00Z"
     },
     {
       "iteration": 118,
