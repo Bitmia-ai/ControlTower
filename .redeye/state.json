@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 116,
   "started_at": "2026-04-27T11:35:11Z",
-  "phase": "deploy",
+  "phase": "verify",
   "phase_status": "in-progress",
   "task_id": "T086",
   "task_title": "Pagination total counts show only visible count",
@@ -14,7 +14,7 @@
     "plan": "Spec written: docs/specs/T086-pagination-total-count-fix.md. 4 sub-tasks (all S). Add allDoneItems to ProjectDetail type, populate in readProjectDetail (unsliced), use in tasks-client. Also fix T087 (buildScheduleBlock epoch Last run → dash). Tests: 4 new in redeye-files.test.ts, 2 in page.test.tsx, 1 in schedule-list.test.tsx, updated assertions in route.test.ts.",
     "build": "Complete: 9 files changed. T086: allDoneItems added to ProjectDetail type, readProjectDetail computes full sorted+enriched done list and slices to recentlyShipped. tasks-client uses allDoneItems. T087: buildScheduleBlock uses Last run: — (not epoch). ScheduleRow shows — for Next when never run. 847 tests (382 passing, 465 failing). +12 new passing vs iter 115 baseline. Build clean.",
     "review": "0C/0M/0m. Security: allDoneItems pulls from already-parsed task list, no new I/O or user input. buildScheduleBlock change is hardcoded string, not user-supplied. Correctness: recentlyShipped still sliced to 8, allDoneItems full list verified. Parser handles — for Last run correctly. ScheduleRow nextDueLabel shows — for never-run. Build clean. No findings.",
-    "deploy": "",
+    "deploy": "Build clean. Confirmed via NODE_ENV=production npm run build. Compiled successfully in ~1.7s. 0 errors, 0 new warnings (Cache-Control warning is pre-existing). allDoneItems field type-checks correctly. buildScheduleBlock — change verified.",
     "verify": "",
     "merge": ""
   },
