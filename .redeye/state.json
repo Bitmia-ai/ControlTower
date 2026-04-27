@@ -3,14 +3,14 @@
   "iteration": 113,
   "started_at": "2026-04-27T09:47:12Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T082",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T082-recently-shipped-relative-time.md",
   "phase_progress": {
     "triage": "Selected T082: Recently Shipped relative time. P1, pending.",
-    "plan": "In progress: writing spec for T082"
+    "plan": "Spec written: 6 sub-tasks (all S). New mergedAt/mergedIteration fields, parseMerged, sort by iteration, formatRelativeTime utility, ShippedCard update, 10+ new tests."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -29,11 +29,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete TRIAGE — selected T082 Recently Shipped relative time (iteration 113)",
+    "last_commit": "redeye: start PLAN T082 (iteration 113)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter112-t085",
     "merge_status": "clean",
-    "notes": "PLAN iter 113: T082 — Recently Shipped relative time."
+    "notes": "PLAN iter 113: T082 spec complete. 6 sub-tasks. Moving to BUILD."
   },
   "blocked_items": [],
   "iteration_log": [
