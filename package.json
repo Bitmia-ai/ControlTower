@@ -1,6 +1,6 @@
 {
   "name": "control-tower",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Web dashboard to orchestrate RedEye autonomous dev sessions across multiple projects. Local-only, binds to 127.0.0.1.",
   "private": true,
   "license": "MIT",
