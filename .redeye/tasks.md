@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T089: recently shipped tasks is still showing not the top 10 recent ones, but older ones. fix it
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T088: If no more tasks are available, up next shows the currently worked on task. it should show "no pending tasks" in a nice way
 - **Type:** feature
 - **Priority:** P1
