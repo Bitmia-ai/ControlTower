@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "iteration": 112,
-  "started_at": "2026-04-27T09:20:52Z",
+  "iteration": 113,
+  "started_at": "2026-04-27T09:47:12Z",
   "phase": "triage",
-  "phase_status": "pending",
+  "phase_status": "in-progress",
   "task_id": null,
   "worktree_path": null,
   "worktree_branch": null,
@@ -43,61 +43,28 @@
     },
     {
       "iteration": 111,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "T084 complete: added pagination + filtering to all 4 dashboard list tabs. Shared ListToolbar, Pagination components + useListFilter hook. Tasks/Schedules/Steer/History tabs all have search, filters, sort, and pagination. 40 new tests (752 total, 320 passing, 432 pre-existing failures). 0C/0M/1m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 112",
       "timestamp": "2026-04-27T09:35:48Z"
     },
     {
       "iteration": 110,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "T083 complete: added Play/Square/Pause/RotateCcw/Navigation icons to all 5 control buttons in ControlsCard, removed flex-wrap for proper alignment. 0C/0M/0m review. 712 tests baseline (432f/280p). VERIFY PASS. Merged clean. CEO added T084 (pagination+filtering P0) during cycle.",
       "next": "TRIAGE iter 111",
       "timestamp": "2026-04-27T09:19:27Z"
     },
     {
       "iteration": 109,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "T079 complete: added maximumScale:1 + userScalable:false to viewport export in app/layout.tsx. Updated test assertions. Build smoke confirmed. 0C/0M/0m review. 712 tests baseline (432f/280p matches main). VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 110",
       "timestamp": "2026-04-27T09:02:23Z"
     },
     {
       "iteration": 108,
-      "phases": [
-        "INCORPORATE",
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["INCORPORATE", "TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
       "outcome": "T077 complete: per-page metadata.title (8 pages, server wrapper pattern), turbopack.root config, 228KB chunk analysis + docs. 9 new tests (804 total). 0C/0M/1m review. Visual check pass. Merged clean.",
       "next": "TRIAGE iter 109",
       "timestamp": "2026-04-26T19:50:11Z"
@@ -110,7 +77,7 @@
     "next_task_id": 86
   },
   "cost_tracking": {
-    "iterations_this_session": 87,
+    "iterations_this_session": 88,
     "max_iterations_per_session": 100,
     "last_ceo_alert_iteration": 0,
     "full_regression_last_run": 94
@@ -123,7 +90,7 @@
     "last_verify_result": "pass",
     "last_verify_iteration": 112,
     "last_deploy_iteration": 112,
-    "current_iteration": 112,
+    "current_iteration": 113,
     "questions_awaiting_ceo": 0,
     "oldest_question_hours": 0,
     "blocked_items_count": 0,
