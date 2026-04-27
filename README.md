@@ -8,6 +8,9 @@
     </a>
     <img src="https://img.shields.io/badge/Next.js-16-black.svg" alt="Next.js 16" />
     <img src="https://img.shields.io/badge/local--only-127.0.0.1-brightgreen.svg" alt="Local only" />
+    <a href="https://codecov.io/gh/Bitmia-ai/ControlTower">
+      <img src="https://codecov.io/gh/Bitmia-ai/ControlTower/graph/badge.svg" alt="Coverage" />
+    </a>
   </p>
 
   <img src=".github/assets/home.png" alt="Control Tower home page — project cards showing phase and active task" width="100%" />
@@ -184,6 +187,8 @@ components/
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Please open an issue first for anything larger than a typo. Security issues: see [SECURITY.md](SECURITY.md).
+
+The coverage badge above is powered by Codecov — to enable it on a fork, add a `CODECOV_TOKEN` secret in your repository's Settings → Secrets → Actions (get your token at [codecov.io](https://codecov.io/gh/Bitmia-ai/ControlTower)).
 
 > [!NOTE]
 > Control Tower is a personal project maintained in spare time. It works, but updates are infrequent. Feedback and contributions welcome.
