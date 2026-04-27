@@ -3,7 +3,7 @@
   "iteration": 120,
   "started_at": "2026-04-27T12:58:22Z",
   "phase": "build",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T091",
   "task_title": "Refresh README screenshots (home, mission-control, task-detail)",
   "worktree_path": "/Users/casa/ControlTower/.worktrees/T091",
@@ -12,7 +12,7 @@
   "phase_progress": {
     "triage": "Selected T091 (P0) + T096 (P1) bundled: README screenshots refresh + CODEOWNERS.",
     "plan": "Spec written: docs/specs/T091-T096-readme-screenshots-codeowners.md. 4 sub-tasks: S1-S3 Playwright screenshots (home/mission-control/task-detail at 1200px dark mode), S4 CODEOWNERS. No source code changes.",
-    "build": "",
+    "build": "Complete: 4 files changed. T091: home.png refreshed (44KB, precision-instrument cards), mission-control.png refreshed (127KB, 2-col layout with all cards), task-detail.png created (88KB, T107 detail with Summary). T096: .github/CODEOWNERS created (* @Bitmia-ai). 870 tests unchanged (no source code touched).",
     "review": "",
     "deploy": "",
     "verify": "",
@@ -35,11 +35,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: plan T091+T096 — README screenshots refresh + CODEOWNERS",
-    "branch": "main",
+    "last_commit": "feat(T091+T096): refresh README screenshots + add CODEOWNERS",
+    "branch": "feat/T091-T096-readme-screenshots-codeowners",
     "last_good_deploy_tag": "last-good-deploy-iter119-T107-T097",
     "merge_status": "clean",
-    "notes": "Iter 120: Worktree created at .worktrees/T091 (branch feat/T091-T096-readme-screenshots-codeowners). Starting BUILD."
+    "notes": "Iter 120: BUILD complete. Worktree has 4 file changes. Next: REVIEW."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -48,7 +48,7 @@
       "phases": ["TRIAGE", "PLAN", "BUILD"],
       "outcome": "in-progress",
       "next": "REVIEW",
-      "timestamp": "2026-04-27T13:01:16Z"
+      "timestamp": "2026-04-27T13:04:08Z"
     },
     {
       "iteration": 119,
