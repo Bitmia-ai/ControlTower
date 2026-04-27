@@ -3,13 +3,13 @@
   "iteration": 115,
   "started_at": "2026-04-27T10:01:02Z",
   "phase": "triage",
-  "phase_status": "in-progress",
-  "task_id": null,
+  "phase_status": "complete",
+  "task_id": "T080",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": "docs/specs/T081-delete-schedules.md",
+  "spec_file": "docs/specs/T080-live-tab-buttons.md",
   "phase_progress": {
-    "triage": "Selected T081: Delete schedules from schedule tab. P1, pending.",
+    "triage": "Selected T080: Live tab arrow buttons. P1, pending. Three toolbar buttons (expand-all, collapse-all, auto-scroll) use ambiguous icons with no text labels. Will replace icons with clearer alternatives (Maximize2/Minimize2 or UnfoldVertical/FoldVertical for expand/collapse, Pin/PinOff or ScrollText for auto-scroll) and add text labels.",
     "plan": "Spec written: 4 sub-tasks (all S). applyScheduleDelete parser helper, DELETE /api/projects/[id]/schedules/[schedId] endpoint, delete UI in ScheduleRow with hover-reveal trash + inline confirm panel, wire onDelete through FilteredScheduleList. ~15 new tests.",
     "build": "Complete: 6 files changed + 2 new. applyScheduleDelete parser, DELETE /api/schedules/[schedId] with atomic write, ScheduleRow hover-reveal trash + inline confirm, handleDelete in SchedulesContent. 821 tests (359 passing, 462 failing). +23 new tests, +11 new passing. +12 new failing match pre-existing fs-mock/React.act pattern.",
     "review": "0C/0M/0m. Security: path traversal guard OK, schedId regex validated before use. UX: hover-reveal trash with focus:opacity-100, 44px touch target, aria-labels correct. Atomic write confirmed. No findings.",
@@ -192,5 +192,6 @@
     "T073": 250.6147629000001,
     "T065": 265.3649980500002,
     "T075": 320.75
-  }
+  },
+  "task_title": "Live tab arrow buttons — better icons and text labels"
 }
