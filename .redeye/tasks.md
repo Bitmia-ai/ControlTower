@@ -2,6 +2,12 @@
 
 ## CEO Requests
 
+### T083: the 4 control buttons in the project main screen as misaligned. also only one has an icon
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+- **Description:** Can we have the design subagent and front end skill fix the entire project main screen so it looks sleek and not messy?
+
 ### T082: Recently shipped in the main project screen should show the last N tasks shipped. now it shows old ones it feels. It should also add X min ago, or X hours ago, or X days ago
 - **Type:** feature
 - **Priority:** P1
