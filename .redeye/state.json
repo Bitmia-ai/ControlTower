@@ -3,13 +3,14 @@
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
-    "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon. CEO requests design subagent + frontend skill fix to make the screen sleek and not messy. Env healthy: 712 tests baseline (432f/280p pre-existing). No CEO answers pending. No overdue schedules. 5 pending items: T083(P0), T080(P1), T081(P1), T082(P1), T078(P1)."
+    "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon. CEO requests design subagent + frontend skill fix to make the screen sleek and not messy. Env healthy: 712 tests baseline (432f/280p pre-existing). No CEO answers pending. No overdue schedules. 5 pending items: T083(P0), T080(P1), T081(P1), T082(P1), T078(P1).",
+    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md. 3 sub-tasks: T1 add icons to all 4 control buttons (Play/Square/Pause/RotateCcw/Compass), T2 fix button layout alignment (flex-1, no wrapping), T3 visual polish pass. Files: controls-card.tsx + controls-card.test.tsx only."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -28,20 +29,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete TRIAGE — selected T083 project main screen redesign (iteration 110)",
+    "last_commit": "redeye: plan T083 — project main screen control buttons + layout fix",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "MERGE iter 109: T079 merged clean. 712 tests baseline. Worktree teardown complete."
+    "notes": "PLAN iter 110: T083 spec written. 3 sub-tasks."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
       "phases": ["TRIAGE", "PLAN"],
-      "outcome": "TRIAGE complete. PLAN in-progress.",
+      "outcome": "TRIAGE: selected T083 (P0). PLAN complete: spec written, 3 sub-tasks — icons for all control buttons, layout fix, visual polish.",
       "next": "BUILD T083",
-      "timestamp": "2026-04-27T09:12:00Z"
+      "timestamp": "2026-04-27T09:15:00Z"
     },
     {
       "iteration": 109,
