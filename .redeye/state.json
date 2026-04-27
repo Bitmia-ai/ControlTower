@@ -3,15 +3,15 @@
   "iteration": 118,
   "started_at": "2026-04-27T12:34:39Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T090",
   "task_title": "Health card shipped count fix + History tab UUID fix (T090+T078)",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T090-T078-health-card-count-history-uuid-fix.md",
   "phase_progress": {
     "triage": "Selected T090 (P1) + T078 (P1) bundled: (1) T090: Health card 'X shipped' shows only session-capped count (recentlyShipped.length = 10 max). Fix: pass allDoneItems.length as totalShippedCount to HealthCard, update display to show 'N total shipped (M this session)' or similar. (2) T078: History tab collapsibles show raw UUID filename in expanded details. Fix: replace UUID display with human-readable session label (date + session number). Both are small targeted UI fixes to mission-control and history tab.",
-    "plan": "",
+    "plan": "Spec written: docs/specs/T090-T078-health-card-count-history-uuid-fix.md. 5 sub-tasks (all S). T090: rename recentlyShippedCount->totalShippedCount in HealthCard, pass allDoneItems.length from mission-control-client. T078: improve SessionHistoryRow expanded section (full phases when overflow, end time, de-emphasize UUID). Add tests for both.",
     "build": "",
     "review": "",
     "deploy": "",
@@ -123,7 +123,7 @@
     "next_q_id": 14,
     "next_cred_id": 1,
     "next_sched_id": 2,
-    "next_task_id": 91
+    "next_task_id": 109
   },
   "cost_tracking": {
     "iterations_this_session": 95,
