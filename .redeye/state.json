@@ -2,7 +2,7 @@
   "schema_version": 1,
   "iteration": 112,
   "started_at": "2026-04-27T09:20:52Z",
-  "phase": "build",
+  "phase": "review",
   "phase_status": "in-progress",
   "task_id": "T085",
   "worktree_path": null,
@@ -10,9 +10,10 @@
   "spec_file": "docs/specs/T085-working-on-card-phase-case-fix.md",
   "phase_progress": {
     "triage": "complete — selected T085 (WorkingOn card phase case bug, P1)",
-    "plan": "complete — spec written: 3 sub-tasks (S/S/S). Fix 1: normalizePhase() in working-on-card. Fix 2: activeTaskTitle prop. Fix 3: tests."
+    "plan": "complete — spec written: 3 sub-tasks (S/S/S). Fix 1: normalizePhase() in working-on-card. Fix 2: activeTaskTitle prop. Fix 3: tests.",
+    "build": "complete — normalizePhase(), activeTaskTitle prop, 14 new tests. 766 total (320p/446f). Build clean."
   },
-  "review_cycles": 0,
+  "review_cycles": 1,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -29,19 +30,19 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: plan T085 — WorkingOn card phase case fix",
+    "last_commit": "fix(working-on-card): normalize phase to uppercase, add activeTaskTitle prop (T085)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter111-t084",
     "merge_status": "clean",
-    "notes": "iter 112: T085 building. No worktree (direct main)."
+    "notes": "iter 112: T085 in review."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 112,
-      "phases": ["TRIAGE", "PLAN", "BUILD"],
-      "outcome": "TRIAGE: selected T085. PLAN: spec written. BUILD: in-progress.",
-      "next": "BUILD T085 completion",
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW"],
+      "outcome": "TRIAGE: T085 selected. PLAN: spec. BUILD: normalizePhase + activeTaskTitle + 14 tests. Build clean.",
+      "next": "REVIEW T085",
       "timestamp": "2026-04-27T09:37:56Z"
     },
     {
