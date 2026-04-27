@@ -11,7 +11,10 @@
 ### T083: the 4 control buttons in the project main screen as misaligned. also only one has an icon
 - **Type:** feature
 - **Priority:** P0
-- **Status:** pending
+- **Status:** done
+- **Merged:** iteration 110
+- **Spec:** docs/specs/T083-project-main-screen-redesign.md
+- **Summary:** Added icons to all 5 action buttons in the ControlsCard: Play (Start), Square (Stop), Pause (Pause), RotateCcw (Restart), Navigation (Steer). All buttons now use inline-flex with gap-1.5 for consistent icon+text alignment. Removed flex-wrap from both button rows so buttons stay properly aligned at the 300px right-rail width. 712 tests unchanged (432 pre-existing failures), build clean.
 - **Description:** Can we have the design subagent and front end skill fix the entire project main screen so it looks sleek and not messy?
 
 ### T082: Recently shipped in the main project screen should show the last N tasks shipped. now it shows old ones it feels. It should also add X min ago, or X hours ago, or X days ago
