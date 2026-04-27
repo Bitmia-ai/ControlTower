@@ -4,6 +4,7 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { FolderOpen } from "lucide-react";
 import type { ProjectWithStatus } from "@/lib/redeye-types";
 import { ProjectCard } from "@/components/project-card";
 import { AddProjectDialog } from "@/components/add-project-dialog";
@@ -125,9 +126,35 @@ export default function HomeClient() {
         <FetchError message={fetchError} onRetry={fetchProjects} />
       ) : projects.length === 0 ? (
         <EmptyState
-          icon={<span>~</span>}
-          title="No projects yet"
-          subtitle="Add a project directory to start monitoring it with Control Tower."
+          icon={<FolderOpen className="h-5 w-5" />}
+          title="Welcome to Control Tower"
+          subtitle={
+            <span>
+              Add your first project — point it at a git repo that has{" "}
+              <a
+                href="https://github.com/Bitmia-ai/RedEye"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:underline"
+              >
+                RedEye
+              </a>{" "}
+              installed, or run{" "}
+              <code className="font-mono text-xs bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                /redeye:init
+              </code>{" "}
+              in Claude Code to scaffold it. See the{" "}
+              <a
+                href="https://github.com/Bitmia-ai/ControlTower#quick-start"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:underline"
+              >
+                Quick Start
+              </a>{" "}
+              for setup steps.
+            </span>
+          }
           action={{ label: "Add your first project", onClick: () => setDialogOpen(true) }}
         />
       ) : (

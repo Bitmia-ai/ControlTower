@@ -132,6 +132,33 @@ It parses `cost_usd` fields from the Claude transcript JSONL files in `~/.claude
 **Can I use it without RedEye?**
 No — Control Tower is specifically a RedEye management layer. For generic Claude Code orchestration, use something else.
 
+## Troubleshooting
+
+**Port 3200 already in use**
+`npm run dev` fails with "address already in use :3200" — another process is on port 3200.
+Fix: `lsof -ti:3200 | xargs kill -9`, or start on a different port: `npx next dev --webpack --port 4000`.
+
+**Tailscale serve needs prod mode**
+Home page shows "Loading projects…" forever when accessed via a Tailscale domain.
+Cause: Next.js dev mode does not work behind Tailscale serve ([tailscale/tailscale#18827](https://github.com/tailscale/tailscale/issues/18827)).
+Fix: `npm run build && npm start`, then re-run `tailscale serve 3200`.
+
+**`npm run build` fails with module-not-found**
+Build fails immediately with "Cannot find module '…'" — `node_modules` is missing or incomplete.
+Fix: `npm install` then retry `npm run build`.
+
+**Home page shows "Loading projects" forever**
+Spinner stuck on localhost:3200 in dev mode but fine in production — usually the Tailscale issue above, or a middleware CSRF false positive blocking GET /api/projects.
+Fix: open the browser network tab; if the request returns 403, check that the `Origin` header matches `http://localhost:3200`.
+
+**Project page shows "Something went wrong"**
+Mission control page crashes after a self-dogfood DEPLOY — stale `.next/` chunks were served while the prod build overwrote them.
+Fix: `npm run build && npm start` to bring up a fresh prod server with consistent chunks.
+
+**RedEye loop won't start**
+Clicking Start does nothing, or the CTO exits immediately — the `~/redeye` plugin directory does not exist or `claude` is not in PATH.
+Fix: verify `which claude` works in your shell and that `~/redeye/plugin.json` exists; if not, re-install RedEye with `--plugin-dir ~/redeye`.
+
 ## Architecture
 
 ```
