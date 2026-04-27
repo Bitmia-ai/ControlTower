@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 120,
   "started_at": "2026-04-27T12:58:22Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T091",
   "task_title": "Refresh README screenshots (home, mission-control, task-detail)",
   "worktree_path": null,
@@ -35,26 +35,26 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start TRIAGE (iteration 120)",
+    "last_commit": "redeye: complete TRIAGE — selected T091+T096 (iteration 120)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter119-T107-T097",
     "merge_status": "clean",
-    "notes": "Iter 120: T091+T096 selected. T091=P0 README screenshots (home/mission-control/task-detail). T096=P1 CODEOWNERS."
+    "notes": "Iter 120: Planning T091+T096."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 120,
-      "phases": ["TRIAGE"],
-      "outcome": "Selected T091 (P0) + T096 (P1). T091: refresh 3 README screenshots using Playwright at 1200px dark mode. T096: add .github/CODEOWNERS.",
-      "next": "PLAN",
+      "phases": ["TRIAGE", "PLAN"],
+      "outcome": "in-progress",
+      "next": "BUILD",
       "timestamp": "2026-04-27T12:59:35Z"
     },
     {
       "iteration": 119,
       "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T107+T097 complete: (1) Task detail page now shows Description field — parseTasks() extended with pickMultilineField() that captures multi-paragraph content. description?: string added to TaskItem. Task detail renders Description section below Summary via MarkdownRenderer. (2) Deleted stale flex-wrap test (T083 intentionally removed flex-wrap, test was incorrect). 5 new passing tests. 0C/0M/0m review. VERIFY PASS. Merged clean.",
-      "next": "TRIAGE iter 120 — T091 P0 (README screenshots) next, then T096 P1 (CODEOWNERS), T108 P1 (Tasks badge), etc.",
+      "outcome": "T107+T097 complete: (1) Task detail page now shows Description field. (2) Deleted stale flex-wrap test. 5 new passing tests. 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 120",
       "timestamp": "2026-04-27T12:57:04Z"
     },
     {
