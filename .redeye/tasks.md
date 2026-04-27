@@ -32,7 +32,10 @@
 ### T082: Recently shipped in the main project screen should show the last N tasks shipped. now it shows old ones it feels. It should also add X min ago, or X hours ago, or X days ago
 - **Type:** feature
 - **Priority:** P1
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 113)
+- **Spec:** docs/specs/T082-recently-shipped-relative-time.md
+- **Summary:** Recently Shipped card now sorts items by iteration number descending (newest first), shows up to 8 items instead of 5, and displays relative time ("2 days ago", "3 hours ago", etc.) below items that have a Merged date. Added mergedAt/mergedIteration fields to TaskItem, parseTasks() parses both "YYYY-MM-DD (iter N)" and "iteration N" formats. New formatRelativeTime() utility with full bracket coverage. 28 new tests (798 total, 348 passing).
 
 ### T081: I want to be able to delete schedules from the schedule tab
 - **Type:** feature
