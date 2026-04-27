@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 111,
   "started_at": "2026-04-27T09:20:52Z",
-  "phase": "plan",
-  "phase_status": "complete",
+  "phase": "build",
+  "phase_status": "in-progress",
   "task_id": "T084",
   "worktree_path": null,
   "worktree_branch": null,
@@ -29,7 +29,7 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: merge T083 — control buttons icons + layout fix (iteration 110)",
+    "last_commit": "redeye: plan T084 — pagination + filtering for all dashboard lists (iteration 111)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter110-t083",
     "merge_status": "clean",
