@@ -3,13 +3,14 @@
   "iteration": 116,
   "started_at": "2026-04-27T11:35:11Z",
   "phase": "triage",
-  "phase_status": "in-progress",
-  "task_id": null,
+  "phase_status": "complete",
+  "task_id": "T086",
+  "task_title": "Pagination total counts show only visible count",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
-    "triage": "",
+    "triage": "Selected T086 (P1): Pagination total counts shows only visible count, not total count. Root cause: readProjectDetail slices recentlyShipped to 8 items; tasks-client builds allItems from recentlyShipped so Done section only shows up to 8 done items. Fix: expose allDoneItems separately in readProjectDetail and use it in tasks-client. T087 (P1, new schedule shows wrong Next time) and T078 (P1, history UUIDs) also pending.",
     "plan": "",
     "build": "",
     "review": "",
@@ -34,11 +35,11 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: complete MERGE T080 — merged clean to main (iteration 115)",
+    "last_commit": "redeye: complete TRIAGE — selected T086 pagination count bug (iteration 116)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter115-T080",
     "merge_status": "clean",
-    "notes": "MERGE iter 115: T080 merged clean. 832 tests (370 passing, 462 pre-existing failures). T086, T087, T078 pending."
+    "notes": "T086 selected for iter 116: Done task count wrong because recentlyShipped limited to 8 items."
   },
   "blocked_items": [],
   "iteration_log": [
@@ -152,6 +153,5 @@
     "T073": 250.6147629000001,
     "T065": 265.3649980500002,
     "T075": 320.75
-  },
-  "task_title": null
+  }
 }
