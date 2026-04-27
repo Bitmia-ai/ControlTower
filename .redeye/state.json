@@ -2,18 +2,18 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "build",
-  "phase_status": "complete",
+  "phase": "review",
+  "phase_status": "in-progress",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
     "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon.",
-    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md. 3 sub-tasks: T1 icons, T2 layout, T3 polish.",
-    "build": "T1+T2 complete: imported Play/Square/Pause/RotateCcw/Navigation from lucide-react. Added icons to all 5 action buttons (Start, Stop, Pause, Restart, Steer). Replaced flex-wrap with flex on both button rows. Build clean. 712 tests unchanged (432f/280p baseline)."
+    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md.",
+    "build": "T1+T2 complete: icons on all 5 buttons, flex layout fixed. 712 tests unchanged, build clean."
   },
-  "review_cycles": 0,
+  "review_cycles": 1,
   "max_review_cycles": 3,
   "stabilize_attempts": 0,
   "background_agents": {
@@ -30,20 +30,20 @@
     }
   },
   "git_state": {
-    "last_commit": "feat(controls): add icons to all control buttons, fix button layout alignment",
+    "last_commit": "redeye: complete BUILD T083 — icons+layout on control buttons, 712 tests unchanged (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "BUILD iter 110: T083 complete. Icons on all control buttons. Layout fixed."
+    "notes": "REVIEW iter 110: T083 in review."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN", "BUILD"],
-      "outcome": "TRIAGE: T083 selected. PLAN: spec written. BUILD: Play/Square/Pause/RotateCcw/Navigation icons added to all 5 control buttons. flex-wrap removed. Build clean. 712 tests unchanged.",
-      "next": "REVIEW T083",
-      "timestamp": "2026-04-27T09:25:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW"],
+      "outcome": "BUILD complete. REVIEW in-progress.",
+      "next": "DEPLOY T083",
+      "timestamp": "2026-04-27T09:28:00Z"
     },
     {
       "iteration": 109,
@@ -62,7 +62,7 @@
     {
       "iteration": 107,
       "phases": ["TRIAGE","SCHEDULES"],
-      "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules, backlog exhausted. SCHEDULES: both SCHED-1 and SCHED-2 run.",
+      "outcome": "TRIAGE: env healthy. SCHEDULES: SCHED-1 + SCHED-2 run.",
       "next": "TRIAGE then Q-013 (backlog empty)",
       "timestamp": "2026-04-25T21:44:30Z"
     },
