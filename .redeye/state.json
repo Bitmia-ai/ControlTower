@@ -2,15 +2,15 @@
   "schema_version": 1,
   "iteration": 125,
   "started_at": "2026-04-27T13:52:54Z",
-  "phase": "triage",
-  "phase_status": "complete",
+  "phase": "plan",
+  "phase_status": "in-progress",
   "task_id": "T101",
   "task_title": "T101+T102: Coverage report CI badge + GitHub issue templates",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
-    "triage": "T095 (P1, demo gif) skipped — agent-infeasible, requires manual screen recording. Selected T101 (P2, coverage report in CI + README badge) bundled with T102 (P2, GitHub issue templates). Both are small, self-contained, no breaking changes. Env healthy, no CEO questions pending. Next: PLAN.",
+    "triage": "T095 (P1, demo gif) skipped \u2014 agent-infeasible, requires manual screen recording. Selected T101 (P2, coverage report in CI + README badge) bundled with T102 (P2, GitHub issue templates). Both are small, self-contained, no breaking changes. Env healthy, no CEO questions pending. Next: PLAN.",
     "plan": "",
     "build": "",
     "review": "",
@@ -45,35 +45,69 @@
   "iteration_log": [
     {
       "iteration": 125,
-      "phases": ["TRIAGE"],
+      "phases": [
+        "TRIAGE"
+      ],
       "outcome": "TRIAGE: selected T101+T102 (coverage CI badge + issue templates). T095 skipped (manual screen recording required).",
       "next": "PLAN T101+T102",
       "timestamp": "2026-04-27T13:54:24Z"
     },
     {
       "iteration": 124,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T098+T100 complete: (1) middleware.ts renamed to proxy.ts, export renamed from middleware() to proxy() (Next.js 16 requires both changes) — CSRF/origin protection preserved, deprecation warning eliminated, 19 new unit tests. (2) .github/dependabot.yml added (npm + github-actions, weekly Monday, minor/patch grouped, major ignored for next/react/react-dom/tailwindcss, PR limit 5). 0C/0M/0m review. VERIFY PASS. Merged clean.",
-      "next": "TRIAGE iter 125 — T095 P1 (demo gif, manual/skip), T101 P2 (coverage), T102 P2 (issue templates), T103-T106 P3 chores.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T098+T100 complete: (1) middleware.ts renamed to proxy.ts, export renamed from middleware() to proxy() (Next.js 16 requires both changes) \u2014 CSRF/origin protection preserved, deprecation warning eliminated, 19 new unit tests. (2) .github/dependabot.yml added (npm + github-actions, weekly Monday, minor/patch grouped, major ignored for next/react/react-dom/tailwindcss, PR limit 5). 0C/0M/0m review. VERIFY PASS. Merged clean.",
+      "next": "TRIAGE iter 125 \u2014 T095 P1 (demo gif, manual/skip), T101 P2 (coverage), T102 P2 (issue templates), T103-T106 P3 chores.",
       "timestamp": "2026-04-27T13:51:45Z"
     },
     {
       "iteration": 123,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
-      "outcome": "T076+T099 complete: (1) Dependency updates — lucide-react ^1.11.0, react/react-dom 19.2.5, TypeScript 6.0.3 (production source clean, 8 test-only type errors from stricter vitest mock narrowing), @types/node ^25.6.0. (2) next.config.test.ts fixed with @vitest-environment node annotation — 5 tests now pass (cache headers + turbopack config guards). 0C/0M/2m review. VERIFY PASS. Merged clean.",
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T076+T099 complete: (1) Dependency updates \u2014 lucide-react ^1.11.0, react/react-dom 19.2.5, TypeScript 6.0.3 (production source clean, 8 test-only type errors from stricter vitest mock narrowing), @types/node ^25.6.0. (2) next.config.test.ts fixed with @vitest-environment node annotation \u2014 5 tests now pass (cache headers + turbopack config guards). 0C/0M/2m review. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 124.",
       "timestamp": "2026-04-27T13:41:31Z"
     },
     {
       "iteration": 122,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T093+T094 complete. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 123.",
       "timestamp": "2026-04-27T13:28:00Z"
     },
     {
       "iteration": 121,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE"],
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
       "outcome": "T108+T092 complete. VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 122.",
       "timestamp": "2026-04-27T13:19:25Z"
