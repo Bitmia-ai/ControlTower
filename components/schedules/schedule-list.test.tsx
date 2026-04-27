@@ -179,3 +179,92 @@ describe("ScheduleList", () => {
     });
   });
 });
+
+// ---------------------------------------------------------------------------
+// Delete functionality tests
+// ---------------------------------------------------------------------------
+
+describe("ScheduleList — delete", () => {
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  it("renders a delete button with correct aria-label when onDelete is provided", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    const deleteBtn = screen.getByRole("button", { name: /delete schedule SCHED-001/i });
+    expect(deleteBtn).toBeDefined();
+  });
+
+  it("does not render a delete button when onDelete is not provided", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    const deleteBtn = screen.queryByRole("button", { name: /delete schedule SCHED-001/i });
+    expect(deleteBtn).toBeNull();
+  });
+
+  it("shows inline confirmation panel on trash icon click", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    const deleteBtn = screen.getByRole("button", { name: /delete schedule SCHED-001/i });
+    fireEvent.click(deleteBtn);
+    expect(screen.getByText(/delete this schedule\?/i)).toBeDefined();
+    expect(screen.getByRole("button", { name: /confirm delete/i })).toBeDefined();
+    expect(screen.getByRole("button", { name: /cancel delete/i })).toBeDefined();
+  });
+
+  it("hides confirmation panel on Cancel click", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    fireEvent.click(screen.getByRole("button", { name: /delete schedule SCHED-001/i }));
+    fireEvent.click(screen.getByRole("button", { name: /cancel delete/i }));
+    expect(screen.queryByText(/delete this schedule\?/i)).toBeNull();
+  });
+
+  it("calls onDelete with the schedule id after successful API delete", async () => {
+    const onDelete = vi.fn();
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={onDelete} />
+    );
+    fireEvent.click(screen.getByRole("button", { name: /delete schedule SCHED-001/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirm delete/i }));
+
+    await waitFor(() => {
+      expect(onDelete).toHaveBeenCalledWith("SCHED-001");
+    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringMatching(/\/schedules\/SCHED-001$/),
+      expect.objectContaining({ method: "DELETE" })
+    );
+  });
+
+  it("shows error message when API delete fails", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({ error: "Server error" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    fireEvent.click(screen.getByRole("button", { name: /delete schedule SCHED-001/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirm delete/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/server error/i)).toBeDefined();
+    });
+  });
+});

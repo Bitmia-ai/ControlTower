@@ -75,9 +75,11 @@ const scheduleSortFns: Record<
 function FilteredScheduleList({
   schedules,
   projectId,
+  onDelete,
 }: {
   schedules: ScheduleEntry[];
   projectId: string;
+  onDelete?: (id: string) => void;
 }) {
   const {
     pagedItems,
@@ -152,7 +154,7 @@ function FilteredScheduleList({
           </button>
         </div>
       ) : (
-        <ScheduleList schedules={pagedItems} projectId={projectId} />
+        <ScheduleList schedules={pagedItems} projectId={projectId} onDelete={onDelete} />
       )}
 
       <Pagination
@@ -173,6 +175,12 @@ export function SchedulesContent({ id }: { id: string }) {
   const [schedules, setSchedules] = useState<ScheduleEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
+
+  const handleDelete = useCallback((deletedId: string) => {
+    setSchedules((prev) =>
+      prev ? prev.filter((s) => s.id !== deletedId) : prev
+    );
+  }, []);
 
   const fetchSchedules = useCallback(async () => {
     try {
@@ -238,7 +246,7 @@ export function SchedulesContent({ id }: { id: string }) {
           action={{ label: "+ Add Schedule", onClick: () => setAddOpen(true) }}
         />
       ) : (
-        <FilteredScheduleList schedules={schedules} projectId={id} />
+        <FilteredScheduleList schedules={schedules} projectId={id} onDelete={handleDelete} />
       )}
 
       <AddScheduleDialog

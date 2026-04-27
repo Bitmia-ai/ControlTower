@@ -70,6 +70,115 @@ function StatusBadge({ entry }: { entry: ScheduleEntry }) {
 }
 
 // ---------------------------------------------------------------------------
+// DeleteButton + inline confirmation
+// ---------------------------------------------------------------------------
+
+type DeleteState = "idle" | "confirming" | "loading" | "error";
+
+function DeleteButton({
+  scheduleId,
+  projectId,
+  onDeleted,
+}: {
+  scheduleId: string;
+  projectId: string;
+  onDeleted: (id: string) => void;
+}) {
+  const [deleteState, setDeleteState] = useState<DeleteState>("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  async function handleConfirm() {
+    setDeleteState("loading");
+    setErrorMsg(null);
+    try {
+      const res = await fetch(
+        `/api/projects/${projectId}/schedules/${scheduleId}`,
+        { method: "DELETE" }
+      );
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        setErrorMsg(json.error ?? "Delete failed");
+        setDeleteState("error");
+        return;
+      }
+      onDeleted(scheduleId);
+    } catch {
+      setErrorMsg("Delete failed");
+      setDeleteState("error");
+    }
+  }
+
+  if (
+    deleteState === "confirming" ||
+    deleteState === "loading" ||
+    deleteState === "error"
+  ) {
+    return (
+      <div className="flex flex-col gap-1 items-end">
+        {deleteState === "error" && errorMsg && (
+          <span className="text-xs text-red-500 dark:text-red-400">
+            {errorMsg}
+          </span>
+        )}
+        <p className="text-xs text-gray-600 dark:text-zinc-400">
+          Delete this schedule?
+        </p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            aria-label={`Confirm delete schedule ${scheduleId}`}
+            disabled={deleteState === "loading"}
+            onClick={handleConfirm}
+            className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {deleteState === "loading" ? "Deleting…" : "Confirm"}
+          </button>
+          <button
+            type="button"
+            aria-label="Cancel delete"
+            onClick={() => {
+              setDeleteState("idle");
+              setErrorMsg(null);
+            }}
+            className="text-xs font-medium text-gray-500 dark:text-zinc-400 hover:underline"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      aria-label={`Delete schedule ${scheduleId}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        setDeleteState("confirming");
+      }}
+      className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity text-gray-400 dark:text-zinc-600 hover:text-red-500 dark:hover:text-red-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
+    >
+      {/* Trash icon */}
+      <svg
+        viewBox="0 0 16 16"
+        fill="none"
+        aria-hidden="true"
+        className="h-4 w-4"
+      >
+        <path
+          d="M2 4h12M5 4V2.5A.5.5 0 0 1 5.5 2h5a.5.5 0 0 1 .5.5V4M6 7v5M10 7v5M3 4l1 9.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5L13 4"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // RunButton
 // ---------------------------------------------------------------------------
 
@@ -145,9 +254,11 @@ function RunButton({
 function ScheduleRow({
   entry,
   projectId,
+  onDelete,
 }: {
   entry: ScheduleEntry;
   projectId: string;
+  onDelete?: (id: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const nowMs = Date.now();
@@ -169,7 +280,7 @@ function ScheduleRow({
 
   return (
     <div
-      className={`rounded-lg border border-t-[3px] ${topBorder} transition-colors ${
+      className={`group rounded-lg border border-t-[3px] ${topBorder} transition-colors ${
         entry.isOverdue
           ? "border-gray-200 dark:border-zinc-800 bg-red-50 dark:bg-red-950/10"
           : "border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -241,7 +352,7 @@ function ScheduleRow({
           </div>
         </button>
 
-        {/* Status badge + roles + run button — siblings of the expand button */}
+        {/* Status badge + roles + run button + delete button — siblings of the expand button */}
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
           <StatusBadge entry={entry} />
           {entry.assignedTo && (
@@ -250,6 +361,13 @@ function ScheduleRow({
             </span>
           )}
           <RunButton scheduleId={entry.id} projectId={projectId} />
+          {onDelete && (
+            <DeleteButton
+              scheduleId={entry.id}
+              projectId={projectId}
+              onDeleted={onDelete}
+            />
+          )}
         </div>
       </div>
 
@@ -285,9 +403,11 @@ function ScheduleRow({
 export function ScheduleList({
   schedules,
   projectId,
+  onDelete,
 }: {
   schedules: ScheduleEntry[];
   projectId: string;
+  onDelete?: (id: string) => void;
 }) {
   const overdue = schedules.filter((s) => s.isOverdue);
   const onSchedule = schedules.filter((s) => !s.isOverdue);
@@ -301,7 +421,12 @@ export function ScheduleList({
           </h2>
           <div className="space-y-2">
             {overdue.map((s) => (
-              <ScheduleRow key={s.id} entry={s} projectId={projectId} />
+              <ScheduleRow
+                key={s.id}
+                entry={s}
+                projectId={projectId}
+                onDelete={onDelete}
+              />
             ))}
           </div>
         </section>
@@ -316,7 +441,12 @@ export function ScheduleList({
           )}
           <div className="space-y-2">
             {onSchedule.map((s) => (
-              <ScheduleRow key={s.id} entry={s} projectId={projectId} />
+              <ScheduleRow
+                key={s.id}
+                entry={s}
+                projectId={projectId}
+                onDelete={onDelete}
+              />
             ))}
           </div>
         </section>
