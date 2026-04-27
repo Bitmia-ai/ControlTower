@@ -11,7 +11,10 @@
 ### T107: Task detail page does not render the Description field
 - **Type:** bug
 - **Priority:** P0
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 119)
+- **Spec:** docs/specs/T107-T097-description-field-responsive-test.md
+- **Summary:** Fixed task detail page not showing Description field. Root cause: parseTasks() in lib/redeye-parsers.ts had no logic to extract **Description:** field — it was absent from TaskItem type and never returned by the API. Fix: added pickMultilineField() helper that captures multi-paragraph content from a field marker until the next field marker or heading boundary. Added description?: string to TaskItem. Task detail page now renders Description section below Summary via MarkdownRenderer. 5 new parser unit tests. Build clean.
 - **Description:** /project/[id]/tasks/[taskId] (e.g. http://127.0.0.1:3200/project/1/tasks/T097) does not show the task's Description even when one is set in .redeye/tasks.md. Verified via API: GET /api/projects/1/tasks/T085 (which has a long **Description:** in tasks.md) returns description=null. Same for T097. The parser in lib/redeye-parsers.ts / lib/redeye-files.ts does not extract the `**Description:**` markdown field at all (grep returns no matches for "description"/"Description" in those files). Fix: (1) extend the task parser to recognize `**Description:**` (multi-line — descriptions can span paragraphs until the next `### T` heading or `- **Field:**` marker, whichever comes first). (2) thread the field through the API response and the TaskItem type in lib/redeye-types.ts. (3) render it on the task detail page below the title, with markdown formatting if feasible (react-markdown is already a dep). (4) add a parser unit test using a fixture that includes a Description with multiple paragraphs and embedded code/links. This affects every task that carries detailed acceptance criteria — without it, RedEye agents AND CEO users miss critical context.
 
 ### T106: GitHub repo metadata — set description + topics on the GitHub side
@@ -71,7 +74,10 @@
 ### T097: Fix or delete failing ControlsCard responsive test
 - **Type:** bug
 - **Priority:** P0
-- **Status:** pending
+- **Status:** done
+- **Merged:** 2026-04-27 (iter 119)
+- **Spec:** docs/specs/T107-T097-description-field-responsive-test.md
+- **Summary:** Deleted stale test. T083 intentionally removed flex-wrap from ControlsCard to fix button alignment at 300px rail width. The responsive intent is preserved by the existing min-h-[44px] touch-target test. Removing the test eliminates 1 pre-existing failure (483 failing now vs 484 before).
 - **Description:** components/__tests__/responsive.test.tsx > "T057 responsive classes > ControlsCard button row uses flex-wrap for narrow viewports" has been failing for several iterations and RedEye keeps not catching it. The test asserts `container.querySelectorAll("div.flex.flex-wrap").length > 0` but the recent T083 controls-card redesign explicitly removed flex-wrap. Either (a) the test is stale and should be deleted, or (b) the responsive intent is still valid and a new wrapping mechanism (CSS grid with auto-fit, or different breakpoint) should be added. Investigate, decide, fix or delete. After this lands the full vitest suite should be green.
 
 ### T096: Add .github/CODEOWNERS
