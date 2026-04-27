@@ -2,8 +2,8 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "deploy",
-  "phase_status": "complete",
+  "phase": "verify",
+  "phase_status": "in-progress",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
@@ -13,7 +13,7 @@
     "plan": "Spec written.",
     "build": "Icons+layout complete. 712 tests unchanged.",
     "review": "PASS 0C/0M/0m.",
-    "deploy": "712 tests (432f/280p baseline). Build clean. Tagged last-good-deploy-iter110-t083."
+    "deploy": "712 tests (432f/280p). Build clean. Tagged iter110-t083."
   },
   "review_cycles": 1,
   "max_review_cycles": 3,
@@ -32,20 +32,20 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: start DEPLOY T083 (iteration 110)",
+    "last_commit": "redeye: complete DEPLOY T083 — 712 tests baseline, build clean, tagged iter110-t083 (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter110-t083",
     "merge_status": "clean",
-    "notes": "DEPLOY iter 110: T083 PASS. 712 tests baseline. Tagged."
+    "notes": "VERIFY iter 110: T083 verifying."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY"],
-      "outcome": "DEPLOY PASS: 712 tests (432f/280p), build clean, tagged last-good-deploy-iter110-t083.",
-      "next": "VERIFY T083",
-      "timestamp": "2026-04-27T09:36:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY"],
+      "outcome": "DEPLOY PASS. VERIFY in-progress.",
+      "next": "MERGE T083",
+      "timestamp": "2026-04-27T09:38:00Z"
     },
     {
       "iteration": 109,
