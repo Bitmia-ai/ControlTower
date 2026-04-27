@@ -3,14 +3,14 @@
   "iteration": 119,
   "started_at": "2026-04-27T12:44:42Z",
   "phase": "triage",
-  "phase_status": "in-progress",
-  "task_id": null,
-  "task_title": null,
+  "phase_status": "complete",
+  "task_id": "T107",
+  "task_title": "Task detail page does not render the Description field (bundled: T107 + T097)",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": null,
   "phase_progress": {
-    "triage": "",
+    "triage": "Selected T107 (P0) + T097 (P0) bundled: (1) T107: Parser in lib/redeye-parsers.ts does not extract **Description:** field — all task detail pages show no description. Fix: extend parser, thread through API + TaskItem type, render on detail page with markdown. (2) T097: Stale responsive test for ControlsCard flex-wrap (removed in T083) — either delete test or fix. Both are P0 bugs, both mechanical, good bundle.",
     "plan": "",
     "build": "",
     "review": "",
@@ -39,16 +39,16 @@
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter118-T090-T078",
     "merge_status": "clean",
-    "notes": "TRIAGE iter 119: selecting from T091-T108, T107 (P0) and T097 (P0) highest priority."
+    "notes": "TRIAGE iter 119: T107+T097 selected. T107=P0 parser bug (Description field missing). T097=P0 stale test cleanup."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 119,
       "phases": ["TRIAGE"],
-      "outcome": "in-progress",
+      "outcome": "Selected T107+T097: T107 P0 parser bug (Description field not extracted/rendered), T097 P0 stale responsive test cleanup",
       "next": "PLAN",
-      "timestamp": "2026-04-27T12:44:42Z"
+      "timestamp": "2026-04-27T12:45:45Z"
     },
     {
       "iteration": 118,
