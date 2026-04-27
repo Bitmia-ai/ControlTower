@@ -3,13 +3,14 @@
   "iteration": 111,
   "started_at": "2026-04-27T09:20:52Z",
   "phase": "plan",
-  "phase_status": "in-progress",
+  "phase_status": "complete",
   "task_id": "T084",
   "worktree_path": null,
   "worktree_branch": null,
-  "spec_file": null,
+  "spec_file": "docs/specs/T084-pagination-filtering.md",
   "phase_progress": {
-    "triage": "Selected T084 (P0): pagination + filtering for all dashboard lists. Env healthy, build clean, 712 test baseline, no CEO questions, no blocked items."
+    "triage": "Selected T084 (P0): pagination + filtering for all dashboard lists. Env healthy, build clean, 712 test baseline, no CEO questions, no blocked items.",
+    "plan": "Spec written: docs/specs/T084-pagination-filtering.md. M-tier. 7 sub-tasks: T1 shared ListToolbar+Pagination components, T2 useListFilter hook, T3 Tasks tab, T4 Schedules tab, T5 Steer tab, T6 History tab, T7 build+test smoke. New T085 (WorkingOn card phase case bug) noted for next cycle."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
