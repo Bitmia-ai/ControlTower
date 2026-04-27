@@ -107,8 +107,39 @@ export function SessionHistoryRow({ entry }: { entry: SessionHistoryEntry }) {
 
       {/* Expanded details */}
       {expanded && (
-        <div className="px-10 py-3 bg-gray-50 dark:bg-zinc-900/50 border-b border-gray-100 dark:border-zinc-800">
-          <p className="text-xs text-gray-500 dark:text-zinc-500 font-mono truncate">{entry.file}</p>
+        <div className="px-10 py-3 bg-gray-50 dark:bg-zinc-900/50 border-b border-gray-100 dark:border-zinc-800 space-y-2">
+          {/* Full phase list when row summary was truncated */}
+          {overflow > 0 && (
+            <div>
+              <p className="text-[10px] font-mono uppercase tracking-wider text-gray-400 dark:text-zinc-600 mb-1">
+                All phases ({entry.phases.length})
+              </p>
+              <div className="flex flex-wrap gap-1" aria-label={`All phases: ${entry.phases.join(" ")}`}>
+                {entry.phases.map((phase, i) => (
+                  <PhaseChip key={`${phase}-${i}`} phase={phase} />
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Timing: started → ended */}
+          <p className="text-xs text-gray-500 dark:text-zinc-500">
+            <span className="text-gray-700 dark:text-zinc-300">Started:</span>{" "}
+            {dateFormatter.format(new Date(entry.startedAt))}
+            {entry.durationMs > 0 && (
+              <>
+                {" · "}
+                <span className="text-gray-700 dark:text-zinc-300">Ended:</span>{" "}
+                {dateFormatter.format(new Date(entry.startedAt + entry.durationMs))}
+              </>
+            )}
+          </p>
+          {/* UUID filename — de-emphasized, useful for debugging */}
+          <p
+            className="text-[10px] text-gray-400 dark:text-zinc-600 font-mono truncate"
+            title={entry.file}
+          >
+            {entry.file}
+          </p>
         </div>
       )}
     </div>

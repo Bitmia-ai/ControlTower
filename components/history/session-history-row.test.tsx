@@ -113,4 +113,44 @@ describe("SessionHistoryRow", () => {
     fireEvent.click(btn);
     expect(screen.queryByText("session.jsonl")).toBeNull();
   });
+
+  it("shows Started label in expanded section", () => {
+    const entry = makeEntry();
+    render(<SessionHistoryRow entry={entry} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(screen.getByText("Started:")).toBeTruthy();
+  });
+
+  it("shows all phase chips in expanded section when overflow exists", () => {
+    const phases = [
+      "TRIAGE", "PLAN", "BUILD", "REVIEW", "DEPLOY", "VERIFY", "MERGE", "HARDEN", "STABILIZE", "INCORPORATE",
+    ];
+    render(<SessionHistoryRow entry={makeEntry({ phases })} />);
+    // Before expand: only 8 chips visible + "+2 more"
+    expect(screen.getByText("+2 more")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button"));
+    // After expand: "All phases (10)" header shown
+    expect(screen.getByText("All phases (10)")).toBeTruthy();
+  });
+
+  it("does not show 'All phases' section when no overflow", () => {
+    const phases = ["TRIAGE", "PLAN", "BUILD"];
+    render(<SessionHistoryRow entry={makeEntry({ phases })} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(screen.queryByText(/All phases/)).toBeNull();
+  });
+
+  it("shows Ended label when durationMs > 0", () => {
+    const entry = makeEntry({ durationMs: 60_000 });
+    render(<SessionHistoryRow entry={entry} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(screen.getByText("Ended:")).toBeTruthy();
+  });
+
+  it("does not show Ended label when durationMs is 0", () => {
+    const entry = makeEntry({ durationMs: 0 });
+    render(<SessionHistoryRow entry={entry} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(screen.queryByText("Ended:")).toBeNull();
+  });
 });

@@ -4,7 +4,8 @@ import type { RedEyeState } from "@/lib/redeye-types";
 
 interface HealthCardProps {
   state: RedEyeState | null;
-  recentlyShippedCount: number;
+  /** Total number of done tasks across all time (not capped). */
+  totalShippedCount: number;
 }
 
 function deriveHealth(state: RedEyeState | null): {
@@ -33,7 +34,7 @@ function deriveHealth(state: RedEyeState | null): {
   return { label: "Healthy", reason: "", color: "text-green-600 dark:text-green-400" };
 }
 
-export function HealthCard({ state, recentlyShippedCount }: HealthCardProps) {
+export function HealthCard({ state, totalShippedCount }: HealthCardProps) {
   const { label, reason, color } = deriveHealth(state);
   const questionsWaiting = state?.health?.questions_awaiting_ceo ?? 0;
   const blockedItems = state?.health?.blocked_items_count ?? 0;
@@ -52,7 +53,7 @@ export function HealthCard({ state, recentlyShippedCount }: HealthCardProps) {
 
         <div className="flex gap-4 text-xs text-gray-500 dark:text-zinc-500 flex-wrap">
           <span>
-            <span className="text-gray-700 dark:text-zinc-300 font-medium">{recentlyShippedCount}</span> shipped
+            <span className="text-gray-700 dark:text-zinc-300 font-medium">{totalShippedCount}</span> shipped
           </span>
           {questionsWaiting > 0 && (
             <span>

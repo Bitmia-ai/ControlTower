@@ -210,7 +210,7 @@ export default function MissionControlClient({
 
             <HealthCard
               state={detail?.state ?? null}
-              recentlyShippedCount={detail?.recentlyShipped?.length ?? 0}
+              totalShippedCount={detail?.allDoneItems?.length ?? 0}
             />
           </div>
         </div>
