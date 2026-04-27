@@ -2,6 +2,11 @@
 
 ## CEO Requests
 
+### T086: pagination total counts (like Done X total count) shows only visible count, not total count. it shoudl show like 70 something
+- **Type:** feature
+- **Priority:** P1
+- **Status:** pending
+
 ### T085: Working On card stuck on "Starting up — analyzing project..." for non-uppercase phases and when task_title is absent from state.json
 - **Type:** feature
 - **Priority:** P1
