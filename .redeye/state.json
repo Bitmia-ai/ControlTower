@@ -2,15 +2,15 @@
   "schema_version": 1,
   "iteration": 110,
   "started_at": "2026-04-27T09:09:04Z",
-  "phase": "plan",
-  "phase_status": "complete",
+  "phase": "build",
+  "phase_status": "in-progress",
   "task_id": "T083",
   "worktree_path": null,
   "worktree_branch": null,
   "spec_file": "docs/specs/T083-project-main-screen-redesign.md",
   "phase_progress": {
-    "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon. CEO requests design subagent + frontend skill fix to make the screen sleek and not messy. Env healthy: 712 tests baseline (432f/280p pre-existing). No CEO answers pending. No overdue schedules. 5 pending items: T083(P0), T080(P1), T081(P1), T082(P1), T078(P1).",
-    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md. 3 sub-tasks: T1 add icons to all 4 control buttons (Play/Square/Pause/RotateCcw/Compass), T2 fix button layout alignment (flex-1, no wrapping), T3 visual polish pass. Files: controls-card.tsx + controls-card.test.tsx only."
+    "triage": "Selected T083 (P0): project main screen control buttons misaligned, only one has an icon.",
+    "plan": "Spec written: docs/specs/T083-project-main-screen-redesign.md. 3 sub-tasks: T1 icons, T2 layout, T3 polish."
   },
   "review_cycles": 0,
   "max_review_cycles": 3,
@@ -29,75 +29,46 @@
     }
   },
   "git_state": {
-    "last_commit": "redeye: plan T083 — project main screen control buttons + layout fix",
+    "last_commit": "redeye: complete PLAN T083 — spec written, 3 sub-tasks (iteration 110)",
     "branch": "main",
     "last_good_deploy_tag": "last-good-deploy-iter109-t079",
     "merge_status": "clean",
-    "notes": "PLAN iter 110: T083 spec written. 3 sub-tasks."
+    "notes": "BUILD iter 110: T083 in progress."
   },
   "blocked_items": [],
   "iteration_log": [
     {
       "iteration": 110,
-      "phases": ["TRIAGE", "PLAN"],
-      "outcome": "TRIAGE: selected T083 (P0). PLAN complete: spec written, 3 sub-tasks — icons for all control buttons, layout fix, visual polish.",
-      "next": "BUILD T083",
-      "timestamp": "2026-04-27T09:15:00Z"
+      "phases": ["TRIAGE", "PLAN", "BUILD"],
+      "outcome": "TRIAGE+PLAN complete. BUILD in-progress.",
+      "next": "REVIEW T083",
+      "timestamp": "2026-04-27T09:18:00Z"
     },
     {
       "iteration": 109,
-      "phases": [
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
       "outcome": "T079 complete: added maximumScale:1 + userScalable:false to viewport export in app/layout.tsx. Updated test assertions. Build smoke confirmed. 0C/0M/0m review. 712 tests baseline (432f/280p matches main). VERIFY PASS. Merged clean.",
       "next": "TRIAGE iter 110",
       "timestamp": "2026-04-27T09:02:23Z"
     },
     {
       "iteration": 108,
-      "phases": [
-        "INCORPORATE",
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
+      "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
       "outcome": "T077 complete: per-page metadata.title (8 pages, server wrapper pattern), turbopack.root config, 228KB chunk analysis + docs. 9 new tests (804 total). 0C/0M/1m review. Visual check pass. Merged clean.",
       "next": "TRIAGE iter 109",
       "timestamp": "2026-04-26T19:50:11Z"
     },
     {
       "iteration": 107,
-      "phases": [
-        "TRIAGE",
-        "SCHEDULES"
-      ],
+      "phases": ["TRIAGE","SCHEDULES"],
       "outcome": "TRIAGE: env healthy, 796/796 tests pass, no CEO answers pending, 2 overdue schedules, backlog exhausted. SCHEDULES: SCHED-1 dep audit run — 2 moderate vulns (postcss in Next.js, no safe fix), no high/critical, no backlog items filed; SCHED-2 test schedule run. Both schedules updated.",
       "next": "TRIAGE then Q-013 (backlog empty)",
       "timestamp": "2026-04-25T21:44:30Z"
     },
     {
       "iteration": 106,
-      "phases": [
-        "INCORPORATE",
-        "TRIAGE",
-        "PLAN",
-        "BUILD",
-        "REVIEW",
-        "DEPLOY",
-        "VERIFY",
-        "MERGE"
-      ],
-      "outcome": "INCORPORATE: Q-012 resolved, T075 added. TRIAGE: env healthy, 783/783 tests, selected T075. PLAN: spec written. BUILD: T1 MarkdownRenderer dynamic import (3 pages, 7 tests), T2 viewport+metadata (3 tests), T3 cache headers (3 tests), T4 performance audit report, T5 vitest config updated — 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests, build clean, tagged. VERIFY: all artifacts confirmed. MERGE: T075 marked done.",
+      "phases": ["INCORPORATE","TRIAGE","PLAN","BUILD","REVIEW","DEPLOY","VERIFY","MERGE"],
+      "outcome": "INCORPORATE: Q-012 resolved, T075 added. TRIAGE: env healthy, 783/783 tests, selected T075. PLAN: spec written. BUILD: 5 sub-tasks, 13 new tests, 796 total, build clean. REVIEW: S-tier 0C/0M/0m PASS. DEPLOY: 796/796 tests. VERIFY + MERGE: T075 marked done.",
       "next": "TRIAGE iter 107",
       "timestamp": "2026-04-25T21:40:53Z"
     }
