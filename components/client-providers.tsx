@@ -15,13 +15,13 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <ToastProvider>
-        <header className="border-b border-gray-200 dark:border-zinc-800 px-4 sm:px-6 py-4 flex items-center justify-between">
+        <header className="border-b border-gray-200 dark:border-zinc-800 px-4 sm:px-6 py-1 flex items-center justify-between">
           <Link
             href="/"
             aria-label="Control Tower — go to home"
             className="flex items-center gap-2 leading-none select-none text-gray-900 dark:text-gray-100"
           >
-            <Logo className="h-20 w-20" />
+            <Logo className="h-16 w-16" />
             <span className="flex flex-col items-start">
               <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
                 Control
