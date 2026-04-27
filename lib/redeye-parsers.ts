@@ -464,3 +464,49 @@ export function applyDirectiveDelete(content: string, index: number): string {
   lines.splice(lineIdx, 1);
   return lines.join("\n");
 }
+
+/**
+ * Remove a SCHED-{N} block from schedules.md content.
+ *
+ * Finds the matching header line and removes everything from that line up
+ * to (but not including) the next ### header or end-of-content. Trailing
+ * blank lines from the removal are collapsed to at most one blank line.
+ *
+ * Throws RangeError when:
+ *  - schedId does not match ^SCHED-\d+$
+ *  - the block is not found in content
+ */
+export function applyScheduleDelete(content: string, schedId: string): string {
+  if (!/^SCHED-\d+$/i.test(schedId)) {
+    throw new RangeError(`Invalid schedule id: ${schedId}`);
+  }
+
+  // Escape the hyphen for use in a RegExp
+  const escapedId = schedId.replace(/-/g, "\\-");
+  const headerRe = new RegExp(`^### ${escapedId}:`, "mi");
+  const match = headerRe.exec(content);
+  if (!match) {
+    throw new RangeError(`schedule not found: ${schedId}`);
+  }
+
+  const blockStart = match.index;
+
+  // Find the next ### header after this block (or EOF)
+  const afterBlock = content.substring(blockStart + match[0].length);
+  const nextHeaderRe = /^### /m;
+  const nextMatch = nextHeaderRe.exec(afterBlock);
+  const blockEnd =
+    nextMatch !== null
+      ? blockStart + match[0].length + nextMatch.index
+      : content.length;
+
+  const before = content.substring(0, blockStart);
+  const after = content.substring(blockEnd);
+
+  // Trim trailing excess blank lines from before and leading excess blank
+  // lines from after so the seam stays clean.
+  const trimmedBefore = before.replace(/\n{2,}$/, "\n");
+  const trimmedAfter = after.replace(/^\n{2,}/, "\n");
+
+  return trimmedBefore + trimmedAfter;
+}

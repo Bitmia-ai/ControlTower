@@ -8,6 +8,7 @@ import {
   parseDurationMs,
   applyDirectiveEdit,
   applyDirectiveDelete,
+  applyScheduleDelete,
 } from "./redeye-parsers";
 
 // ---------------------------------------------------------------------------
@@ -761,5 +762,75 @@ describe("parseTasks — Merged field parsing", () => {
     const items = parseTasks(makeTaskWithMerged("Iteration 50"));
     expect(items[0].mergedIteration).toBe(50);
     expect(items[0].mergedAt).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// applyScheduleDelete
+// ---------------------------------------------------------------------------
+
+const TWO_SCHED_MD = `# Scheduled Tasks
+
+### SCHED-1: Weekly audit
+- **Frequency:** every 7d
+- **Last run:** 2026-01-01T00:00:00Z
+- **Task:**
+  1. Review commits
+- **Assigned to:** CTO
+
+### SCHED-2: Daily digest
+- **Frequency:** every 1d
+- **Last run:** 2026-04-20T00:00:00Z
+- **Task:**
+  1. Post summary
+- **Assigned to:** CTO
+`;
+
+describe("applyScheduleDelete", () => {
+  it("throws RangeError for invalid schedId (non-SCHED format)", () => {
+    expect(() => applyScheduleDelete("anything", "INVALID")).toThrow(RangeError);
+    expect(() => applyScheduleDelete("anything", "INVALID")).toThrow(/invalid/i);
+    expect(() => applyScheduleDelete("anything", "")).toThrow(RangeError);
+    expect(() => applyScheduleDelete("anything", "SCHED-")).toThrow(RangeError);
+  });
+
+  it("throws RangeError when schedId is not found", () => {
+    expect(() => applyScheduleDelete(TWO_SCHED_MD, "SCHED-99")).toThrow(RangeError);
+    expect(() => applyScheduleDelete(TWO_SCHED_MD, "SCHED-99")).toThrow(/not found/i);
+  });
+
+  it("removes the first schedule block, leaving the second intact", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-1");
+    expect(result).not.toContain("SCHED-1");
+    expect(result).toContain("### SCHED-2: Daily digest");
+    expect(parseSchedules(result)).toHaveLength(1);
+    expect(parseSchedules(result)[0].id).toBe("SCHED-2");
+  });
+
+  it("removes the second schedule block, leaving the first intact", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-2");
+    expect(result).not.toContain("SCHED-2");
+    expect(result).toContain("### SCHED-1: Weekly audit");
+    expect(parseSchedules(result)).toHaveLength(1);
+    expect(parseSchedules(result)[0].id).toBe("SCHED-1");
+  });
+
+  it("removes the only schedule block cleanly", () => {
+    const single = `# Scheduled Tasks\n\n### SCHED-1: Only task\n- **Frequency:** every 1d\n- **Last run:** 1970-01-01T00:00:00Z\n- **Task:**\n  1. step\n- **Assigned to:** CTO\n`;
+    const result = applyScheduleDelete(single, "SCHED-1");
+    expect(result).not.toContain("SCHED-1");
+    expect(parseSchedules(result)).toHaveLength(0);
+  });
+
+  it("accepts uppercase SCHED-N format", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-1");
+    expect(result).not.toContain("### SCHED-1:");
+    expect(parseSchedules(result)).toHaveLength(1);
+  });
+
+  it("does not leave excessive blank lines at the seam", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-1");
+    // Should not have more than 2 consecutive newlines
+    expect(result).not.toMatch(/\n{3,}/);
   });
 });

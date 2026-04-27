@@ -132,3 +132,52 @@ describe("Schedules page metadata (T077)", () => {
     expect((mod.metadata as { title: string }).title).toBe("Schedules");
   });
 });
+
+describe("SchedulesContent — handleDelete", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("removes a deleted schedule from the list without re-fetch", async () => {
+    const schedules = [
+      makeSchedule({ id: "SCHED-001", title: "Alpha check" }),
+      makeSchedule({ id: "SCHED-002", title: "Beta check" }),
+    ];
+
+    // First call returns both schedules (initial load); second call would be
+    // the re-fetch after onAdded — we don't expect a second call here.
+    let fetchCallCount = 0;
+    vi.spyOn(global, "fetch").mockImplementation(async (url) => {
+      if (typeof url === "string" && url.includes("/schedules/SCHED-001")) {
+        return { ok: true, json: async () => ({}) } as Response;
+      }
+      fetchCallCount++;
+      return {
+        ok: true,
+        json: async () => ({ data: { schedules } }),
+      } as Response;
+    });
+
+    render(<SchedulesContent id="0" />);
+
+    // Wait for both schedules to appear
+    await waitFor(() => {
+      expect(screen.getByText("Alpha check")).toBeDefined();
+      expect(screen.getByText("Beta check")).toBeDefined();
+    });
+
+    // Find the delete button for SCHED-001
+    const deleteBtn = screen.getByRole("button", { name: /delete schedule SCHED-001/i });
+    fireEvent.click(deleteBtn);
+    fireEvent.click(screen.getByRole("button", { name: /confirm delete/i }));
+
+    // After deletion, SCHED-001 should be removed from the list
+    await waitFor(() => {
+      expect(screen.queryByText("Alpha check")).toBeNull();
+      expect(screen.getByText("Beta check")).toBeDefined();
+    });
+
+    // Should not have triggered a full re-fetch
+    expect(fetchCallCount).toBe(1);
+  });
+});
