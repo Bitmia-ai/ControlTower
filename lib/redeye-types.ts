@@ -102,6 +102,12 @@ export interface TaskItem {
   cost_usd?: number;
   /** Single-line LLM-authored summary of what shipped. Written by CTO at VERIFY time. */
   summary?: string;
+  /**
+   * Full description text from the `**Description:**` field in tasks.md.
+   * May be multi-paragraph markdown (lists, code blocks, links).
+   * Present on tasks where the CEO included detailed acceptance criteria.
+   */
+  description?: string;
   /** Rationale text from `**Reason:**` field — typically present on wont-do items. */
   reason?: string;
   /**
