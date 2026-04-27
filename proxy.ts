@@ -1,5 +1,5 @@
 /**
- * Edge middleware — Origin / Sec-Fetch-Site protection on mutating routes.
+ * proxy.ts — Origin / Sec-Fetch-Site protection on mutating routes.
  *
  * Control Tower binds to 127.0.0.1 with no auth. The trust assumption is
  * "anything on localhost is the legitimate user." That's wrong as soon as
@@ -13,6 +13,8 @@
  * Same-origin POSTs from the dashboard pass; cross-origin POSTs from
  * drive-by pages fail with 403. GETs are still allowed — they're SOP for
  * the no-credentials case and don't mutate.
+ *
+ * Migrated from middleware.ts (Next.js 16 renamed the convention to proxy).
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -20,7 +22,7 @@ import { NextRequest, NextResponse } from "next/server";
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 const ALLOWED_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 
-function isSameOrigin(req: NextRequest): boolean {
+export function isSameOrigin(req: NextRequest): boolean {
   // Sec-Fetch-Site is the modern primary signal. Browsers send it on every
   // request and it cannot be set by JS. "same-origin" or "none" (top-level
   // nav) are safe; "cross-site" / "same-site" from a different host are not.
