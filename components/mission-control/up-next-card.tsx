@@ -1,0 +1,66 @@
+"use client";
+
+import { TaskId } from "@/components/task-id";
+import type { TaskItem } from "@/lib/redeye-types";
+
+interface UpNextCardProps {
+  items: TaskItem[];
+  projectId?: number;
+}
+
+const statusDot: Record<string, string> = {
+  pending: "bg-gray-400 dark:bg-zinc-600",
+  planned: "bg-gray-500 dark:bg-zinc-500",
+  "in-progress": "bg-amber-400",
+  blocked: "bg-red-500",
+  "pending-triage": "bg-gray-400 dark:bg-zinc-600",
+  done: "bg-green-500",
+};
+
+export function UpNextCard({ items, projectId }: UpNextCardProps) {
+  // Exclude the currently in-progress task — it is already shown in the
+  // WorkingOn card. Showing it here too is redundant and confusing to the CEO
+  // when no other planned/pending tasks remain (T088).
+  const pendingItems = items.filter((i) => i.status !== "in-progress");
+  const upNext = pendingItems.slice(0, 3);
+
+  return (
+    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 border-t-[3px] border-t-zinc-300 dark:border-t-zinc-700 rounded-lg p-5">
+      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500 mb-3">
+        Up Next
+      </p>
+
+      {upNext.length === 0 ? (
+        <span className="text-gray-400 dark:text-zinc-600 text-sm">No pending tasks</span>
+      ) : (
+        <ul className="space-y-2.5">
+          {upNext.map((item) => (
+            <li key={item.id} className="flex items-start gap-2">
+              <span
+                className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
+                  statusDot[item.status] ?? "bg-gray-400 dark:bg-zinc-600"
+                }`}
+              />
+              <div className="min-w-0">
+                <p className="text-sm text-gray-800 dark:text-zinc-200 leading-snug">
+                  {projectId !== undefined ? (
+                    <TaskId id={item.id} projectId={projectId} className="text-gray-500 dark:text-zinc-500" />
+                  ) : (
+                    <span className="text-gray-500 dark:text-zinc-500 font-mono">{item.id}</span>
+                  )}
+                  {" · "}
+                  {item.title}
+                </p>
+                {item.type && (
+                  <span className="text-xs text-gray-400 dark:text-zinc-600 capitalize">
+                    {item.type}
+                  </span>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
