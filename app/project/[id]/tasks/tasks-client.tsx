@@ -9,7 +9,6 @@ import { CollapsibleSection } from "@/components/collapsible-section";
 import { ActiveTaskCard } from "@/components/tasks/active-task-card";
 import { BacklogSection } from "@/components/tasks/backlog-section";
 import { DoneSection } from "@/components/tasks/done-section";
-import { PageHeader } from "@/components/page-header";
 import {
   TaskSection,
   WontDoItemRow,
@@ -112,20 +111,18 @@ export default function TasksPageClient({
   const totalCount = allItems.length + (activeItem ? 1 : 0);
 
   return (
-    <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
-      <PageHeader
-        eyebrow="Control Tower"
-        title="Tasks"
-        subtitle={`${totalCount} ${totalCount === 1 ? "item" : "items"}`}
-        actions={
-          <button
-            onClick={() => setAddDialogOpen(true)}
-            className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded-md transition min-h-[44px]"
-          >
-            + Add Item
-          </button>
-        }
-      />
+    <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto pt-6">
+      <div className="flex items-center justify-between gap-4 mb-4">
+        <p className="text-sm text-gray-500 dark:text-zinc-500">
+          {totalCount} {totalCount === 1 ? "item" : "items"}
+        </p>
+        <button
+          onClick={() => setAddDialogOpen(true)}
+          className="btn primary sm"
+        >
+          + Add Item
+        </button>
+      </div>
 
       {loading && !detail ? (
         <div className="flex items-center justify-center py-24 text-gray-500 dark:text-zinc-600 text-sm">

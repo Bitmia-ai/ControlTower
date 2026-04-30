@@ -23,7 +23,11 @@ describe("next.config headers()", () => {
     expect(typeof nextConfig.headers).toBe("function");
   });
 
-  it("includes a rule for /_next/static/* with immutable cache", async () => {
+  it("includes an immutable /_next/static/* rule when not in dev", async () => {
+    // In test mode (NODE_ENV !== "development") we still emit the prod-style
+    // immutable-cache header — only `next dev` opts out. See next.config.ts
+    // for the rationale: an always-on immutable header on /_next/static makes
+    // the dev server serve stale chunks across rebuilds.
     const rules = await getRules();
     const staticRule = rules.find((r) => r.source === "/_next/static/:path*");
     expect(staticRule).toBeTruthy();
@@ -32,6 +36,24 @@ describe("next.config headers()", () => {
     );
     expect(cacheHeader?.value).toContain("immutable");
     expect(cacheHeader?.value).toContain("max-age=31536000");
+  });
+
+  it("omits the /_next/static/* rule in dev mode (NODE_ENV=development, no VITEST flag)", async () => {
+    // Pretend we're running `next dev` instead of vitest by clearing the
+    // VITEST flag. The headers() closure re-reads process.env on each call.
+    const origVitest = process.env.VITEST;
+    delete process.env.VITEST;
+    try {
+      const rules = (await nextConfig.headers!()) as HeaderRule[];
+      const staticRule = rules.find(
+        (r) => r.source === "/_next/static/:path*"
+      );
+      // In dev mode (without VITEST=true) the immutable cache rule must NOT
+      // be emitted — otherwise the dev server caches stale chunks for a year.
+      expect(staticRule).toBeUndefined();
+    } finally {
+      if (origVitest !== undefined) process.env.VITEST = origVitest;
+    }
   });
 
   it("includes a rule for /api/* with no-store", async () => {

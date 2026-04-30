@@ -10,6 +10,8 @@ vi.mock("next-themes", () => ({
 vi.mock("next/font/google", () => ({
   Geist: () => ({ variable: "--font-geist-sans" }),
   Geist_Mono: () => ({ variable: "--font-geist-mono" }),
+  Inter: () => ({ variable: "--font-inter" }),
+  JetBrains_Mono: () => ({ variable: "--font-jetbrains-mono" }),
 }));
 
 // Mock ThemeToggle (it has its own tests)
@@ -17,20 +19,16 @@ vi.mock("@/components/theme-toggle", () => ({
   ThemeToggle: () => <button>theme</button>,
 }));
 
-// ClientProviders now owns the header (logo link + ThemeToggle) plus ThemeProvider
-// and ToastProvider. Mock it to render the full header structure so layout tests
-// can find the logo link, "Control" text, "Tower" text, and children.
+// ClientProviders owns the redesigned TopBar (logo + title + activity/bell/theme).
+// Mock it to render a header with the same aria-label and "on RedEye" tagline so
+// layout tests can assert on the link, the title, and children.
 vi.mock("@/components/client-providers", () => ({
   ClientProviders: ({ children }: { children: React.ReactNode }) => (
     <>
       <header>
         <a href="/" aria-label="Control Tower — go to home">
-          <span className="text-xs font-bold tracking-widest text-red-600 dark:text-red-500 uppercase">
-            Control
-          </span>
-          <span className="text-lg font-black text-red-600 dark:text-red-500 uppercase leading-none">
-            Tower
-          </span>
+          <span>Control Tower</span>
+          <span style={{ color: "var(--red)" }}>on RedEye</span>
         </a>
         <button>theme</button>
       </header>
@@ -71,37 +69,24 @@ describe("RootLayout metadata exports", () => {
   });
 });
 
-describe("RootLayout logo mark", () => {
-  it("renders a link pointing to /", () => {
-    // RootLayout renders a full <html><body> document; render it and query the link
+describe("RootLayout header", () => {
+  it("renders a logo link pointing to /", () => {
     render(<RootLayout>{<div>child</div>}</RootLayout>);
     const link = screen.getByRole("link", { name: /control tower/i });
     expect(link).toBeTruthy();
     expect(link.getAttribute("href")).toBe("/");
   });
 
-  it('contains "Control" text (case-insensitive)', () => {
+  it('contains the "Control Tower" title', () => {
     render(<RootLayout>{<div>child</div>}</RootLayout>);
     const link = screen.getByRole("link", { name: /control tower/i });
-    // "Control" appears as a child span
-    const controlSpan = within(link).getByText(/^control$/i);
-    expect(controlSpan).toBeTruthy();
+    expect(within(link).getByText(/control tower/i)).toBeTruthy();
   });
 
-  it('contains "Tower" text (case-insensitive)', () => {
+  it('contains the "on RedEye" tagline', () => {
     render(<RootLayout>{<div>child</div>}</RootLayout>);
     const link = screen.getByRole("link", { name: /control tower/i });
-    const towerSpan = within(link).getByText(/^tower$/i);
-    expect(towerSpan).toBeTruthy();
-  });
-
-  it("applies red accent classes to both spans", () => {
-    render(<RootLayout>{<div>child</div>}</RootLayout>);
-    const link = screen.getByRole("link", { name: /control tower/i });
-    const controlSpan = within(link).getByText(/^control$/i);
-    const towerSpan = within(link).getByText(/^tower$/i);
-    expect(controlSpan.className).toContain("text-red-600");
-    expect(towerSpan.className).toContain("text-red-600");
+    expect(within(link).getByText(/on redeye/i)).toBeTruthy();
   });
 
   it("renders children inside the layout", () => {

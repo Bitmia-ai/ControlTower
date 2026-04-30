@@ -59,9 +59,10 @@ describe("EmptyState component (T094)", () => {
 });
 
 describe("Home page empty-state onboarding copy (T094)", () => {
-  it("imports FolderOpen from lucide-react for the empty state icon", () => {
-    expect(homeClientSource).toContain("FolderOpen");
-    expect(homeClientSource).toContain("lucide-react");
+  it("uses an Icon for the empty state icon", () => {
+    // The redesigned home uses our inline <Icon name="folder" /> primitive
+    // instead of the legacy lucide-react FolderOpen import.
+    expect(homeClientSource).toMatch(/Icon\s+name="folder"/);
   });
 
   it("uses Welcome to Control Tower as the empty state title", () => {

@@ -3,12 +3,10 @@
 // [id] is the index in the projects array
 
 import { NextRequest, NextResponse } from "next/server";
-import os from "os";
 import { getProjectByIndex, parseProjectIndex, removeProject } from "@/lib/projects";
 import { readProjectDetail, isInitialized } from "@/lib/redeye-files";
 import { getSessionStatus } from "@/lib/session-manager";
 import { resolveTranscriptFile } from "@/lib/transcript-file-resolver";
-import { tildify } from "@/lib/format-path";
 
 // T013: the Live tab polls /transcript-status for its gating decision, but
 // this detail endpoint also exposes `hasTranscript` as a convenience for
@@ -40,7 +38,6 @@ export async function GET(
     const hasTranscript = resolveTranscriptFile(project.path) !== null;
     const projectWithStatus = {
       ...project,
-      displayPath: tildify(project.path, os.homedir()),
       initialized,
       running: sessionStatus.cto.status === "running" || sessionStatus.cto.status === "stalled",
       hasTranscript,

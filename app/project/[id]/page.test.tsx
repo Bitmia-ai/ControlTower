@@ -164,10 +164,12 @@ describe("ProjectPage phase notifications integration", () => {
   });
 });
 
-describe("Mission control page metadata (T077)", () => {
-  it("page module exports metadata with title 'Mission Control'", async () => {
+describe("Project Now page metadata", () => {
+  it("page module exports metadata with title 'Now'", async () => {
     const mod = await import("./page");
     expect(mod.metadata).toBeDefined();
-    expect((mod.metadata as { title: string }).title).toBe("Mission Control");
+    // Phase 3 of the redesign retitled the project landing page from
+    // "Mission Control" to "Now" and collapsed the page into the new tab shell.
+    expect((mod.metadata as { title: string }).title).toBe("Now");
   });
 });

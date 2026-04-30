@@ -10,6 +10,23 @@ vi.mock("@/lib/redeye-files", () => ({
   isInitialized: vi.fn(),
   readState: vi.fn(),
   readInbox: vi.fn().mockResolvedValue([]),
+  readTasks: vi.fn().mockResolvedValue([]),
+  readArchivedTasks: vi.fn().mockResolvedValue([]),
+  // safeRedeyePath returns a deterministic path for tests; the real impl
+  // resolves to projectPath/.redeye/<filename> with traversal guards.
+  safeRedeyePath: (projectPath: string, filename: string) =>
+    `${projectPath}/.redeye/${filename}`,
+}));
+
+vi.mock("fs/promises", () => ({
+  default: {
+    // schedules.md absent in test fixtures — readScheduleSummary swallows ENOENT.
+    readFile: vi.fn().mockRejectedValue(Object.assign(new Error("ENOENT"), { code: "ENOENT" })),
+  },
+}));
+
+vi.mock("@/lib/redeye-parsers", () => ({
+  parseSchedules: vi.fn().mockReturnValue([]),
 }));
 
 vi.mock("@/lib/session-manager", () => ({

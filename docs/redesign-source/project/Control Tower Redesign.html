@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Control Tower — Redesign</title>
+<link rel="stylesheet" href="app/tokens.css" />
+<style>
+  body { background: oklch(0.14 0.012 260); }
+  [data-theme="dark"] body { background: oklch(0.14 0.012 260); }
+  [data-theme="light"] body { background: oklch(0.96 0.005 80); }
+
+  /* desktop frame */
+  .desktop-frame {
+    background: var(--bg-0);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  /* phone frame */
+  .phone-frame {
+    background: var(--bg-0);
+    border-radius: 38px;
+    overflow: hidden;
+    border: 8px solid oklch(0.10 0.012 260);
+    box-shadow: 0 30px 80px oklch(0 0 0 / 0.5);
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="app/data.jsx"></script>
+<script type="text/babel" src="app/primitives.jsx"></script>
+<script type="text/babel" src="app/home.jsx"></script>
+<script type="text/babel" src="app/project-detail.jsx"></script>
+<script type="text/babel" src="app/extra-views.jsx"></script>
+<script type="text/babel" src="app/flows.jsx"></script>
+<script type="text/babel" src="app/mobile-flows.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState } = React;
+
+/* ===== Desktop Home ===== */
+const DesktopHome = () => {
+  const [theme, setTheme] = useState("dark");
+  const projects = window.PROJECTS;
+
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
+  return (
+    <div className="desktop-frame" data-theme={theme}>
+      <TopBar theme={theme} onTheme={() => setTheme(t => t === "dark" ? "light" : "dark")} unread={1} />
+      <div style={{ flex: 1, overflow: "auto", padding: "28px 28px 60px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          {/* Page header */}
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20 }}>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 4 }}>Tuesday · April 28</div>
+              <h1 style={{ margin: 0, fontSize: 28, fontWeight: 600, color: "var(--fg-0)", letterSpacing: "-0.025em" }}>
+                3 projects · 1 needs you
+              </h1>
+              <p style={{ margin: "4px 0 0", fontSize: 14, color: "var(--fg-2)" }}>
+                2 sessions running quietly · last session 8m ago
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn"><Icon name="filter" size={14} /> Filter</button>
+              <button className="btn primary"><Icon name="plus" size={14} /> Add project</button>
+            </div>
+          </div>
+
+          {/* Fleet summary */}
+          <div style={{ marginBottom: 20 }}>
+            <FleetSummary projects={projects} />
+          </div>
+
+          {/* Inbox */}
+          <div style={{ marginBottom: 24 }}>
+            <InboxCard questions={window.QUESTIONS} onOpen={() => {}} />
+          </div>
+
+          {/* Projects */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <h2 style={{ margin: 0, fontSize: 14, color: "var(--fg-0)", fontWeight: 600 }}>Projects</h2>
+            <div style={{ display: "flex", gap: 6 }}>
+              <button className="btn sm ghost" style={{ color: "var(--fg-1)" }}>All</button>
+              <button className="btn sm ghost">Running</button>
+              <button className="btn sm ghost">Idle</button>
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+            {projects.map(p => (
+              <ProjectCardNew key={p.id} p={p} onClick={() => {}} onToggle={() => {}} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ===== Desktop Project Detail ===== */
+const DesktopProject = ({ initialTab = "now", modal }) => {
+  const [theme] = useState("dark");
+  const [tab, setTab] = useState(initialTab);
+  const project = window.PROJECTS[0];
+  const dim = modal ? { filter: "blur(0.5px)", opacity: 0.55 } : null;
+
+  return (
+    <div className="desktop-frame" data-theme={theme} style={{ position: "relative" }}>
+      <div style={dim}>
+        <TopBar theme={theme} onTheme={() => {}} unread={1} />
+        <ProjectShell project={project} tab={tab} onTab={setTab} onBack={() => {}} onOpenSchedule={() => {}}>
+          {tab === "now" && <NowView project={project} onSteer={() => {}} onAdd={() => {}} onOpenSchedule={() => {}} />}
+          {tab === "tasks" && <TasksView project={project} />}
+          {tab === "history" && <HistoryView project={project} />}
+        </ProjectShell>
+      </div>
+      {modal === "steer" && <SteerModal onClose={() => {}} />}
+      {modal === "schedule" && <ScheduleModal onClose={() => {}} project={project} />}
+    </div>
+  );
+};
+
+/* ===== Modal artboards — render the home behind a modal flow ===== */
+const ModalArtboard = ({ component, ...rest }) => {
+  const Comp = window[component];
+  return (
+    <div className="desktop-frame" data-theme="dark" style={{ position: "relative" }}>
+      <TopBar theme="dark" onTheme={() => {}} unread={1} />
+      <div style={{ flex: 1, overflow: "hidden", padding: "28px 28px 60px", position: "relative", filter: "blur(0.5px)", opacity: 0.6 }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20 }}>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 4 }}>Tuesday · April 28</div>
+              <h1 style={{ margin: 0, fontSize: 28, fontWeight: 600, color: "var(--fg-0)", letterSpacing: "-0.025em" }}>
+                3 projects · 1 needs you
+              </h1>
+            </div>
+          </div>
+          <FleetSummary projects={window.PROJECTS} />
+          <div style={{ marginTop: 20 }}>
+            <InboxCard questions={window.QUESTIONS} onOpen={() => {}} />
+          </div>
+        </div>
+      </div>
+      <Comp onClose={() => {}} {...rest} />
+    </div>
+  );
+};
+
+/* ===== Mobile wrappers ===== */
+const PhoneFrame = ({ children, theme = "dark" }) => (
+  <div className="phone-frame" data-theme={theme} style={{ borderColor: theme === "light" ? "oklch(0.78 0.008 80)" : "oklch(0.10 0.012 260)" }}>
+    {children}
+  </div>
+);
+
+const MobileHomeArtboard = ({ theme = "dark" }) => {
+  const [tab, setTab] = useState("home");
+  return <PhoneFrame theme={theme}><MobileHome tab={tab} onTab={setTab} onProject={() => {}} /></PhoneFrame>;
+};
+
+const MobileProjectArtboard = ({ theme = "dark" }) => {
+  const [tab, setTab] = useState("home");
+  return <PhoneFrame theme={theme}><MobileProject tab={tab} onTab={setTab} projectId={0} onBack={() => {}} /></PhoneFrame>;
+};
+
+const MobileInboxArtboard = ({ theme = "dark" }) => {
+  const [tab, setTab] = useState("inbox");
+  return <PhoneFrame theme={theme}><MobileInbox tab={tab} onTab={setTab} /></PhoneFrame>;
+};
+
+const MobileLiveArtboard = ({ theme = "dark" }) => {
+  const [tab, setTab] = useState("live");
+  return <PhoneFrame theme={theme}><MobileLive tab={tab} onTab={setTab} /></PhoneFrame>;
+};
+
+/* Sheet artboards: render mobile home behind the open sheet */
+const MobileSheetArtboard = ({ component, behind = "home", theme = "dark", ...rest }) => {
+  const Comp = window[component];
+  const [tab, setTab] = useState(behind === "inbox" ? "inbox" : "home");
+  const Behind = behind === "inbox" ? MobileInbox : behind === "project" ? MobileProject : MobileHome;
+  return (
+    <PhoneFrame theme={theme}>
+      <div style={{ position: "relative", height: "100%" }}>
+        <Behind tab={tab} onTab={setTab} onProject={() => {}} projectId={0} onBack={() => {}} />
+        <Comp onClose={() => {}} {...rest} />
+      </div>
+    </PhoneFrame>
+  );
+};
+
+/* ===== Light mode artboard ===== */
+const LightHome = () => {
+  React.useEffect(() => {
+    const el = document.querySelector('[data-light-scope="true"]');
+    if (el) el.setAttribute("data-theme", "light");
+  });
+  return (
+    <div data-light-scope="true" data-theme="light" style={{ height: "100%" }}>
+      <DesktopHome />
+    </div>
+  );
+};
+
+/* ===== Canvas ===== */
+const App = () => (
+  <DesignCanvas
+    title="Control Tower — Redesign"
+    subtitle="Inbox-first workflow, calmer palette, PWA-native mobile shell"
+    background="oklch(0.14 0.012 260)"
+  >
+    <DCSection id="desktop" title="Desktop — Inbox-first home" subtitle="The big shift: what needs YOU surfaces above the project grid. Calmer slate palette, mint for healthy, amber for attention, rose only for stop/destructive.">
+      <DCArtboard id="home" label="Home · Dark" width={1280} height={1100}>
+        <DesktopHome />
+      </DCArtboard>
+      <DCArtboard id="home-light" label="Home · Light" width={1280} height={1100}>
+        <div data-theme="light" style={{ height: "100%" }}><DesktopHome /></div>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="project" title="Project detail — collapsed nav" subtitle="6 tabs → 3 (Now, Tasks, History). Live becomes a slide-over panel. Schedules and Steer move into the project header. The Now view consolidates working-on + controls + stats into one decision-dense screen.">
+      <DCArtboard id="now" label="Now (Mission Control)" width={1280} height={980}>
+        <DesktopProject initialTab="now" />
+      </DCArtboard>
+      <DCArtboard id="tasks" label="Tasks" width={1280} height={900}>
+        <DesktopProject initialTab="tasks" />
+      </DCArtboard>
+      <DCArtboard id="history" label="History" width={1280} height={780}>
+        <DesktopProject initialTab="history" />
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="flows" title="Flows — Add project & onboarding" subtitle="Adding a project is path-detection-driven: if the directory has a .redeye/ folder, we register and skip onboarding. If not, the same modal hands off to the 6-step wizard. Same logic on desktop and mobile.">
+      <DCArtboard id="add-project-detected" label="Add project · .redeye/ detected (fast path)" width={1280} height={760}>
+        <ModalArtboard component="AddProjectModal" initialized={true} />
+      </DCArtboard>
+      <DCArtboard id="add-project-needs" label="Add project · needs onboarding" width={1280} height={760}>
+        <ModalArtboard component="AddProjectModal" initialized={false} />
+      </DCArtboard>
+      <DCArtboard id="onboarding-1" label="Onboarding · 1 Pick repo" width={1280} height={820}>
+        <ModalArtboard component="OnboardingWizard" step={1} />
+      </DCArtboard>
+      <DCArtboard id="onboarding-2" label="Onboarding · 2 Project name (init Q1)" width={1280} height={820}>
+        <ModalArtboard component="OnboardingWizard" step={2} />
+      </DCArtboard>
+      <DCArtboard id="onboarding-3" label="Onboarding · 3 Vision (init Q2)" width={1280} height={820}>
+        <ModalArtboard component="OnboardingWizard" step={3} />
+      </DCArtboard>
+      <DCArtboard id="onboarding-4" label="Onboarding · 4 First task (init Q3)" width={1280} height={820}>
+        <ModalArtboard component="OnboardingWizard" step={4} />
+      </DCArtboard>
+      <DCArtboard id="onboarding-5" label="Onboarding · 5 Deploy (init Q4)" width={1280} height={820}>
+        <ModalArtboard component="OnboardingWizard" step={5} />
+      </DCArtboard>
+      <DCArtboard id="onboarding-6" label="Onboarding · 6 Initialize" width={1280} height={820}>
+        <ModalArtboard component="OnboardingWizard" step={6} />
+      </DCArtboard>
+      <DCArtboard id="answer-q" label="Answer question" width={1280} height={820}>
+        <ModalArtboard component="AnswerQuestionModal" />
+      </DCArtboard>
+      <DCArtboard id="schedule-modal" label="Schedule · define / edit / delete" width={1280} height={920}>
+        <DesktopProject initialTab="now" modal="schedule" />
+      </DCArtboard>
+      <DCArtboard id="steer-modal" label="Steer directives" width={1280} height={820}>
+        <DesktopProject initialTab="now" modal="steer" />
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="mobile" title="Mobile — PWA-native shell" subtitle="Bottom tab bar with Inbox as a top-level destination. Status-bar safe area. Large touch targets. Project cards optimized for one-thumb scanning. FAB for the most common action (answer/start).">
+      <DCArtboard id="m-home" label="Mobile · Home · Dark" width={390} height={844}>
+        <MobileHomeArtboard />
+      </DCArtboard>
+      <DCArtboard id="m-home-light" label="Mobile · Home · Light" width={390} height={844}>
+        <MobileHomeArtboard theme="light" />
+      </DCArtboard>
+      <DCArtboard id="m-inbox" label="Mobile · Inbox · Dark" width={390} height={844}>
+        <MobileInboxArtboard />
+      </DCArtboard>
+      <DCArtboard id="m-inbox-light" label="Mobile · Inbox · Light" width={390} height={844}>
+        <MobileInboxArtboard theme="light" />
+      </DCArtboard>
+      <DCArtboard id="m-project" label="Mobile · Project · Dark" width={390} height={844}>
+        <MobileProjectArtboard />
+      </DCArtboard>
+      <DCArtboard id="m-project-light" label="Mobile · Project · Light" width={390} height={844}>
+        <MobileProjectArtboard theme="light" />
+      </DCArtboard>
+      <DCArtboard id="m-live" label="Mobile · Live" width={390} height={844}>
+        <MobileLiveArtboard />
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="mobile-flows" title="Mobile flows — Onboarding, sheets & answer" subtitle="Native fullscreen sheets that slide up from the tab. Onboarding mirrors the desktop wizard but step-by-step on a single screen — large targets, one decision at a time, big CTA pinned to the bottom.">
+      <DCArtboard id="m-onboarding" label="Mobile · Onboarding (6 steps)" width={390} height={844}>
+        <PhoneFrame><MobileOnboarding onClose={() => {}} /></PhoneFrame>
+      </DCArtboard>
+      <DCArtboard id="m-add-detected" label="Mobile · Add project · .redeye/ detected" width={390} height={844}>
+        <MobileSheetArtboard component="MobileAddProject" behind="home" initialized={true} />
+      </DCArtboard>
+      <DCArtboard id="m-add-needs" label="Mobile · Add project · needs onboarding" width={390} height={844}>
+        <MobileSheetArtboard component="MobileAddProject" behind="home" initialized={false} />
+      </DCArtboard>
+      <DCArtboard id="m-answer" label="Mobile · Answer question" width={390} height={844}>
+        <MobileSheetArtboard component="MobileAnswerQuestion" behind="inbox" />
+      </DCArtboard>
+      <DCArtboard id="m-schedule" label="Mobile · Schedule" width={390} height={844}>
+        <MobileSheetArtboard component="MobileSchedule" behind="project" />
+      </DCArtboard>
+      <DCArtboard id="m-steer" label="Mobile · Steer directives" width={390} height={844}>
+        <MobileSheetArtboard component="MobileSteer" behind="project" />
+      </DCArtboard>
+    </DCSection>
+  </DesignCanvas>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

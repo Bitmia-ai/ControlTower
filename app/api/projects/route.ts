@@ -1,38 +1,81 @@
 import { NextRequest, NextResponse } from "next/server";
-import os from "os";
+import fs from "fs/promises";
 import { listProjects, addProject } from "@/lib/projects";
-import { isInitialized, readState, readInbox } from "@/lib/redeye-files";
+import {
+  isInitialized,
+  readState,
+  readInbox,
+  readTasks,
+  readArchivedTasks,
+  safeRedeyePath,
+} from "@/lib/redeye-files";
+import { parseSchedules } from "@/lib/redeye-parsers";
 import { getSessionStatus } from "@/lib/session-manager";
 import { readJsonBody } from "@/lib/json-body";
-import { tildify } from "@/lib/format-path";
+import type { ProjectWithStatus } from "@/lib/redeye-types";
+
+async function readScheduleSummary(
+  projectPath: string
+): Promise<{ enabled: boolean; summary: string | null }> {
+  let content: string;
+  try {
+    content = await fs.readFile(safeRedeyePath(projectPath, "schedules.md"), "utf-8");
+  } catch {
+    return { enabled: false, summary: null };
+  }
+  const entries = parseSchedules(content);
+  if (entries.length === 0) return { enabled: false, summary: null };
+  // Use the first entry's frequency as the user-visible summary.
+  // The card has limited width; a one-line frequency reads cleaner than a
+  // count + comma list.
+  const summary = entries[0]?.frequency ?? null;
+  return { enabled: true, summary };
+}
 
 // GET /api/projects — list all projects with status
 export async function GET() {
   const projects = await listProjects();
-  // Compute the host's home dir once per request and substitute it into
-  // each project's path as `displayPath`. The raw `path` stays as-is for
-  // any caller that needs a canonical filesystem reference (Add Project's
-  // findIndex, the registered-path check, etc.).
-  const home = os.homedir();
-  const withStatus = await Promise.all(
+  const withStatus: ProjectWithStatus[] = await Promise.all(
     projects.map(async (p) => {
-      const [initialized, state, inbox] = await Promise.all([
+      const [initialized, state, inbox, tasks, archived, schedule] = await Promise.all([
         isInitialized(p.path),
         readState(p.path),
         readInbox(p.path).catch(() => []),
+        readTasks(p.path).catch(() => []),
+        // Archived (shipped & closed) tasks live in `.redeye/tasks-archive/`.
+        // We need them to give an honest lifetime "Done" count on the project
+        // card — `tasks.md` only retains the most recent N done items before
+        // RedEye rolls them off into the archive.
+        readArchivedTasks(p.path).catch(() => []),
+        readScheduleSummary(p.path).catch(() => ({ enabled: false, summary: null })),
       ]);
       const s = getSessionStatus(p.path).cto.status;
       const running = s === "running" || s === "stalled";
+      const taskId = state?.task_id ?? null;
+      const taskTitle = state?.task_title ?? null;
+      const backlogCount = tasks.filter(
+        (t) => t.status !== "done" && t.status !== "wontdo"
+      ).length;
+      // Lifetime done = live "done" rows + archived rows. Dedupe by id so an
+      // item that's still in tasks.md but also got copied into the archive
+      // (during a partial archive run) isn't counted twice.
+      const doneIds = new Set<string>();
+      for (const t of tasks) if (t.status === "done") doneIds.add(t.id);
+      for (const t of archived) if (t.status === "done") doneIds.add(t.id);
+      const doneCount = doneIds.size;
       return {
         ...p,
-        displayPath: tildify(p.path, home),
         initialized,
         running,
         phase: state?.phase,
-        currentTask: state?.task_title
-          ? `${state.task_id ?? ""} ${state.task_title}`.trim()
-          : null,
+        currentTask: taskTitle ? `${taskId ?? ""} ${taskTitle}`.trim() : null,
+        taskId,
+        taskTitle,
         questionCount: inbox.filter((q) => !q.answered).length,
+        backlogCount,
+        doneCount,
+        scheduleEnabled: schedule.enabled,
+        scheduleSummary: schedule.summary,
       };
     })
   );

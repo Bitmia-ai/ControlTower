@@ -8,14 +8,21 @@ export interface ProjectWithStatus extends Project {
   running: boolean;
   sessionStatus?: SessionStatus;
   phase?: string;
+  /** Concatenated "T149 Bug: TOCTOU race…" — used by the legacy home card. */
   currentTask?: string | null;
+  /** Active task id (e.g. "T149") — set when state.task_id is non-null. */
+  taskId?: string | null;
+  /** Active task title (no id prefix) — set when state.task_title is non-null. */
+  taskTitle?: string | null;
   questionCount?: number;
-  /**
-   * `path` with the host's home-dir prefix replaced by `~`. Server-computed
-   * so the browser never has to know the absolute home path. Falls back to
-   * the raw path when the project lives outside $HOME.
-   */
-  displayPath?: string;
+  /** Number of pending/planned/in-progress items in tasks.md (excludes done/wontdo). */
+  backlogCount?: number;
+  /** Number of `done` items in tasks.md (live, not archived). */
+  doneCount?: number;
+  /** True when at least one SCHED-N entry exists in schedules.md. */
+  scheduleEnabled?: boolean;
+  /** Human one-liner like "Weekdays · 9pm" derived from the most-recent schedule. */
+  scheduleSummary?: string | null;
 }
 
 export interface RedEyeState {

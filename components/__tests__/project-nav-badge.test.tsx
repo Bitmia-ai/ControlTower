@@ -26,8 +26,11 @@ beforeAll(() => {
     resolve(PROJECT_ROOT, "components/project-nav.tsx"),
     "utf8"
   );
+  // The redesigned project layout delegates to <ProjectShell />, which is
+  // where the upNext-derived backlog count now lives. The legacy layout.tsx
+  // is just a thin wrapper around the shell.
   layoutSource = readFileSync(
-    resolve(PROJECT_ROOT, "app/project/[id]/layout.tsx"),
+    resolve(PROJECT_ROOT, "components/redesign/project-shell.tsx"),
     "utf8"
   );
 });
@@ -80,12 +83,15 @@ describe("ProjectLayout — openTaskCount data extraction (T108)", () => {
     expect(layoutSource).toContain('"planned"');
   });
 
-  it("stores openTaskCount in the project state", () => {
-    expect(layoutSource).toContain("openTaskCount");
+  it("stores a backlog count derived from upNext in the shell state", () => {
+    expect(layoutSource).toContain("backlogCount");
   });
 
-  it("passes openTaskCount to ProjectNav", () => {
-    expect(layoutSource).toContain("openTaskCount=");
+  it("renders a numeric badge on the Tasks tab", () => {
+    // ProjectShell consumes backlogCount and exposes it as a chip badge
+    // alongside the Tasks tab label.
+    expect(layoutSource).toContain("backlogCount");
+    expect(layoutSource).toContain("badge");
   });
 
   it("openTaskCount extraction logic — unit test via inline filter", () => {

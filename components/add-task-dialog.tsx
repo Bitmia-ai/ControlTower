@@ -2,6 +2,12 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
+import {
+  ModalShell,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@/components/redesign/modal-shell";
 
 interface AddTaskDialogProps {
   projectId: number;
@@ -57,19 +63,28 @@ export function AddTaskDialog({
   }
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/70 z-40" />
-        <Dialog.Content className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-2xl">
-          <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-1">
-            Add Task
-          </Dialog.Title>
-          <Dialog.Description className="text-sm text-gray-500 dark:text-zinc-400 mb-5">
-            Add a new item to the CEO request queue.
-          </Dialog.Description>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* Quick-add text field */}
+    <ModalShell
+      open={open}
+      onOpenChange={onOpenChange}
+      width={520}
+      ariaLabel="Add task"
+    >
+      <ModalHeader
+        icon="plus"
+        tone="mint"
+        title="Add a task"
+        subtitle="Drop an item into the CEO request queue. The team picks it up on the next iteration."
+      />
+      <form onSubmit={handleSubmit} className="flex flex-col" style={{ flex: 1, minHeight: 0 }}>
+        <ModalBody>
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <label
+              htmlFor="task-title"
+              className="eyebrow"
+              style={{ fontSize: 10 }}
+            >
+              Task
+            </label>
             <input
               id="task-title"
               type="text"
@@ -79,74 +94,102 @@ export function AddTaskDialog({
               aria-label="Task title"
               required
               autoFocus
-              className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition"
+              className="input-rd"
             />
+          </div>
 
-            {/* Expandable details */}
-            <button
-              type="button"
-              onClick={() => setShowDetails((v) => !v)}
-              className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 text-left transition"
-            >
-              {showDetails ? "▼ Hide details" : "▶ Add details"}
-            </button>
+          <button
+            type="button"
+            onClick={() => setShowDetails((v) => !v)}
+            style={{
+              fontSize: 11,
+              color: "var(--sky)",
+              background: "transparent",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              textAlign: "left",
+              alignSelf: "flex-start",
+              fontWeight: 500,
+            }}
+          >
+            {showDetails ? "▼ Hide details" : "▶ Add details (description, priority)"}
+          </button>
 
-            {showDetails && (
-              <div className="flex flex-col gap-3">
+          {showDetails && (
+            <div className="flex flex-col" style={{ gap: 14 }}>
+              <div className="flex flex-col" style={{ gap: 6 }}>
+                <label
+                  htmlFor="task-description"
+                  className="eyebrow"
+                  style={{ fontSize: 10 }}
+                >
+                  Description
+                </label>
                 <textarea
                   id="task-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Optional description…"
+                  placeholder="Acceptance criteria, links, examples…"
                   aria-label="Task description"
                   rows={3}
-                  className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition resize-none"
+                  className="input-rd"
+                  style={{ resize: "vertical" }}
                 />
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="task-priority"
-                    className="text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wide"
-                  >
-                    Priority
-                  </label>
-                  <select
-                    id="task-priority"
-                    value={priority}
-                    onChange={(e) =>
-                      setPriority(e.target.value as "P0" | "P1" | "P2")
-                    }
-                    className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 focus:outline-none focus:border-red-600 transition"
-                  >
-                    <option value="P0">P0 — Critical</option>
-                    <option value="P1">P1 — High</option>
-                    <option value="P2">P2 — Normal</option>
-                  </select>
-                </div>
               </div>
-            )}
-
-            {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-
-            <div className="flex justify-end gap-3 mt-2">
-              <Dialog.Close asChild>
-                <button
-                  type="button"
-                  className="px-4 py-2 text-sm text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition"
+              <div className="flex flex-col" style={{ gap: 6 }}>
+                <label
+                  htmlFor="task-priority"
+                  className="eyebrow"
+                  style={{ fontSize: 10 }}
                 >
-                  Cancel
-                </button>
-              </Dialog.Close>
-              <button
-                type="submit"
-                disabled={loading || !text.trim()}
-                className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white rounded-md transition"
-              >
-                {loading ? "Adding…" : "Add Item"}
-              </button>
+                  Priority
+                </label>
+                <select
+                  id="task-priority"
+                  value={priority}
+                  onChange={(e) =>
+                    setPriority(e.target.value as "P0" | "P1" | "P2")
+                  }
+                  className="input-rd"
+                >
+                  <option value="P0">P0 — Critical</option>
+                  <option value="P1">P1 — High</option>
+                  <option value="P2">P2 — Normal</option>
+                </select>
+              </div>
             </div>
-          </form>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+          )}
+
+          {error && (
+            <p style={{ margin: 0, fontSize: 13, color: "var(--rose)" }}>{error}</p>
+          )}
+        </ModalBody>
+        <ModalFooter
+          hint={
+            <span>
+              Appended to{" "}
+              <span className="font-mono" style={{ color: "var(--fg-2)" }}>
+                .redeye/tasks.md
+              </span>
+            </span>
+          }
+        >
+          <Dialog.Close asChild>
+            <button type="button" className="btn ghost">
+              Cancel
+            </button>
+          </Dialog.Close>
+          <button
+            type="submit"
+            disabled={loading || !text.trim()}
+            className="btn primary"
+            style={loading || !text.trim() ? { opacity: 0.5 } : undefined}
+          >
+            {loading ? "Adding…" : "Add task"}
+          </button>
+        </ModalFooter>
+      </form>
+    </ModalShell>
   );
 }

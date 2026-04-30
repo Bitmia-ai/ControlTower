@@ -3,6 +3,12 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import type { InboxQuestion } from "@/lib/redeye-types";
+import {
+  ModalShell,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@/components/redesign/modal-shell";
 
 interface AnswerModalProps {
   question: InboxQuestion;
@@ -50,77 +56,143 @@ export function AnswerModal({
   }
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/70 z-40" />
-        <Dialog.Content className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl p-6 shadow-2xl">
-          <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-white mb-2 leading-snug">
-            {question.question}
-          </Dialog.Title>
-
+    <ModalShell
+      open={open}
+      onOpenChange={onOpenChange}
+      width={580}
+      ariaLabel={`Answer ${question.id}`}
+    >
+      <ModalHeader
+        icon="q"
+        tone="amber"
+        title={question.question}
+        subtitle={
+          <span className="font-mono" style={{ color: "var(--fg-2)" }}>
+            {question.id}
+          </span>
+        }
+      />
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col"
+        style={{ minHeight: 0, flex: 1 }}
+      >
+        <ModalBody>
           {question.context && (
-            <p className="text-sm text-gray-600 dark:text-zinc-400 mb-1">
-              Asked while working on: {question.context}
-            </p>
+            <div
+              style={{
+                fontSize: 13,
+                color: "var(--fg-2)",
+                lineHeight: 1.5,
+              }}
+            >
+              <span
+                className="eyebrow"
+                style={{ marginRight: 6, fontSize: 10 }}
+              >
+                Context
+              </span>
+              {question.context}
+            </div>
           )}
-
           {question.default && (
-            <p className="text-sm text-gray-500 dark:text-zinc-500 mb-4">
-              Proceeded with: {question.default}
-            </p>
-          )}
-
-          {question.options && question.options.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {question.options.map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  onClick={() => setAnswer(opt)}
-                  className={`px-3 py-1.5 text-sm rounded-md border transition ${
-                    answer === opt
-                      ? "bg-red-600 border-red-600 text-white"
-                      : "bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
-                  }`}
-                >
-                  {opt}
-                </button>
-              ))}
+            <div
+              style={{
+                fontSize: 12,
+                color: "var(--fg-3)",
+                background: "var(--bg-0)",
+                border: "1px solid var(--line)",
+                borderRadius: 8,
+                padding: "8px 12px",
+              }}
+            >
+              <span
+                className="eyebrow"
+                style={{ marginRight: 6, fontSize: 10 }}
+              >
+                Default
+              </span>
+              {question.default}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {question.options && question.options.length > 0 && (
+            <div className="flex flex-col" style={{ gap: 6 }}>
+              <div className="eyebrow" style={{ fontSize: 10 }}>
+                Suggested
+              </div>
+              <div className="flex flex-wrap" style={{ gap: 6 }}>
+                {question.options.map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => setAnswer(opt)}
+                    className={answer === opt ? "btn sm primary" : "btn sm"}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <label
+              htmlFor="answer-textarea"
+              className="eyebrow"
+              style={{ fontSize: 10 }}
+            >
+              Your answer
+            </label>
             <textarea
+              id="answer-textarea"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="Type your answer…"
               aria-label="Your answer"
-              rows={3}
-              className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition resize-none"
+              rows={4}
+              className="input-rd"
+              style={{ resize: "vertical" }}
+              autoFocus
             />
+          </div>
 
-            {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-
-            <div className="flex justify-end gap-3">
-              <Dialog.Close asChild>
-                <button
-                  type="button"
-                  className="px-4 py-2 text-sm text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition"
-                >
-                  Cancel
-                </button>
-              </Dialog.Close>
-              <button
-                type="submit"
-                disabled={loading || !answer.trim()}
-                className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white rounded-md transition"
-              >
-                {loading ? "Submitting…" : "Submit Answer"}
-              </button>
-            </div>
-          </form>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+          {error && (
+            <p
+              role="alert"
+              style={{ margin: 0, fontSize: 13, color: "var(--rose)" }}
+            >
+              {error}
+            </p>
+          )}
+        </ModalBody>
+        <ModalFooter
+          hint={
+            <span>
+              Saved to{" "}
+              <span className="font-mono" style={{ color: "var(--fg-2)" }}>
+                .redeye/inbox.md
+              </span>
+            </span>
+          }
+        >
+          <Dialog.Close asChild>
+            <button type="button" className="btn ghost">
+              Cancel
+            </button>
+          </Dialog.Close>
+          <button
+            type="submit"
+            disabled={loading || !answer.trim()}
+            className="btn primary"
+            style={
+              loading || !answer.trim() ? { opacity: 0.5 } : undefined
+            }
+          >
+            {loading ? "Submitting…" : "Submit answer"}
+          </button>
+        </ModalFooter>
+      </form>
+    </ModalShell>
   );
 }

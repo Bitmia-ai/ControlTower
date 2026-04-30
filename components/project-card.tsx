@@ -103,7 +103,7 @@ export function ProjectCard({ project, index, onToggle, onDelete }: ProjectCardP
               data-testid="project-path"
               className="font-mono text-[11px] text-gray-500 dark:text-zinc-500 truncate mb-3"
             >
-              {project.displayPath ?? project.path}
+              {project.path}
             </p>
             <p className="text-sm text-gray-600 dark:text-zinc-400 truncate">
               {currentTask ?? "No active task"}

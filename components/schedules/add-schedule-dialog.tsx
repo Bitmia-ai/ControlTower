@@ -2,6 +2,12 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
+import {
+  ModalShell,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@/components/redesign/modal-shell";
 
 interface AddScheduleDialogProps {
   projectId: number | string;
@@ -13,10 +19,7 @@ interface AddScheduleDialogProps {
 /**
  * Modal dialog for creating a new schedule entry.  POSTs to
  * `/api/projects/{projectId}/schedules` and on success calls onAdded()
- * so the parent can refetch the list.
- *
- * Steps are entered as one-per-line in a textarea — empty lines are
- * filtered out before submit.
+ * so the parent can refetch the list. Steps are entered as one-per-line.
  */
 export function AddScheduleDialog({
   projectId,
@@ -39,7 +42,10 @@ export function AddScheduleDialog({
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
   const canSubmit =
-    !loading && trimmedName.length > 0 && trimmedFreq.length > 0 && stepLines.length > 0;
+    !loading &&
+    trimmedName.length > 0 &&
+    trimmedFreq.length > 0 &&
+    stepLines.length > 0;
 
   function reset() {
     setName("");
@@ -84,135 +90,176 @@ export function AddScheduleDialog({
     }
   }
 
+  const presets = [
+    { label: "Every 4h", value: "every 4h" },
+    { label: "Daily", value: "daily" },
+    { label: "Weekdays · 9pm", value: "weekdays 9pm" },
+    { label: "Weekly", value: "weekly" },
+  ];
+
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/70 z-40" />
-        <Dialog.Content className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-2xl">
-          <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-zinc-100 mb-1">
-            Add Schedule
-          </Dialog.Title>
-          <Dialog.Description className="text-sm text-gray-500 dark:text-zinc-400 mb-5">
-            Define a new recurring task. The team picks it up on its next
-            iteration.
-          </Dialog.Description>
+    <ModalShell
+      open={open}
+      onOpenChange={onOpenChange}
+      width={560}
+      ariaLabel="Add schedule"
+    >
+      <ModalHeader
+        icon="schedule"
+        tone="red"
+        title="Add a schedule"
+        subtitle="Define a recurring task. The team picks it up on its next iteration."
+      />
+      <form onSubmit={handleSubmit} className="flex flex-col" style={{ flex: 1, minHeight: 0 }}>
+        <ModalBody>
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <label
+              htmlFor="schedule-name"
+              className="eyebrow"
+              style={{ fontSize: 10 }}
+            >
+              Name
+            </label>
+            <input
+              id="schedule-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Weekly dependency audit"
+              aria-label="Schedule name"
+              required
+              autoFocus
+              className="input-rd"
+            />
+          </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="schedule-name"
-                className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500"
-              >
-                Name
-              </label>
-              <input
-                id="schedule-name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Weekly dependency audit"
-                aria-label="Schedule name"
-                required
-                autoFocus
-                className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition"
-              />
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <label
+              htmlFor="schedule-frequency"
+              className="eyebrow"
+              style={{ fontSize: 10 }}
+            >
+              Frequency
+            </label>
+            <input
+              id="schedule-frequency"
+              type="text"
+              value={frequency}
+              onChange={(e) => setFrequency(e.target.value)}
+              placeholder="e.g. every 7d, daily, weekdays 9pm"
+              aria-label="Schedule frequency"
+              required
+              className="input-rd"
+            />
+            <div className="flex flex-wrap" style={{ gap: 6, marginTop: 2 }}>
+              {presets.map((p) => (
+                <button
+                  key={p.value}
+                  type="button"
+                  className={frequency === p.value ? "btn sm primary" : "btn sm"}
+                  onClick={() => setFrequency(p.value)}
+                >
+                  {p.label}
+                </button>
+              ))}
             </div>
+          </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="schedule-frequency"
-                className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500"
-              >
-                Frequency
-              </label>
-              <input
-                id="schedule-frequency"
-                type="text"
-                value={frequency}
-                onChange={(e) => setFrequency(e.target.value)}
-                placeholder="e.g. every 7d, every 1h, daily"
-                aria-label="Schedule frequency"
-                required
-                className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition"
-              />
-            </div>
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            <label
+              htmlFor="schedule-steps"
+              className="eyebrow"
+              style={{ fontSize: 10 }}
+            >
+              Steps (one per line)
+            </label>
+            <textarea
+              id="schedule-steps"
+              value={stepsText}
+              onChange={(e) => setStepsText(e.target.value)}
+              placeholder={"1. Run npm audit\n2. Report findings to .redeye/tester-reports.md"}
+              aria-label="Schedule steps"
+              rows={5}
+              required
+              className="input-rd font-mono"
+              style={{ resize: "vertical", fontSize: 13, lineHeight: 1.5 }}
+            />
+          </div>
 
-            <div className="flex flex-col gap-1.5">
+          <button
+            type="button"
+            onClick={() => setShowDetails((v) => !v)}
+            style={{
+              fontSize: 11,
+              color: "var(--sky)",
+              background: "transparent",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              textAlign: "left",
+              alignSelf: "flex-start",
+              fontWeight: 500,
+            }}
+          >
+            {showDetails ? "▼ Hide details" : "▶ Add details"}
+          </button>
+
+          {showDetails && (
+            <div className="flex flex-col" style={{ gap: 6 }}>
               <label
-                htmlFor="schedule-steps"
-                className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500"
+                htmlFor="schedule-description"
+                className="eyebrow"
+                style={{ fontSize: 10 }}
               >
-                Steps (one per line)
+                Description (optional)
               </label>
               <textarea
-                id="schedule-steps"
-                value={stepsText}
-                onChange={(e) => setStepsText(e.target.value)}
-                placeholder={"1. Run npm audit\n2. Report findings to .redeye/tester-reports.md"}
-                aria-label="Schedule steps"
-                rows={5}
-                required
-                className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition resize-none font-mono"
+                id="schedule-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="What does this task accomplish?"
+                aria-label="Schedule description"
+                rows={3}
+                className="input-rd"
+                style={{ resize: "vertical" }}
               />
             </div>
+          )}
 
-            <button
-              type="button"
-              onClick={() => setShowDetails((v) => !v)}
-              className="text-xs text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 text-left transition"
+          {error && (
+            <p
+              role="alert"
+              style={{ margin: 0, fontSize: 13, color: "var(--rose)" }}
             >
-              {showDetails ? "▼ Hide details" : "▶ Add details"}
+              {error}
+            </p>
+          )}
+        </ModalBody>
+        <ModalFooter
+          hint={
+            <span>
+              Appended to{" "}
+              <span className="font-mono" style={{ color: "var(--fg-2)" }}>
+                .redeye/schedules.md
+              </span>
+            </span>
+          }
+        >
+          <Dialog.Close asChild>
+            <button type="button" className="btn ghost">
+              Cancel
             </button>
-
-            {showDetails && (
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="schedule-description"
-                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500 dark:text-zinc-500"
-                >
-                  Description (optional)
-                </label>
-                <textarea
-                  id="schedule-description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="What does this task accomplish?"
-                  aria-label="Schedule description"
-                  rows={3}
-                  className="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-red-600 transition resize-none"
-                />
-              </div>
-            )}
-
-            {error && (
-              <p
-                role="alert"
-                className="text-sm text-red-600 dark:text-red-400"
-              >
-                {error}
-              </p>
-            )}
-
-            <div className="flex justify-end gap-3 mt-2">
-              <Dialog.Close asChild>
-                <button
-                  type="button"
-                  className="px-4 py-2 text-sm text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition"
-                >
-                  Cancel
-                </button>
-              </Dialog.Close>
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md transition"
-              >
-                {loading ? "Adding…" : "Add Schedule"}
-              </button>
-            </div>
-          </form>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+          </Dialog.Close>
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            className="btn primary"
+            style={!canSubmit ? { opacity: 0.5 } : undefined}
+          >
+            {loading ? "Adding…" : "Add schedule"}
+          </button>
+        </ModalFooter>
+      </form>
+    </ModalShell>
   );
 }

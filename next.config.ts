@@ -77,6 +77,12 @@ const nextConfig: NextConfig = {
   // Other directives stay strict (self / data: / 'none') across both modes.
   async headers() {
     const isDev = process.env.NODE_ENV === "development";
+    // vitest also runs with NODE_ENV=development; we want it to behave like
+    // prod for the immutable-cache rule (so test snapshots match), so we
+    // gate that single rule on `!isViteTest`. The CSP `unsafe-eval` block
+    // below still uses `isDev` directly because it's safe in either env.
+    const isViteTest = process.env.VITEST === "true";
+    const skipImmutableCache = isDev && !isViteTest;
     const scriptSrc = isDev
       ? "'self' 'unsafe-inline' 'unsafe-eval'"
       : "'self' 'unsafe-inline'";
@@ -118,14 +124,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Long-lived immutable caching is correct in prod (chunks are
-      // content-addressed by hash) but lethal in dev: chunk URLs in dev mode
-      // do not change when their bytes change, and the browser keeps serving
-      // the immutable cached copy for a year. Gate the rule to prod-only so
-      // dev edits show up on every reload.
-      // vitest also runs with NODE_ENV=development, so we keep the rule in
-      // tests via a VITEST=true exclusion to avoid breaking snapshots.
-      ...(process.env.NODE_ENV === "development" && process.env.VITEST !== "true"
+      // Long-lived immutable caching for /_next/static is correct in prod
+      // (chunks are content-addressed by hash) but BREAKS dev: when a chunk
+      // changes its bytes, the URL is the same in dev mode (no hash), and
+      // the browser keeps serving the immutable cached copy for a year.
+      // That's been the source of the "I see the old UI" reports during
+      // the redesign. Apply the rule only in prod; let dev use Next's
+      // default no-cache behavior. Next will print a warning if a header
+      // rule still applies in dev, so returning an empty `headers` array
+      // here is the cleanest way to opt out.
+      ...(skipImmutableCache
         ? []
         : [
             {

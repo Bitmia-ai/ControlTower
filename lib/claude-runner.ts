@@ -162,15 +162,9 @@ export function spawnClaudeSession(
   // had no consumer, so after ~64 KB of stderr the pipe buffer filled and
   // claude blocked, looking like a stall. Writing stderr to the log fd
   // captures it and avoids the deadlock.
-  // stdin = "ignore" so the child gets /dev/null. Previously this was
-  // "pipe" with no consumer; after the autonomous loop emitted its final
-  // result and STOP promise, claude --print kept the process alive for
-  // hours waiting on stdin (observed: 11+ h orphan PID after queue
-  // exhaustion). With stdin closed at spawn time, the binary can exit
-  // cleanly when the prompt completes.
   const proc = spawn(CLAUDE_BIN, args, {
     cwd: projectPath,
-    stdio: ["ignore", logFd, logFd],
+    stdio: ["pipe", logFd, logFd],
     detached: true,
   });
 

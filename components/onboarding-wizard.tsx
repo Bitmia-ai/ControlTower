@@ -100,11 +100,7 @@ export function OnboardingWizard({
 
       const body: Record<string, string> = {};
       if (vision.trim()) body.vision = vision.trim();
-      // The init endpoint rejects fields with newlines, backticks, $, or \,
-      // so we can only safely send a single task line. Send the first as
-      // `firstTask`; the rest are appended via /api/projects/{id}/tasks
-      // after init succeeds.
-      if (tasks.length > 0) body.firstTask = tasks[0];
+      if (tasks.length > 0) body.firstTask = tasks.join("\n");
       if (deployCommand.trim()) body.deployCommand = deployCommand.trim();
       if (testCommand.trim()) body.testCommand = testCommand.trim();
       if (appUrl.trim()) body.appUrl = appUrl.trim();
@@ -123,22 +119,6 @@ export function OnboardingWizard({
         setError(json.error ?? "Initialization failed");
         setStep("review");
         return;
-      }
-
-      // Append the remaining tasks individually so the full backlog the
-      // user typed in step 3 actually lands in tasks.md.
-      if (tasks.length > 1) {
-        setInitLog((prev) => [
-          ...prev,
-          `Adding ${tasks.length - 1} more tasks…`,
-        ]);
-        for (const t of tasks.slice(1)) {
-          await fetch(`/api/projects/${projectId}/tasks`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: t }),
-          }).catch(() => {});
-        }
       }
 
       setInitLog((prev) => [...prev, "RedEye initialized successfully!", "Done."]);

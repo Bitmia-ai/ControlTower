@@ -122,11 +122,7 @@ describe("ControlsCard", () => {
     ).toBeTruthy();
   });
 
-  it("confirmation persists until the user acts (no silent auto-dismiss)", async () => {
-    // The confirm state used to revert after 4s, which surprised users
-    // (clicked once, looked away, came back to "Force Stop" and assumed
-    // nothing was triggered). It now persists until the user clicks again
-    // or dismisses the dropdown explicitly.
+  it("confirmation auto-dismisses after 4s", async () => {
     const onForceStop = vi.fn();
     render(<ControlsCard running={true} onForceStop={onForceStop} />);
 
@@ -141,13 +137,16 @@ describe("ControlsCard", () => {
       screen.getByRole("menuitem", { name: /Confirm hard kill/i })
     ).toBeTruthy();
 
-    // Long wait — the confirm label must NOT auto-revert.
     await act(async () => {
-      vi.advanceTimersByTime(30_000);
+      vi.advanceTimersByTime(4100);
     });
 
     expect(
-      screen.getByRole("menuitem", { name: /Confirm hard kill/i })
+      screen.queryByRole("menuitem", { name: /Confirm hard kill/i })
+    ).toBeNull();
+    // Default "Force Stop" label should be back (dropdown still open)
+    expect(
+      screen.getByRole("menuitem", { name: /^Force Stop$/ })
     ).toBeTruthy();
     expect(onForceStop).not.toHaveBeenCalled();
   });

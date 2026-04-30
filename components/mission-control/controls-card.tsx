@@ -114,13 +114,12 @@ export function ControlsCard({
 
   function handleForceStopMenuClick() {
     if (!forceConfirmPending) {
-      // Enter confirm state. Label flips to "Confirm hard kill — click
-      // again". Earlier this auto-reverted after 4s, but the silent timeout
-      // surprised users — they'd click once, wait, see the label revert
-      // to "Force Stop" and assume nothing was triggered. The confirm state
-      // now persists until the user either clicks again, presses Escape,
-      // or clicks outside the dropdown — all of which give visible feedback.
       setForceConfirmPending(true);
+      if (forceConfirmTimer.current) clearTimeout(forceConfirmTimer.current);
+      forceConfirmTimer.current = setTimeout(() => {
+        setForceConfirmPending(false);
+        forceConfirmTimer.current = null;
+      }, 4000);
       return;
     }
     // Confirmed — execute force stop
@@ -132,10 +131,7 @@ export function ControlsCard({
     setDropdownOpen(false);
     setPending("force-stop");
     if (pendingTimer.current) clearTimeout(pendingTimer.current);
-    // Hold the "Force Stopping…" label for longer than the SIGTERM grace
-    // window (10s) so the user sees acknowledgement until the
-    // session-manager actually kills the process.
-    pendingTimer.current = setTimeout(() => setPending(null), 12000);
+    pendingTimer.current = setTimeout(() => setPending(null), 3000);
     onForceStop?.();
   }
 

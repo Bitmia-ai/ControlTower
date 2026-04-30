@@ -9,7 +9,6 @@ import { SessionHistoryRow } from "@/components/history/session-history-row";
 import { SectionHeader } from "@/components/section-header";
 import { ListToolbar } from "@/components/list-toolbar";
 import { Pagination } from "@/components/pagination";
-import { PageHeader } from "@/components/page-header";
 import { useListFilter } from "@/lib/use-list-filter";
 
 const SESSIONS_PAGE_SIZE = 10;
@@ -193,9 +192,7 @@ export default function HistoryPageClient({
   const sessionsNewestFirst = sessions ? [...sessions].reverse() : null;
 
   return (
-    <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto">
-      <PageHeader eyebrow="Control Tower" title="History" subtitle="Sessions" />
-
+    <main className="px-4 sm:px-6 pb-8 max-w-6xl mx-auto pt-6">
       {fetchError && (
         <FetchError message={fetchError} onRetry={() => fetchSessions(true)} />
       )}

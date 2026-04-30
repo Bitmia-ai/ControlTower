@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import MissionControlClient from "./mission-control-client";
+import NowClient from "./now-client";
 
 export const metadata: Metadata = {
-  title: "Mission Control",
+  title: "Now",
 };
 
 export default function ProjectPage({
@@ -10,5 +10,5 @@ export default function ProjectPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  return <MissionControlClient params={params} />;
+  return <NowClient params={params} />;
 }

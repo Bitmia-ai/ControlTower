@@ -1,0 +1,163 @@
+/* Mock data for ControlTower redesign */
+
+window.PROJECTS = [
+  {
+    id: 0,
+    name: "ControlTower",
+    path: "~/code/ControlTower",
+    running: true,
+    initialized: true,
+    phase: "deploy",
+    health: "healthy",
+    workingOn: { id: "T149", title: "Bug: TOCTOU race when answering question", started: "12m ago" },
+    questions: 0,
+    sessionCost: 5.04,
+    totalCost: 70.78,
+    burnRate: 1.26,
+    velocity: 1.5,
+    velocityTrend: "up",
+    backlog: 1,
+    done: 96,
+    upNext: { id: "T095", title: "Add demo gif or short video to README" },
+    schedule: {
+      enabled: true,
+      summary: "Weekdays · 9pm",
+      cron: "0 21 * * 1-5",
+      nextRun: "Tonight, 9:00 PM",
+      lastRun: { when: "Yesterday, 9:00 PM", outcome: "shipped 3" },
+    },
+  },
+  {
+    id: 1,
+    name: "haze",
+    path: "~/code/haze",
+    running: false,
+    initialized: true,
+    phase: "triage",
+    health: "needs-input",
+    workingOn: { id: "T676", title: "Smarter error messages for HTTP failures", started: null },
+    questions: 3,
+    sessionCost: 0,
+    totalCost: 312.40,
+    burnRate: 0.42,
+    velocity: 0.8,
+    velocityTrend: "flat",
+    backlog: 14,
+    done: 412,
+    upNext: { id: "T677", title: "Cache TTL audit — drop the 24h shared bucket" },
+    schedule: {
+      enabled: false,
+      summary: "Off",
+      cron: null,
+      nextRun: null,
+      lastRun: null,
+    },
+  },
+  {
+    id: 2,
+    name: "redeye",
+    path: "~/code/redeye",
+    running: true,
+    initialized: true,
+    phase: "verify",
+    health: "healthy",
+    workingOn: { id: "T003", title: "Harden digest.sh and state.json under concurrent writes", started: "47m ago" },
+    questions: 0,
+    sessionCost: 2.12,
+    totalCost: 11.40,
+    burnRate: 0.88,
+    velocity: 2.1,
+    velocityTrend: "up",
+    backlog: 7,
+    done: 38,
+    upNext: { id: "T004", title: "Per-iteration log compaction" },
+    schedule: {
+      enabled: true,
+      summary: "Every 4h",
+      cron: "0 */4 * * *",
+      nextRun: "in 1h 12m",
+      lastRun: { when: "2h ago", outcome: "shipped 1" },
+    },
+  },
+];
+
+window.PHASES = [
+  { key: "triage", label: "Triage" },
+  { key: "plan", label: "Plan" },
+  { key: "build", label: "Build" },
+  { key: "review", label: "Review" },
+  { key: "deploy", label: "Deploy" },
+  { key: "verify", label: "Verify" },
+  { key: "merge", label: "Merge" },
+];
+
+window.QUESTIONS = [
+  {
+    id: "Q-87",
+    project: "haze",
+    projectId: 1,
+    title: "Retry 503s with exponential backoff, or fail fast?",
+    context: "Two upstream services return 503 under load. Current code throws immediately.",
+    age: "9h",
+    task: "T676",
+  },
+  {
+    id: "Q-86",
+    project: "haze",
+    projectId: 1,
+    title: "Drop the legacy/v1 adapter, or keep behind a flag?",
+    context: "No callers in main, but two test fixtures reference it.",
+    age: "11h",
+    task: "T672",
+  },
+  {
+    id: "Q-85",
+    project: "haze",
+    projectId: 1,
+    title: "Use pino, or stick with console.log for the worker?",
+    context: "Repo otherwise uses pino. Worker was scaffolded with console.",
+    age: "12h",
+    task: "T669",
+  },
+];
+
+window.RECENT = [
+  { id: "T148", project: "ControlTower", title: "Per-task time tracking — wall-clock duration", shipped: "1d", cost: 2.14 },
+  { id: "T147", project: "ControlTower", title: "Velocity chart on project detail", shipped: "1d", cost: 1.82 },
+  { id: "T146", project: "redeye", title: "Cost forecasting — burn rate trend", shipped: "2h", cost: 0.93 },
+  { id: "T145", project: "ControlTower", title: "Mobile layout polish pass", shipped: "1d", cost: 1.10 },
+  { id: "T144", project: "redeye", title: "Offline support via service worker", shipped: "1d", cost: 0.71 },
+  { id: "T143", project: "haze", title: "Web app manifest + install prompt", shipped: "2d", cost: 1.05 },
+];
+
+window.TRANSCRIPT = [
+  { kind: "thought", body: "I should re-read the T149 spec before patching the lockfile path." },
+  { kind: "tool", tool: "Read", args: "docs/specs/T149.md" },
+  { kind: "result", tool: "Read", body: "93 lines. TOCTOU race in questions.json answer flow. Fix: atomic write with CAS." },
+  { kind: "thought", body: "Race is between question.read and answer.write. Need atomic-write helper." },
+  { kind: "tool", tool: "Edit", args: "lib/atomic-write.ts" },
+  { kind: "result", tool: "Edit", body: "Updated. atomicWriteJson now takes a compare-and-swap predicate." },
+  { kind: "tool", tool: "Bash", args: "npm test -- atomic-write" },
+  { kind: "result", tool: "Bash", body: "PASS  lib/atomic-write.test.ts (24 tests, 1.2s)" },
+  { kind: "msg", body: "Round 4 → Reviewer: 0 issues. Promoting to deploy." },
+  { kind: "tool", tool: "Bash", args: "npm run build" },
+];
+
+window.TASKS = [
+  { id: "T149", title: "Bug: TOCTOU race when answering question", status: "in-progress", section: "feature", priority: "P0" },
+  { id: "T095", title: "Add demo gif or short video to README", status: "pending", section: "docs", priority: "P1" },
+  { id: "T148", title: "Per-task time tracking — wall-clock duration", status: "done", section: "feature", priority: "P2" },
+  { id: "T147", title: "Velocity chart on project detail", status: "done", section: "feature", priority: "P2" },
+  { id: "T146", title: "Cost forecasting — project burn rate", status: "done", section: "feature", priority: "P1" },
+  { id: "T145", title: "Mobile layout polish pass", status: "done", section: "chore", priority: "P2" },
+  { id: "T144", title: "Offline support via service worker", status: "done", section: "feature", priority: "P1" },
+];
+
+window.SESSIONS = [
+  { date: "Apr 28", time: "10:43 PM", task: "T149", duration: "12m", cost: 0.95, phase: "deploy", outcome: "running" },
+  { date: "Apr 27", time: "11:44 PM", task: "T148", duration: "1h 21m", cost: 2.14, phase: "merge", outcome: "shipped" },
+  { date: "Apr 27", time: "10:36 PM", task: "T147", duration: "58m", cost: 1.82, phase: "merge", outcome: "shipped" },
+  { date: "Apr 27", time: "9:55 PM", task: "T146", duration: "34m", cost: 1.41, phase: "merge", outcome: "shipped" },
+  { date: "Apr 27", time: "9:53 PM", task: "T145", duration: "8m", cost: 0.31, phase: "merge", outcome: "shipped" },
+  { date: "Apr 27", time: "9:40 PM", task: "T144", duration: "22m", cost: 0.71, phase: "merge", outcome: "shipped" },
+];
