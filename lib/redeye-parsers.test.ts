@@ -1,0 +1,1165 @@
+import { describe, it, expect } from "vitest";
+import {
+  parseTasks,
+  parseInbox,
+  parseChangelog,
+  parseSteering,
+  parseSchedules,
+  parseDurationMs,
+  applyDirectiveEdit,
+  applyDirectiveDelete,
+  applyScheduleDelete,
+} from "./redeye-parsers";
+
+// ---------------------------------------------------------------------------
+// parseTasks
+// ---------------------------------------------------------------------------
+
+describe("parseTasks", () => {
+  it("returns empty array for empty content", () => {
+    expect(parseTasks("")).toEqual([]);
+  });
+
+  it("returns empty array when no T items exist", () => {
+    const content = `# Backlog\n\n## CEO Requests\n_(empty)_\n\n## Discovered\n\n## Triaged\n`;
+    expect(parseTasks(content)).toEqual([]);
+  });
+
+  it("parses a single CEO request", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: Core CLI with colored output\n- **Type:** feature\n- **Priority:** critical\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0]).toMatchObject({
+      id: "T001",
+      title: "Core CLI with colored output",
+      type: "feature",
+      priority: "critical",
+      status: "pending",
+      section: "ceo",
+    });
+  });
+
+  it("parses multiple items across sections", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T001: First feature
+- **Type:** feature
+- **Priority:** P0 (must be done first, everything else depends on it)
+- **Status:** complete
+
+### T002: Second feature
+- **Type:** refactor
+- **Priority:** P0
+- **Status:** done
+
+## Discovered
+
+## Triaged
+
+### T007: Add unit tests
+- **Type:** tech-debt
+- **Priority:** P1 (medium)
+- **Status:** planned
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(3);
+
+    expect(items[0]).toMatchObject({ id: "T001", section: "ceo", status: "done" });
+    expect(items[1]).toMatchObject({ id: "T002", section: "ceo", status: "done" });
+    expect(items[2]).toMatchObject({ id: "T007", section: "triaged", status: "planned" });
+  });
+
+  it("handles items with missing optional fields", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T005: Minimal item\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].type).toBeUndefined();
+    expect(items[0].priority).toBeUndefined();
+    expect(items[0].status).toBe("pending");
+  });
+
+  it("normalizes status values", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T001: Done item
+- **Status:** complete
+
+### T002: In progress item
+- **Status:** in-progress
+
+### T003: Blocked item
+- **Status:** blocked
+`;
+    const items = parseTasks(content);
+    expect(items[0].status).toBe("done");
+    expect(items[1].status).toBe("in-progress");
+    expect(items[2].status).toBe("blocked");
+  });
+
+  it("defaults status to pending when field is missing", () => {
+    const content = `# Backlog\n\n## Discovered\n\n### T003: No status field\n- **Type:** test\n`;
+    const items = parseTasks(content);
+    expect(items[0].status).toBe("pending");
+  });
+
+  it("deduplicates items with the same id across sections", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T001: Original title
+- **Status:** pending
+- **Type:** feature
+
+## Triaged
+
+### T001: Updated title
+- **Status:** planned
+- **Type:** feature
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].id).toBe("T001");
+    expect(items[0].title).toBe("Updated title");
+    expect(items[0].status).toBe("planned");
+    expect(items[0].section).toBe("triaged");
+  });
+
+  it("parses Won't Do section", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n## Won't Do\n\n### T010: Rejected idea\n- **Status:** done\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].section).toBe("wontdo");
+  });
+
+  // Regression: `wont-do` status was falling through normalizeStatus's default
+  // case and being misclassified as `pending`, which made the dashboard count
+  // wont-do items as remaining work and the loop never reached "exhausted".
+  it("normalizes wont-do status (any spelling) to wontdo, not pending", () => {
+    const content =
+      `# Backlog\n\n## Triaged\n\n` +
+      `### T001: hyphen form\n- **Status:** wont-do\n\n` +
+      `### T002: smushed form\n- **Status:** wontdo\n\n` +
+      `### T003: apostrophe form\n- **Status:** Won't Do\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(3);
+    expect(items.map((i) => i.status)).toEqual(["wontdo", "wontdo", "wontdo"]);
+  });
+
+  // ---- Summary field (T026) ----
+
+  it("parses Summary field on a done item", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### T048: Live tab collapsibles\n- **Type:** feature\n- **Status:** done\n- **Summary:** User message boxes are now collapsible by default to reduce noise.\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].summary).toBe(
+      "User message boxes are now collapsible by default to reduce noise."
+    );
+  });
+
+  it("leaves summary undefined when field is missing", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: No summary\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items[0].summary).toBeUndefined();
+  });
+
+  it("preserves multi-word summary text verbatim", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### T040: Thinking events\n- **Status:** done\n- **Summary:** Added violet ThinkingCard with 80-char preview and red AssistantTextCard.\n`;
+    const items = parseTasks(content);
+    expect(items[0].summary).toBe(
+      "Added violet ThinkingCard with 80-char preview and red AssistantTextCard."
+    );
+  });
+
+  it("does not affect existing fields when Summary is present", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### T044: Add to Backlog button\n- **Type:** feature\n- **Priority:** P2\n- **Status:** done\n- **Summary:** Redesigned with PlusCircle icon and indigo accent.\n- **Spec:** docs/specs/T044.md\n`;
+    const items = parseTasks(content);
+    expect(items[0]).toMatchObject({
+      id: "T044",
+      type: "feature",
+      priority: "P2",
+      status: "done",
+      summary: "Redesigned with PlusCircle icon and indigo accent.",
+      spec: "docs/specs/T044.md",
+    });
+  });
+
+  it("extracts the Reason field on wont-do items (T065)", () => {
+    const content = `# Backlog\n\n## Won't Do\n\n### T099: Some rejected idea\n- **Type:** feature\n- **Priority:** P1\n- **Status:** wont-do\n- **Reason:** Superseded by T100 which covers the same requirement.\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0]).toMatchObject({
+      id: "T099",
+      status: "wontdo",
+      section: "wontdo",
+      reason: "Superseded by T100 which covers the same requirement.",
+    });
+  });
+
+  it("returns reason: undefined when the field is absent (T065)", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T100: Active item\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items[0].reason).toBeUndefined();
+  });
+
+  it("does not coerce Reason from other fields (T065)", () => {
+    const content = `# Backlog\n\n## Triaged\n\n### T101: Done with summary\n- **Type:** feature\n- **Status:** done\n- **Summary:** A summary text, not a reason.\n`;
+    const items = parseTasks(content);
+    expect(items[0].summary).toBe("A summary text, not a reason.");
+    expect(items[0].reason).toBeUndefined();
+  });
+
+  // ---- Description field (T107) ----
+
+  it("T107: parses single-line Description field", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T107: Fix description\n- **Type:** bug\n- **Status:** pending\n- **Description:** The task detail page does not show the description field.\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toBe(
+      "The task detail page does not show the description field."
+    );
+  });
+
+  it("T107: parses multi-paragraph Description field", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T107: Multi-paragraph task
+- **Type:** bug
+- **Status:** pending
+- **Description:** First paragraph describes the problem.
+
+Second paragraph gives more context.
+
+Third paragraph lists acceptance criteria.
+- **Priority:** P0
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toContain("First paragraph describes the problem.");
+    expect(items[0].description).toContain("Second paragraph gives more context.");
+    expect(items[0].description).toContain("Third paragraph lists acceptance criteria.");
+  });
+
+  it("T107: description capture stops at next field marker", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T107: Task with description and other fields
+- **Type:** feature
+- **Status:** pending
+- **Description:** This is the description content.
+It spans multiple lines.
+- **Spec:** docs/specs/T107.md
+- **Summary:** Short summary.
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toContain("This is the description content.");
+    // Should NOT include the Spec or Summary field text
+    expect(items[0].description).not.toContain("docs/specs/T107.md");
+    expect(items[0].description).not.toContain("Short summary.");
+    // Spec and summary should still be parsed correctly
+    expect(items[0].spec).toBe("docs/specs/T107.md");
+    expect(items[0].summary).toBe("Short summary.");
+  });
+
+  it("T107: description is undefined when field is absent", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: No description field\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toBeUndefined();
+  });
+
+  it("T107: description with markdown list content", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T200: Task with list in description
+- **Type:** feature
+- **Status:** pending
+- **Description:** Steps to reproduce:
+  1. Open the task detail page.
+  2. Note the description is missing.
+  Fix: extend the parser.
+- **Priority:** P0
+`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].description).toContain("Steps to reproduce:");
+    expect(items[0].description).toContain("Open the task detail page.");
+    expect(items[0].description).toContain("Fix: extend the parser.");
+    // Priority field should not be captured as part of description
+    expect(items[0].priority).toBe("P0");
+  });
+
+  // -------------------------------------------------------------------------
+  // Regression: in-prose section-header collision (commit 4159ec1)
+  //
+  // The pre-fix `extractSection` used `raw.indexOf(header)` to find section
+  // boundaries. This matched the FIRST occurrence anywhere in the raw text,
+  // including inside a task's Description prose. A CEO Requests task whose
+  // description literally mentioned "## Discovered" or "## Triaged" caused
+  // every subsequent section to collapse — tasks in those real sections were
+  // silently dropped from the UI.
+  //
+  // The fix anchors the regex to start-of-line via the multiline `m` flag:
+  //   new RegExp(`^${escapeRegex(header)}\\s*$`, "m")
+  //
+  // These tests pin that contract. Reverting `extractSection` to the
+  // pre-fix `indexOf`-based path will make all four tests fail.
+  // -------------------------------------------------------------------------
+
+  it("regression(4159ec1): in-prose '## Discovered' / '## Triaged' do not displace real sections", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T100: Document tasks.md scaffolding
+- **Type:** docs
+- **Priority:** P2
+- **Status:** pending
+- **Description:** When you scaffold a new tasks.md file, include the standard sections so the parser knows where to look. The full layout is:
+
+  ## CEO Requests
+  ## Discovered
+  ## Triaged
+  ## Won't Do
+
+  Each section uses a level-2 heading. The parser scans top-down and returns items grouped by section.
+
+## Discovered
+
+### T101: First discovered task
+- **Type:** bug
+- **Priority:** P1
+- **Status:** pending
+
+### T102: Second discovered task
+- **Type:** feature
+- **Priority:** P2
+- **Status:** pending
+
+## Triaged
+
+### T103: Triaged task
+- **Type:** tech-debt
+- **Priority:** P1
+- **Status:** planned
+`;
+    const items = parseTasks(content);
+
+    // All four tasks must be parsed: the pre-fix bug silently dropped the
+    // Discovered + Triaged sections entirely.
+    expect(items).toHaveLength(4);
+
+    const byId = new Map(items.map((t) => [t.id, t]));
+    expect(byId.get("T100")?.section).toBe("ceo");
+    expect(byId.get("T101")?.section).toBe("discovered");
+    expect(byId.get("T102")?.section).toBe("discovered");
+    expect(byId.get("T103")?.section).toBe("triaged");
+  });
+
+  it("regression(4159ec1): CEO task description with literal section headers is preserved verbatim", () => {
+    const content = `# Backlog
+
+## CEO Requests
+
+### T200: Explain the section layout
+- **Type:** docs
+- **Priority:** P2
+- **Status:** pending
+- **Description:** The tasks file has these sections in order:
+
+  ## CEO Requests
+  ## Discovered
+  ## Triaged
+
+  Keep this order so the dashboard renders predictably.
+
+## Discovered
+
+### T201: Real discovered task
+- **Status:** pending
+
+## Triaged
+
+### T202: Real triaged task
+- **Status:** planned
+`;
+    const items = parseTasks(content);
+
+    expect(items).toHaveLength(3);
+
+    const ceo = items.find((t) => t.id === "T200");
+    expect(ceo).toBeDefined();
+    expect(ceo!.section).toBe("ceo");
+    // The description must retain the literal section-header strings — the
+    // parser MUST NOT swallow them as section boundaries.
+    expect(ceo!.description).toContain("## CEO Requests");
+    expect(ceo!.description).toContain("## Discovered");
+    expect(ceo!.description).toContain("## Triaged");
+    expect(ceo!.description).toContain("Keep this order");
+
+    // And the real sections beneath the CEO task were still parsed.
+    expect(items.find((t) => t.id === "T201")?.section).toBe("discovered");
+    expect(items.find((t) => t.id === "T202")?.section).toBe("triaged");
+  });
+
+  it("regression(4159ec1): mid-line '## Discovered' inside prose is treated as prose, not a section boundary", () => {
+    // Here the literal "## Discovered" appears INSIDE a sentence (not at the
+    // start of a line). With the pre-fix `indexOf` path the parser would
+    // still match it and break section detection. The anchored regex
+    // (`^## Discovered\s*$`) correctly ignores it.
+    const content = `# Backlog
+
+## CEO Requests
+
+### T300: Inline mention task
+- **Type:** docs
+- **Priority:** P2
+- **Status:** pending
+- **Description:** Note that the section name "## Discovered" is used internally and must stay lowercase in URLs but uppercase in headings.
+
+## Discovered
+
+### T301: Real discovered after inline mention
+- **Status:** pending
+
+## Triaged
+
+### T302: Real triaged after inline mention
+- **Status:** planned
+`;
+    const items = parseTasks(content);
+
+    expect(items).toHaveLength(3);
+    const byId = new Map(items.map((t) => [t.id, t]));
+    expect(byId.get("T300")?.section).toBe("ceo");
+    expect(byId.get("T301")?.section).toBe("discovered");
+    expect(byId.get("T302")?.section).toBe("triaged");
+  });
+
+  it("regression(4159ec1): in-prose '## CEO Requests' appearing before the real header does not steal the section boundary", () => {
+    // The file's top-level prose mentions "## CEO Requests" BEFORE the real
+    // section header appears below. With the pre-fix `indexOf` path, the
+    // first match is the in-prose one, which means CEO section extraction
+    // starts at the wrong byte offset — sweeping the description prose
+    // and a chunk of unrelated text into the CEO body, and (because the
+    // next "\n## " match is the real "## CEO Requests" line) producing a
+    // CEO section with NO ### items at all. T400 is silently dropped.
+    //
+    // The anchored regex requires "## CEO Requests" to be on its own line,
+    // so the real header (line-start) wins regardless of in-prose mentions.
+    const content = `# Backlog
+
+> Layout note: the dashboard reads tasks from \`## CEO Requests\`, \`## Discovered\`, and \`## Triaged\` sections. Keep that order.
+
+## CEO Requests
+
+### T400: Real CEO request
+- **Type:** feature
+- **Priority:** P0
+- **Status:** pending
+
+## Triaged
+
+### T401: Document the CEO Requests section format
+- **Type:** docs
+- **Priority:** P2
+- **Status:** planned
+- **Description:** The dashboard reads tasks from these sections:
+
+  ## CEO Requests
+  ## Discovered
+  ## Triaged
+
+  CEO Requests are pinned to the top because they represent CEO-prioritised work.
+`;
+    const items = parseTasks(content);
+
+    expect(items).toHaveLength(2);
+    const ceo = items.find((t) => t.id === "T400");
+    const triaged = items.find((t) => t.id === "T401");
+
+    expect(ceo).toBeDefined();
+    expect(ceo!.section).toBe("ceo");
+
+    expect(triaged).toBeDefined();
+    expect(triaged!.section).toBe("triaged");
+    // The Triaged task's description still contains the literal header text.
+    expect(triaged!.description).toContain("## CEO Requests");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseInbox
+// ---------------------------------------------------------------------------
+
+describe("parseInbox", () => {
+  it("returns empty array for empty content", () => {
+    expect(parseInbox("")).toEqual([]);
+  });
+
+  it("returns empty array when no Q- items exist", () => {
+    const content = `# Inbox\n\n## Questions (Open)\n\n_(No questions yet.)_\n\n## Answered / Provided\n\n_(none)_\n`;
+    expect(parseInbox(content)).toEqual([]);
+  });
+
+  it("parses a single open question", () => {
+    const content = `# Inbox
+
+## Questions (Open)
+
+### Q-001: Should we use TypeScript?
+- **Question:** Should we use TypeScript or JavaScript?
+- **Default:** TypeScript
+- **Options:** TypeScript, JavaScript
+
+## Answered / Provided
+`;
+    const questions = parseInbox(content);
+    expect(questions).toHaveLength(1);
+    expect(questions[0]).toMatchObject({
+      id: "Q-001",
+      question: "Should we use TypeScript or JavaScript?",
+      default: "TypeScript",
+      options: ["TypeScript", "JavaScript"],
+      answered: false,
+    });
+  });
+
+  it("parses answered questions", () => {
+    const content = `# Inbox
+
+## Questions (Open)
+
+## Answered / Provided
+
+### Q-002: Database choice
+- **Question:** Which database should we use?
+- **Default:** PostgreSQL
+- **Answer:** PostgreSQL
+`;
+    const questions = parseInbox(content);
+    expect(questions).toHaveLength(1);
+    expect(questions[0]).toMatchObject({
+      id: "Q-002",
+      answered: true,
+      answer: "PostgreSQL",
+    });
+  });
+
+  it("parses multiple questions from both sections", () => {
+    const content = `# Inbox
+
+## Questions (Open)
+
+### Q-003: Auth strategy
+- **Question:** OAuth or custom auth?
+- **Default:** OAuth
+
+### Q-004: Deploy target
+- **Question:** Where to deploy?
+- **Default:** Vercel
+
+## Answered / Provided
+
+### Q-001: Name
+- **Question:** What is the project name?
+- **Answer:** RedEye
+`;
+    const questions = parseInbox(content);
+    expect(questions).toHaveLength(3);
+    expect(questions.filter((q) => !q.answered)).toHaveLength(2);
+    expect(questions.filter((q) => q.answered)).toHaveLength(1);
+  });
+
+  it("handles questions with missing optional fields", () => {
+    const content = `# Inbox
+
+## Questions (Open)
+
+### Q-005:
+- **Default:** yes
+`;
+    const questions = parseInbox(content);
+    expect(questions).toHaveLength(1);
+    expect(questions[0].options).toBeUndefined();
+    expect(questions[0].context).toBeUndefined();
+    expect(questions[0].answer).toBeUndefined();
+  });
+
+  it("parses context field", () => {
+    const content = `# Inbox
+
+## Questions (Open)
+
+### Q-006: Feature flag
+- **Question:** Enable dark mode by default?
+- **Context:** Working on T004 UI polish
+- **Default:** yes
+`;
+    const questions = parseInbox(content);
+    expect(questions[0].context).toBe("Working on T004 UI polish");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseChangelog
+// ---------------------------------------------------------------------------
+
+describe("parseChangelog", () => {
+  it("returns empty array for empty content", () => {
+    expect(parseChangelog("")).toEqual([]);
+  });
+
+  it("returns empty array when no iteration headers exist", () => {
+    const content = `# Changelog\n\n_(Append-only iteration history.)_\n\n## Format\nEach entry follows: ...\n`;
+    expect(parseChangelog(content)).toEqual([]);
+  });
+
+  it("parses a single iteration entry", () => {
+    const content = `# Changelog
+
+---
+
+## Iteration 4 — 2026-04-23
+
+- **Built:** T001 — Rename all ziggy-autopilot references to redeye
+- **Review findings:** 0C 0M 1m — fixed
+- **Deployed:** PASS
+`;
+    const entries = parseChangelog(content);
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({
+      title: "Rename all ziggy-autopilot references to redeye",
+      date: "2026-04-23",
+    });
+    expect(entries[0].details).toContain("Built:");
+  });
+
+  it("parses multiple iteration entries", () => {
+    const content = `# Changelog
+
+---
+
+## Iteration 16 — 2026-04-22
+
+- **Built:** T005 — Verify pages
+- **Deployed:** PASS
+
+---
+
+## Iteration 12 — 2026-04-22
+
+- **Built:** T004 — Polish UI
+- **Deployed:** PASS
+
+---
+
+## Iteration 9 — 2026-04-22
+
+- **Built:** T003 — Remove PWA
+- **Deployed:** PASS
+`;
+    const entries = parseChangelog(content);
+    expect(entries).toHaveLength(3);
+    expect(entries[0].title).toBe("Verify pages");
+    expect(entries[1].title).toBe("Polish UI");
+    expect(entries[2].title).toBe("Remove PWA");
+  });
+
+  it("handles iterations without a date", () => {
+    const content = `# Changelog\n\n## Iteration 1\n\n- **Built:** T001\n`;
+    const entries = parseChangelog(content);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].date).toBeUndefined();
+    expect(entries[0].title).toBe("T001");
+  });
+
+  it("strips leading --- from entry details", () => {
+    const content = `# Changelog\n\n---\n\n## Iteration 5 — 2026-01-01\n\n- **Built:** T005\n`;
+    const entries = parseChangelog(content);
+    expect(entries[0].details).not.toMatch(/^---/);
+    expect(entries[0].details).toContain("Built:");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseSteering
+// ---------------------------------------------------------------------------
+
+describe("parseSteering", () => {
+  it("returns empty array for empty content", () => {
+    expect(parseSteering("")).toEqual([]);
+  });
+
+  it("returns empty array when no ## Directives section", () => {
+    const content = `# Steering\n\n> This file is for tactical directives.\n`;
+    expect(parseSteering(content)).toEqual([]);
+  });
+
+  it("returns empty array when section has only placeholder text", () => {
+    const content = `# Steering\n\n## Directives\n\n_(CEO adds directives here.)_\n`;
+    expect(parseSteering(content)).toEqual([]);
+  });
+
+  it("parses a single directive", () => {
+    const content = `# Steering\n\n## Directives\n\n- Do NOT touch files outside dashboard/\n`;
+    const directives = parseSteering(content);
+    expect(directives).toHaveLength(1);
+    expect(directives[0].text).toBe("Do NOT touch files outside dashboard/");
+  });
+
+  it("parses multiple directives", () => {
+    const content = `# Steering
+
+## Directives
+
+- Do NOT touch files outside dashboard/ — the plugin core is already done
+- Do NOT merge to main — this is a feature branch
+- Use red (#DC2626) as the accent color, replacing any amber/yellow
+- Keep the Next.js 15 + React 19 + Tailwind CSS 4 stack — do not downgrade
+`;
+    const directives = parseSteering(content);
+    expect(directives).toHaveLength(4);
+    expect(directives[0].text).toContain("Do NOT touch files outside");
+    expect(directives[3].text).toContain("Next.js 15");
+  });
+
+  it("skips non-list lines", () => {
+    const content = `# Steering\n\n## Directives\n\nSome prose text here.\n\n- Valid directive\n`;
+    const directives = parseSteering(content);
+    expect(directives).toHaveLength(1);
+    expect(directives[0].text).toBe("Valid directive");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// applyDirectiveEdit / applyDirectiveDelete
+// ---------------------------------------------------------------------------
+
+describe("applyDirectiveEdit", () => {
+  it("replaces the Nth directive while preserving surrounding lines", () => {
+    const content = `# Steering\n\n## Directives\n\n- first\n- second\n- third\n`;
+    const out = applyDirectiveEdit(content, 1, "second-edited");
+    expect(out).toBe(`# Steering\n\n## Directives\n\n- first\n- second-edited\n- third\n`);
+  });
+
+  it("preserves ### subsection headers and blank lines", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a1\n- a2\n\n### Group B\n\n- b1\n`;
+    const out = applyDirectiveEdit(content, 1, "a2-edited");
+    // Only the second bullet should change; subsection headers/blanks intact.
+    expect(out).toBe(
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a1\n- a2-edited\n\n### Group B\n\n- b1\n`
+    );
+  });
+
+  it("skips placeholder _( ) lines when counting", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- _(none yet)_\n- first\n- second\n`;
+    // index 0 should map to "first", not the placeholder.
+    const out = applyDirectiveEdit(content, 0, "first-edited");
+    expect(out).toContain("- first-edited");
+    expect(out).toContain("- _(none yet)_");
+    expect(out).toContain("- second");
+  });
+
+  it("does not touch bullets in later sections", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- only directive\n\n## Other\n\n- not a directive\n`;
+    const out = applyDirectiveEdit(content, 0, "edited");
+    expect(out).toContain("- edited");
+    expect(out).toContain("- not a directive");
+  });
+
+  it("preserves leading indentation of nested bullets", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n  - indented directive\n`;
+    const out = applyDirectiveEdit(content, 0, "edited");
+    expect(out).toBe(`# Steering\n\n## Directives\n\n  - edited\n`);
+  });
+
+  it("throws RangeError when index is out of range", () => {
+    const content = `# Steering\n\n## Directives\n\n- only\n`;
+    expect(() => applyDirectiveEdit(content, 5, "x")).toThrow(RangeError);
+    expect(() => applyDirectiveEdit(content, -1, "x")).toThrow(RangeError);
+  });
+
+  it("throws RangeError when there is no directives section", () => {
+    expect(() => applyDirectiveEdit("# Steering\n", 0, "x")).toThrow(RangeError);
+  });
+});
+
+describe("applyDirectiveDelete", () => {
+  it("removes the Nth directive line entirely", () => {
+    const content = `# Steering\n\n## Directives\n\n- first\n- second\n- third\n`;
+    const out = applyDirectiveDelete(content, 1);
+    expect(out).toBe(`# Steering\n\n## Directives\n\n- first\n- third\n`);
+  });
+
+  it("removes a directive without disturbing subsection headers", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a1\n- a2\n\n### Group B\n\n- b1\n`;
+    const out = applyDirectiveDelete(content, 0);
+    expect(out).toBe(
+      `# Steering\n\n## Directives\n\n### Group A\n\n- a2\n\n### Group B\n\n- b1\n`
+    );
+  });
+
+  it("skips placeholder _( ) lines when counting", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- _(none yet)_\n- first\n- second\n`;
+    const out = applyDirectiveDelete(content, 0);
+    // "first" should be gone, placeholder kept.
+    expect(out).toContain("- _(none yet)_");
+    expect(out).not.toMatch(/^- first$/m);
+    expect(out).toContain("- second");
+  });
+
+  it("does not touch bullets in later sections", () => {
+    const content =
+      `# Steering\n\n## Directives\n\n- only directive\n\n## Other\n\n- not a directive\n`;
+    const out = applyDirectiveDelete(content, 0);
+    expect(out).not.toContain("- only directive");
+    expect(out).toContain("- not a directive");
+  });
+
+  it("throws RangeError when index is out of range", () => {
+    const content = `# Steering\n\n## Directives\n\n- only\n`;
+    expect(() => applyDirectiveDelete(content, 5)).toThrow(RangeError);
+    expect(() => applyDirectiveDelete(content, -1)).toThrow(RangeError);
+  });
+
+  it("after parse → delete → parse, the array shrinks by one", () => {
+    const content = `# Steering\n\n## Directives\n\n- a\n- b\n- c\n`;
+    const before = parseSteering(content);
+    const out = applyDirectiveDelete(content, 1);
+    const after = parseSteering(out);
+    expect(before.map((d) => d.text)).toEqual(["a", "b", "c"]);
+    expect(after.map((d) => d.text)).toEqual(["a", "c"]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseDurationMs
+// ---------------------------------------------------------------------------
+
+describe("parseDurationMs", () => {
+  it("parses hours", () => {
+    expect(parseDurationMs("every 2h")).toBe(2 * 3600 * 1000);
+  });
+
+  it("parses days", () => {
+    expect(parseDurationMs("every 7d")).toBe(7 * 86400 * 1000);
+  });
+
+  it("parses weeks", () => {
+    expect(parseDurationMs("every 1w")).toBe(7 * 86400 * 1000);
+  });
+
+  it("returns null for unrecognised unit", () => {
+    expect(parseDurationMs("every 30m")).toBeNull();
+  });
+
+  it("returns null for empty string", () => {
+    expect(parseDurationMs("")).toBeNull();
+  });
+
+  it("handles decimal values", () => {
+    expect(parseDurationMs("every 1.5h")).toBe(1.5 * 3600 * 1000);
+  });
+
+  it("is case-insensitive for unit", () => {
+    expect(parseDurationMs("every 3D")).toBe(3 * 86400 * 1000);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseSchedules
+// ---------------------------------------------------------------------------
+
+const SAMPLE_SCHEDULES_MD = `# Scheduled Tasks
+
+### SCHED-001: Weekly security audit
+- **Frequency:** every 7d
+- **Last run:** 2026-04-18T10:00:00Z
+- **Task:**
+  1. Review recent commits for potential security issues
+  2. Check for outdated dependencies
+- **Assigned to:** Security Reviewer
+
+### SCHED-002: Hourly health check
+- **Frequency:** every 1h
+- **Last run:** 2026-04-25T06:00:00Z
+- **Task:**
+  1. Ping all services
+- **Assigned to:** Ops
+`;
+
+describe("parseSchedules", () => {
+  it("returns empty array for empty content", () => {
+    expect(parseSchedules("")).toEqual([]);
+  });
+
+  it("returns empty array when no SCHED- blocks exist", () => {
+    const content = "# Scheduled Tasks\n\n_(Define recurring tasks here.)_\n";
+    expect(parseSchedules(content)).toEqual([]);
+  });
+
+  it("parses a single complete entry", () => {
+    const nowMs = Date.parse("2026-04-26T10:00:00Z"); // 1 day + 1h after last run
+    const entries = parseSchedules(SAMPLE_SCHEDULES_MD, nowMs);
+    expect(entries).toHaveLength(2);
+
+    const first = entries[0];
+    expect(first.id).toBe("SCHED-001");
+    expect(first.title).toBe("Weekly security audit");
+    expect(first.frequency).toBe("every 7d");
+    expect(first.lastRunIso).toBe("2026-04-18T10:00:00Z");
+    expect(first.assignedTo).toBe("Security Reviewer");
+    expect(first.steps).toHaveLength(2);
+    expect(first.steps[0]).toBe("Review recent commits for potential security issues");
+    expect(first.steps[1]).toBe("Check for outdated dependencies");
+  });
+
+  it("marks entry as overdue when past next due time", () => {
+    // SCHED-001: last run 2026-04-18, every 7d -> next due 2026-04-25
+    // nowMs is 2026-04-26 -> overdue
+    const nowMs = Date.parse("2026-04-26T10:00:00Z");
+    const entries = parseSchedules(SAMPLE_SCHEDULES_MD, nowMs);
+    expect(entries[0].isOverdue).toBe(true);
+  });
+
+  it("marks entry as on-schedule when before next due time", () => {
+    // SCHED-001: next due 2026-04-25T10:00:00Z
+    // nowMs is 2026-04-24 -> not yet overdue
+    const nowMs = Date.parse("2026-04-24T09:00:00Z");
+    const entries = parseSchedules(SAMPLE_SCHEDULES_MD, nowMs);
+    expect(entries[0].isOverdue).toBe(false);
+  });
+
+  it("sets isOverdue true and nextDueMs 0 when never run (no Last run field)", () => {
+    const content = `### SCHED-003: Daily cleanup
+- **Frequency:** every 1d
+- **Task:**
+  1. Clean temp files
+- **Assigned to:** Dev
+`;
+    const nowMs = Date.now();
+    const entries = parseSchedules(content, nowMs);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].lastRunIso).toBeNull();
+    expect(entries[0].isOverdue).toBe(true);
+    expect(entries[0].nextDueMs).toBe(0);
+  });
+
+  it("treats the Unix epoch (1970-01-01) Last run as never-run", () => {
+    // Schedules placeholder — many ship with `Last run: 1970-01-01T00:00:00Z`
+    // until the schedule actually executes once. Without the pre-2001 guard
+    // the UI rendered "2938 weeks ago" instead of "Never" / "—".
+    const content = `### SCHED-007: Security review
+- **Frequency:** every 2 days
+- **Last run:** 1970-01-01T00:00:00Z
+- **Task:**
+  1. Run scanner
+- **Assigned to:** CTO
+`;
+    const nowMs = Date.parse("2026-04-28T00:00:00Z");
+    const entries = parseSchedules(content, nowMs);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].lastRunIso).toBeNull();
+    expect(entries[0].isOverdue).toBe(true);
+    // Schedule-row UI checks `lastRunIso === null` to hide the "X weeks ago"
+    // string and render "Never run" — assert that contract here.
+  });
+
+  it("treats any pre-2001 Last run timestamp as never-run", () => {
+    const content = `### SCHED-008: Old placeholder
+- **Frequency:** every 3 days
+- **Last run:** 1999-12-31T23:59:59Z
+- **Task:**
+  1. Step
+- **Assigned to:** CTO
+`;
+    const entries = parseSchedules(content, Date.now());
+    expect(entries[0].lastRunIso).toBeNull();
+  });
+
+  it("preserves a real Last run timestamp from 2001+", () => {
+    const content = `### SCHED-009: Real run
+- **Frequency:** every 7d
+- **Last run:** 2026-04-25T21:44:00Z
+- **Task:**
+  1. Do work
+- **Assigned to:** CTO
+`;
+    const entries = parseSchedules(content, Date.parse("2026-04-26T00:00:00Z"));
+    expect(entries[0].lastRunIso).toBe("2026-04-25T21:44:00Z");
+  });
+
+  it("sets nextDueMs null and isOverdue false when frequency not parseable", () => {
+    const content = `### SCHED-004: Some task
+- **Frequency:** every month
+- **Last run:** 2026-04-01T00:00:00Z
+- **Task:**
+  1. Do something
+- **Assigned to:** CTO
+`;
+    const nowMs = Date.now();
+    const entries = parseSchedules(content, nowMs);
+    expect(entries[0].nextDueMs).toBeNull();
+    expect(entries[0].isOverdue).toBe(false);
+  });
+
+  it("correctly computes nextDueMs from lastRunIso + frequency", () => {
+    const lastRun = "2026-04-18T10:00:00Z";
+    const content = `### SCHED-005: Weekly check
+- **Frequency:** every 7d
+- **Last run:** ${lastRun}
+- **Task:**
+  1. Check stuff
+- **Assigned to:** Dev
+`;
+    const entries = parseSchedules(content, Date.now());
+    const expectedNextDue = Date.parse(lastRun) + 7 * 86400 * 1000;
+    expect(entries[0].nextDueMs).toBe(expectedNextDue);
+  });
+
+  it("parses all three duration unit types", () => {
+    const makeContent = (freq: string) =>
+      `### SCHED-006: Test\n- **Frequency:** ${freq}\n- **Task:**\n  1. step\n- **Assigned to:** Dev\n`;
+
+    const h = parseSchedules(makeContent("every 2h"));
+    expect(h[0].nextDueMs).toBe(0); // never run -> 0
+
+    const d = parseSchedules(makeContent("every 3d"));
+    expect(d[0].nextDueMs).toBe(0);
+
+    const w = parseSchedules(makeContent("every 2w"));
+    expect(w[0].nextDueMs).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseTasks — Merged field (T082)
+// ---------------------------------------------------------------------------
+
+describe("parseTasks — Merged field parsing", () => {
+  function makeTaskWithMerged(mergedValue: string): string {
+    return `# Backlog\n\n## CEO Requests\n\n### T001: Some feature\n- **Type:** feature\n- **Status:** done\n- **Merged:** ${mergedValue}\n`;
+  }
+
+  it("parses date + iteration format: '2026-04-26 (iter 108)'", () => {
+    const items = parseTasks(makeTaskWithMerged("2026-04-26 (iter 108)"));
+    expect(items).toHaveLength(1);
+    expect(items[0].mergedAt).toBe("2026-04-26");
+    expect(items[0].mergedIteration).toBe(108);
+  });
+
+  it("parses iteration-only format: 'iteration 112'", () => {
+    const items = parseTasks(makeTaskWithMerged("iteration 112"));
+    expect(items).toHaveLength(1);
+    expect(items[0].mergedAt).toBeNull();
+    expect(items[0].mergedIteration).toBe(112);
+  });
+
+  it("returns null for both fields when Merged field is absent", () => {
+    const content = `# Backlog\n\n## CEO Requests\n\n### T001: Some feature\n- **Type:** feature\n- **Status:** pending\n`;
+    const items = parseTasks(content);
+    expect(items).toHaveLength(1);
+    expect(items[0].mergedAt).toBeNull();
+    expect(items[0].mergedIteration).toBeNull();
+  });
+
+  it("handles high iteration numbers correctly", () => {
+    const items = parseTasks(makeTaskWithMerged("2026-04-27 (iter 999)"));
+    expect(items[0].mergedAt).toBe("2026-04-27");
+    expect(items[0].mergedIteration).toBe(999);
+  });
+
+  it("is case-insensitive for 'iteration' keyword", () => {
+    const items = parseTasks(makeTaskWithMerged("Iteration 50"));
+    expect(items[0].mergedIteration).toBe(50);
+    expect(items[0].mergedAt).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// applyScheduleDelete
+// ---------------------------------------------------------------------------
+
+const TWO_SCHED_MD = `# Scheduled Tasks
+
+### SCHED-1: Weekly audit
+- **Frequency:** every 7d
+- **Last run:** 2026-01-01T00:00:00Z
+- **Task:**
+  1. Review commits
+- **Assigned to:** CTO
+
+### SCHED-2: Daily digest
+- **Frequency:** every 1d
+- **Last run:** 2026-04-20T00:00:00Z
+- **Task:**
+  1. Post summary
+- **Assigned to:** CTO
+`;
+
+describe("applyScheduleDelete", () => {
+  it("throws RangeError for invalid schedId (non-SCHED format)", () => {
+    expect(() => applyScheduleDelete("anything", "INVALID")).toThrow(RangeError);
+    expect(() => applyScheduleDelete("anything", "INVALID")).toThrow(/invalid/i);
+    expect(() => applyScheduleDelete("anything", "")).toThrow(RangeError);
+    expect(() => applyScheduleDelete("anything", "SCHED-")).toThrow(RangeError);
+  });
+
+  it("throws RangeError when schedId is not found", () => {
+    expect(() => applyScheduleDelete(TWO_SCHED_MD, "SCHED-99")).toThrow(RangeError);
+    expect(() => applyScheduleDelete(TWO_SCHED_MD, "SCHED-99")).toThrow(/not found/i);
+  });
+
+  it("removes the first schedule block, leaving the second intact", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-1");
+    expect(result).not.toContain("SCHED-1");
+    expect(result).toContain("### SCHED-2: Daily digest");
+    expect(parseSchedules(result)).toHaveLength(1);
+    expect(parseSchedules(result)[0].id).toBe("SCHED-2");
+  });
+
+  it("removes the second schedule block, leaving the first intact", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-2");
+    expect(result).not.toContain("SCHED-2");
+    expect(result).toContain("### SCHED-1: Weekly audit");
+    expect(parseSchedules(result)).toHaveLength(1);
+    expect(parseSchedules(result)[0].id).toBe("SCHED-1");
+  });
+
+  it("removes the only schedule block cleanly", () => {
+    const single = `# Scheduled Tasks\n\n### SCHED-1: Only task\n- **Frequency:** every 1d\n- **Last run:** 1970-01-01T00:00:00Z\n- **Task:**\n  1. step\n- **Assigned to:** CTO\n`;
+    const result = applyScheduleDelete(single, "SCHED-1");
+    expect(result).not.toContain("SCHED-1");
+    expect(parseSchedules(result)).toHaveLength(0);
+  });
+
+  it("accepts uppercase SCHED-N format", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-1");
+    expect(result).not.toContain("### SCHED-1:");
+    expect(parseSchedules(result)).toHaveLength(1);
+  });
+
+  it("does not leave excessive blank lines at the seam", () => {
+    const result = applyScheduleDelete(TWO_SCHED_MD, "SCHED-1");
+    // Should not have more than 2 consecutive newlines
+    expect(result).not.toMatch(/\n{3,}/);
+  });
+});
