@@ -5,8 +5,8 @@
 // unresponsive. See docs/specs/T037-force-stop.md.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { stopSession } from "@/lib/session-manager";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getSessionDriver } from "@/lib/app";
 
 export async function POST(
   req: NextRequest,
@@ -21,12 +21,12 @@ export async function POST(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    await stopSession(project.path, "cto");
+    await getSessionDriver().stop(project.path, "cto");
 
     return NextResponse.json({ data: { success: true } });
   } catch (err) {

@@ -11,9 +11,9 @@
 // objects that TranscriptViewer can render (T013 reopened — bug #1).
 
 import { NextRequest } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
 import { createSSEStream, tailJsonl } from "@/lib/stream-utils";
-import { resolveTranscriptFile } from "@/lib/transcript-file-resolver";
+import { getStore, getTranscriptSource } from "@/lib/app";
 import { normalizeTranscriptLine } from "@/lib/transcript-normalizer";
 
 /** How many bytes to replay from the tail when opening a mid-session stream. */
@@ -34,7 +34,7 @@ export async function GET(
       }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
   if (!project) {
     return new Response(JSON.stringify({ error: "Project not found" }), {
       status: 404,
@@ -42,7 +42,8 @@ export async function GET(
     });
   }
 
-  const resolvedFile = resolveTranscriptFile(project.path);
+  const transcript = getTranscriptSource();
+  const resolvedFile = transcript.resolve(project.path);
 
   const sseHeaders = {
     "Content-Type": "text/event-stream",
@@ -73,7 +74,7 @@ export async function GET(
         // Rescan for a transcript file every 30 seconds.
         rescanTimer = setInterval(() => {
           if (switched) return;
-          const found = resolveTranscriptFile(project.path);
+          const found = transcript.resolve(project.path);
           if (!found) return;
           // A file appeared — stop rescanning, start tailing.
           switched = true;
@@ -110,7 +111,7 @@ export async function GET(
     lookbackBytes: LOOKBACK_BYTES,
     // Periodically re-resolve the transcript file so the stream switches
     // to a new session file when one appears (AD-4 rescan).
-    fileResolver: () => resolveTranscriptFile(project.path),
+    fileResolver: () => transcript.resolve(project.path),
     lineTransformer: (line: string): string[] | null => {
       const events = normalizeTranscriptLine(line);
       if (events.length === 0) return null;

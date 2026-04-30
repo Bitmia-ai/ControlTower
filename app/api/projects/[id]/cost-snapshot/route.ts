@@ -13,7 +13,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { atomicWriteJson } from "@/lib/atomic-write";
 import { sumCurrentSessionCost } from "@/lib/cost-calculator";
@@ -41,7 +42,7 @@ export async function POST(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
 
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });

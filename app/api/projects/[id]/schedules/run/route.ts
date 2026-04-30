@@ -9,8 +9,8 @@
 // other P1 backlog item.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { getSessionStatus, startSession } from "@/lib/session-manager";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getSessionDriver } from "@/lib/app";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { readJsonBody } from "@/lib/json-body";
 import { getNextTaskId } from "@/lib/task-id";
@@ -41,7 +41,7 @@ export async function POST(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
@@ -175,10 +175,10 @@ export async function POST(
 
     // Auto-start the CTO session if it's not running so TRIAGE picks up the
     // now-overdue schedule on its next pass.
-    const status = getSessionStatus(project.path);
+    const status = getSessionDriver().status(project.path);
     let resumed = false;
     if (status.cto.status !== "running") {
-      await startSession(project.path, "cto");
+      await getSessionDriver().start(project.path, "cto");
       resumed = true;
     }
 

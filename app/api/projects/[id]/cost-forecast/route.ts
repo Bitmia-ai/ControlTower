@@ -10,7 +10,8 @@
 // Errors: 404 if project missing, 500 on unexpected exceptions.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { computeCostForecast } from "@/lib/cost-forecast";
 
 export async function GET(
@@ -27,7 +28,7 @@ export async function GET(
       );
     }
 
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }

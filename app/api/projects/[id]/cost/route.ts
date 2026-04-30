@@ -7,8 +7,8 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import os from "os";
 import fs from "fs/promises";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { resolveTranscriptFile, encodeProjectPath } from "@/lib/transcript-file-resolver";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getTranscriptSource } from "@/lib/app";
 import { sumTranscriptFileCost } from "@/lib/cost-calculator";
 import { mapWithConcurrency } from "@/lib/promise-pool";
 
@@ -33,18 +33,19 @@ export async function GET(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
 
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
 
+  const transcript = getTranscriptSource();
   // Session cost: current transcript file
-  const sessionFile = resolveTranscriptFile(project.path);
+  const sessionFile = transcript.resolve(project.path);
   const sessionCost = sessionFile ? await sumTranscriptFileCost(sessionFile) : 0;
 
   // Total cost: all *.jsonl files in the Claude project dir
-  const encoded = encodeProjectPath(project.path);
+  const encoded = transcript.encodeProjectPath(project.path);
   const cliDir = path.join(os.homedir(), ".claude", "projects", encoded);
 
   let totalCost = 0;

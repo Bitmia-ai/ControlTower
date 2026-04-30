@@ -14,7 +14,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { listProjects } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { getNotificationsSince } from "@/lib/notification-store";
 
 const EPOCH_RE = /^\d+$/;
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest | Request) {
   const sinceMs = parseSince(url.searchParams.get("since"));
 
   try {
-    const projects = await listProjects();
+    const projects = await getStore().list();
     const lists = await Promise.all(
       projects.map((p, idx) => getNotificationsSince(p.path, idx, p.name, sinceMs)),
     );

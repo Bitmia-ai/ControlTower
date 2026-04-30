@@ -3,8 +3,9 @@
 // DELETE /api/projects/[id]/tasks/[taskId] — remove a task
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { readTasks, readState, safeRedeyePath, readArchivedTasks } from "@/lib/redeye-files";
+import { parseProjectIndex } from "@/lib/projects";
+import { safeRedeyePath, readArchivedTasks } from "@/lib/redeye-files";
+import { getStore } from "@/lib/app";
 import { readJsonBody } from "@/lib/json-body";
 import { TASK_ID_RE } from "@/lib/task-id";
 import { sanitizeMarkdownInput, sanitizeMarkdownBlock } from "@/lib/markdown-sanitize";
@@ -27,14 +28,14 @@ export async function GET(req: NextRequest, { params }: Params) {
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
 
   const [activeItems, state] = await Promise.all([
-    readTasks(project.path),
-    readState(project.path),
+    getStore().tasks(project.path),
+    getStore().state(project.path),
   ]);
   let item = activeItems.find((i) => i.id === taskId);
   // Fall back to the archive — RedEye removes done tasks from tasks.md
@@ -67,7 +68,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
@@ -101,7 +102,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   // Verify the item exists
-  const items = await readTasks(project.path);
+  const items = await getStore().tasks(project.path);
   const item = items.find((i) => i.id === taskId);
   if (!item) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -199,8 +200,8 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   // Return the updated item, enriched with cost_usd from state if present
   const [updatedItems, state] = await Promise.all([
-    readTasks(project.path),
-    readState(project.path),
+    getStore().tasks(project.path),
+    getStore().state(project.path),
   ]);
   const updatedItem = updatedItems.find((i) => i.id === taskId) ?? item;
   const cost = state?.item_costs?.[taskId];
@@ -228,7 +229,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }

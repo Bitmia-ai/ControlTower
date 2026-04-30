@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
 import { getNextTaskId } from "@/lib/task-id";
-import { getSessionStatus, startSession } from "@/lib/session-manager";
 import { safeRedeyePath } from "@/lib/redeye-files";
+import { getStore, getSessionDriver } from "@/lib/app";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { readJsonBody } from "@/lib/json-body";
 import { commitAndPush } from "@/lib/git-commit-push";
@@ -27,7 +27,7 @@ export async function POST(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
@@ -99,9 +99,9 @@ export async function POST(
 
     let resumed = false;
     try {
-      const session = getSessionStatus(project.path);
+      const session = getSessionDriver().status(project.path);
       if (session.cto.status === "stopped") {
-        await startSession(project.path, "cto");
+        await getSessionDriver().start(project.path, "cto");
         resumed = true;
       }
     } catch (sessionErr) {

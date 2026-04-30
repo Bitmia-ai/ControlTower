@@ -8,8 +8,7 @@ import { ProjectNav } from "@/components/project-nav";
 interface ProjectInfo {
   name: string;
   running: boolean;
-  /** Home-shortened (`~/...`) display path from /api/projects[/id]. */
-  displayPath?: string;
+  path?: string;
   openTaskCount: number;
 }
 
@@ -34,8 +33,7 @@ export default function ProjectLayout({
         setProject({
           name: json.data.project.name,
           running: json.data.project.running ?? false,
-          displayPath:
-            json.data.project.displayPath ?? json.data.project.path,
+          path: json.data.project.path,
           openTaskCount,
         });
       }
@@ -81,9 +79,9 @@ export default function ProjectLayout({
                   {projectName}
                 </h1>
               </div>
-              {project?.displayPath && (
+              {project?.path && (
                 <p className="font-mono text-[11px] text-gray-500 dark:text-zinc-500 mt-1 truncate">
-                  {project.displayPath}
+                  {project.path}
                 </p>
               )}
             </div>

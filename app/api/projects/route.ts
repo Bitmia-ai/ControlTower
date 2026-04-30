@@ -1,31 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import os from "os";
-import { listProjects, addProject } from "@/lib/projects";
-import { isInitialized, readState, readInbox } from "@/lib/redeye-files";
-import { getSessionStatus } from "@/lib/session-manager";
+import { getStore, getSessionDriver } from "@/lib/app";
 import { readJsonBody } from "@/lib/json-body";
-import { tildify } from "@/lib/format-path";
 
 // GET /api/projects — list all projects with status
 export async function GET() {
-  const projects = await listProjects();
-  // Compute the host's home dir once per request and substitute it into
-  // each project's path as `displayPath`. The raw `path` stays as-is for
-  // any caller that needs a canonical filesystem reference (Add Project's
-  // findIndex, the registered-path check, etc.).
-  const home = os.homedir();
+  const store = getStore();
+  const sessions = getSessionDriver();
+  const projects = await store.list();
   const withStatus = await Promise.all(
     projects.map(async (p) => {
       const [initialized, state, inbox] = await Promise.all([
-        isInitialized(p.path),
-        readState(p.path),
-        readInbox(p.path).catch(() => []),
+        store.isInitialized(p.path),
+        store.state(p.path),
+        store.inbox(p.path).catch(() => []),
       ]);
-      const s = getSessionStatus(p.path).cto.status;
+      const s = sessions.status(p.path).cto.status;
       const running = s === "running" || s === "stalled";
       return {
         ...p,
-        displayPath: tildify(p.path, home),
         initialized,
         running,
         phase: state?.phase,
@@ -50,7 +42,7 @@ export async function POST(req: NextRequest) {
   try {
     // Return the canonical (realpath-resolved) registered path so callers
     // — like the Add Project dialog's findIndex — match it correctly.
-    const registered = await addProject(name, path);
+    const registered = await getStore().add(name, path);
     return NextResponse.json({ data: registered }, { status: 201 });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";

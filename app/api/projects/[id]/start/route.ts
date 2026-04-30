@@ -1,8 +1,8 @@
 // POST /api/projects/[id]/start — start the CTO session for this project
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { startSession } from "@/lib/session-manager";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getSessionDriver } from "@/lib/app";
 
 export async function POST(
   req: NextRequest,
@@ -17,12 +17,12 @@ export async function POST(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const sessionInfo = await startSession(project.path, "cto");
+    const sessionInfo = await getSessionDriver().start(project.path, "cto");
     return NextResponse.json({ data: sessionInfo });
   } catch (err) {
     return NextResponse.json(

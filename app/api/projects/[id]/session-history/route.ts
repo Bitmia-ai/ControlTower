@@ -7,7 +7,8 @@
 // streaming up to 999,999 files.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { getSessionHistory } from "@/lib/cost-history";
 
 const DEFAULT_LIMIT = 50;
@@ -26,7 +27,7 @@ export async function GET(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });

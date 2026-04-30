@@ -8,8 +8,8 @@
 // Errors: 400 if id is not a non-negative integer, 404 if project missing, 500 on unexpected exceptions.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { readTasks } from "@/lib/redeye-files";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { computeVelocity } from "@/lib/velocity";
 
 export async function GET(
@@ -26,12 +26,12 @@ export async function GET(
       );
     }
 
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const tasks = await readTasks(project.path);
+    const tasks = await getStore().tasks(project.path);
     const result = computeVelocity(tasks);
     return NextResponse.json({ data: result });
   } catch (err) {

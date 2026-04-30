@@ -1,7 +1,7 @@
 // POST /api/projects/[id]/restart — stop then start the CTO session
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { stopSession, startSession } from "@/lib/session-manager";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getSessionDriver } from "@/lib/app";
 
 export async function POST(
   req: NextRequest,
@@ -15,13 +15,14 @@ export async function POST(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
   try {
-    await stopSession(project.path, "cto");
-    const sessionInfo = await startSession(project.path, "cto");
+    const sessions = getSessionDriver();
+    await sessions.stop(project.path, "cto");
+    const sessionInfo = await sessions.start(project.path, "cto");
     return NextResponse.json({ data: sessionInfo });
   } catch (err) {
     return NextResponse.json(

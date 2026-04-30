@@ -7,8 +7,8 @@
 // Errors: 400 invalid taskId, 404 project missing, 500 unexpected.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { readState } from "@/lib/redeye-files";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { TASK_ID_RE } from "@/lib/task-id";
 import { computeTaskDuration } from "@/lib/task-duration";
 
@@ -33,12 +33,12 @@ export async function GET(_req: NextRequest, { params }: Params) {
       );
     }
 
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const state = await readState(project.path);
+    const state = await getStore().state(project.path);
     const costUsd = state?.item_costs?.[taskId];
     const result = computeTaskDuration(state, taskId, costUsd);
 

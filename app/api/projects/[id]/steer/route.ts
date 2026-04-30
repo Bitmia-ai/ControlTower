@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { readSteering, safeRedeyePath } from "@/lib/redeye-files";
+import { parseProjectIndex } from "@/lib/projects";
+import { safeRedeyePath } from "@/lib/redeye-files";
+import { getStore } from "@/lib/app";
 import { applyDirectiveEdit, applyDirectiveDelete } from "@/lib/redeye-parsers";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { readJsonBody } from "@/lib/json-body";
@@ -26,12 +27,12 @@ export async function GET(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    const directives = await readSteering(project.path);
+    const directives = await getStore().steering(project.path);
     return NextResponse.json({ data: { directives } });
   } catch (err) {
     return NextResponse.json(
@@ -53,7 +54,7 @@ export async function POST(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
@@ -137,7 +138,7 @@ export async function PATCH(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(projectIndex);
+  const project = await getStore().byIndex(projectIndex);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
@@ -246,7 +247,7 @@ export async function DELETE(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(projectIndex);
+  const project = await getStore().byIndex(projectIndex);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }

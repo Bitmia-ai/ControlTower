@@ -13,9 +13,9 @@
 // `Force Stop` keeps its no-directive immediate-kill behavior.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
 import { safeRedeyePath } from "@/lib/redeye-files";
-import { stopSession } from "@/lib/session-manager";
+import { getStore, getSessionDriver } from "@/lib/app";
 import { atomicWriteJson } from "@/lib/atomic-write";
 import fs from "fs/promises";
 
@@ -32,7 +32,7 @@ export async function POST(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
@@ -72,7 +72,7 @@ export async function POST(
     // started, stopSession is a no-op. We don't surface the kill outcome
     // separately because (a) the steering write is the durable signal, and
     // (b) the dashboard polls the session status independently.
-    await stopSession(project.path, "cto");
+    await getSessionDriver().stop(project.path, "cto");
 
     return NextResponse.json({ data: { success: true } });
   } catch (err) {

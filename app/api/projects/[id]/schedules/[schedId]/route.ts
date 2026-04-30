@@ -4,7 +4,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { applyScheduleDelete } from "@/lib/redeye-parsers";
 import { safeRedeyePath } from "@/lib/redeye-files";
 import { commitAndPush } from "@/lib/git-commit-push";
@@ -34,7 +35,7 @@ export async function DELETE(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }

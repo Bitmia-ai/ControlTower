@@ -10,8 +10,8 @@ import { NextRequest, NextResponse } from "next/server";
 import type { Stats } from "fs";
 import fs from "fs/promises";
 import path from "path";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
-import { resolveTranscriptFile } from "@/lib/transcript-file-resolver";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getTranscriptSource } from "@/lib/app";
 
 const REDEYE_SESSION_FILE = ".redeye/session-cto.jsonl";
 
@@ -34,14 +34,14 @@ export async function GET(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const project = await getStore().byIndex(index);
 
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
 
   try {
-    const resolvedFile = resolveTranscriptFile(project.path);
+    const resolvedFile = getTranscriptSource().resolve(project.path);
 
     if (!resolvedFile) {
       const result: TranscriptStatus = {

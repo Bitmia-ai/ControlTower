@@ -10,12 +10,6 @@ export interface ProjectWithStatus extends Project {
   phase?: string;
   currentTask?: string | null;
   questionCount?: number;
-  /**
-   * `path` with the host's home-dir prefix replaced by `~`. Server-computed
-   * so the browser never has to know the absolute home path. Falls back to
-   * the raw path when the project lives outside $HOME.
-   */
-  displayPath?: string;
 }
 
 export interface RedEyeState {

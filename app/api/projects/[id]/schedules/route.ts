@@ -9,7 +9,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { parseSchedules } from "@/lib/redeye-parsers";
 import { sanitizeMarkdownInput } from "@/lib/markdown-sanitize";
 import { readJsonBody } from "@/lib/json-body";
@@ -44,7 +45,7 @@ export async function GET(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
@@ -120,7 +121,7 @@ export async function POST(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }

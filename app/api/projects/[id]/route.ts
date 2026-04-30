@@ -3,12 +3,8 @@
 // [id] is the index in the projects array
 
 import { NextRequest, NextResponse } from "next/server";
-import os from "os";
-import { getProjectByIndex, parseProjectIndex, removeProject } from "@/lib/projects";
-import { readProjectDetail, isInitialized } from "@/lib/redeye-files";
-import { getSessionStatus } from "@/lib/session-manager";
-import { resolveTranscriptFile } from "@/lib/transcript-file-resolver";
-import { tildify } from "@/lib/format-path";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore, getSessionDriver, getTranscriptSource } from "@/lib/app";
 
 // T013: the Live tab polls /transcript-status for its gating decision, but
 // this detail endpoint also exposes `hasTranscript` as a convenience for
@@ -26,28 +22,28 @@ export async function GET(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const store = getStore();
+  const project = await store.byIndex(index);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
 
   try {
-    const sessionStatus = getSessionStatus(project.path);
-    const initialized = await isInitialized(project.path);
+    const sessionStatus = getSessionDriver().status(project.path);
+    const initialized = await store.isInitialized(project.path);
     // T013: hasTranscript lets the Live tab connect to the SSE stream
     // whenever a recent transcript file exists, independent of whether the
     // session was spawned by Control Tower (`running`) or the user's CLI.
-    const hasTranscript = resolveTranscriptFile(project.path) !== null;
+    const hasTranscript = getTranscriptSource().resolve(project.path) !== null;
     const projectWithStatus = {
       ...project,
-      displayPath: tildify(project.path, os.homedir()),
       initialized,
       running: sessionStatus.cto.status === "running" || sessionStatus.cto.status === "stalled",
       hasTranscript,
       sessionStatus,
     };
 
-    const detail = await readProjectDetail(project.path, projectWithStatus);
+    const detail = await store.detail(project.path, projectWithStatus);
 
     return NextResponse.json({
       data: {
@@ -78,13 +74,14 @@ export async function DELETE(
       { status: 400 }
     );
   }
-  const project = await getProjectByIndex(index);
+  const store = getStore();
+  const project = await store.byIndex(index);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
 
   try {
-    await removeProject(project.path);
+    await store.remove(project.path);
     return NextResponse.json({ data: { success: true } });
   } catch (err) {
     return NextResponse.json(

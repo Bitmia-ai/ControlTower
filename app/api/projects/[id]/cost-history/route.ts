@@ -3,7 +3,8 @@
 // Sessions are sorted ascending by mtime, capped at the most-recent 10.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectByIndex, parseProjectIndex } from "@/lib/projects";
+import { parseProjectIndex } from "@/lib/projects";
+import { getStore } from "@/lib/app";
 import { getSessionCostHistory } from "@/lib/cost-history";
 
 export async function GET(
@@ -19,7 +20,7 @@ export async function GET(
         { status: 400 }
       );
     }
-    const project = await getProjectByIndex(index);
+    const project = await getStore().byIndex(index);
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
