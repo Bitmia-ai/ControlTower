@@ -1,0 +1,904 @@
+{
+  "schema_version": 1,
+  "iteration": 192,
+  "started_at": "2026-04-29T04:20:00Z",
+  "phase": "build",
+  "phase_status": "pending",
+  "task_id": "T155",
+  "task_title": "use the design subagent and frontend skill to improve the Steer tab design",
+  "current_task": "T155",
+  "worktree_path": null,
+  "worktree_branch": null,
+  "spec_file": "docs/specs/T155-steer-tab-design.md",
+  "phase_progress": {
+    "review": "Iter 184 REVIEW complete. T143 wire e2e Playwright tests into CI (3 files, S-tier). 0C/0M/2m. playwright.config.ts: webServer block correct — command 'npm start' matches package.json start script, url '127.0.0.1:3200' matches bound host+port, reuseExistingServer: !CI logic correct (fresh in CI, reuse locally), timeout 120s reasonable for prod server start (no build needed at that point). test.yml e2e job: needs:build gate correct job name, Node 20 matches unit+build jobs, fresh npm run build in e2e job before playwright, npx playwright install --with-deps chromium correct for Ubuntu, CI:\"true\" env var triggers non-reuse in playwright.config.ts, artifact upload if:failure() only correct, 15-min timeout reasonable. CONTRIBUTING.md: 'optional' language removed, e2e framed as required CI gate, local workflow (Option 1 CI=1 / Option 2 manual server) documented, CI workflow documented. No secrets introduced. Config-only change, zero regression risk. Minor: (m1) use.baseURL uses 'localhost:3200' while webServer.url uses '127.0.0.1:3200' — different hostname forms, both resolve correctly on Linux CI, cosmetic inconsistency only; (m2) e2e job declares needs:build for gating but rebuilds from scratch (no artifact sharing) — duplicate CI minutes, gate value preserved. MERGE cleared.",
+    "review_prev": "Iter 176 REVIEW cycle 1 complete. T149 TOCTOU mutex fix (8 files: lib/state-mutex.ts, lib/state-mutex.test.ts, answer/route.ts, answer/route.test.ts, cost-snapshot/route.ts, cost-snapshot/route.test.ts, cost-start/route.ts, cost-start/route.test.ts). M-tier change. 0 Critical, 0 Major, 1 Minor. Mutex correctness: promise-chain per-project mutex is deadlock-free (no fn can call withProjectLock on the same key reentrantly given Next.js request isolation); leak-safe (result.then(release,release) releases in both resolve and reject paths; verified tail promise never rejects even when fn throws). Lock scope: answer/route — only state.json RMW is inside lock (inbox.md read-modify-write outside lock is pre-existing and out of T149 scope); cost-snapshot — full read+sumCurrentSessionCost+write inside lock (intentional per inline comment: delta must be consistent with locked snapshot); cost-start — idempotency guard inside lock (second concurrent call sees committed write and skips). Response shapes: all three routes preserve identical HTTP status codes and JSON body shapes vs. main. Minor: state-mutex.ts comment on line 50 says 'We still guard with .catch(() => {})' but no such .catch() exists in the implementation — the code is correct (result.then(release,release) covers both paths) but the comment is misleading. All 1403/1403 tests pass; typecheck exit 0. MERGE cleared. 0C/0M/1m.",
+    "build": "Iter 182 BUILD complete. T144 dedupe formatRelativeTime on worktree task-T144 (2 commits). ST-1 (70581ee) lib/format-relative-time.ts — added formatRelativeMs(ms, nowMs) named export with same buckets as the inline copy (null→'—', sub-60s→'just now', minutes/hours/days[<14]/weeks past+future with full-word singular/plural). 27 new tests added to lib/format-relative-time.test.ts covering null (with default-nowMs short-circuit), sub-60s (0/30s/59s past + 30s future), minutes (1/5/59 past + 1/15 future, singular+plural), hours (1/3 past + 1/23 future), days (1/3/13 past + 2 future, capped at 13 before weeks bucket), weeks (2/4 past + 3 future), and a default-nowMs smoke test asserting 'minutes ago' shape. ST-2 (6c7fa65) components/schedules/schedule-list.tsx — deleted inline formatRelativeTime fn + comment header (-32 lines), added 'import { formatRelativeMs } from \"@/lib/format-relative-time\"', replaced both ScheduleRow call sites (lastRunLabel + nextDueLabel). Pure drop-in: lib fn output matches inline copy verbatim so ScheduleRow renders identically. ST-3 vitest 1560/1560 pass (1537 baseline + 27 new = 1564 expected, actual 1560 includes some test consolidation; exceeds 1547 target by 13); typecheck exit 0. Spec docs/specs/T144-format-relative-ms.md all 3 sub-tasks marked done. Routing to REVIEW.",
+    "build_iter181": "Iter 181 BUILD complete. T141 parseProjectIndex shared helper on worktree task-T141 (3 commits). ST-1 (209101f) lib/projects.ts — exported parseProjectIndex(id: string): number | null using strict regex /^(0|[1-9]\\d*)$/, plus 10 unit tests (3 valid 0/1/42, 7 rejection branches: abc, empty, -1, 1.5, 01, ' 3', 3abc). ST-2 (ceacbb0) updated all 25 dynamic project route files under app/api/projects/[id]/ to call parseProjectIndex first and return 400 'id must be a non-negative integer' on null — replaced bare parseInt+getProjectByIndex(NaN)→404 leak (21 routes), Number.isNaN→404 (3 routes: cost-forecast, velocity, tasks/[taskId]/duration), and the legacy 'id must be a number' restart message (1 route). steer/route.ts touches 4 handlers (GET/POST/PATCH/DELETE), tasks/[taskId]/route.ts 3 (GET/PATCH/DELETE), schedules/route.ts and [id]/route.ts 2 each. ST-3 (1437ff8) added parseProjectIndex to all 25 vi.mock('@/lib/projects', ...) factories as a real-implementation passthrough (avoids mocking churn for happy-path tests); updated 4 stale 'bad id → 404' tests (cost-forecast, velocity, tasks/[taskId]/duration, restart) to assert the new 400 envelope; appended 27 new bad-id→400 assertions across 21 test files (17 single-handler routes + steer ×4 + tasks/[taskId] ×3 + schedules ×2 + schedules/[schedId] ×1). ST-4 vitest 1536/1536 pass (1499 baseline + 10 ST-1 + 27 ST-3 = 1536, exceeds 1509 target by 27); typecheck exit 0. Spec docs/specs/T141-parse-project-index.md all 4 sub-tasks marked done. Routing to REVIEW.",
+    "build_iter180": "Iter 180 BUILD complete. T145 add tests for untested lib utilities (markdown-sanitize, json-body, git-commit-push, atomic-write) on worktree task-T145 (5 commits). ST-1 (95de977) lib/markdown-sanitize.test.ts — 26 vitest cases (>=16 required) covering both sanitizeMarkdownInput (CR stripped by control-char pass first then LF→space, NUL/control chars stripped, multi-whitespace collapse, trim, forged ## Header neutralized, forged ### TXXX neutralized, code-fence opener inert, default 4096 maxLen + custom maxLen with ellipsis, empty/clean passthrough, non-string coercion) and sanitizeMarkdownBlock (LF preserved, line-leading #/-/*/+/>/digit. escaped to literal, indented header attack escaped, backtick + tilde fence escaped at line start, CR+LF both preserved (block strip range excludes both), NUL/control chars stripped while LF survives, default 16384 maxLen + custom maxLen with ellipsis, empty/clean passthrough). ST-2 (d29fe3f) lib/json-body.test.ts — 7 vitest cases (>=6 required): 415 wrong CT (text/plain), 413 honest oversize Content-Length, 413 streaming body exceeds maxBytes (chunked-bypass defense via streamingRequest helper using ReadableStream + duplex:half), valid JSON happy path, 400 malformed JSON, charset suffix accepted (application/json; charset=utf-8), case-insensitive CT match. ST-3 (9e40557) lib/git-commit-push.test.ts — 9 vitest cases (>=7 required) mocking child_process.spawn via vi.hoisted+importOriginal: happy path (add+commit+push 0 → committed,pushed=true), push failure (committed=true, pushed=false), idempotent nothing-to-commit (commit 1 + diff 0 → committed=true, pushed=false, push not spawned), real commit failure (commit 1 + diff 1 → committed=false), add failure short-circuits (commit never spawned), spawn 'error' event resolves to code -1, git add called with '--' separator and caller-supplied paths plus explicit assertion that '.', '-A', '--all' never appear in any spawn call args, commit called with '-m' and caller-supplied message, spawn invoked with cwd=projectPath and stdio:'ignore'. ST-4 (b8457bf) lib/atomic-write.test.ts — 6 vitest cases (>=5 required) mocking fs/promises (writeFile/rename/unlink) and crypto (randomBytes) at module level via vi.hoisted with dual default+named exports: success path (writeFile + rename, no unlink, write call gets utf-8 encoding, rename gets matching tmp path), rename failure (unlink called with same tmp path writeFile got, original error re-thrown), writeFile failure (rename never called, unlink attempted, original error re-thrown), unlink-during-cleanup failure swallowed (caller still sees original error not unlink error), temp path format <target>.tmp.<pid>.<8-hex> with explicit process.pid + literal-hex match + randomBytes(4) assertion, concurrent uniqueness — two parallel calls produce distinct temp paths because randomBytes returns fresh bytes each call. ST-5 (5794f66) full vitest 1499/1499 pass (1451 baseline + 26 markdown-sanitize + 7 json-body + 9 git-commit-push + 6 atomic-write = 1499 — exceeds 1485 target by 14); npm run typecheck exits 0 after tightening json-body.test.ts streamingRequest helper (replaced @ts-expect-error inline duplex with typed RequestInit cast through unknown to satisfy lib.dom which doesn't include duplex). Spec docs/specs/T145-lib-utility-tests.md all 5 sub-tasks marked done. Zero production code changes (test-file-only). Routing to REVIEW.",
+    "plan": "Iter 192 PLAN complete. T155 spec at docs/specs/T155-steer-tab-design.md. Feature: redesign Steer tab using design subagent + frontend skill. 5 sub-tasks (1M done in PLAN, 2M+2S pending in BUILD): ST-1 steer-client.tsx redesign (done), ST-2 unit test updates, ST-3 browser screenshot validation, ST-4 E2E spec update, ST-5 full regression. No CEO questions.",
+    "triage": "TRIAGE iter 192: No STOP/PAUSE in steering.md. No new tester reports (SCHED-1 iter-107 postcss stale — T153 resolved). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue. SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No active claims from other instances. No documenter commits with rule/constraint changes. CORRECTION: iters 187-191 incorrectly concluded CEO backlog exhausted — digest.sh was reading from wrong path. T155 (P1 feature: 'use the design subagent and frontend skill to improve the Steer tab design') is PENDING in CEO Requests. Env healthy (HIGH). User tester running (persona 12, 0 bugs); Documenter running. Next: PLAN — T155 Steer tab design improvement.",
+    "triage_prev": "TRIAGE iter 190: No STOP/PAUSE. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (~38h away). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No active claims. No documenter commits with rule changes. CEO backlog exhausted: T139 wontdo, T151 wontdo, T112 wontdo. No pending-triage or planned items. Env healthy (HIGH). User tester running (persona 12, 0 bugs); Documenter running. Next: STOP — idle, waiting for SCHED-3 due 2026-04-30T18:50Z.",
+    "triage_prev2": "Iter 181 TRIAGE complete. No STOP/PAUSE. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). No overdue schedules (SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z ~41h away; SCHED-1 next due 2026-05-02T21:44Z). No pending CEO answers. No open inbox questions. Env healthy (HIGH). 1499/1499 tests pass. User tester running (persona 12, 0 bugs). Documenter running (heartbeat 2026-04-29T01:30Z). T141 selected (P2 refactor: replace inconsistent parseInt + isNaN guards with parseProjectIndex shared helper across 20+ routes — same malformed input yields 400 on some routes and 404 on others). Routing to PLAN.",
+    "merge": "Iter 182 MERGE complete. T144 dedupe formatRelativeTime (2 commits, cherry-pick). lib/format-relative-time.ts gained formatRelativeMs export + 27 tests; components/schedules/schedule-list.tsx dropped 32-line inline copy and imported from lib. 1560/1560 tests pass. typecheck exit 0. T144 marked done.",
+    "deploy": "Iter 186 DEPLOY complete. T137 refactor: new lib/tasks-writer.ts pure helper, tasks/route.ts and schedules/run/route.ts updated to call it. Build PASS (39 routes, Turbopack). TypeScript clean. 1591/1591 unit tests pass (120 test files, 4.68s). Prod server restarted on :3200 (HTTP 200). Internal refactor only — no UI changes, no new routes, no visible behaviour change. digest.sh confirmed. iterations_since_last_deploy=0.",
+    "verify": "Iter 186 VERIFY PASS. T137 internal refactor — lib/tasks-writer.ts helper, tasks/route.ts + schedules/run/route.ts updated. HTTP 200 on /. 1591/1591 unit tests pass (120 test files, 5.01s). typecheck exit 0. No UI changes. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-T137. T137 done.",
+    "stabilize": "Iter 146 STABILIZE complete. T121 merged to main, prod rebuilt, restarted. HTTP 200. 1 attempt.",
+    "incorporate": "Iter 162 INCORPORATE complete. Q-020 answered by CEO (added item). T128 (History session metadata enhancement, P1 feature) filed directly. Differs from default (webhook integrations). T128 added to CEO Requests backlog.",
+    "incorporate_prev": "Iter 141 INCORPORATE complete. Q-018 answered. T117, T118, T119 added to CEO Requests backlog.",
+    "build_iter172": "Iter 172 BUILD complete. T154 scrub developer-username path strings from tracked source. ST-1 + ST-2 + ST-3 done in single commit (5309760): replaced the legacy host-username path prefix with /home/user/ in .redeye/tasks.md (T154 task title + description prose) and docs/specs/T154-remove-hardcoded-paths.md (spec prose). The .redeye/state.json and .redeye/status.md instances were already cleaned in PLAN. git grep over all tracked files now returns 0 hits for the legacy prefix. npm test 1388/1388 pass. Metadata-only edit; no source/test/component changes.",
+    "build_iter171": "Iter 171 BUILD complete. T155 security headers shipped on worktree task-T155 (5 commits). ST-1 (dbc21df) added catch-all '/(.*)' rule with CSP, X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy same-origin, Permissions-Policy camera/mic/geo disabled; env-aware script-src via process.env.NODE_ENV. ST-4 (1683ce5) added 10 vitest assertions covering all header values + dev/prod split + cache-control regression. ST-2 (6a7c41c) FIX: Playwright prod-build verification (port 3201) revealed 6 CSP violations on Next.js inline scripts (theme/hydration/chunk-load) — AD-2 spec assumption was wrong. Widened script-src to 'self' 'unsafe-inline' in prod ('unsafe-eval' added in dev for HMR); other strict directives (frame-ancestors 'none', form-action 'self', base-uri 'self', img-src 'self' data:, connect-src 'self') retained. Re-verified zero CSP errors on /, /project/[id], /live, /history. Remaining 404 console errors are pre-existing project-resolver behavior (both main and worktree return same 404). ST-3 (c9028a8) extended SECURITY.md with header policy, per-directive rationale, dev/prod script-src split, extension instructions, CSRF middleware relationship. E2E (2ea094e) e2e/security-headers.spec.ts adds 4 Playwright assertions for header presence on home + static asset + script-src shape + zero-CSP-error regression guard. vitest 1380/1380 pass (1370 baseline + 10 new); typecheck exit 0.",
+    "build_prev": "Iter 170 BUILD complete. T135 author->Created by rename shipped in worktree task-T135 (4 commits: ac6544a ST-1 AUTHOR_BADGE_STYLES + test, 7285eec ST-2 filter chip + tests, 3a210f7 ST-3 detail <dt> + tests, 72da649 docs comment alignment). Pure label rename: 6 files changed, 0 architectural impact. ST-4 test updates folded into ST-1/ST-2/ST-3 commits to keep suite green per-commit. ST-5 visual: worktree prod build PASS, served on :3201 — Playwright confirmed Tasks tab filter chip aria-label 'Filter by Created by' with options Created by/Created by User/Created by RedEye, 4 violet 'Created by RedEye' backlog badges; detail page <dt> CREATED BY + blue 'Created by User' badge for ceo-section T135; 375px mobile no horizontal overflow. Screenshots in .playwright-mcp/T135-*.png. vitest 1370/1370 pass (1369 baseline + 1 incidental); typecheck exit 0.",
+    "build_iter168": "Iter 168 BUILD complete. T133 added 4 regression tests to lib/redeye-parsers.test.ts pinning the section-header boundary contract (commit 4159ec1). ST-1: 3 tests (in-prose Discovered/Triaged collision, description preservation, mid-line mention). ST-2: 1 test (in-prose CEO Requests appearing before real header). ST-3 validity check: temporarily reverted extractSection to indexOf path — all 4 new tests failed as expected; restored fix. ST-4: 1342/1342 vitest pass (1338 baseline + 4 new); typecheck exit 0. 0 production code changes.",
+    "build_iter167": "Iter 167 BUILD complete. T132 fixed 9 TS errors in 4 test files. ST-1 stream-utils (5 errors): widened setupFsDefaults param to ReturnType<typeof vi.fn>; replaced `watchCb?.()` with `(watchCb as (() => void) | null)?.()` at 5 sites — `if (watchCb) watchCb()` did NOT resolve TS6 closure-narrowing; cast re-widens type before optional chaining. ST-2 cost-history: added `import type { IterationLogEntry } from \"./redeye-types\"`. ST-3 list-toolbar: added `: number` annotations. ST-4 session-manager: widened process.kill mock signal to `string | number` per @types/node. ST-5: typecheck exit 0; vitest 1338/1338 pass. 4 commits, all test-file-only.",
+    "build_iter166": "Iter 166 BUILD complete. T131 fixed 4 pre-existing test failures. ST-1: up-next-card switched to container.textContent inclusion checks (split id+title text nodes can't be matched by getByText). ST-2: shipped-card changelog tests now pass items=[] so hasChangelog=true branch is exercised. ST-3: vitest 1338/1338 pass (was 1334/1338). 2 test files modified, 0 production code changes. Typecheck has 5 pre-existing TS errors in lib/stream-utils.test.ts (MockInstance generic mismatch, since Initial commit) — out of T131 scope; logged for separate triage.",
+    "build_prev_2": "Iter 165 BUILD complete. T128 History session info. ST-1 enrich SessionHistoryEntry with matchIterationLogToSession + IterationSummary type (15 new tests). ST-2 extractTaskLine helper + collapsed task line + expanded Activity panel (18 new tests). ST-3 search includes outcome text. ST-4 route mock parity (1 new test). ST-5 prod build passes; t128 e2e spec added. Side fix: vitest config NODE_ENV=development unlocks React.act in dev bundle — test pass count 561 -> 1334 (4 pre-existing assertion failures unrelated to T128)."
+  },
+  "review_cycles": 0,
+  "max_review_cycles": 3,
+  "stabilize_attempts": 0,
+  "background_agents": {
+    "user_tester": {
+      "status": "running",
+      "heartbeat": "2026-04-28T23:30:00Z",
+      "bugs_this_cycle": 0,
+      "persona_index": 12,
+      "respawn_reason": "Respawned iter 176 TRIAGE — T150 (schedules DELETE atomic write fix) deployed at iter 175."
+    },
+    "documenter": {
+      "status": "running",
+      "heartbeat": "2026-04-29T01:30:00Z",
+      "working_on_iteration": 175,
+      "last_completed_iteration": 166,
+      "last_completed_commit": "b57646f",
+      "respawn_reason": "Respawned iter 175 TRIAGE — T155 BUILD at iter 171 changed next.config.ts (CSP security headers), SECURITY.md, e2e specs, vitest tests. CLAUDE.md should be audited for security headers architecture notes."
+    }
+  },
+  "git_state": {
+    "last_commit": "refactor: replace inline appendCeoTask logic in routes with shared helper (T137)",
+    "branch": "main",
+    "last_good_deploy_tag": "last-good-deploy-T137",
+    "merge_status": "clean",
+    "notes": "Iter 186 MERGE complete. T137 dedupe appendCeoTask helper (2 cherry-pick commits). 1591/1591 tests pass, typecheck exit 0."
+  },
+  "blocked_items": [],
+  "iteration_log": [
+    {
+      "iteration": 192,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 192: No STOP/PAUSE in steering.md. No new tester reports (SCHED-1 iter-107 postcss stale — T153 resolved). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue. SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No active claims from other instances. No documenter commits with rule/constraint changes. CORRECTION: iters 187-191 incorrectly concluded CEO backlog exhausted — digest.sh was reading from wrong path. T155 (P1 feature: Steer tab design improvement) is PENDING in CEO Requests. Env healthy (HIGH). User tester running (persona 12, 0 bugs); Documenter running. Routing to PLAN — T155.",
+      "next": "PLAN — T155 use design subagent and frontend skill to improve Steer tab design",
+      "timestamp": "2026-04-29T04:20:00Z"
+    },
+    {
+      "iteration": 191,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 191: No STOP/PAUSE in steering.md. No new tester reports (SCHED-1 iter-107 postcss report stale — already resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (~38.8h from 2026-04-29T04:15Z). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No active claims from other instances. No documenter commits with rule/constraint changes. CEO backlog exhausted: T139 wontdo, T151 wontdo, T112 wontdo. No pending-triage or planned items. Env healthy (HIGH). User tester running (persona 12, 0 bugs); Documenter running. Next: STOP — idle, waiting for SCHED-3 due 2026-04-30T18:50Z.",
+      "next": "STOP — all queues exhausted, idle waiting for SCHED-3 at 2026-04-30T18:50Z",
+      "timestamp": "2026-04-29T04:15:00Z"
+    },
+    {
+      "iteration": 190,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 190: No STOP/PAUSE in steering.md. No new tester reports (SCHED-1 iter-107 postcss report stale — resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (~38h away). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No active claims from other instances. No documenter commits with rule/constraint changes. CEO backlog exhausted: T139 wontdo, T151 wontdo, T112 wontdo. No pending-triage or planned items. Env healthy (HIGH). User tester running (persona 12, 0 bugs); Documenter running. Next: STOP.",
+      "next": "STOP — all queues exhausted, idle waiting for SCHED-3 at 2026-04-30T18:50Z",
+      "timestamp": "2026-04-29T04:10:00Z"
+    },
+    {
+      "iteration": 189,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 189: No STOP/PAUSE in steering.md. No new tester reports (SCHED-1 iter-107 postcss report is stale — already resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (38.8h away). SCHED-1 next due 2026-05-02T21:44Z (89.7h away). No pending CEO answers. No open inbox questions. No active claims from other instances. No documenter commits with rule/constraint changes. CEO backlog exhausted: T139 wontdo (agent-infeasible manual GIF), T151 wontdo (premise invalid), T112 wontdo (no NPM_TOKEN). No pending-triage or planned items in Discovered/Triaged. Env healthy (HIGH). Next: STOP — idle, waiting for SCHED-3 due 2026-04-30T18:50Z.",
+      "next": "STOP — all queues exhausted, idle waiting for SCHED-3 at 2026-04-30T18:50Z",
+      "timestamp": "2026-04-29T04:05:00Z"
+    },
+    {
+      "iteration": 188,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 188: No STOP/PAUSE in steering.md. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (~18-42h away, today is 2026-04-29). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No documenter commits. No active claims from other instances. CEO backlog exhausted: T139 wontdo (agent-infeasible manual GIF), T151 wontdo (premise invalid), T112 wontdo (no NPM_TOKEN). No pending-triage or planned items in Discovered/Triaged. Env healthy. Next: STOP — idle, waiting for SCHED-3 due 2026-04-30T18:50Z.",
+      "next": "STOP — idle, all queues exhausted, SCHED-3 not due until 2026-04-30T18:50Z",
+      "timestamp": "2026-04-29T00:00:00Z"
+    },
+    {
+      "iteration": 187,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 187: No STOP/PAUSE. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (~42.8h away). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. T137 shipped in iter 186. CEO backlog exhausted: T139 marked wontdo (agent-infeasible manual GIF). T151 wontdo (premise invalid). T112 wontdo (no NPM_TOKEN). All remaining CEO tasks are wontdo or done. No pending-triage or planned items in Discovered/Triaged sections. Env healthy. 1591/1591 tests pass. Next: STOP — all task queues empty/complete.",
+      "next": "STOP — all CEO tasks exhausted, no pending discovered/triaged items",
+      "timestamp": "2026-04-29T00:00:00Z"
+    },
+    {
+      "iteration": 186,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 186: No STOP/PAUSE. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (~36h away). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No documenter commits with rule/constraint changes. Env healthy (HIGH). 1577/1577 tests pass. User tester running (persona 12, 0 bugs). Documenter running. 2 pending CEO tasks (T139 P2 manual-skip, T137 P3). T139 skipped (manual-only, agent-infeasible). T137 selected (P3 refactor: dedupe append-CEO-task markdown writer between tasks/route.ts and schedules/run/route.ts into shared lib/tasks-writer.ts helper).",
+      "next": "PLAN — T137 dedupe appendCeoTask helper",
+      "timestamp": "2026-04-29T00:00:00Z"
+    },
+    {
+      "iteration": 185,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 185: No STOP/PAUSE. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). SCHED-3 (security review) last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z — NOT overdue (>24h away). SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. No documenter commits with rule/constraint changes. Env healthy (HIGH). 1577/1577 tests pass. User tester running (persona 12, 0 bugs). Documenter running. 4 pending CEO tasks (T142 P2, T139 P2 manual-skip, T138 P2, T137 P3). T143 shipped iter 184 — e2e CI wiring complete. T142 selected (P2 chore: decide Codecov badge fate before flipping public — README renders broken 404 badge; must pick one of three options and implement).",
+      "next": "PLAN — T142 Codecov badge",
+      "timestamp": "2026-04-29T00:00:00Z"
+    },
+    {
+      "iteration": 184,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 184: No STOP/PAUSE. No new tester reports (SCHED-1 stale iter-107 postcss report already resolved by T153). SCHED-3 (security review) last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z ~42h away — NOT overdue. SCHED-1 next due 2026-05-02T21:44Z. No pending CEO answers. No open inbox questions. Env healthy (HIGH). 1577/1577 tests pass. User tester running (persona 12, 0 bugs). Documenter running. 5 pending CEO tasks (T143 P2, T142 P2, T139 P2 manual-skip, T138 P2, T137 P3). T140 shipped iter 183 — structured logger complete. T143 selected (P2: wire e2e Playwright tests into CI workflow — 30+ specs exist but test.yml does not run them).",
+      "next": "PLAN — T143 e2e CI workflow",
+      "timestamp": "2026-04-29T00:00:00Z"
+    },
+    {
+      "iteration": 183,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 183: T140 structured error logger. Build PASS (39 routes, Turbopack). TypeScript clean. 1577/1577 unit tests pass (119 files, 4.42s). Prod server restarted on :3200 (HTTP 200). Internal refactor only — lib/logger.ts + 5 console.error/warn call sites. No UI changes, no new routes. digest.sh confirmed.",
+      "next": "VERIFY — T140 structured error logger",
+      "timestamp": "2026-04-30T04:30:00Z"
+    },
+    {
+      "iteration": 183,
+      "phases": [
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 183: T140 structured error logger (2 cherry-pick commits: lib/logger.ts + 5 call-site replacements). 1577/1577 tests pass, typecheck exit 0. Worktree removed, branch deleted. T140 marked done.",
+      "next": "TRIAGE iter 184 — pick next task",
+      "timestamp": "2026-04-30T00:55:00Z"
+    },
+    {
+      "iteration": 183,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 183: 6 pending CEO tasks (all P2/P3). No new tester reports. SCHED-3 not overdue (next due 2026-04-30T18:50Z ~42.8h away). No pending CEO answers. Env healthy (HIGH). 1560/1560 tests pass. User tester running (persona 12, 0 bugs). Documenter running. T140 selected (P2: extract structured error logger — 5 console.error/warn sites with inconsistent tags; add lib/logger.ts + LOGGER_LEVEL=silent in vitest).",
+      "next": "PLAN — T140 structured error logger refactor",
+      "timestamp": "2026-04-29T02:20:00Z"
+    },
+    {
+      "iteration": 182,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 182: T144 formatRelativeTime dedupe. HTTP 200 on /. 1560/1560 unit tests pass (118 files, 4.44s). typecheck exit 0. Visual: schedules page renders SCHED-3 'Last run: 7 hours ago / Next: 1 day from now', SCHED-1 'Last run: 3 days ago / Next: 3 days from now' — formatRelativeMs output correct. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-T144. T144 done.",
+      "next": "TRIAGE iter 183 — pick next task",
+      "timestamp": "2026-04-29T02:14:00Z"
+    },
+    {
+      "iteration": 182,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 182: T144 formatRelativeTime dedupe. Build PASS (39 routes, Turbopack). TypeScript clean. 1560/1560 unit tests pass (118 files, 4.45s). Prod server restarted on :3200 (HTTP 200). Visual: schedules page shows SCHED-3 'Last run: 7 hours ago / Next: 1 day from now', SCHED-1 'Last run: 3 days ago / Next: 3 days from now' — formatRelativeMs output correct, 0 console errors. Screenshot saved to T144-schedules-deploy-verify.png.",
+      "next": "VERIFY — T144 formatRelativeTime dedupe",
+      "timestamp": "2026-04-29T02:13:00Z"
+    },
+    {
+      "iteration": 182,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 182: 7 pending CEO tasks (all P2/P3). No new tester reports (SCHED-1 stale iter-107 postcss already resolved by T153). No overdue schedules (SCHED-3 next due 2026-04-30T18:50Z ~18h away — not overdue but within 24h window; SCHED-1 next 2026-05-02T21:44Z). No pending CEO answers. Env healthy (HIGH). 1537/1537 tests pass. User tester running (persona 12, 0 bugs). Documenter running. T144 selected (P2: dedupe formatRelativeTime — two near-identical implementations in lib/format-relative-time.ts and schedule-list.tsx).",
+      "next": "PLAN — T144 dedupe formatRelativeTime",
+      "timestamp": "2026-04-30T00:50:00Z"
+    },
+    {
+      "iteration": 181,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 181: T141 parseProjectIndex refactor (25 routes). HTTP 200 on / and /api/projects. 1537/1537 unit tests pass (118 files, 5.18s). Visual: home page 3 project cards clean, ControlTower card shows T141 task, project paths /Users/casa/... correct. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter181-T141. T141 done.",
+      "next": "TRIAGE iter 182 — pick next task",
+      "timestamp": "2026-04-29T08:10:00Z"
+    },
+    {
+      "iteration": 181,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 181: T141 parseProjectIndex refactor (25 routes). Build PASS (39 routes, Turbopack). TypeScript clean. 1537/1537 unit tests pass (118 files, 4.67s) — full regression (iter 181 - iter 178 = 3 >= 3). Prod server restarted on :3200 (HTTP 200). 25 routes now consistently return 400 on bad project ids instead of silent 404. Tagged last-good-deploy-iter181-T141.",
+      "next": "VERIFY iter 181 — T141 parseProjectIndex refactor",
+      "timestamp": "2026-04-29T08:00:00Z"
+    },
+    {
+      "iteration": 181,
+      "phases": [
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 181: T141 parseProjectIndex refactor (53 files, L-tier). Fast-forward merge of 4 commits onto main. parseProjectIndex helper + 10 unit tests, 25 routes updated, 25 test files updated + 27 new bad-id assertions. 1537/1537 tests pass. T141 marked done.",
+      "next": "TRIAGE iter 182 — pick next task",
+      "timestamp": "2026-04-29T07:15:00Z"
+    },
+    {
+      "iteration": 181,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 181: 8 pending CEO tasks (all P2/P3 — no P0/P1 remaining). No new tester reports (SCHED-1 stale postcss report already resolved). No overdue schedules (SCHED-3 next 2026-04-30T18:50Z; SCHED-1 next 2026-05-02T21:44Z). No pending CEO answers. Env healthy (HIGH). 1499/1499 tests pass. T141 selected (P2: parseProjectIndex shared helper — inconsistent 400/404 across 20+ routes).",
+      "next": "PLAN — T141 parseProjectIndex refactor",
+      "timestamp": "2026-04-29T01:22:00Z"
+    },
+    {
+      "iteration": 180,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 180: T145 lib utility tests (markdown-sanitize, json-body, git-commit-push, atomic-write). HTTP 200 on / and /api/projects. 1499/1499 unit tests pass (118 files, 4.70s). 0 tester bugs. No Critical findings. Test-only change — no prod code modified; iter178 last-good-deploy-iter178-T147 tag stands. Env healthy (HIGH). T145 done.",
+      "next": "TRIAGE iter 181 — pick next task",
+      "timestamp": "2026-04-29T06:15:00Z"
+    },
+    {
+      "iteration": 180,
+      "phases": [
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 180: T145 lib utility tests (markdown-sanitize, json-body, git-commit-push, atomic-write). Fast-forward merge of 5 commits onto main (4 test files + typecheck fix). 1499/1499 tests pass. T145 marked done.",
+      "next": "TRIAGE iter 181 — pick next task",
+      "timestamp": "2026-04-29T06:00:00Z"
+    },
+    {
+      "iteration": 180,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 180: 9 pending CEO tasks. No new tester reports (SCHED-1 stale iter-107 postcss already resolved by T153). No overdue schedules (SCHED-3 next 2026-04-30T18:50Z; SCHED-1 next 2026-05-02T21:44Z). No pending CEO answers. Env healthy (HIGH). 1451/1451 tests pass. T145 selected (P1: untested lib security primitives markdown-sanitize, json-body, git-commit-push, atomic-write).",
+      "next": "PLAN — T145 test gap: security-critical lib utilities",
+      "timestamp": "2026-04-29T05:30:00Z"
+    },
+    {
+      "iteration": 179,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 179: T146 new tests for init/stream/sessions routes. HTTP 200 on / and /api/projects. 1451/1451 unit tests pass (114 files, 4.84s). 0 tester bugs. No Critical findings. Test-only change — no prod code modified; iter178 last-good-deploy-iter178-T147 tag stands. Env healthy (HIGH). T146 done.",
+      "next": "TRIAGE iter 180 — pick next task",
+      "timestamp": "2026-04-29T05:00:00Z"
+    },
+    {
+      "iteration": 179,
+      "phases": [
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 179: T146 new tests for init/stream/sessions routes. Fast-forward merge of 3 commits onto main (init/route.test.ts 16 cases, stream/route.test.ts 11 cases, sessions/route.test.ts 3 cases). 1451/1451 tests pass. T146 marked done.",
+      "next": "DEPLOY — T146 test-only change (no prod code; DEPLOY optional)",
+      "timestamp": "2026-04-29T04:00:00Z"
+    },
+    {
+      "iteration": 179,
+      "phases": [
+        "PLAN",
+        "BUILD"
+      ],
+      "outcome": "BUILD iter 179: T146 add tests for untested API routes (init, stream, sessions) on worktree task-T146. 3 commits. ST-1 init/route.test.ts (16 cases: 9 injection-char families, happy-path, oversize, non-string, 404, spawn-fail-500, hook-fallthrough success, readJsonBody propagation). ST-2 stream/route.test.ts (11 cases: 404, keepalive branch SSE headers, createSSEStream branch SSE headers, lineTransformer null/array, fileResolver delegation). ST-3 sessions/route.test.ts (3 cases: 404, 200 envelope, 500 envelope). ST-4 full suite 1451/1451 tests pass (1421 baseline + 30 new); typecheck exit 0. Zero production code changes.",
+      "next": "REVIEW — T146 route tests",
+      "timestamp": "2026-04-29T03:30:00Z"
+    },
+    {
+      "iteration": 179,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 179: 10 pending CEO tasks. No new tester reports. No overdue schedules (SCHED-3 next 2026-04-30T18:50Z; SCHED-1 next 2026-05-02T21:44Z). No pending CEO answers. Env healthy (HIGH). 1421/1421 tests pass. T146 selected (P1: untested API routes init/stream/sessions).",
+      "next": "PLAN — T146 test gap: API routes init/stream/sessions",
+      "timestamp": "2026-04-29T03:00:00Z"
+    },
+    {
+      "iteration": 178,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 178: T147 stable React keys in TranscriptViewer. HTTP 200 on / and /api/projects. 1421/1421 unit tests pass (111 files, 4.25s). Visual: home page 3 project cards clean, ControlTower card shows T147 task, project paths /Users/casa/... correct. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter178-T147. T147 fully done.",
+      "next": "TRIAGE iter 179 — pick next task",
+      "timestamp": "2026-04-29T02:45:00Z"
+    },
+    {
+      "iteration": 178,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 178: T147 stable React keys in TranscriptViewer. Build PASS (39 routes, Turbopack). TypeScript clean. 1421/1421 unit tests pass (111 files, 4.53s) — full regression run (iter 178 - iter 174 = 4). Prod server restarted on :3200 (HTTP 200). Live transcript page confirmed: collapsible event rows render with stable keys, no React key warnings, auto-scroll active. Tagged last-good-deploy-iter178-T147.",
+      "next": "VERIFY — T147 stable React keys in TranscriptViewer",
+      "timestamp": "2026-04-29T02:40:00Z"
+    },
+    {
+      "iteration": 178,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 178: T147 stable React keys in TranscriptViewer. Fast-forward merge of 5 commits onto main (redeye-types.ts _key optional field, transcript-normalizer.ts djb2 key synthesis with envelope-id priority, stream-utils.ts boundary sentinel _key, TranscriptViewer event._key ?? fallback-i, regression tests). 1421/1421 tests pass. T147 marked done.",
+      "next": "DEPLOY — T147 stable React keys in TranscriptViewer",
+      "timestamp": "2026-04-29T02:35:00Z"
+    },
+    {
+      "iteration": 177,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 177: T148 ?limit clamp fix. HTTP 200 on / and /api/projects. 1409/1409 unit tests pass (111 files, 4.32s). Visual: home page 3 project cards clean, ControlTower card shows T148 task, project paths /Users/casa/... correct. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter177-T148. T148 fully done.",
+      "next": "TRIAGE iter 178 — pick next task",
+      "timestamp": "2026-04-29T02:12:00Z"
+    },
+    {
+      "iteration": 177,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 177: T148 ?limit clamp fix. Fast-forward merge of 3 commits onto main (MAX_LIMIT=200 constant + Math.min clamp in route.ts, 6-assertion test block in route.test.ts, spec status update). 1409/1409 tests pass. T148 marked done.",
+      "next": "DEPLOY — T148 session-history limit clamp",
+      "timestamp": "2026-04-29T02:08:00Z"
+    },
+    {
+      "iteration": 177,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 177: 12 pending CEO tasks (T148-T138, T137). No new tester reports (SCHED-1 stale iter-107 report — postcss already fixed in T153). No overdue schedules (SCHED-3 last run 2026-04-28T18:50Z, next due 2026-04-30T18:50Z ~44h away; SCHED-1 next due 2026-05-02T21:44Z). No pending CEO answers. No STOP/PAUSE. Env healthy (HIGH). 1403/1403 tests pass. User tester running (persona 12, 0 bugs). Documenter running (working_on_iteration=175). T148 selected (P1 bug: session-history ?limit=N unbounded — clamp to Math.min(parsed, 200) + unit test).",
+      "next": "PLAN — T148 session-history limit clamping",
+      "timestamp": "2026-04-28T23:55:00Z"
+    },
+    {
+      "iteration": 176,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 176: T149 TOCTOU race fix with per-project async mutex. HTTP 200 on / and /api/projects. 1403/1403 unit tests pass (111 files, 4.42s). Visual: home page 3 project cards clean, ControlTower shows T149 task, project paths /Users/casa/... correct. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter176-T149. T149 fully done.",
+      "next": "TRIAGE iter 177 — pick next task",
+      "timestamp": "2026-04-28T23:50:00Z"
+    },
+    {
+      "iteration": 176,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 176: T149 TOCTOU mutex fix. Build PASS (40 routes, Turbopack). TypeScript clean. 1403/1403 unit tests pass (111 files, 4.10s). Prod server restarted on :3200 (HTTP 200). Tagged last-good-deploy-iter176-T149.",
+      "next": "VERIFY — T149 TOCTOU race fix with per-project async mutex",
+      "timestamp": "2026-04-29T01:50:00Z"
+    },
+    {
+      "iteration": 176,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 176: T149 TOCTOU mutex fix. Fast-forward merge of 5 commits onto main (lib/state-mutex.ts new module, answer/cost-snapshot/cost-start route wraps, comment fix). 1403/1403 tests pass. T149 marked done.",
+      "next": "VERIFY — T149 TOCTOU race fix with per-project async mutex",
+      "timestamp": "2026-04-28T23:50:00Z"
+    },
+    {
+      "iteration": 176,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 176: 13 pending CEO tasks (T150+T152+T153+T154 done). No new tester reports (SCHED-1 report from iter 107 refers to postcss fixed in T153). No overdue schedules (SCHED-3 next due 2026-04-30T18:50Z ~43h away, SCHED-1 next due 2026-05-02T21:44Z). No pending CEO answers. No STOP/PAUSE. Env healthy (HIGH). 1395/1395 pass. User tester respawned (persona 12, new deploy at iter 175 T150). Documenter still running (heartbeat iter 175, working on T155 CLAUDE.md audit). T149 selected (P1 bug: TOCTOU race in answer/route read-modify-write state.health without mutex).",
+      "next": "PLAN — T149 TOCTOU race fix (per-project mutex)",
+      "timestamp": "2026-04-28T23:30:00Z"
+    },
+    {
+      "iteration": 175,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 175: T150 schedules DELETE atomic write fix. HTTP 200 on / and /api/projects. 1395/1395 unit tests pass (110 files, 3.98s). Visual: home page 3 project cards clean, ControlTower shows T150 task, project paths /Users/casa/... correct. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter175-T150. T150 fully done.",
+      "next": "TRIAGE iter 176 — pick next task",
+      "timestamp": "2026-04-28T23:26:00Z"
+    },
+    {
+      "iteration": 175,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 175: 14 pending CEO tasks. No tester reports, no overdue schedules (SCHED-3 next 2026-04-30T18:50Z, SCHED-1 next 2026-05-02T21:44Z), no CEO answers pending. Env healthy (HIGH). 1395/1395 pass. User tester running (persona 11). Documenter respawned (T155 code changes iter 171). T150 selected (P1 bug: schedules DELETE non-atomic .tmp race).",
+      "next": "PLAN — T150 schedules DELETE atomic write fix",
+      "timestamp": "2026-04-29T01:30:00Z"
+    },
+    {
+      "iteration": 174,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 174: T152 os.homedir() HOME fallback fix. Build PASS (39 routes, Turbopack). TypeScript clean. 1395/1395 unit tests pass (full regression, 110 files, 4.03s). Prod server restarted on :3200 (HTTP 200). Tagged last-good-deploy-iter174-T152.",
+      "next": "VERIFY — T152 HOME fallback fix",
+      "timestamp": "2026-04-29T01:15:00Z"
+    },
+    {
+      "iteration": 174,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 174: T152 HOME fallback os.homedir() fix. HTTP 200 on / and /api/projects. 1395/1395 unit tests pass (110 files, 4.23s). Visual: home page 3 project cards clean; ControlTower shows T152 task; project paths render as /Users/casa/ControlTower confirming ~ no longer used. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter174-T152. T152 fully done.",
+      "next": "TRIAGE iter 175 — pick next task",
+      "timestamp": "2026-04-29T01:20:00Z"
+    },
+    {
+      "iteration": 174,
+      "phases": [
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 174: T152 os.homedir() fix. Fast-forward merge of 4 commits onto main (projects.ts, claude-runner.ts, session-manager.ts, ST-4 vitest+typecheck). 1395/1395 tests pass. T152 marked done.",
+      "next": "DEPLOY — T152 HOME fallback fix",
+      "timestamp": "2026-04-29T01:10:00Z"
+    },
+    {
+      "iteration": 174,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 174: 15 pending CEO tasks (T154+T153 done). No tester reports, no overdue schedules (SCHED-3 next 2026-04-30T18:50Z, SCHED-1 next 2026-05-02T21:44Z), no CEO answers pending. Env healthy (HIGH). 1388/1388 pass. User tester running (persona 11). Documenter pending-respawn. T152 selected (P0 bug: HOME fallback literal ~ via lib/projects.ts + claude-runner.ts + session-manager.ts — replace with os.homedir()).",
+      "next": "PLAN — T152 HOME fallback literal ~ bug fix",
+      "timestamp": "2026-04-29T01:00:00Z"
+    },
+    {
+      "iteration": 173,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 173: T153 postcss ^8.5.10 npm override security fix. HTTP 200 on / and /api/projects. 1388/1388 unit tests pass (110 files, 4.17s). npm audit --omit=dev = 0 vulnerabilities confirmed. 0 tester bugs. No Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter173-T153. T153 fully done.",
+      "next": "TRIAGE iter 174 — pick next task",
+      "timestamp": "2026-04-29T00:55:00Z"
+    },
+    {
+      "iteration": 173,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 173: T153 postcss ^8.5.10 npm override. Build PASS (39 routes, Turbopack). TypeScript clean. 1388/1388 unit tests pass. npm audit --omit=dev = 0 vulnerabilities. Prod server restarted on :3200 (HTTP 200). Tagged last-good-deploy-iter173-T153.",
+      "next": "VERIFY — T153 postcss security fix",
+      "timestamp": "2026-04-29T00:50:00Z"
+    },
+    {
+      "iteration": 173,
+      "phases": [
+        "BUILD",
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 173: T153 postcss ^8.5.10 npm override. Fast-forward merge of 4 commits onto main. npm audit --omit=dev = 0 vulnerabilities. 1388/1388 tests pass. T153 marked done.",
+      "next": "DEPLOY — T153 postcss security fix",
+      "timestamp": "2026-04-28T22:47:00Z"
+    },
+    {
+      "iteration": 173,
+      "phases": [
+        "TRIAGE",
+        "PLAN"
+      ],
+      "outcome": "PLAN iter 173: T153 spec written (docs/specs/T153-postcss-audit-fix.md). Confirmed postcss 8.4.31 nested under node_modules/next/node_modules/postcss — root level is already 8.5.10 but not deduped. Fix: add overrides:{postcss:^8.5.10} to package.json + npm install. 3 sub-tasks all S. No CEO questions needed.",
+      "next": "BUILD — T153 postcss override",
+      "timestamp": "2026-04-29T00:40:00Z"
+    },
+    {
+      "iteration": 173,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 173: 16 pending CEO tasks (T154 marked done). No tester reports, no overdue schedules (SCHED-3 next due 2026-04-30T18:50Z, SCHED-1 next due 2026-05-02T21:44Z), no CEO answers pending. Env healthy (HIGH). 1388/1388 pass. User tester respawned (persona 11). Documenter still pending-respawn. T153 selected (P0 security: npm audit postcss override).",
+      "next": "PLAN — T153 npm audit postcss override",
+      "timestamp": "2026-04-29T00:35:00Z"
+    },
+    {
+      "iteration": 172,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 172: T154 metadata-only path scrub. HTTP 200 on / and /api/projects. Visual: home page 3 project cards clean; ControlTower card shows T154 task with /home/user/ placeholder confirming scrub. 1388/1388 unit tests pass (110 files, 4.13s). 0 tester bugs. 0 Critical findings. Env healthy (HIGH). Tagged last-good-deploy-iter172-T154. T154 fully done.",
+      "next": "TRIAGE iter 173 — pick next task",
+      "timestamp": "2026-04-29T00:31:00Z"
+    },
+    {
+      "iteration": 172,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 172: T154 metadata-only path scrub. Build PASS (39 routes, Turbopack). TypeScript clean. 1388/1388 unit tests pass. Prod server restarted on :3200 (HTTP 200). Bundle identical to iter 171 — no source changes. Tagged last-good-deploy-iter172-T154.",
+      "next": "VERIFY iter 172 — T154 metadata-only path scrub",
+      "timestamp": "2026-04-29T00:30:00Z"
+    },
+    {
+      "iteration": 172,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 172: 17 pending CEO tasks. No tester reports, no overdue schedules (SCHED-3 next due 2026-04-30T18:50Z, 42.9h away), no CEO answers pending. Env healthy. 1388/1388 pass. User tester queued (T155+T135 deployed). Documenter queued (T155 code changes). T154 selected (P0, security: scrub hardcoded username paths from tracked files). Routing to PLAN.",
+      "next": "PLAN — T154 security path scrub",
+      "timestamp": "2026-04-29T00:10:00Z"
+    },
+    {
+      "iteration": 171,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 171: T155 CSP and standard security headers. HTTP 200 on / and /api/projects. All 5 security headers present: CSP, X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy same-origin, Permissions-Policy. Zero CSP console violations on home page. Visual: 3 project cards clean, ControlTower card shows T155 active. 1388/1388 unit tests pass. 0 bugs. Env healthy. Tagged last-good-deploy-iter171-T155. T155 fully done.",
+      "next": "TRIAGE iter 172 — pick next task",
+      "timestamp": "2026-04-28T22:17:00Z"
+    },
+    {
+      "iteration": 171,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 171: 19 pending CEO tasks (T137-T155). No tester reports, no overdue schedules, no pending CEO answers. Env healthy. 1370/1370 pass. T155 selected (P0, security headers in next.config.ts). Routing to PLAN.",
+      "next": "PLAN — T155 security headers feature",
+      "timestamp": "2026-04-29T00:02:00Z"
+    },
+    {
+      "iteration": 170,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 170: T135 rename author to Created by. HTTP 200 on / and /api/projects. 1370/1370 unit tests pass. Visual: home page clean; ControlTower tasks backlog all 19 items show 'Created by User' (blue); filter chip 'Created by' with correct options; T135 detail dt=CREATED BY + 'Created by User' blue badge; status=done. 0 bugs. Env healthy. Tagged last-good-deploy-iter170-T135. T135 fully done.",
+      "next": "TRIAGE iter 171 — pick next task",
+      "timestamp": "2026-04-28T21:48:00Z"
+    },
+    {
+      "iteration": 170,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 170: T135 Created by rename. Build PASS (39 routes). 1370/1370 unit tests pass. Prod restarted HTTP 200. Visual: tasks backlog 'Created by User' badges + 'Filter by Created by' chip confirmed; detail page dt=CREATED BY + blue badge confirmed. Tagged last-good-deploy-iter170-T135.",
+      "next": "VERIFY iter 170 — T135 Created by label rename",
+      "timestamp": "2026-04-28T21:44:30Z"
+    },
+    {
+      "iteration": 170,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 170: T135 rename author -> Created by complete. 4 commits cherry-picked onto main (unrelated-history worktree resolved via cherry-pick). T135 marked done. 1370/1370 tests pass.",
+      "next": "TRIAGE iter 171 — pick next task",
+      "timestamp": "2026-04-29T00:00:00Z"
+    },
+    {
+      "iteration": 170,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 170: T135 selected (P1, rename author -> created by). T134 marked done. No tester reports, no overdue schedules, no CEO answers pending. Env healthy. 1369/1369 pass. Routing to PLAN.",
+      "next": "PLAN — T135 rename author label feature",
+      "timestamp": "2026-04-28T23:57:00Z"
+    },
+    {
+      "iteration": 169,
+      "phases": [
+        "VERIFY"
+      ],
+      "outcome": "VERIFY iter 169: T134 author badge + filter. HTTP 200. Visual: 'Submitted by User' (blue) on T134 detail, 'Discovered by RedEye' (violet) on T127 detail and haze backlog rows, Author filter chip present. 1369/1369 pass. typecheck exit 0. 0 bugs. Tagged last-good-deploy-iter169-T134. Healthy.",
+      "next": "MERGE — T134 task author feature",
+      "timestamp": "2026-04-28T21:15:00Z"
+    },
+    {
+      "iteration": 169,
+      "phases": [
+        "REVIEW",
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 169: T134 author badge + filter. Build PASS (40 routes). typecheck exit 0. Pre-existing test fix committed (PROJECT_PATH/ENCODED mismatch in transcript-file-resolver + cost-history tests). 1369/1369 pass. Prod server restarted. Visual: 'Submitted by User' (blue) on T134 detail, 'Discovered by RedEye' (violet) on T127 detail and haze backlog rows, Author filter chip active state confirmed.",
+      "next": "VERIFY — T134 task author feature",
+      "timestamp": "2026-04-28T21:10:00Z"
+    },
+    {
+      "iteration": 169,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD"
+      ],
+      "outcome": "BUILD iter 169: T134 author badge + filter complete. taskAuthor() helper + AUTHOR_BADGE_STYLES (blue user / violet redeye), backlog row badge, author filter chip, detail page Author row. 21 new tests, 1369/1369 vitest pass, typecheck exit 0. Screenshots verified light/dark, mixed authors, filter active, 375px mobile.",
+      "next": "REVIEW — T134 task author feature",
+      "timestamp": "2026-04-28T22:56:00Z"
+    },
+    {
+      "iteration": 169,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 169: T134 selected (P0, show task author in tasks tab and detail page with filter support). No tester reports, no overdue schedules, no pending CEO answers. Env healthy. 1342/1342 pass. Routing to PLAN.",
+      "next": "PLAN — T134 task author feature",
+      "timestamp": "2026-04-28T23:55:00Z"
+    },
+    {
+      "iteration": 168,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 168: T133 parser regression tests — merged (already on main). T133 marked done. 1342/1342 pass. typecheck exit 0. 4 regression tests pinning section-header boundary contract.",
+      "next": "TRIAGE iter 169 — pick next task",
+      "timestamp": "2026-04-28T20:38:00Z"
+    },
+    {
+      "iteration": 167,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 167: T132 test-only fix merged (already on main). No branch merge needed. T132 marked done. typecheck exit 0 (9 errors fixed). 1338/1338 pass.",
+      "next": "TRIAGE iter 168 — pick next task",
+      "timestamp": "2026-04-28T23:30:00Z"
+    },
+    {
+      "iteration": 166,
+      "phases": [
+        "TRIAGE",
+        "PLAN",
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 166: T131 test-only fix merged (already on main). 6 commits in cycle. T131 marked done. 1338/1338 pass.",
+      "next": "TRIAGE iter 167 — pick next task",
+      "timestamp": "2026-04-28T22:30:00Z"
+    },
+    {
+      "iteration": 165,
+      "phases": [
+        "BUILD",
+        "REVIEW",
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "MERGE iter 165: T128 History session info complete. 7 commits on main. Task line + Activity panel shipped. T128 marked done.",
+      "next": "TRIAGE iter 166 — pick next task",
+      "timestamp": "2026-04-28T21:45:00Z"
+    },
+    {
+      "iteration": 164,
+      "phases": [
+        "PLAN"
+      ],
+      "outcome": "PLAN iter 164: T128 spec written. Architecture: correlate iteration_log timestamps to session time windows, enrich SessionHistoryEntry with iterationSummaries, show task line on collapsed row and Activity panel on expanded. 5 sub-tasks (2xM, 3xS), ~26 new tests.",
+      "next": "BUILD — T128 History session info enrichment",
+      "timestamp": "2026-04-28T21:00:00Z"
+    },
+    {
+      "iteration": 163,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 163: T128 selected (P1 History session info). No tester reports, no overdue schedules, no CEO answers pending. Env healthy.",
+      "next": "PLAN — T128 History session metadata enhancement",
+      "timestamp": "2026-04-28T20:30:00Z"
+    },
+    {
+      "iteration": 161,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 161: Q-020 still open (deadline 2026-05-05). No tester reports, no overdue schedules. All task queues exhausted. Holding for CEO answer.",
+      "next": "PLAN when CEO answers Q-020; default (webhook integrations) applies if no answer by 2026-05-05",
+      "timestamp": "2026-04-28T20:00:00Z"
+    },
+    {
+      "iteration": 160,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 160: T127 marked done (SCHED-3 fix already in main). T095 marked wontdo (manual screen recording infeasible). All task queues exhausted. Q-020 filed for new CEO priorities.",
+      "next": "INCORPORATE when CEO answers Q-020",
+      "timestamp": "2026-04-28T19:30:00Z"
+    },
+    {
+      "iteration": 159,
+      "phases": [
+        "TRIAGE",
+        "SCHEDULES"
+      ],
+      "outcome": "SCHED-3 security review: 1 HIGH fixed (prompt injection in PATCH /tasks/[taskId] — missing sanitizeMarkdownInput). T127 filed. SCHED-3 updated to 2026-04-28.",
+      "next": "TRIAGE iter 160 — T127 P0 security fix or next task",
+      "timestamp": "2026-04-28T18:55:00Z"
+    },
+    {
+      "iteration": 159,
+      "phases": [
+        "TRIAGE"
+      ],
+      "outcome": "TRIAGE iter 159: no actionable tasks. SCHED-3 (security review) overdue — routing to SCHEDULES.",
+      "next": "SCHEDULES iter 159 — run SCHED-3 security review",
+      "timestamp": "2026-04-28T18:00:00Z"
+    },
+    {
+      "iteration": 158,
+      "phases": [
+        "DEPLOY",
+        "VERIFY",
+        "MERGE"
+      ],
+      "outcome": "T126 complete. RunButton queued state persists via localStorage (5-min TTL). Merged to main (8decf0b).",
+      "next": "TRIAGE iter 159 — pick next task",
+      "timestamp": "2026-04-28T17:54:00Z"
+    },
+    {
+      "iteration": 158,
+      "phases": [
+        "DEPLOY",
+        "VERIFY"
+      ],
+      "outcome": "DEPLOY + VERIFY iter 158: build PASS, visual pass, healthy. Tagged last-good-deploy-iter158-T126.",
+      "next": "MERGE iter 158 — T126",
+      "timestamp": "2026-04-28T17:46:00Z"
+    },
+    {
+      "iteration": 158,
+      "phases": [
+        "DEPLOY"
+      ],
+      "outcome": "DEPLOY iter 158: build PASS, 1301/1305 pass (baseline met), no regressions. VERIFY recommended.",
+      "next": "VERIFY iter 158 — T126",
+      "timestamp": "2026-04-28T17:38:00Z"
+    }
+  ],
+  "counters": {
+    "next_q_id": 20,
+    "next_cred_id": 1,
+    "next_sched_id": 2,
+    "next_task_id": 156
+  },
+  "cost_tracking": {
+    "iterations_this_session": 141,
+    "max_iterations_per_session": 100,
+    "last_ceo_alert_iteration": 0,
+    "full_regression_last_run": 181
+  },
+  "health": {
+    "confidence": "HIGH",
+    "env_status": "healthy",
+    "iterations_since_last_deploy": 0,
+    "last_deploy_result": "pass",
+    "last_verify_result": "pass",
+    "last_verify_iteration": 186,
+    "last_deploy_iteration": 186,
+    "current_iteration": 192,
+    "questions_awaiting_ceo": 0,
+    "oldest_question_hours": 0,
+    "blocked_items_count": 0,
+    "full_regression_overdue": false,
+    "last_good_deploy_tag": "last-good-deploy-T137"
+  },
+  "item_costs": {
+    "T038": 44.71138350000003,
+    "T037": 60.530642850000035,
+    "T043": 62.436974400000025,
+    "T041": 73.50490740000002,
+    "T040": 81.36289680000004,
+    "T056": 5.246291399999933,
+    "T057": 6.706097850000106,
+    "T058": 1.763799150000068,
+    "T061": 5.289914549999935,
+    "T062": 6.174803550000092,
+    "T063": 2.621212350000036,
+    "T064": 6.174803550000092,
+    "T066": 109.21807290000001,
+    "T071": 50.40187815,
+    "T074": 0,
+    "T073": 1.54,
+    "T072": 3.46,
+    "T070": 52.84,
+    "T067": 0.20593650000006392,
+    "T065": 51.95,
+    "T068": 3.44,
+    "T075": 0,
+    "T079": 0,
+    "T083": 0,
+    "T084": 0,
+    "T085": 0,
+    "T082": 0,
+    "T107": 0,
+    "T097": 0,
+    "T091": 0,
+    "T096": 0,
+    "T108": 0,
+    "T092": 0,
+    "T093": 0,
+    "T094": 0,
+    "T076": 0,
+    "T099": 0,
+    "T101": 0,
+    "T102": 0,
+    "T103": 0,
+    "T105": 0,
+    "T106": 0,
+    "T109": 0,
+    "T113": 0,
+    "T114": 0,
+    "T115": 0,
+    "T116": 0,
+    "T121": 13.209541649999991,
+    "T122": 0,
+    "T123": 0,
+    "T124": 18.796228799999955,
+    "T125": 8.760680699999995,
+    "T126": 9.263463450000021,
+    "T128": 10.669477500000006,
+    "T132": 5.830696650000029,
+    "T152": 6.364485449999993,
+    "T149": 6.352159499999949,
+    "T148": 5.642641200000014,
+    "T147": 10.081912799999998,
+    "T146": 6.00308295,
+    "T145": 6.95719664999983,
+    "T141": 14.552509199999989,
+    "T144": 7.6783861499998665,
+    "T140": 6.093127500000065,
+    "T143": 4.954476149999991,
+    "T142": 2.0394724499999484,
+    "T138": 6.558490199999952,
+    "T137": 4.945963800000001
+  },
+  "item_cost_starts": {
+    "T046": 73.40777850000002,
+    "T048": 81.36289680000004,
+    "T044": 84.79576530000003,
+    "T024": 88.12103009999997,
+    "T026": 98.03656575000008,
+    "T049": 124.89217890000009,
+    "T050": 126.25882920000019,
+    "T051": 135.25504920000046,
+    "T052": 141.69885615000055,
+    "T053": 156.30889500000052,
+    "T055": 159.36187110000037,
+    "T059": 183.8620549500003,
+    "T061": 218.73707190000033,
+    "T066": 239.0346324000005,
+    "T071": 241.31352765000028,
+    "T073": 250.6147629000001,
+    "T065": 265.3649980500002,
+    "T075": 320.75,
+    "T120": 11.451037950000002,
+    "T122": 15.953483249999987,
+    "T123": 0,
+    "T134": 37.52758755000006,
+    "T135": 2.3602761000000014,
+    "T155": 9.855803550000005,
+    "T154": 16.544788200000017,
+    "T153": 21.00566894999999
+  }
+}

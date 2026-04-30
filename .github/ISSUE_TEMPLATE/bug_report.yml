@@ -1,0 +1,133 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill in as much detail as you can.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of what went wrong.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen instead.
+      placeholder: I expected...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Step-by-step instructions to reproduce the issue.
+      placeholder: |
+        1. Started Control Tower with `npm run dev`
+        2. Added project at `...`
+        3. Clicked `...`
+        4. Observed `...`
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs / error output
+      description: |
+        Paste any relevant output from the browser console, the `npm run dev` terminal,
+        or `curl -s http://localhost:3200/api/projects | jq '.'`.
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      description: e.g. macOS 15.3, Ubuntu 24.04
+      placeholder: macOS 15.3
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      description: Output of `node -v`
+      placeholder: v20.18.0
+    validations:
+      required: true
+
+  - type: input
+    id: npm-version
+    attributes:
+      label: npm version
+      description: Output of `npm -v`
+      placeholder: 10.8.2
+    validations:
+      required: false
+
+  - type: input
+    id: ct-version
+    attributes:
+      label: Control Tower version
+      description: Output of `git rev-parse --short HEAD` in the ControlTower repo
+      placeholder: a1b2c3d
+    validations:
+      required: true
+
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude Code version
+      description: Output of `claude --version`
+      placeholder: 1.0.0
+    validations:
+      required: false
+
+  - type: input
+    id: redeye-version
+    attributes:
+      label: RedEye plugin version
+      description: Commit hash from `~/.claude/plugins/cache/*/plugin.json`, or "installed via --plugin-dir"
+      placeholder: abc1234 or "installed via --plugin-dir ~/redeye"
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser (if this is a UI issue)
+      description: e.g. Chrome 124, Safari 18, Firefox 125
+      placeholder: Chrome 124
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: duplicate-check
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true

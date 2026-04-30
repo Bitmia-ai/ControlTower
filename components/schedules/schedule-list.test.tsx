@@ -1,0 +1,481 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, cleanup, fireEvent, waitFor, act } from "@testing-library/react";
+import { ScheduleList } from "./schedule-list";
+import type { ScheduleEntry } from "@/lib/redeye-types";
+
+// Storage mock that mimics localStorage semantics
+function makeStorage() {
+  const data: Record<string, string> = {};
+  return {
+    getItem: (k: string) => (k in data ? data[k] : null),
+    setItem: (k: string, v: string) => {
+      data[k] = String(v);
+    },
+    removeItem: (k: string) => {
+      delete data[k];
+    },
+    clear: () => {
+      for (const k of Object.keys(data)) delete data[k];
+    },
+    key: (i: number) => Object.keys(data)[i] ?? null,
+    get length() {
+      return Object.keys(data).length;
+    },
+  } as Storage;
+}
+
+let __storage: Storage;
+
+beforeEach(() => {
+  __storage = makeStorage();
+  vi.stubGlobal("localStorage", __storage);
+});
+
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+});
+
+const PROJECT_ID = "1";
+
+function makeEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry {
+  return {
+    id: "SCHED-001",
+    title: "Weekly check",
+    frequency: "every 7d",
+    lastRunIso: "2026-04-18T10:00:00Z",
+    steps: ["Step one", "Step two"],
+    assignedTo: "Dev",
+    nextDueMs: Date.parse("2026-04-25T10:00:00Z") + 1000,
+    isOverdue: false,
+    ...overrides,
+  };
+}
+
+describe("ScheduleList", () => {
+  it("renders empty state gracefully when no schedules", () => {
+    const { container } = render(<ScheduleList schedules={[]} projectId={PROJECT_ID} />);
+    expect(container.querySelectorAll("button").length).toBe(0);
+  });
+
+  it("renders a schedule row for each entry", () => {
+    const entries = [
+      makeEntry({ id: "SCHED-001", title: "Alpha check" }),
+      makeEntry({ id: "SCHED-002", title: "Beta check" }),
+    ];
+    render(<ScheduleList schedules={entries} projectId={PROJECT_ID} />);
+    expect(screen.getByText("Alpha check")).toBeDefined();
+    expect(screen.getByText("Beta check")).toBeDefined();
+  });
+
+  it("shows Overdue section heading when any entry is overdue", () => {
+    const overdueEntry = makeEntry({
+      id: "SCHED-001",
+      title: "Overdue task",
+      isOverdue: true,
+      lastRunIso: "2026-04-01T00:00:00Z",
+      nextDueMs: Date.parse("2026-04-08T00:00:00Z"),
+    });
+    render(<ScheduleList schedules={[overdueEntry]} projectId={PROJECT_ID} />);
+    expect(screen.getByText(/Overdue \(1\)/i)).toBeDefined();
+  });
+
+  it("shows Overdue badge on overdue entry row", () => {
+    const overdueEntry = makeEntry({ isOverdue: true, nextDueMs: Date.parse("2026-04-01T00:00:00Z") });
+    render(<ScheduleList schedules={[overdueEntry]} projectId={PROJECT_ID} />);
+    expect(screen.getByText("Overdue")).toBeDefined();
+  });
+
+  it("shows On schedule badge when entry is not overdue and not never-run", () => {
+    const entry = makeEntry({
+      isOverdue: false,
+      lastRunIso: "2026-04-24T10:00:00Z",
+      nextDueMs: Date.parse("2026-05-01T10:00:00Z"),
+    });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    expect(screen.getByText("On schedule")).toBeDefined();
+  });
+
+  it("shows Never run badge when lastRunIso is null but nextDueMs is set", () => {
+    const entry = makeEntry({
+      lastRunIso: null,
+      nextDueMs: 0,
+      isOverdue: true,
+    });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    expect(screen.getByText("Never run")).toBeDefined();
+  });
+
+  it("shows Unknown schedule badge when nextDueMs is null", () => {
+    const entry = makeEntry({
+      nextDueMs: null,
+      isOverdue: false,
+      lastRunIso: null,
+    });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    expect(screen.getByText("Unknown schedule")).toBeDefined();
+  });
+
+  it("expands steps when row button is clicked", () => {
+    const entry = makeEntry({ steps: ["Clean files", "Run audit"] });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    expect(screen.queryByText("Clean files")).toBeNull();
+
+    const btn = screen.getByRole("button", { name: /expand schedule/i });
+    fireEvent.click(btn);
+
+    expect(screen.getByText("Clean files")).toBeDefined();
+    expect(screen.getByText("Run audit")).toBeDefined();
+  });
+
+  it("collapses steps when expanded row button is clicked again", () => {
+    const entry = makeEntry({ steps: ["Step A"] });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    const btn = screen.getByRole("button", { name: /expand schedule/i });
+    fireEvent.click(btn);
+    expect(screen.getByText("Step A")).toBeDefined();
+    fireEvent.click(btn);
+    expect(screen.queryByText("Step A")).toBeNull();
+  });
+
+  it("shows entry ID badge", () => {
+    const entry = makeEntry({ id: "SCHED-007" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    expect(screen.getByText("SCHED-007")).toBeDefined();
+  });
+
+  it("separates overdue and on-schedule into sections", () => {
+    const overdue = makeEntry({
+      id: "SCHED-001",
+      isOverdue: true,
+      nextDueMs: Date.parse("2026-04-01T00:00:00Z"),
+    });
+    const onTime = makeEntry({
+      id: "SCHED-002",
+      isOverdue: false,
+      nextDueMs: Date.parse("2026-05-01T00:00:00Z"),
+    });
+    render(<ScheduleList schedules={[onTime, overdue]} projectId={PROJECT_ID} />);
+    expect(screen.getByText(/Overdue \(1\)/i)).toBeDefined();
+    expect(screen.getByText(/On schedule \(1\)/i)).toBeDefined();
+  });
+
+  it("shows '—' for Next field when schedule has never run (T087 fix)", () => {
+    const entry = makeEntry({
+      lastRunIso: null,
+      nextDueMs: 0,
+      isOverdue: true,
+    });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    // "Last run: Never" should be shown
+    expect(screen.getByText("Never")).toBeDefined();
+    // "Next: —" should be shown — NOT "56 years ago" or similar
+    const nextLabels = screen.getAllByText("—");
+    expect(nextLabels.length).toBeGreaterThan(0);
+    // Ensure "ago" text does not appear for nextDueMs when never run
+    expect(screen.queryByText(/\d+ years? ago/i)).toBeNull();
+  });
+
+  it("renders Run now button for each schedule row", () => {
+    const entries = [
+      makeEntry({ id: "SCHED-001" }),
+      makeEntry({ id: "SCHED-002" }),
+    ];
+    render(<ScheduleList schedules={entries} projectId={PROJECT_ID} />);
+    const buttons = screen.getAllByRole("button", { name: /run schedule/i });
+    expect(buttons.length).toBe(2);
+  });
+
+  it("Run now button POSTs to the correct endpoint on click", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { queued: true } }) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId="42" />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/projects/42/schedules/run",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({ scheduleId: "SCHED-001" }),
+        })
+      );
+    });
+  });
+
+  it("shows Queued feedback after successful run", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { queued: true } }) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Queued/i)).toBeDefined();
+    });
+  });
+
+  it("shows assigned task ID in queued label when response includes taskId", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { queued: true, taskId: "T127" } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      // Label includes the task id, e.g. "Queued (T127) ✓"
+      expect(screen.getByText(/Queued \(T127\)/i)).toBeDefined();
+    });
+  });
+
+  it("falls back to plain Queued label when response omits taskId", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { queued: true } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      // No task id, no parens
+      expect(screen.queryByText(/Queued \(/i)).toBeNull();
+      expect(screen.getByText(/Queued/i)).toBeDefined();
+    });
+  });
+
+  // -------------------------------------------------------------------------
+  // T126 — localStorage persistence of "Queued" indicator across refresh
+  // -------------------------------------------------------------------------
+
+  it("writes queued entry to localStorage on successful run", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { queued: true, taskId: "T127" } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId="42" />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    fireEvent.click(runBtn);
+
+    await waitFor(() => {
+      const raw = __storage.getItem("ct_run_queued__42__SCHED-001");
+      expect(raw).not.toBeNull();
+      const parsed = JSON.parse(raw!);
+      expect(parsed.taskId).toBe("T127");
+      expect(typeof parsed.queuedAt).toBe("number");
+    });
+  });
+
+  it("restores Queued state from localStorage on mount when task is still pending", async () => {
+    __storage.setItem(
+      "ct_run_queued__1__SCHED-001",
+      JSON.stringify({ taskId: "T127", queuedAt: Date.now() })
+    );
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        data: { id: "T127", status: "pending", description: "Run schedule …" },
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Queued \(T127\)/i)).toBeDefined();
+    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/projects/1/tasks/T127",
+      expect.anything()
+    );
+  });
+
+  it("clears localStorage and stays idle when task is no longer pending", async () => {
+    __storage.setItem(
+      "ct_run_queued__1__SCHED-001",
+      JSON.stringify({ taskId: "T127", queuedAt: Date.now() })
+    );
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        data: { id: "T127", status: "in-progress", description: "Run schedule …" },
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    await waitFor(() => {
+      expect(__storage.getItem("ct_run_queued__1__SCHED-001")).toBeNull();
+    });
+    expect(screen.getByRole("button", { name: /run schedule SCHED-001/i }).textContent).toMatch(/Run now/i);
+  });
+
+  it("clears localStorage and stays idle when queuedAt is older than 5 minutes", async () => {
+    __storage.setItem(
+      "ct_run_queued__1__SCHED-001",
+      JSON.stringify({ taskId: "T127", queuedAt: Date.now() - 6 * 60 * 1000 })
+    );
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: null }) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+
+    await waitFor(() => {
+      expect(__storage.getItem("ct_run_queued__1__SCHED-001")).toBeNull();
+    });
+    expect(screen.getByRole("button", { name: /run schedule SCHED-001/i }).textContent).toMatch(/Run now/i);
+    // Mount poll should NOT have called the tasks API since entry is stale
+    const tasksCalls = fetchMock.mock.calls.filter((c) =>
+      typeof c[0] === "string" && c[0].includes("/tasks")
+    );
+    expect(tasksCalls.length).toBe(0);
+  });
+
+  it("clears localStorage on 3-second auto-reset", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { queued: true, taskId: "T127" } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId="42" />);
+
+    const runBtn = screen.getByRole("button", { name: /run schedule SCHED-001/i });
+    await act(async () => {
+      fireEvent.click(runBtn);
+      // flush microtasks for the fetch resolve
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    // Localstorage should be set by now
+    expect(__storage.getItem("ct_run_queued__42__SCHED-001")).not.toBeNull();
+
+    // Advance the 3s timer
+    await act(async () => {
+      vi.advanceTimersByTime(3001);
+    });
+
+    expect(__storage.getItem("ct_run_queued__42__SCHED-001")).toBeNull();
+    vi.useRealTimers();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Delete functionality tests
+// ---------------------------------------------------------------------------
+
+describe("ScheduleList — delete", () => {
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  it("renders a delete button with correct aria-label when onDelete is provided", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    const deleteBtn = screen.getByRole("button", { name: /delete schedule SCHED-001/i });
+    expect(deleteBtn).toBeDefined();
+  });
+
+  it("does not render a delete button when onDelete is not provided", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(<ScheduleList schedules={[entry]} projectId={PROJECT_ID} />);
+    const deleteBtn = screen.queryByRole("button", { name: /delete schedule SCHED-001/i });
+    expect(deleteBtn).toBeNull();
+  });
+
+  it("shows inline confirmation panel on trash icon click", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    const deleteBtn = screen.getByRole("button", { name: /delete schedule SCHED-001/i });
+    fireEvent.click(deleteBtn);
+    expect(screen.getByText(/delete this schedule\?/i)).toBeDefined();
+    expect(screen.getByRole("button", { name: /confirm delete/i })).toBeDefined();
+    expect(screen.getByRole("button", { name: /cancel delete/i })).toBeDefined();
+  });
+
+  it("hides confirmation panel on Cancel click", () => {
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    fireEvent.click(screen.getByRole("button", { name: /delete schedule SCHED-001/i }));
+    fireEvent.click(screen.getByRole("button", { name: /cancel delete/i }));
+    expect(screen.queryByText(/delete this schedule\?/i)).toBeNull();
+  });
+
+  it("calls onDelete with the schedule id after successful API delete", async () => {
+    const onDelete = vi.fn();
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={onDelete} />
+    );
+    fireEvent.click(screen.getByRole("button", { name: /delete schedule SCHED-001/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirm delete/i }));
+
+    await waitFor(() => {
+      expect(onDelete).toHaveBeenCalledWith("SCHED-001");
+    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringMatching(/\/schedules\/SCHED-001$/),
+      expect.objectContaining({ method: "DELETE" })
+    );
+  });
+
+  it("shows error message when API delete fails", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({ error: "Server error" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const entry = makeEntry({ id: "SCHED-001" });
+    render(
+      <ScheduleList schedules={[entry]} projectId={PROJECT_ID} onDelete={vi.fn()} />
+    );
+    fireEvent.click(screen.getByRole("button", { name: /delete schedule SCHED-001/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirm delete/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/server error/i)).toBeDefined();
+    });
+  });
+});
