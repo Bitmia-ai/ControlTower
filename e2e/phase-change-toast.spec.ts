@@ -207,11 +207,15 @@ test.describe("Phase-change toast notifications (T050)", () => {
   });
 
   test("clicking the toast navigates to the live tab", async ({ page }) => {
-    let pollCount = 0;
+    // Time-based switch — same rationale as the BUILD test above. pollCount is
+    // unreliable because layout, mission-control, and notification-bell all hit
+    // /api/projects/0 at mount, causing REVIEW to appear as the baseline.
+    const startedAt = Date.now();
+    const PHASE_SWITCH_MS = 4_000;
     await page.route("**/api/projects/0", async (route) => {
       if (route.request().method() === "GET") {
-        pollCount += 1;
-        const phase = pollCount === 1 ? "PLAN" : "REVIEW";
+        const phase =
+          Date.now() - startedAt < PHASE_SWITCH_MS ? "PLAN" : "REVIEW";
         await route.fulfill({
           status: 200,
           contentType: "application/json",
